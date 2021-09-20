@@ -14,6 +14,11 @@ const routes = [
     name: 'Processing',
     component: () => import('@/views/processing')
   },
+  {
+    path: '/choose-payment',
+    name: 'ChoosePayment',
+    component: () => import('@/views/choosePayment')
+  }
 ]
 
 const router = new VueRouter({
