@@ -28,6 +28,11 @@ const routes = [
     path: '/add-card',
     name: 'AddCard',
     component: () => import('@/views/AddCard')
+  },
+  {
+    path: '/add-mpesa',
+    name: 'AddMpesa',
+    component: () => import('@/views/AddMpesa')
   }
 ]
 

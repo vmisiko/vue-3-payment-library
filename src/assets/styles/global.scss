@@ -1,4 +1,4 @@
-@import "variables";
+@import "variables" , "textFont";
 
 #app {
   font-family: 'Nunito' !important;
@@ -113,68 +113,8 @@
     width: 360px;
   }
 
-  .title-payment {
-    font-family: Nunito;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 21px;
-    line-height: 36px;
-    letter-spacing: 0.15px;
-    color: #606266;
-  }
-
-  .normal-text {
-    font-family: Nunito;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 15px;
-    color: #606266;
-    flex: none;
-    order: 0;
-    flex-grow: 0;
-    margin: 0px 0px;
-  }
-  
-  .amount-text {
-    font-family: Nunito;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 21px;
-    line-height: 36px
-  }
-
   .float-right {
    float: right;
-  }
-
-  .text-caption {
-    font-family: Nunito;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 13px;
-    line-height: 16px;
-    letter-spacing: 0.4px;
-    color: #606266;
-  }
-
-  .text-caption-1 {
-    font-family: Nunito;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 13px;
-    line-height: 20px;
-    color: #303133;
-  }
-
-  .text-overline {
-    font-family: Nunito;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 11px;
-    line-height: 16px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: #909399;
   }
 
   @each $direction in $directions {

@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex normal-text" @click="$router.push('/add-card')">
+  <div class="d-flex normal-text" @click="handlePaymentMethod(paymentMethod)">
 
     <IconView :icon="paymentMethod.icon" />
 
@@ -12,14 +12,30 @@
 </template>
 
 <script>
+import generalMxn from '@/mixins/general_mixin';
+
 export default {
   name: 'PaymentOption',
+  mixins: [generalMxn],
   props: ['paymentMethod'],
   data() {
     return {
     }
   },
   methods: {
+    handleSelect() {
+      switch (this.paymentMethod.id) {
+        case 1: 
+          this.$router.push('/add-card')
+          break;
+        case 2: 
+          this.$router.push('/add-mpesa')
+          break;
+        default:
+          this.$router.push('/add-card')
+          break;
+      }
+    }
   }
 }
 </script>

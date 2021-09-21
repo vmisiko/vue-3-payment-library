@@ -47,6 +47,7 @@
 
     </div>
     <CvvModal :show="showModal" @close="showModal=!showModal"/>
+    <Snackbar :show="showSnackbar" />
   </div>
 </template>
 
@@ -61,6 +62,7 @@ export default {
   },
   data() {
     return {
+      showSnackbar: true,
       showModal: false,
       icon: 'back',
       title: 'Add a Card',
