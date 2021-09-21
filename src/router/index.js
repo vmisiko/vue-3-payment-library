@@ -33,6 +33,11 @@ const routes = [
     path: '/add-mpesa',
     name: 'AddMpesa',
     component: () => import('@/views/AddMpesa')
+  },
+  {
+    path: '/mpesa-stk',
+    name: 'STKComponent',
+    component: () => import('@/views/STKComponent')
   }
 ]
 

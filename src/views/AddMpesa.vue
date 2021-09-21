@@ -22,7 +22,7 @@
       </span>
 
       <div>
-        <p class="normal-text">
+        <p class="text-caption-1 text-gray80">
           Whenever you choose to pay with M-Pesa, you will be requested to provide a phone number during payment.
         </p>
       </div>

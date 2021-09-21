@@ -43,19 +43,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
-
-.text-caption-2 {
-  font-family: Nunito;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 11px;
-  line-height: 16px;
-  display: flex;
-  align-items: center;
-  color: #606266;
-}
-     
+<style lang="scss">     
 .modal {
   display: none;
   position: fixed;
