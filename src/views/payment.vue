@@ -7,7 +7,7 @@
 
       <PaymentDetail :currency="currency" :amount="amount" :payment_mode="payment_mode"  :paymentStatus="paymentStatus" />
 
-      <div class="mt-8 text-right" v-if="!paymentStatus">
+      <div class="mt-8 text-right" v-if="!paymentStatus" @click="$router.push('/processing')">
         <button class="primary-btn">Confirm and Pay </button>
       </div>
 
