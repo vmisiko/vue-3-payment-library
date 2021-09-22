@@ -4,7 +4,7 @@
     <div class="card">
       <TopInfo :icon="icon" :title="title"/>    
 
-      <form id="cc-form">
+      <form id="cc-form" @submit.prevent="showErrorModal=!showErrorModal">
         <div class="form-group">
           <label for="cc-name" class="text-caption-2">Cardholder name</label>
           <span id="cc-name" class="form-field">
@@ -40,14 +40,14 @@
           </div>
        
 
-        <button type="submit" class="primary-btn-block mt-10">
+        <button type="submit" class="primary-btn-block mt-10" itemref="">
           Add Card
         </button>
       </form>
 
     </div>
     <CvvModal :show="showModal" @close="showModal=!showModal"/>
-    <Snackbar :show="showSnackbar" />
+    <ErrorModal :show="showErrorModal" @close="showErrorModal=!showErrorModal" />
   </div>
 </template>
 
@@ -59,11 +59,13 @@ export default {
   components: {
     TopInfo: () => import('@/components/topInfo'),
     CvvModal: () => import('@/components/modals/cvvModal'),
+    ErrorModal: () => import('@/components/modals/ErrorModal'),
   },
   data() {
     return {
       showSnackbar: true,
       showModal: false,
+      showErrorModal: false,
       icon: 'back',
       title: 'Add a Card',
       form: {},

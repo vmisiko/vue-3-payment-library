@@ -1,19 +1,26 @@
 <template>
-  <div id="cvv-modal" class="modal">
+  <div id="no-option" class="modal">
       <div class="modal-content">
-        <span class="close" @click="$emit('close')">&times;</span>
-        <div>
-          <IconView icon='magnify-cvv' />
+        <!-- <span class="close" @click="$emit('close')">&times;</span> -->
+        <div class="flex-center">
+        <div class="processing-box text-center">
+          <img class="normal-text" style="margin-top: 35%;" src="" alt="Graphic image to communicate missing payment options">
         </div>
+      </div>
+      <div class="text-center mt-8">
+        <div><span class="text-subtitle-1">Payment option missing</span></div>
+        <span class="text-body-2 mt-3">
+          Add a new payment method to proceed with the transaction
+        </span>
+      </div>
 
-        <div class="mt-4">
-          <span>What is CVV?</span>
-          <div>
-            <span class="text-caption">This is a 3 or 4 digit security code found on the back of you card.</span>
-          </div>
-        </div>
+      <div class="text-center mt-8" @click="$router.push('/add-payment')">
+        <button class="primary-btn"> Add payment option </button>
+      </div>
 
-        <button class="primary-btn-block mt-8" @click="$emit('close')" > ok</button>
+      <div class="text-center mt-8">
+        <span class="link" @click="$router.go(-1)">Back</span>
+      </div>
       </div>
   </div>
 </template>
@@ -24,20 +31,22 @@ export default {
   props: ['show'],
   data() {
     return {
-
     }
   },
   watch: {
     show(val) {
-      val ? this.handleCvv(): this.closeCvv();
+      val ? this.handleOpen(): this.handleClose();
     }
   },
+  mounted() {
+    this.handleOpen();
+  },
   methods: {
-    handleCvv() {
-      document.getElementById('cvv-modal').style.display = 'block';
+    handleOpen() {
+      document.getElementById('no-option').style.display = 'block';
     },
-    closeCvv() {
-      document.getElementById('cvv-modal').style.display = 'none';
+    handleClose() {
+      document.getElementById('no-option').style.display = 'none';
     },
   }
 }
@@ -48,7 +57,7 @@ export default {
   display: none;
   position: fixed;
   z-index: 1;
-  padding-top: 150px;
+  padding-top: 40px;
   left: 0;
   top: 0;
   width: 100%;
@@ -67,7 +76,7 @@ export default {
   padding: 32px;
   border: 1px solid #888;
   border-radius: 4px;
-  width: 300px;
+  width: 348px;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
   -webkit-animation-name: animatetop;
   -webkit-animation-duration: 0.4s;
@@ -101,4 +110,10 @@ export default {
   cursor: pointer;
 }
 
+.processing-box {
+  width: 100%;
+  height: 284px;
+  background:#C4C4C4;
+  padding: auto;
+}
 </style>

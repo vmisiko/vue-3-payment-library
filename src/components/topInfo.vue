@@ -22,6 +22,7 @@
       <div class="mt-4">
         <span class="subtitle-warning" v-if="subtitle"> {{ subtitle }} </span>
       </div>
+      <!-- <snackbar show="" /> -->
   </div>
 </template>
 

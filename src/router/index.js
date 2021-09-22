@@ -15,6 +15,11 @@ const routes = [
     component: () => import('@/views/processing')
   },
   {
+    path: '/success',
+    name: 'Processing',
+    component: () => import('@/views/processing')
+  },
+  {
     path: '/choose-payment',
     name: 'ChoosePayment',
     component: () => import('@/views/choosePayment')
@@ -43,7 +48,12 @@ const routes = [
     path: '/mpesa-c2b',
     name: 'MpesaC2B',
     component: () => import('@/views/MpesaC2B')
-  }
+  },
+  {
+    path: '/add-payment-option',
+    name: 'AddPaymentOption',
+    component: () => import('@/views/AddPaymentOption')
+  },
 ]
 
 const router = new VueRouter({

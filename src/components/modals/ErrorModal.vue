@@ -1,43 +1,43 @@
 <template>
-  <div id="cvv-modal" class="modal">
+  <div id="error-modal" class="modal">
       <div class="modal-content">
-        <span class="close" @click="$emit('close')">&times;</span>
         <div>
-          <IconView icon='magnify-cvv' />
+          <IconView icon='warning' />
         </div>
 
         <div class="mt-4">
-          <span>What is CVV?</span>
+          <span> Could not add card </span>
           <div>
-            <span class="text-caption">This is a 3 or 4 digit security code found on the back of you card.</span>
+            <span class="text-caption text-sendy-red-30">
+              Your card issuer has declined this transaction. Contact your bank or card issuer for more information.
+            </span>
           </div>
         </div>
 
-        <button class="primary-btn-block mt-8" @click="$emit('close')" > ok</button>
+        <button class="midnightblue-btn-block mt-8" @click="$emit('close')"> close </button>
       </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'cvvModule',
+  name: 'ErrorModal',
   props: ['show'],
   data() {
     return {
-
     }
   },
   watch: {
     show(val) {
-      val ? this.handleCvv(): this.closeCvv();
+      val ? this.handleOpen(): this.handleClose();
     }
   },
   methods: {
-    handleCvv() {
-      document.getElementById('cvv-modal').style.display = 'block';
+    handleOpen() {
+      document.getElementById('error-modal').style.display = 'block';
     },
-    closeCvv() {
-      document.getElementById('cvv-modal').style.display = 'none';
+    handleClose() {
+      document.getElementById('error-modal').style.display = 'none';
     },
   }
 }
@@ -59,7 +59,6 @@ export default {
 
 }
 
-/* Modal Content */
 .modal-content {
   position: relative;
   background-color: #fefefe;
@@ -75,7 +74,6 @@ export default {
   animation-duration: 0.4s
 }
 
-/* Add Animation */
 @-webkit-keyframes animatetop {
   from {top:-300px; opacity:0} 
   to {top:0; opacity:1}
@@ -86,7 +84,6 @@ export default {
   to {top:0; opacity:1}
 }
 
-/* The Close Button */
 .close {
   color: black;
   float: right;

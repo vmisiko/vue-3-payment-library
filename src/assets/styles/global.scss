@@ -86,6 +86,9 @@
     .spacer {
       flex-grow: 1;
     }
+    .align-center {
+      align-items: center;
+    }
   }
 
   .card {
@@ -155,6 +158,16 @@
     text-align: center;
     border-radius: 4px;
     width: 100%
+  }
+
+  .midnightblue-btn-block {
+    border: none;
+    background-color:#D3DDF6;
+    padding: 12px 32px;
+    color: $linkColor;
+    text-align: center;
+    border-radius: 4px;
+    width: 100%;
   }
 
   .selected-border {
