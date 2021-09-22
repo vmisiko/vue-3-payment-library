@@ -38,6 +38,11 @@ const routes = [
     path: '/mpesa-stk',
     name: 'STKComponent',
     component: () => import('@/views/STKComponent')
+  },
+  {
+    path: '/mpesa-c2b',
+    name: 'MpesaC2B',
+    component: () => import('@/views/MpesaC2B')
   }
 ]
 

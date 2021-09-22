@@ -1,3 +1,33 @@
+.title-payment {
+  font-family: Nunito;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 21px;
+  line-height: 36px;
+  letter-spacing: 0.15px;
+  color: #606266;
+}
+
+.normal-text {
+  font-family: Nunito;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 15px;
+  color: #606266;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  margin: 0px 0px;
+}
+
+.amount-text {
+  font-family: Nunito;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 21px;
+  line-height: 36px
+}
+
 .text-caption {
   font-family: Nunito;
   font-style: normal;
@@ -53,32 +83,12 @@
   margin: 8px 0px;
 }
 
-.title-payment {
-  font-family: Nunito;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 21px;
-  line-height: 36px;
-  letter-spacing: 0.15px;
-  color: #606266;
-}
-
-.normal-text {
+.text-body-2 {
   font-family: Nunito;
   font-style: normal;
   font-weight: normal;
   font-size: 15px;
+  line-height: 24px;
   color: #606266;
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-  margin: 0px 0px;
 }
 
-.amount-text {
-  font-family: Nunito;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 21px;
-  line-height: 36px
-}
