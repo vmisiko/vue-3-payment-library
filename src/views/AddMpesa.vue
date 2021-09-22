@@ -28,7 +28,7 @@
       </div>
 
       <div class="mt-15 float-right">
-        <button class="primary-btn"> Add M-PESA</button>
+        <button class="primary-btn" @click="$router.push('/choose-payment')"> Add M-PESA</button>
       </div>
     </div>
 

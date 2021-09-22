@@ -44,14 +44,14 @@ export default {
       icon: 'back',
       title: 'Payment',
       subtitle: '',
-      paymentStatus: 'failed',
+      paymentStatus: null,
       currency: 'KES',
       amount: '415,000.00',
       payment_mode: 'card',
     }
   },
   mounted() {
-    this.retryView();
+    // this.retryView();
   },
   methods: {
     sucessView() {
