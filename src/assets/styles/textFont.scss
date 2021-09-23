@@ -83,6 +83,15 @@
   margin: 8px 0px;
 }
 
+.text-body-1 {
+  font-family: Nunito;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 17px;
+  line-height: 28px;
+  color: #606266;
+}
+
 .text-body-2 {
   font-family: Nunito;
   font-style: normal;
@@ -92,6 +101,7 @@
   color: #606266;
 }
 
+
 .text-subtitle-1 {
   font-family: Nunito;
   font-style: normal;
@@ -100,5 +110,15 @@
   line-height: 28px;
   letter-spacing: 0.15px;
   color: #303133;
+}
+
+.text-btn {
+  font-family: Nunito;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 24px;
+  letter-spacing: 0.005em;
+  color: #9B101C;
 }
 

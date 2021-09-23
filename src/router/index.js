@@ -54,6 +54,16 @@ const routes = [
     name: 'AddPaymentOption',
     component: () => import('@/views/AddPaymentOption')
   },
+  {
+    path: '/payment-option-page',
+    name: 'PaymentOptionsPage',
+    component: () => import('@/views/PaymentOptionsPage')
+  },
+  {
+    path: '/card-details',
+    name: 'CardDetails',
+    component: () => import('@/views/CardDetailsPage')
+  },
 ]
 
 const router = new VueRouter({
