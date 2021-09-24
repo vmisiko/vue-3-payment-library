@@ -10,6 +10,21 @@ const routes = [
     component: () => import('@/views/payment')
   },
   {
+    path: '/success-view',
+    name: 'SuccessView',
+    component: () => import('@/views/payment')
+  },
+  {
+    path: '/failed-view',
+    name: 'FailedView',
+    component: () => import('@/views/payment')
+  },
+  {
+    path: '/retry-view',
+    name: 'RetryView',
+    component: () => import('@/views/payment')
+  },
+  {
     path: '/processing',
     name: 'Processing',
     component: () => import('@/views/processing')

@@ -84,9 +84,19 @@ export default {
     }
   },
   mounted() {
-    // this.retryView();
-    // this.sucessView()
-    // this.failView()
+    switch (this.$route.name){
+      case 'SuccessView':
+        this.sucessView();
+        break;
+      case 'FailedView':
+        this.failView();
+        break;
+      case 'RetryView':
+        this.retryView();
+        break;
+      default:
+        break;
+    }
   },
   methods: {
     sucessView() {
