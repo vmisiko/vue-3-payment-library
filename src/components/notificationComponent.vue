@@ -1,8 +1,8 @@
 <template>
-  <div id="snackbar" class="d-flex">
-    <IconView icon='check-circle-sucess' />
-    <div>
-      <span class="text-caption"> M-PESA option added and selected for payment.</span>
+  <div id="snackbar" class="">
+    <div class="mt-3 d-flex">
+      <IconView icon='check-circle-sucess' />
+      <span class="text-caption ml-5"> {{ text }}</span>
     </div>
   </div>
 </template>
@@ -38,17 +38,17 @@ export default {
 <style lang="scss">
 
 #snackbar {
-  visibility: hidden; /* Hidden by default. Visible on click */
-  min-width: 250px; /* Set a default minimum width */
-  margin-left: -125px; /* Divide value of min-width by 2 */
-  background-color: #333; /* Black background color */
-  color: #fff; /* White text color */
-  border-radius: 4px; /* Rounded borders */
-  padding: 16px; /* Padding */
-  position: fixed; /* Sit on top of the screen */
-  z-index: 1; /* Add a z-index if needed */
-  left: 50%; /* Center the snackbar */
-  bottom: 30px; /* 30px from the bottom */
+  visibility: hidden;
+  max-width: 312px;
+  margin-right: 20px;
+  background-color: #F7F9FC; 
+  color: #303133;
+  border-radius: 8px;
+  padding: 16px;
+  position: absolute;
+  z-index: 1;
+  right: 0px;
+  top: 43px;
 }
 
 #snackbar.show {

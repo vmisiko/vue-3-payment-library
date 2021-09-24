@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex normal-text" @click="handlePaymentMethod(paymentMethod)">
+  <div class="d-flex normal-text" @click="$handlePaymentMethod(paymentMethod)">
 
     <IconView :icon="paymentMethod.icon" />
 
@@ -12,11 +12,9 @@
 </template>
 
 <script>
-import generalMxn from '@/mixins/general_mixin';
 
 export default {
   name: 'PaymentOption',
-  mixins: [generalMxn],
   props: ['paymentMethod'],
   data() {
     return {

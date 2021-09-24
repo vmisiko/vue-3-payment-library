@@ -12,8 +12,6 @@
 </template>
 
 <script>
-import generalMxn from '@/mixins/general_mixin';
-
 export default {
   name: 'PaymentOption',
   mixins: [generalMxn],

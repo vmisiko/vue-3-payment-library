@@ -249,7 +249,13 @@ export default {
             case 'success':
               this.poll_count = this.poll_limit;
               this.collectLoad = false;
-              this.$router.push('/choose-payment')
+              // this.$root.$emit('payment-notification', {
+              //   text: 'Card details added and selected for payment.'
+              // });
+              this.$paymentNotification({
+                text: 'Card details added and selected for payment.'
+              });
+              this.$router.push('/choose-payment');
               this.loading = false;
               break;
             case 'failed':
