@@ -31,8 +31,8 @@ const routes = [
   },
   {
     path: '/success',
-    name: 'Processing',
-    component: () => import('@/views/processing')
+    name: 'Success',
+    component: () => import('@/views/payment')
   },
   {
     path: '/choose-payment',
