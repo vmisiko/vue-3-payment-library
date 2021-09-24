@@ -12,7 +12,6 @@
             <span class="gray80-text ml-2"> **** 7659</span>   
             <span class="spacer"></span>   
             <div class="">
-              <!-- <img class="mt-n10" :src="require('@/assets/icons/circle-check.svg')" alt=""> -->
               <input name="paymentoption" type="radio" value="visa"  v-model="picked" >
              </div>
         </div>
@@ -23,7 +22,6 @@
             <span class="gray80-text ml-2"> **** 7659</span>   
             <span class="spacer"></span>   
             <div class="">
-              <!-- <img class="mt-n10" :src="require('@/assets/icons/circle-check.svg')" alt=""> -->
               <input type="radio" value="master"  v-model="picked" >
              </div>
         </div>
@@ -46,7 +44,13 @@
       <span class="link mt-5" @click="$router.push('/add-payment')"> + Add payment option</span>
 
       <div class="mt-8">
-        <button class="primary-btn float-right" > continue </button>
+        <sendy-btn 
+          color='primary'
+          class="float-right"
+          @click="$router.push('/card-details')"
+        >
+          continue
+        </sendy-btn>
       </div>
     </div>
   </div>

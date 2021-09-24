@@ -60,7 +60,14 @@
         </div>
 
         <div class="mt-8">
-          <button class="primary-btn float-right" @click="$router.push('/processing')">Complete payment</button>
+          <sendy-btn 
+          :loading="loading"
+          color='primary'
+          class="mt-10 float-right"
+          @click="$router.push('/processing')"
+          >
+            Complete payment
+          </sendy-btn>
         </div>
 
     </div>
@@ -79,6 +86,7 @@ export default {
     return {
       icon: 'back',
       title: 'Pay with M-PESA',
+      loading: false,
     }
   }
 }

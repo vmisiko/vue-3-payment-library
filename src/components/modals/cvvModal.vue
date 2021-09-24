@@ -13,7 +13,16 @@
           </div>
         </div>
 
-        <button class="primary-btn-block mt-8" @click="$emit('close')" > ok</button>
+        <!-- <button class="primary-btn-block mt-8" @click="$emit('close')" > ok</button> -->
+        <sendy-btn 
+          :block="true" 
+          color='primary'
+          class="mt-8"
+          type="submit"
+         @click="$emit('close')"
+        >
+          ok
+        </sendy-btn>
       </div>
   </div>
 </template>

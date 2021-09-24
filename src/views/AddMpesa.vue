@@ -28,7 +28,14 @@
       </div>
 
       <div class="mt-15 float-right">
-        <button class="primary-btn" @click="$router.push('/choose-payment')"> Add M-PESA</button>
+        <sendy-btn 
+          :loading="loading"
+          color='primary'
+          class="mt-10"
+          @click="$router.push('/choose-payment')"
+        >
+          Add M-PESA
+        </sendy-btn>
       </div>
     </div>
 
@@ -47,6 +54,7 @@ export default {
     return {
       icon: 'back',
       title: 'Add a Mpesa',
+      loading: false,
     }
   },
   mounted() {

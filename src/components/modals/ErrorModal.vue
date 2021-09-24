@@ -14,7 +14,14 @@
           </div>
         </div>
 
-        <button class="midnightblue-btn-block mt-8" @click="$emit('close')"> close </button>
+        <sendy-btn 
+          :block="true" 
+          color='info'
+          class="mt-8"
+         @click="$emit('close')"
+        >
+          close
+        </sendy-btn>
       </div>
   </div>
 </template>

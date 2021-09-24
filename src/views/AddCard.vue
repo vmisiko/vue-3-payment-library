@@ -4,7 +4,7 @@
     <div class="card">
       <TopInfo :icon="icon" :title="title"/>    
 
-      <form id="cc-form" @submit.prevent="showErrorModal=!showErrorModal">
+      <form id="cc-form" @submit.prevent="onsubmit">
         <div class="form-group">
           <label for="cc-name" class="text-caption-2">Cardholder name</label>
           <span id="cc-name" class="form-field">
@@ -40,9 +40,15 @@
           </div>
        
 
-        <button type="submit" class="primary-btn-block mt-10" itemref="">
+        <sendy-btn 
+          :block="true" 
+          :loading="loading"
+          color='primary'
+          class="mt-10"
+          type="submit"
+        >
           Add Card
-        </button>
+        </sendy-btn>
       </form>
 
     </div>
@@ -53,6 +59,7 @@
 
 <script>
 // import { loadVGSCollect } from "@vgs/collect-js";z
+import axios from 'axios';
 
 export default {
   name: 'AddCard',
@@ -63,6 +70,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       showSnackbar: true,
       showModal: false,
       showErrorModal: false,
@@ -73,6 +81,9 @@ export default {
       card_name: '',
       expiry_date: '',
       cvv: '',
+      transaction_id: '',
+      poll_count: 0,
+      poll_limit: 6,
     }
   },
   watch: {
@@ -93,6 +104,7 @@ export default {
     setTimeout(() => {
       this.setForm();
     }, 500);
+    localStorage.setItem('jwtToken', 'eyJhbGciOiJIUzI1NiIsInR5cGUiOiJKV1QifQ.eyJwYXlsb2FkIjp7InBlZXIiOnsicGF5X29wdGlvbiI6MSwidXNlcl9lbWFpbCI6Im1pc2lrb0BzZW5keWl0LmNvbSIsImRlZmF1bHRfY3VycmVuY3kiOiJLRVMiLCJ1c2VyX3Byb21vIjoiRlpXU0RPQSIsInVzZXJfaWQiOjE5MTMzLCJ1c2VyX3Bob25lIjoiKzI1NDcyMTY0OTQxNiIsInByZWZlcnJlZF9sYW5ndWFnZSI6ImVuIiwidXNlcl9uYW1lIjoiTWlzaWtvIiwiZnJlaWdodF9zdGF0dXMiOjEsInRheF9hdXRob3JpdHlfcGluIjoiQTAwMDAwOTAzOVMiLCJwYXlfbWV0aG9kIjoxLCJzdGF0dXMiOnRydWUsImNvdW50cnlfY29kZSI6IktFIiwiaWRfbm8iOiIzMjM0NTY0In0sImJpeiI6e30sInRlc3RfYWNjb3VudCI6ZmFsc2UsImN1c3RvbWVyX2NhcmVfbnVtYmVyIjoiKzI1NCA3MDkgNzc5IDc3OSIsImRlZmF1bHQiOiJwZWVyIiwiZmlyc3RfdGltZSI6ZmFsc2V9LCJzdGF0dXMiOnRydWV9.450iLVOq0xIUc6crATVHkwvkXfgboYBY23dmD7sYlJc')
   },
   methods: {
     loadVeryGoodSecurityScript() {
@@ -162,9 +174,107 @@ export default {
         classes: classes,
       });
     },
+    onsubmit() {
+      this.showErrorModal=!this.showErrorModal;
+      const newCardPayload = {
+        "country": "KE",
+        "currency": "KES",
+        "email": "jamesdoes@gmail.com",
+        "firstname": "james",
+        "lastname": "does",
+        "phonenumber": "0798675432",
+        "userid":"123456"
+      };
+      this.loading = true;
+      this.form.submit(
+          '/customers/collect_card_details',
+          {
+            data: newCardPayload,
+          },
+          (status, response) => {
+            this.loading = false;
+            console.log(response);
+            if (response.status) {
+              const headers = {
+                headers: {
+                  'Content-Type': 'application/json',
+                  Accept: 'application/json',
+                  Authorization: localStorage.jwtToken,
+                },
+              }
+              axios.post('https://payment-gateway-dev.sendyit.com/api/v1/save', response.data, headers).then((res)=> {
+                this.transaction_id = res.transaction_id;
+                if (res.status) {
+                  this.pollCard();
+                } else {
+                  this.loading = false;
+                  console.log(res.message);
+                }
+
+              }).catch(err => {
+                console.log(err);
+              });
+            } else {
+              console.log('Faled to collect card to vgs');
+            }
+          },
+      );
+    },
+
+    pollCard() {
+      this.poll_count = 0;
+      const poll_limit = 6;
+      for (let poll_count = 0; poll_count < poll_limit; poll_count++) {
+        const that = this;
+        (function (poll_count) {
+          setTimeout(() => {
+            if (that.poll_count === poll_limit) {
+              poll_count = poll_limit;
+              return;
+            }
+
+            that.TransactionIdStatus(); 
+            if (poll_count === 5) {
+              that.transactionText = 'card payment Failed';
+              that.loading = false;
+              console.log('Failed to charge card');
+              return;
+            }
+          }, 10000 * poll_count);
+        }(poll_count));
+      }
+    },
+    async TransactionIdStatus() {
+      axios
+      .get(`${paymentBaseUrl}/api/v1/process/status/${this.transaction_id}`)
+      .then((res) => {
+        if (res.status) { 
+          this.transactionText = res.message;
+          switch (res.transaction_status) {
+            case 'success':
+              this.poll_count = this.poll_limit;
+              this.loading = false;
+              console.log('Transaction was successfull')
+              break;
+            case 'failed':
+              this.poll_count = this.poll_limit;
+              this.loading = false;
+              console.log('Transaction was successfull')
+              break;
+            case 'pending':
+              break;
+            default:
+              break;
+            }
+          return res;
+        }
+        console.log(res.message);
+      })
+    }
   }
 }
 </script>
+
 
 <style lang="scss">
 

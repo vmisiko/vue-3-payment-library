@@ -33,7 +33,13 @@
         </div>
 
         <div class="mt-8">
-          <button class="primary-btn float-right" @click="$router.push('/processing')">continue</button>
+          <sendy-btn 
+            color='primary'
+            class="float-right"
+            @click="$router.push('/processing')"
+          >
+            continue
+          </sendy-btn>
         </div>
 
     </div>

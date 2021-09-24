@@ -14,8 +14,15 @@
         </span>
       </div>
 
-      <div class="text-center mt-8" @click="$router.push('/add-payment')">
-        <button class="primary-btn"> Add payment option </button>
+      <div class="text-center mt-8">
+        <!-- <button class="primary-btn"> Add payment option </button> -->
+        <sendy-btn 
+          color='primary'
+          class=""
+         @click="$router.push('/add-payment')"
+        >
+          Add payment option
+        </sendy-btn>
       </div>
 
       <div class="text-center mt-8">

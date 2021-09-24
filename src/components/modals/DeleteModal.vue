@@ -7,8 +7,28 @@
             Are you sure you want to delete this payment option?
           </span>
         </div>
-        <button class="error-btn-block mt-8" @click="$router.push('/payment-option-page')"> Delete </button>
-        <button class="midnightblue-btn-block mt-4" @click="$emit('close')"> Cancel </button>
+        <!-- <button class="error-btn-block mt-8" @click="$router.push('/payment-option-page')"> Delete </button> -->
+        
+        <sendy-btn 
+          :block="true" 
+          color='error'
+          class="mt-8"
+          type="submit"
+          @click="$router.push('/payment-option-page')"
+        >
+          Delete
+        </sendy-btn>
+
+        <!-- <button class="midnightblue-btn-block mt-4" @click="$emit('close')"> Cancel </button> -->
+        <sendy-btn 
+          :block="true" 
+          color='info'
+          class="mt-4"
+          type="submit"
+         @click="$emit('close')"
+        >
+          Cancel
+        </sendy-btn>
       </div>
   </div>
 </template>

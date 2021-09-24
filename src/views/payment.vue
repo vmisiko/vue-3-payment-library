@@ -7,20 +7,52 @@
 
       <PaymentDetail :currency="currency" :amount="amount" :payment_mode="payment_mode"  :paymentStatus="paymentStatus" />
 
-      <div class="mt-8 text-right" v-if="!paymentStatus" @click="$router.push('/processing')">
-        <button class="primary-btn">Confirm and Pay </button>
+      <div class="mt-8 text-right" v-if="!paymentStatus">
+        <!-- <button class="primary-btn">Confirm and Pay </button> -->
+         <sendy-btn 
+          :loading="loading"
+          color='primary'
+          class="mt-10"
+          @click="$router.push('/processing')"
+          >
+            Confirm and Pay
+          </sendy-btn>
       </div>
 
       <div class="mt-8 text-right" v-if="paymentStatus === 'success'" >
-        <button class="primary-btn-block">Done </button>
+        <!-- <button class="primary-btn-block">Done </button> -->
+        <sendy-btn 
+          :block="true"
+          :loading="loading"
+          color='primary'
+          class="mt-10"
+        >
+          Done
+        </sendy-btn>
       </div>
 
       <div class="mt-8 text-right" v-if="paymentStatus === 'failed'">
-        <button class="primary-btn-block">Try Again </button>
+        <!-- <button class="primary-btn-block">Try Again </button> -->
+        <sendy-btn 
+          :block="true"
+          :loading="loading"
+          color='primary'
+          class="mt-10"
+        >
+          Try Again
+        </sendy-btn>
       </div>
 
       <div class="mt-8 text-right" v-if="paymentStatus === 'retry'">
-        <button class="primary-btn-block">Retry in 3min 57seconds... </button>
+        <!-- <button class="primary-btn-block">Retry in 3min 57seconds... </button> -->
+        <sendy-btn 
+          :block="true"
+          :loading="loading"
+          color='primary'
+          class=""
+        >
+          Retry in 3min 57seconds...
+        </sendy-btn>
       </div>
 
       <div class="text-center mt-8" >
@@ -48,10 +80,13 @@ export default {
       currency: 'KES',
       amount: '415,000.00',
       payment_mode: 'card',
+      loading: false,
     }
   },
   mounted() {
     // this.retryView();
+    // this.sucessView()
+    // this.failView()
   },
   methods: {
     sucessView() {
