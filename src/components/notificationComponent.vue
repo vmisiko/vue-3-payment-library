@@ -22,9 +22,6 @@ export default {
       }
     } 
   },
-  mounted() {
-    this.showSnackbar();
-  },
   methods: {
     showSnackbar() {
       var x = document.getElementById("snackbar");

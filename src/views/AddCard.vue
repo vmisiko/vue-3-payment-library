@@ -243,15 +243,11 @@ export default {
       axios
       .get(`${this.paymentBaseUrl}/process/status/${this.transaction_id}`)
       .then((res) => {
-        console.log(res);
         if (res.data.status) { 
           switch (res.data.transaction_status) {
             case 'success':
               this.poll_count = this.poll_limit;
               this.collectLoad = false;
-              // this.$root.$emit('payment-notification', {
-              //   text: 'Card details added and selected for payment.'
-              // });
               this.$paymentNotification({
                 text: 'Card details added and selected for payment.'
               });
@@ -273,7 +269,8 @@ export default {
           }
           return res;
         }
-        console.log(res.data.message);
+        this.errorText = res.data.message;
+        this.showErrorModal= true;
       })
     }
   }
