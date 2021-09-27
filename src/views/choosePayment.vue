@@ -61,9 +61,5 @@ export default {
       picked: 'visa',
     }
   },
-  mounted() {
-    console.log(this.$route.matched);
-  }
-
 }
 </script>

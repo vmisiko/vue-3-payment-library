@@ -1,4 +1,13 @@
+import axios from 'axios';
+
 const mixin = {
+  data() {
+    return {
+      VGS_VAULT_ID: 'tnt4d8qyodm',
+      VGS_ENVIRONMENT: 'sandbox',
+      BASE_URL: 'https://payment-gateway-dev.sendyit.com/payment-gateway', 
+    }
+  },
   methods: {
     $handlePaymentMethod(paymentMethod) {
       switch (paymentMethod.id) {
@@ -15,7 +24,34 @@ const mixin = {
     },
     $paymentNotification(payload) {
       this.$root.$emit('payment-notification', payload);
+    },
+    async $paymentAxiosPost(payload) {
+      return new Promise(async(resolve, reject) => {
+        try {
+          const { url , params } = payload;
+          const { data } = await axios.post(`${this.BASE_URL}${url}`, params);
+          resolve(data);
+        } catch (err) {
+          reject(err);
+        }
+      })
+    },
+
+    async $paymentAxiosGet(payload) {
+      return new Promise(async(resolve, reject) => {
+        try {
+          const { url, params } = payload
+          const values = {
+            params
+          };
+          const { data } = await axios.get(`${this.BASE_URL}${url}`, values);
+          resolve(data);
+        } catch (err) {
+          reject(err);
+        }
+      })
     }
+    
   }
 }
 

@@ -84,7 +84,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.$route.matched);
     switch (this.$route.name){
       case 'SuccessView':
         this.sucessView();

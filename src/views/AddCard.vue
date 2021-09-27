@@ -191,9 +191,14 @@ export default {
             console.log(response);
             if (response.status) {
               this.collectLoad = true;
-              axios.post(`${this.paymentBaseUrl}/save`, response.data).then((res)=> {
-                console.log(res);
-                this.transaction_id = res.data.transaction_id;
+
+              const payload = {
+                url: '/api/v1/save',
+                params: response.data,
+              }
+
+              this.$paymentAxiosPost(payload).then((res)=> {
+                this.transaction_id = res.transaction_id;
                 if (res.status) {
                   this.pollCard();
                 } else {
@@ -203,6 +208,7 @@ export default {
                 }
 
               }).catch(err => {
+                console.log(err);
                 this.errorText = 'Failed to collect card details. Please try again';
                 this.showErrorModal= true;
               });
@@ -240,11 +246,14 @@ export default {
     },
 
     async TransactionIdStatus() {
-      axios
-      .get(`${this.paymentBaseUrl}/process/status/${this.transaction_id}`)
-      .then((res) => {
-        if (res.data.status) { 
-          switch (res.data.transaction_status) {
+
+      const payload = {
+        url: `/api/v1/process/status/${this.transaction_id}`,
+      }
+      this.$paymentAxiosGet(payload).then((res) => {
+        console.log(res, 'axiosget');
+        if (res.status) { 
+          switch (res.transaction_status) {
             case 'success':
               this.poll_count = this.poll_limit;
               this.collectLoad = false;
@@ -259,7 +268,7 @@ export default {
               this.loading = false;
               this.collectLoad = false;
               this.initForm();
-              this.errorText = res.data.message;
+              this.errorText = res.message;
               this.showErrorModal= true;
               break;
             case 'pending':
@@ -269,9 +278,43 @@ export default {
           }
           return res;
         }
-        this.errorText = res.data.message;
+        this.errorText = res.message;
         this.showErrorModal= true;
       })
+      // axios
+      // .get(`${this.paymentBaseUrl}/process/status/${this.transaction_id}`)
+      // .then((res) => {
+      //   if (res.data.status) { 
+      //     switch (res.data.transaction_status) {
+      //       case 'success':
+      //         this.poll_count = this.poll_limit;
+      //         this.collectLoad = false;
+      //         this.$paymentNotification({
+      //           text: 'Card details added and selected for payment.'
+      //         });
+      //         this.$router.push('/choose-payment');
+      //         this.loading = false;
+      //         break;
+      //       case 'failed':
+      //         this.poll_count = this.poll_limit;
+      //         this.loading = false;
+      //         this.collectLoad = false;
+      //         this.initForm();
+      //         this.errorText = res.data.message;
+      //         this.showErrorModal= true;
+      //         break;
+      //       case 'pending':
+      //         break;
+      //       default:
+      //         break;
+      //     }
+      //     return res;
+      //   }
+      //   this.errorText = res.data.message;
+      //   this.showErrorModal= true;
+      // })
+    
+    
     }
   }
 }
