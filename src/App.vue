@@ -1,10 +1,6 @@
 <template>
   <div id="app">
-    <!-- <div class="container">
-      <img class="mt-8" :src="require('@/assets/logo.svg')" /> -->
-        <router-view/>
-    <!-- </div>
-    <NotificationComponent :show="showNotification" :text="notificationText" /> -->
+    <router-view/>
   </div>
 </template>
 
