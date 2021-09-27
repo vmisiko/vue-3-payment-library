@@ -60,6 +60,10 @@ export default {
       title: 'Choose payment option',
       picked: 'visa',
     }
+  },
+  mounted() {
+    console.log(this.$route.matched);
   }
+
 }
 </script>
