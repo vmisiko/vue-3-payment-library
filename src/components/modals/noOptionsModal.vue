@@ -1,12 +1,12 @@
 <template>
   <div id="no-option" class="modal">
-      <div class="modal-content">
+      <div class="modal-content-option ">
         <div class="flex-center">
-        <div class="processing-box text-center">
-          <img class="normal-text" style="margin-top: 35%;" src="" alt="Graphic image to communicate missing payment options">
+        <div class="text-center mt-11">
+          <IconView icon="add-payment" />
         </div>
       </div>
-      <div class="text-center mt-8">
+      <div class="text-center mt-10">
         <div><span class="text-subtitle-1">Payment option missing</span></div>
         <span class="text-body-2 mt-3">
           Add a new payment method to proceed with the transaction
@@ -57,6 +57,7 @@ export default {
 }
 </script>
 
+
 <style lang="scss">     
 .modal {
   display: none;
@@ -74,7 +75,7 @@ export default {
 }
 
 /* Modal Content */
-.modal-content {
+.modal-content-option {
   position: relative;
   background-color: #fefefe;
   margin: auto;
@@ -82,6 +83,7 @@ export default {
   border: 1px solid #888;
   border-radius: 4px;
   width: 348px;
+  height: 496px;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
   -webkit-animation-name: animatetop;
   -webkit-animation-duration: 0.4s;
@@ -115,10 +117,5 @@ export default {
   cursor: pointer;
 }
 
-.processing-box {
-  width: 100%;
-  height: 284px;
-  background:#C4C4C4;
-  padding: auto;
-}
+
 </style>

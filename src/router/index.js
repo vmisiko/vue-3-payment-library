@@ -65,9 +65,9 @@ const routes = [
     component: () => import('@/views/MpesaC2B')
   },
   {
-    path: '/add-payment-option',
-    name: 'AddPaymentOption',
-    component: () => import('@/views/AddPaymentOption')
+    path: '/no-payment-option',
+    name: 'NoPaymentOption',
+    component: () => import('@/views/NoPaymentOption')
   },
   {
     path: '/payment-option-page',

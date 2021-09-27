@@ -14,18 +14,6 @@ export default {
     return {
       icon: 'back',
       title: 'Add Payment option',
-      paymentMethods:[
-        {
-          id: 1,
-          icon: 'credit',
-          name: 'Credit or Debit card',
-        },
-        {
-          id: 2,
-          icon: 'mobile',
-          name: 'M-Pesa',
-        },
-      ]
     }
   }
 }
