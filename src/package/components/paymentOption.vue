@@ -1,14 +1,25 @@
 <template>
-  <div class="d-flex normal-text" @click="handlePaymentMethod(paymentMethod)">
-
-    <IconView :icon="paymentMethod.icon" />
-
-    <span class="ml-2"> {{ paymentMethod.name }} </span>
-
-    <span class="spacer"></span>
-
-    <IconView icon="greator" width="8" height="12"  />
+<div>
+  <div class="mt-4 text-caption-1 d-flex pa-3" v-if="payMethod.pay_method_id === 1 ">
+    <IconView :icon="$cardIconValidator(payMethod.psp.toLowerCase()) ? payMethod.psp.toLowerCase() : 'card' " />
+    <span class="ml-2">{{ payMethod.psp }}</span>
+    <span class="gray80-text ml-2"> {{$formatLastFour(payMethod.pay_method_details) }}</span>   
+     <span class="spacer"></span>   
+    <div class="">
+      <input name="paymentoption" type="radio" :value="payMethod.pay_detail_id"  v-model="picked" @change="update" >
+     </div>
   </div>
+
+  <div v-else class="mt-4 text-caption-1 d-flex pa-3">
+    <IconView icon="mpesa" />
+      <span class="ml-2">M-PESA</span>
+    <span class="spacer"></span>   
+     <div class="">
+      <IconView icon="greater" />
+    </div>
+</div>
+</div>
+  
 </template>
 
 <script>

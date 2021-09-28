@@ -9,8 +9,8 @@
         <IconView icon='union-pay' class="float-right mt-n2" width="68" height="48"/>
       </div>
 
-      <div class="text-body-2">
-        <span >5215 **** **** 3233</span>
+      <div class="text-body-2 text-gray70">
+        <span >{{ $formatCardno($route.params.cardno) }}</span>
         <div>
           <span>Expiry Date 05/2022</span>
         </div>

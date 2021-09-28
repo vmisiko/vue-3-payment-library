@@ -83,6 +83,20 @@ const mixin = {
     $formatLastFour(cardno) {
       const result = cardno.substr(-4)
       return `**** ${result}`;
+    },
+    $cardIconValidator(icon) {
+      const icons = [
+        'mastercard',
+        'visa',
+        'union-pay',
+      ];
+
+      return icons.includes(icon);
+    },
+    $formatCardno(card)  {
+      const first = card.substr(0,4);
+      const last = card.substr(-4)
+      return `${first} **** ${last}`;
     }
      
   }

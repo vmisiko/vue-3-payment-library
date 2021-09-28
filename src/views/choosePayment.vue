@@ -7,7 +7,7 @@
       <span class="mt-2 text-overline">CREDIT OR DEBIT CARD</span>
       <div class="" v-if="creditCards.length !== 0" >
         <div v-for="(card, index) in creditCards" :key="index" class="mt-4 text-caption-1 d-flex pa-3" :class="{'selected-border': (picked === card.pay_detail_id)}" >
-            <IconView :icon="card.psp.toLowerCase()" />
+            <IconView :icon="$cardIconValidator(card.psp.toLowerCase()) ? card.psp.toLowerCase() : 'card' " />
             <span class="ml-2">{{ card.psp }}</span>
             <span class="gray80-text ml-2"> {{$formatLastFour(card.pay_method_details) }}</span>   
             <span class="spacer"></span>   
@@ -46,7 +46,8 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'ChoosePayment',
   components: {

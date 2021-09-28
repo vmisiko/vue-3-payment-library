@@ -80,7 +80,7 @@ const routes = [
         component: () => import('@/views/PaymentOptionsPage')
       },
       {
-        path: '/card-details',
+        path: '/card-details/:cardno',
         name: 'CardDetails',
         component: () => import('@/views/CardDetailsPage')
       },
