@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { mapGetters } from 'vuex';
 
 const mixin = {
   data() {
@@ -7,6 +8,9 @@ const mixin = {
       VGS_ENVIRONMENT: 'sandbox',
       BASE_URL: 'https://payment-gateway-dev.sendyit.com/payment-gateway', 
     }
+  },
+  computed: {
+    ...mapGetters(['getPaymentMethods', 'getSavedPayMethods']),
   },
   methods: {
     $handlePaymentMethod(paymentMethod) {
@@ -36,13 +40,16 @@ const mixin = {
         }
       })
     },
-
     async $paymentAxiosGet(payload) {
       return new Promise(async(resolve, reject) => {
         try {
           const { url, params } = payload
           const values = {
-            params
+           params,
+           headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+           }
           };
           const { data } = await axios.get(`${this.BASE_URL}${url}`, values);
           resolve(data);

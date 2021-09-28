@@ -64,7 +64,6 @@
 </template>
 
 <script>
-
 export default {
   name: 'Payment',
   components: {
@@ -97,6 +96,8 @@ export default {
       default:
         break;
     }
+    this.paymentMethods = this.getSavedPayMethods;
+    console.log(this.getSavedPayMethods)
   },
   methods: {
     sucessView() {
