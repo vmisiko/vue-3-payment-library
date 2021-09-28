@@ -32,7 +32,7 @@
           :loading="loading"
           color='primary'
           class="mt-10"
-          @click="$router.push('/choose-payment')"
+          @click="submit"
         >
           Add M-PESA
         </sendy-btn>
@@ -44,6 +44,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'AddMpesa',
@@ -57,9 +58,32 @@ export default {
       loading: false,
     }
   },
+  computed: {
+    ...mapGetters(['getPaymentMethods', 'getBupayload']),
+  },
   mounted() {
   },
   methods: {
+    async submit() {
+      this.loading = true;
+      const payMethod = this.getPaymentMethods.find(element => element.name === 'M-Pesa');
+      
+      const payload = {
+        user_id : this.getBupayload.user_id,
+        pay_method_id : payMethod ? payMethod.pay_method_id : 1,
+      };
+
+      const fullPayload = {
+        url: '/save_payment_method',
+        params: payload,
+      };
+
+      const response = await this.$paymentAxiosPost(fullPayload);
+      console.log(response);
+      this.loading = false;
+      this.$paymentNotification( {text: 'M-PESA option added and selected for payment.'});
+      this.$router.push({ name: 'ChoosePayment' });
+    }
   }
 }
 </script>
