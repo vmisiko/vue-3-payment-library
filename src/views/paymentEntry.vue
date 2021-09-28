@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 
 export default {
   name: 'PaymentEntry',
@@ -22,19 +22,25 @@ export default {
       notificationText: 'M-PESA option added and selected for payment.',
     }
   },
+  computed: {
+    ...mapGetters(['getBupayload']),
+  },
   mounted() {
     this.$root.$on('payment-notification', this.notificationInit);
+    localStorage.removeItem('buPayload');
     const buPayload = {
-      "user_id": 3435,
-      "entity_id": 1,
-      "country_code": "KES",
-      "country": "KE",
-      "amount": 415000.00,
-      "success_callback_url": "",
-      "fail_callback_url": "",
+      user_id: 3435,
+      entity_id: 1,
+      currency: "KES",
+      country_code: "KE",
+      amount: 41000.00,
+      success_callback_url: "",
+      fail_callback_url: "",
+      txref: "RRRIIIAAAAKK",
+      bulk: false,
     }
 
-    localStorage.setItem('buPayload', buPayload);
+    localStorage.setItem('buPayload', JSON.stringify(buPayload));
     this.paymentMethods();
   },
   methods: {
@@ -44,17 +50,18 @@ export default {
       this.showNotification = !this.showNotification;
     },
     async paymentMethods() {
-      const buPayload = localStorage.buPayload;
+      console.log(this.getBupayload);
       const payload = {
-        country_code : 'KE',
-        entity_id : 1,
-        user_id : 3435
+        country_code : this.getBupayload.country_code,
+        entity_id : this.getBupayload.entity_id,
+        user_id : this.getBupayload.user_id,
       };
 
       const fullPayload = {
         url: '/payment_methods',
         params: payload,
       }
+
       const payment_methods = [
         {
             "payment_method_id": 1,
@@ -84,7 +91,7 @@ export default {
         {
               "id": 3,
               "user_id": "3435",
-              "pay_method_id": 1,
+              "pay_method_id": 2,
               "pay_method_details": "0725034298",
               "pay_detail_id": 56,
               "pay_method_name": "Card",
@@ -111,7 +118,7 @@ export default {
             "pay_method_details": "5960XXXXX6076",
             "pay_detail_id": 67,
             "pay_method_name": "Card",
-            "default": 0,
+            "default": 1,
             "psp": "MASTERCARD",
             "category": "Credit or Debit Card",
         }

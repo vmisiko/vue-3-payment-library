@@ -10,7 +10,7 @@ const mixin = {
     }
   },
   computed: {
-    ...mapGetters(['getPaymentMethods', 'getSavedPayMethods']),
+    ...mapGetters(['getPaymentMethods']),
   },
   methods: {
     $handlePaymentMethod(paymentMethod) {
@@ -57,8 +57,13 @@ const mixin = {
           reject(err);
         }
       })
+    },
+    $formatCurrency(amount) {
+      const result = parseFloat(amount);
+      return result.toLocaleString()
+      ;
     }
-    
+     
   }
 }
 

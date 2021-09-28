@@ -9,7 +9,7 @@
 
         <div class="float-right">
           <span class="text-caption-1">
-            KES 27,500.00 
+            {{ getBupayload.currency }} {{ $formatCurrency(getBupayload.amount) }}
           </span>
         </div>
 
@@ -77,6 +77,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'MpesaC2B',
   components: {
@@ -88,6 +90,9 @@ export default {
       title: 'Pay with M-PESA',
       loading: false,
     }
+  },
+  computed: {
+    ...mapGetters(['getBupayload']),
   }
 }
 </script>

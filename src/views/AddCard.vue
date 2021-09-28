@@ -59,7 +59,6 @@
 
 <script>
 // import { loadVGSCollect } from "@vgs/collect-js";z
-import axios from 'axios';
 
 export default {
   name: 'AddCard',
