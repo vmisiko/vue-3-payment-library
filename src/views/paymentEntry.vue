@@ -83,7 +83,7 @@ export default {
             "pay_method_details": "6565XXXXX7895",
             "pay_detail_id": 34,
             "pay_method_name": "Card",
-            "default": 1,
+            "default": 0,
             "psp": "visa",
             "category": "Credit or Debit Card"
         },
@@ -94,7 +94,7 @@ export default {
             "pay_method_details": "0725034298",
             "pay_detail_id": 56,
             "pay_method_name": "M-Pesa",
-            "default": 0,
+            "default": 1,
             "psp": "",
             "category": "Mobile Money"
         },

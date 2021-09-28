@@ -23,12 +23,14 @@
               v-model="phone" 
               class="phone-input"
               placeholder="0700 00000"
+              required
              >
+             <span class="text-caption-2 text-error" v-if="error"> {{ error }}</span>
           </div>
           
         </div>
 
-        <div class="alert mt-10">
+        <div class="alert mt-10" v-show="promptInfo">
           <span class="text-caption-2 pt-2 text-midnightBlue20">You'll receive a prompt to enter your M-PESA PIN</span>
         </div>
 
@@ -36,7 +38,8 @@
           <sendy-btn 
             color='primary'
             class="float-right"
-            @click="$router.push('/processing')"
+            @click="submit"
+            :loading="loading"
           >
             continue
           </sendy-btn>
@@ -61,10 +64,122 @@ export default {
       icon: 'back',
       title: 'Pay with M-PESA',
       phone: null,
+      promptInfo: false,
+      error: '',
+      loading: false,
     }
   },
   computed: {
     ...mapGetters(['getBupayload']),
+  },
+  watch: {
+    phone(val) {
+      if (val && val.length > 8) {
+        this.error = '';
+      }
+    }
+  },
+  methods: {
+     async submit() {
+      if (!this.phone) {
+        this.error = 'Phone number is required';
+        return;
+      }
+
+      this.loading = true;
+      this.promptInfo = true;
+      const payload = {
+        country: this.getBupayload.country_code,
+        amount: this.getBupayload.amount,
+        txref: this.getBupayload.txref,
+        userid: this.getBupayload.user_id,
+        currency: this.getBupayload.currency,
+        bulk: this.getBupayload.bulk,
+        entity: this.getBupayload.entity_id,
+        firstname: "",
+        lastname: "",
+        phonenumber: this.phone,
+      }
+
+      const fullPayload = {
+        url: '/api/v1/process',
+        params: payload,
+      }
+      
+      const response = await this.$paymentAxiosPost(fullPayload);
+      this.transaction_id = response.transaction_id;
+      // if (response.status) {
+      //   this.pollCard();
+      // }
+      this.pollMpesa();
+    },
+    phoneValidation() {
+
+      return ;
+    },
+    pollMpesa() {
+      
+      this.poll_count = 0;
+      const poll_limit = 6;
+      for (let poll_count = 0; poll_count < poll_limit; poll_count++) {
+        const that = this;
+        (function (poll_count) {
+          setTimeout(() => {
+            if (that.poll_count === poll_limit) {
+              poll_count = poll_limit;
+              return;
+            }
+
+            that.TransactionIdStatus(); 
+            if (poll_count === 5) {
+              that.loading = false;
+              this.errorText = 'Failed to charge using Mpesa. Please try again.';
+              this.setErrorText(this.errorText);
+              this.$router.push({name: 'FailedView'});
+              return;
+            }
+          }, 10000 * poll_count);
+        }(poll_count));
+      }
+    },
+
+    async TransactionIdStatus() {
+
+      const payload = {
+        url: `/api/v1/process/status/${this.transaction_id}`,
+      }
+      this.$paymentAxiosGet(payload).then((res) => {
+        if (res.status) { 
+          switch (res.transaction_status) {
+            case 'success':
+              this.poll_count = this.poll_limit;
+              this.collectLoad = false;
+              this.$paymentNotification({
+                text: res.message,
+              });
+              this.loading = false;
+              this.$router.push({name: 'SuccessView'});
+              break;
+            case 'failed':
+              this.poll_count = this.poll_limit;
+              this.loading = false;
+              this.collectLoad = false;
+              this.errorText = res.message;
+              this.setErrorText(res.message);
+              this.$router.push({name: 'FailedView'});
+              this.failView()
+              break;
+            case 'pending':
+              break;
+            default:
+              break;
+          }
+          return res;
+        }
+        this.errorText = res.message;
+        this.showErrorModal= true;
+      })
+    }
   }
 }
 </script>
