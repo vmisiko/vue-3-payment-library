@@ -13,7 +13,8 @@
           color='error'
           class="mt-8"
           type="submit"
-          @click="$router.push('/payment-option-page')"
+          @click="handleDelete"
+          :loading="loading"
         >
           Delete
         </sendy-btn>
@@ -32,12 +33,18 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'DeletModal',
   props: ['show'],
   data() {
     return {
+      loading: false,
     }
+  },
+  computed: {
+    ...mapGetters(['getBupayload']),
   },
   watch: {
     show(val) {
@@ -51,6 +58,55 @@ export default {
     handleClose() {
       document.getElementById('delete-modal').style.display = 'none';
     },
+    handleDelete() {
+       switch (this.$route.name) {
+        case 'MpesaDetails':
+          this.deleteMpesa();
+          break;
+        case 'CardDetails':
+          this.deleteCard();
+          break;
+        default:
+          this.deleteCard();
+          break;
+       }
+    },
+    async deleteCard() {
+      this.loading = true;
+      const payload = {
+        cardno:  this.$route.params.cardno,
+        userid: this.getBupayload.user_id,
+      };
+
+      const fullPayload = {
+        url: '/api/v1/card/delete',
+        params: payload,
+      }
+
+      const response = await this.$paymentAxiosPost(fullPayload);
+      console.log(response);
+      this.loading = false;
+      this.$paymentNotification({ text: 'Card details removed', type: 'alert' });
+      this.$router.push({name: 'PaymentOptionsPage'});
+    },
+    async deleteMpesa() {
+      this.loading = true;
+      const payload = {
+        pay_detail_id:  this.$route.params.id,
+        userid: this.getBupayload.user_id,
+      };
+
+      const fullPayload = {
+        url: '/api/v1/card/delete',
+        params: payload,
+      }
+
+      const response = await this.$paymentAxiosPost(fullPayload);
+      console.log(response);
+      this.loading = false;
+      this.$paymentNotification({ text: 'Card details removed', type: 'alert' });
+      this.$router.push({name: 'PaymentOptionsPage'});
+    }
   }
 }
 </script>

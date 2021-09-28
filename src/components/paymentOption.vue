@@ -10,7 +10,7 @@
      </div>
   </div>
 
-  <div v-else class="mt-4 text-caption-1 d-flex pa-3">
+  <div v-else class="mt-4 text-caption-1 d-flex pa-3" @click="$router.push({ name: 'MpesaDetails', params: { id: payMethod.pay_detail_id }})">
     <IconView icon="mpesa" />
       <span class="ml-2">M-PESA</span>
     <span class="spacer"></span>   

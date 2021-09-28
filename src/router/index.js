@@ -84,6 +84,11 @@ const routes = [
         name: 'CardDetails',
         component: () => import('@/views/CardDetailsPage')
       },
+      {
+        path: '/mobile-details/:id',
+        name: 'MpesaDetails',
+        component: () => import('@/views/MpesaDetail')
+      },
     ]
   },
 
