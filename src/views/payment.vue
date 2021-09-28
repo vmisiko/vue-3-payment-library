@@ -7,8 +7,7 @@
 
       <PaymentDetail v-if="defaultPaymentMethod" :currency="currency" :amount="amount" :paymentMethod="defaultPaymentMethod"  :paymentStatus="paymentStatus" />
 
-      <div class="mt-8 text-right" v-if="!paymentStatus">
-        <!-- <button class="primary-btn">Confirm and Pay </button> -->
+      <div class="mt-3 text-right" v-if="!paymentStatus">
          <sendy-btn 
           :loading="loading"
           color='primary'
@@ -20,7 +19,6 @@
       </div>
 
       <div class="mt-8 text-right" v-if="paymentStatus === 'success'" >
-        <!-- <button class="primary-btn-block">Done </button> -->
         <sendy-btn 
           :block="true"
           :loading="loading"
@@ -32,7 +30,6 @@
       </div>
 
       <div class="mt-8 text-right" v-if="paymentStatus === 'failed'">
-        <!-- <button class="primary-btn-block">Try Again </button> -->
         <sendy-btn 
           :block="true"
           :loading="loading"
@@ -44,7 +41,6 @@
       </div>
 
       <div class="mt-8 text-right" v-if="paymentStatus === 'retry'">
-        <!-- <button class="primary-btn-block">Retry in 3min 57seconds... </button> -->
         <sendy-btn 
           :block="true"
           :loading="loading"
@@ -55,7 +51,7 @@
         </sendy-btn>
       </div>
 
-      <div class="text-center mt-8" >
+      <div class="text-center mt-8">
         <span class="link">Contact Support</span>
       </div>
     </div>
@@ -64,7 +60,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 
 export default {
   name: 'Payment',
@@ -91,7 +87,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getSavedPayMethods', 'getBupayload']),
+    ...mapGetters(['getSavedPayMethods', 'getBupayload', 'getErrorText']),
   },
   watch: {
     getSavedPayMethods(val) {
@@ -115,11 +111,13 @@ export default {
     this.getDefaultpayMethod();
   },
   methods: {
+    ...mapMutations(['setErrorText']),
     getDefaultpayMethod() {
       const bupayload = JSON.parse(localStorage.buPayload);
       this.defaultPaymentMethod = this.getSavedPayMethods ? this.getSavedPayMethods.filter(method => method.default === 1)[0] : [];
       this.currency = bupayload.currency;
       this.amount = bupayload.amount;
+      this.errorText = this.getErrorText;
     },
     sucessView() {
       this.icon = 'success';
@@ -166,7 +164,6 @@ export default {
       }
 
       const response = await this.$paymentAxiosPost(fullPayload);
-      console.log(response);
       this.transaction_id = response.transaction_id;
       // if (response.status) {
       //   this.pollCard();
@@ -188,8 +185,9 @@ export default {
             that.TransactionIdStatus(); 
             if (poll_count === 5) {
               that.loading = false;
-              this.initForm();
               this.errorText = 'Failed to charge card. Please try again.';
+              this.setErrorText(this.errorText);
+              this.$router.push({name: 'FailedView'});
               return;
             }
           }, 10000 * poll_count);
@@ -212,14 +210,17 @@ export default {
               this.$paymentNotification({
                 text: res.message,
               });
-              this.sucessView()
+              // this.sucessView()
               this.loading = false;
+              this.$router.push({name: 'SuccessView'});
               break;
             case 'failed':
               this.poll_count = this.poll_limit;
               this.loading = false;
               this.collectLoad = false;
               this.errorText = res.message;
+              this.setErrorText(res.message);
+              this.$router.push({name: 'FailedView'});
               this.failView()
               break;
             case 'pending':
@@ -232,7 +233,6 @@ export default {
         this.errorText = res.message;
         this.showErrorModal= true;
       })
-    
     }
   }
 }

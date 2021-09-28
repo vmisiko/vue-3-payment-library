@@ -77,28 +77,15 @@ export default {
 
       const user_pay_method = [
         {
-              "id": 2,
-              "user_id": "3435",
-              "pay_method_id": 1,
-              "pay_method_details": "0725034298",
-              "pay_detail_id": 56,
-              "pay_method_name": "Card",
-              "status": 1,
-              "default": 0,
-              "psp": "MASTERCARD",
-              "category": "Credit or Debit Card",
-        },
-        {
-              "id": 3,
-              "user_id": "3435",
-              "pay_method_id": 2,
-              "pay_method_details": "0725034298",
-              "pay_detail_id": 56,
-              "pay_method_name": "Card",
-              "status": 1,
-              "default": 0,
-              "psp": "MASTERCARD",
-              "category": "Credit or Debit Card",
+            "id": 1,
+            "user_id": "3435",
+            "pay_method_id": 2,
+            "pay_method_details": "6565XXXXX7895",
+            "pay_detail_id": 34,
+            "pay_method_name": "Card",
+            "default": 1,
+            "psp": "visa",
+            "category": "Credit or Debit Card"
         },
         {
             "id": 2,
@@ -109,7 +96,7 @@ export default {
             "pay_method_name": "M-Pesa",
             "default": 0,
             "psp": "",
-            "category": "Mobile Money",
+            "category": "Mobile Money"
         },
         {
             "id": 4,
@@ -118,16 +105,16 @@ export default {
             "pay_method_details": "5960XXXXX6076",
             "pay_detail_id": 67,
             "pay_method_name": "Card",
-            "default": 1,
+            "default": 0,
             "psp": "MASTERCARD",
-            "category": "Credit or Debit Card",
+            "category": "Credit or Debit Card"
         }
       ];
-
+      
       this.setPaymentMethods(payment_methods);
       this.setSavedPayMethods(user_pay_method);
-      // const response = await this.$paymentAxiosPost(fullPayload);
-      // console.log(response);
+      const response = await this.$paymentAxiosPost(fullPayload);
+      console.log(response);
     },
   }
  }

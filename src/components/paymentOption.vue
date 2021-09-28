@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex normal-text" @click="$handlePaymentMethod(paymentMethod)">
 
-    <IconView :icon="paymentMethod.icon" />
+    <IconView :icon="paymentMethod.name.toLowerCase()" />
 
     <span class="ml-2"> {{ paymentMethod.name }} </span>
 

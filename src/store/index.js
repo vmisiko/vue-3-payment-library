@@ -8,6 +8,7 @@ export default new Vuex.Store({
     paymentMethods: null,
     savedPayMethods: null, 
     bupayload: JSON.parse(localStorage.buPayload),
+    errorText: null, 
   },
   mutations: {
     setPaymentMethods(state, val) {
@@ -18,12 +19,16 @@ export default new Vuex.Store({
     },
     setBupayload(state, val) {
       state.bupayload = val;
+    },
+    setErrorText(state, val) {
+      state.errorText = val;
     }
   },
   getters: {
     getPaymentMethods: ( state) => state.paymentMethods,
     getSavedPayMethods: ( state) => state.savedPayMethods,
     getBupayload: (state) => state.bupayload,
+    getErrorText: (state) => state.errorText,
   },
   actions: {
   },

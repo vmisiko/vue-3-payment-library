@@ -1,10 +1,10 @@
 <template>
   <div class="link">
-      <svg v-if="icon === 'credit'" :width="width || 20" :height="height || 16" viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg v-if="icon === 'credit' || icon === 'card'" :width="width || 20" :height="height || 16" viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M18 0H2C0.89 0 0.00999999 0.89 0.00999999 2L0 14C0 15.11 0.89 16 2 16H18C19.11 16 20 15.11 20 14V2C20 0.89 19.11 0 18 0ZM17 14H3C2.45 14 2 13.55 2 13V8H18V13C18 13.55 17.55 14 17 14ZM18 4H2V3C2 2.45 2.45 2 3 2H17C17.55 2 18 2.45 18 3V4Z" fill="#909399"/>
       </svg>
 
-      <svg v-if="icon === 'mobile'" :width="width || 14" :height="height || 22"  viewBox="0 0 14 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg v-if="icon === 'mobile' ||  icon === 'm-pesa'" :width="width || 14" :height="height || 22"  viewBox="0 0 14 22" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M11 0H3C1.34 0 0 1.34 0 3V19C0 20.66 1.34 22 3 22H11C12.66 22 14 20.66 14 19V3C14 1.34 12.66 0 11 0ZM8.5 20H5.5C5.22 20 5 19.78 5 19.5C5 19.22 5.22 19 5.5 19H8.5C8.78 19 9 19.22 9 19.5C9 19.78 8.78 20 8.5 20ZM12 17H2V3H12V17Z" fill="#909399"/>
       </svg>
 

@@ -4,7 +4,7 @@
     <div class="card">
       <TopInfo :icon="icon" :title="title"/>
   
-     <div class="mt-6" v-for="(method, index) in paymentMethods" :key="index">
+     <div class="mt-6" v-for="(method, index) in getPaymentMethods" :key="index">
        <PaymentOption :paymentMethod="method" />
        <hr v-if="index !== paymentMethods.length-1" class="mt-4" />
       </div> 
@@ -14,6 +14,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'AddPayment',
   components: {
@@ -37,6 +39,11 @@ export default {
         },
       ]
     }
+  },
+  computed: {
+    ...mapGetters(['getPaymentMethods']),
+  },
+  methods: {
   }
 }
 </script>

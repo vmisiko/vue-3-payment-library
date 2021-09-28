@@ -14,12 +14,12 @@ const mixin = {
   },
   methods: {
     $handlePaymentMethod(paymentMethod) {
-      switch (paymentMethod.id) {
+      switch (paymentMethod.payment_method_id) {
         case 1: 
-          this.$router.push('/add-card');
+          this.$router.push('/add-mpesa');
           break;
         case 2: 
-          this.$router.push('/add-mpesa');
+          this.$router.push('/add-card');
           break;
         default:
           this.$router.push('/add-card');
@@ -58,10 +58,31 @@ const mixin = {
         }
       })
     },
+    async $paymentAxiosPut(payload) {
+      return new Promise(async(resolve, reject) => {
+        try {
+          const { url, params } = payload
+          const config = {
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+            }
+          };
+          const { data } = await axios.put(`${this.BASE_URL}${url}`, params, config);
+          resolve(data);
+        } catch (err) {
+          reject(err);
+        }
+      })
+    },
     $formatCurrency(amount) {
       const result = parseFloat(amount);
       return result.toLocaleString()
       ;
+    },
+    $formatLastFour(cardno) {
+      const result = cardno.substr(-4)
+      return `**** ${result}`;
     }
      
   }
