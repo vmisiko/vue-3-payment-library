@@ -12,7 +12,7 @@
       <div class="text-body-2 text-gray70">
         <span >{{ $formatCardno($route.params.cardno) }}</span>
         <div>
-          <span>Expiry Date 05/2022</span>
+          <span>Expiry Date {{ card_expiry || 'N/A' }}</span>
         </div>
       </div>
 
@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'CardDetailsPage',
@@ -42,11 +43,30 @@ export default {
       icon: 'back',
       title: 'Card Details',
       showDeleteModal: false,
+      card_expiry: false,
     }
   },
+  computed: {
+    ...mapGetters(['getSavedPayMethods', 'getBupayload']),
+  },
   mounted() {
+    this.fetchCardDetails();
   },
   methods: {
+    async fetchCardDetails() {
+      const payload = {
+        cardno: this.$route.params.cardno,
+        userid: this.getBupayload.user_id,
+      };
+
+      const fullPayload = {
+        url: '/api/v1/card/fetch',
+        params: payload
+      };
+
+      const response = await this.$paymentAxiosPost(fullPayload);
+      this.card_expiry = response.expirydate;
+    }
   }
 }
 </script>
