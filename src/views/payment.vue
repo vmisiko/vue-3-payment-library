@@ -1,7 +1,8 @@
 <template>
   <div class="flex-center">
     <Processing v-if="loading" text="Please wait while we confirm payment" />
-    <div class="card" :class="{'card-min': paymentStatus }" v-else>
+    <NoOptionsModal v-if="!defaultPaymentMethod" />
+    <div class="card" :class="{'card-min': paymentStatus }" v-if="!loading && defaultPaymentMethod">
 
       <TopInfo :icon="icon" :title="title" />
 
@@ -69,6 +70,7 @@ export default {
     TopInfo: () => import('@/components/topInfo'),
     PaymentDetail: () => import('@/components/paymentDetail'),
     Processing: () => import('../components/processing'),
+    NoOptionsModal: () => import('../components/modals/noOptionsModal'),
   },
   data() {
     return {
@@ -96,19 +98,7 @@ export default {
     }
   },
   mounted() {
-    switch (this.$route.name){
-      case 'SuccessView':
-        this.sucessView();
-        break;
-      case 'FailedView':
-        this.failView();
-        break;
-      case 'RetryView':
-        this.retryView();
-        break;
-      default:
-        break;
-    }
+    console.log(this.getSavedPayMethods);
     this.retrievePaymentMethods();
     this.getDefaultpayMethod();
   },
@@ -134,6 +124,7 @@ export default {
     },
     getDefaultpayMethod() {
       this.defaultPaymentMethod = this.getSavedPayMethods ? this.getSavedPayMethods.filter(method => method.default === 1)[0] : [];
+      console.log(this.defaultPaymentMethod);
       this.currency = this.getBupayload.currency;
       this.amount = this.getBupayload.amount;
     },

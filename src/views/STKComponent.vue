@@ -67,7 +67,9 @@ export default {
       promptInfo: false,
       error: '',
       loading: false,
-
+      transaction_id: null,
+      poll_count: 0,
+      poll_limit: 6,
     }
   },
   computed: {

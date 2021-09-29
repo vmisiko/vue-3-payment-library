@@ -23,9 +23,6 @@ export default {
       text: '', 
     }
   },
-  mounted() {
-    console.log(this.subtitle);
-  },
 }
 </script>
 

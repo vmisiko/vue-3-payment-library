@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 
 export default {
   name: 'ChoosePayment',
@@ -73,11 +73,29 @@ export default {
     }
   },
   mounted() {
-    console.log(this.creditCards, 'credit cards');
-    console.log(this.savedMobile, 'mobi');
+    this.retrievePaymentMethods();
     this.getDefaultpayMethod();
   },
   methods: {
+    ...mapMutations(['setPaymentMethods', 'setSavedPayMethods']),
+    async retrievePaymentMethods() {
+      const payload = {
+        country_code : this.getBupayload.country_code,
+        entity_id : this.getBupayload.entity_id,
+        user_id : this.getBupayload.user_id,
+      };
+
+      const fullPayload = {
+        url: '/payment_methods',
+        params: payload,
+      }
+      
+      const response = await this.$paymentAxiosPost(fullPayload);
+      if (response.status) {
+        this.setPaymentMethods(response.payment_methods);
+        this.setSavedPayMethods(response.saved_payment_methods);
+      }
+    },
     getDefaultpayMethod() {
       const method = this.getSavedPayMethods ? this.getSavedPayMethods.filter(method => method.default === 1)[0] : [];
       this.picked = method.pay_detail_id;

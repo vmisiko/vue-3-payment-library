@@ -39,9 +39,7 @@ export default {
     return {
     }
   },
-  mounted() {
-    console.log(this.paymentMethod.psp.toLowerCase());
-  },
+
   methods: {
     formatLastFour(cardno) {
       const result = cardno.substr(-4)

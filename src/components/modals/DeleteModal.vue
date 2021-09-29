@@ -113,8 +113,8 @@ export default {
       console.log(response);
       this.loading = false;
       if (response.status) {
-        this.$paymentNotification({ text: 'M-PESA option removed', type: 'info' });
-        this.$router.push({name: 'PaymentOptionsPage'});
+        this.$paymentNotification({ text: 'M-PESA option removed', type: "info" })
+        this.$router.push({ name: 'PaymentOptionsPage' });
       }
       this.$paymentNotification({ text: response.message, type: 'error' });
 
