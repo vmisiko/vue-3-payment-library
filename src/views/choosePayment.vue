@@ -113,7 +113,6 @@ export default {
 
       this.loading = true
       const response = await this.$paymentAxiosPut(fullPayload);
-      console.log(response);
       this.loading = false;
       if (response) {
         this.$paymentNotification({ text: 'Card selected for payment.'})

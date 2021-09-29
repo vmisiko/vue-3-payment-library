@@ -79,7 +79,6 @@ export default {
       };
 
       const response = await this.$paymentAxiosPost(fullPayload);
-      console.log(response);
       this.loading = false;
       this.$paymentNotification( {text: 'M-PESA option added and selected for payment.'});
       this.$router.push({ name: 'ChoosePayment' });

@@ -45,8 +45,5 @@ export default {
       }
     }
   },
-  mounted() {
-    console.log(this.payMethod);
-  }
 }
 </script>

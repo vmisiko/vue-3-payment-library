@@ -94,7 +94,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.getSavedPayMethods);
     this.retrievePaymentMethods();
     this.getDefaultpayMethod();
   },
@@ -120,7 +119,6 @@ export default {
     },
     getDefaultpayMethod() {
       this.defaultPaymentMethod = this.getSavedPayMethods ? this.getSavedPayMethods.filter(method => method.default === 1)[0] : [];
-      console.log(this.defaultPaymentMethod);
       this.currency = this.getBupayload.currency;
       this.amount = this.getBupayload.amount;
     },
@@ -160,7 +158,6 @@ export default {
         this.pollCard();
         return;
       }
-      console.log(response);
       this.setErrorText(response.message);
       this.loading = false;
       this.$router.push({ name: 'FailedView' });
@@ -197,7 +194,6 @@ export default {
         url: `/api/v1/process/status/${this.transaction_id}`,
       }
       this.$paymentAxiosGet(payload).then((res) => {
-        console.log(res, 'axiosget');
         if (res.status) { 
           switch (res.transaction_status) {
             case 'success':

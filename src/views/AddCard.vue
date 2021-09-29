@@ -187,7 +187,6 @@ export default {
           },
           (status, response) => {
             this.loading = false;
-            console.log(response);
             if (response.status) {
               this.collectLoad = true;
 
@@ -209,7 +208,6 @@ export default {
                 }
 
               }).catch(err => {
-                console.log(err);
                 this.errorText = 'Failed to collect card details. Please try again';
                 this.showErrorModal= true;
               });
@@ -252,7 +250,6 @@ export default {
         url: `/api/v1/process/status/${this.transaction_id}`,
       }
       this.$paymentAxiosGet(payload).then((res) => {
-        console.log(res, 'axiosget');
         if (res.status) { 
           switch (res.transaction_status) {
             case 'success':

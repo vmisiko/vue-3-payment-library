@@ -84,7 +84,6 @@ export default {
       }
 
       const response = await this.$paymentAxiosPost(fullPayload);
-      console.log(response);
       this.loading = false;
 
       if (response.status) {
@@ -110,7 +109,6 @@ export default {
       }
 
       const response = await this.$paymentAxiosPost(fullPayload);
-      console.log(response);
       this.loading = false;
       if (response.status) {
         this.$paymentNotification({ text: 'M-PESA option removed', type: "info" })

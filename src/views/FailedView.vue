@@ -67,7 +67,6 @@ export default {
     },
   },
   mounted() {
-    console.log(this.errorText);
     this.retrievePaymentMethods();
     this.getDefaultpayMethod();
   },
