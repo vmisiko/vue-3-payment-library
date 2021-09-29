@@ -86,26 +86,39 @@ export default {
       const response = await this.$paymentAxiosPost(fullPayload);
       console.log(response);
       this.loading = false;
-      this.$paymentNotification({ text: 'Card details removed', type: 'alert' });
-      this.$router.push({name: 'PaymentOptionsPage'});
+
+      if (response.status) {
+        this.loading = false;
+        this.$paymentNotification({ text: 'Card details removed', type: 'info' });
+        this.$router.push({name: 'PaymentOptionsPage'});
+      }
+
+      this.$paymentNotification({ text: response.message, type: 'error' });
+
     },
     async deleteMpesa() {
       this.loading = true;
+
       const payload = {
         pay_detail_id:  this.$route.params.id,
-        userid: this.getBupayload.user_id,
+        user_id: this.getBupayload.user_id,
       };
 
       const fullPayload = {
-        url: '/api/v1/card/delete',
+        url: '/delete_payment_method',
         params: payload,
       }
 
       const response = await this.$paymentAxiosPost(fullPayload);
       console.log(response);
       this.loading = false;
-      this.$paymentNotification({ text: 'Card details removed', type: 'alert' });
-      this.$router.push({name: 'PaymentOptionsPage'});
+      if (response.status) {
+        this.$paymentNotification({ text: 'M-PESA option removed', type: 'info' });
+        this.$router.push({name: 'PaymentOptionsPage'});
+      }
+      this.$paymentNotification({ text: response.message, type: 'error' });
+
+
     }
   }
 }

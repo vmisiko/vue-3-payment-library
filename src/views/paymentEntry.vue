@@ -4,7 +4,7 @@
       <img class="mt-8" :src="require('@/assets/logo.svg')" />
         <router-view/>
     </div>
-    <NotificationComponent :show="showNotification" :text="notificationText" />
+    <NotificationComponent :show="showNotification" :text="notificationText"  :type="type" />
   </div>
 </template>
 
@@ -20,6 +20,7 @@ export default {
     return {
       showNotification: false,
       notificationText: 'M-PESA option added and selected for payment.',
+      type: null,
     }
   },
   computed: {
@@ -47,6 +48,7 @@ export default {
     ...mapMutations(['setPaymentMethods', 'setSavedPayMethods']),
     notificationInit(payload) {
       this.notificationText = payload.text;
+      this.type = payload.type;
       this.showNotification = !this.showNotification;
     },
     async paymentMethods() {
