@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 
 export default {
   name: 'PaymentOptionsPage',
@@ -63,7 +63,28 @@ export default {
     }
   },
   mounted() {
-    console.log(this.getSavedPayMethods, this.creditCards);
+    this.retrievePaymentMethods();
+  },
+  methods: {
+    ...mapMutations(['setErrorText', 'setPaymentMethods', 'setSavedPayMethods']),
+    async retrievePaymentMethods() {
+      const payload = {
+        country_code : this.getBupayload.country_code,
+        entity_id : this.getBupayload.entity_id,
+        user_id : this.getBupayload.user_id,
+      };
+
+      const fullPayload = {
+        url: '/payment_methods',
+        params: payload,
+      }
+      
+      const response = await this.$paymentAxiosPost(fullPayload);
+      if (response.status) {
+        this.setPaymentMethods(response.payment_methods);
+        this.setSavedPayMethods(response.saved_payment_methods);
+      }
+    },
   }
 }
 </script>

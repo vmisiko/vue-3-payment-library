@@ -70,7 +70,7 @@ export default {
       
       const payload = {
         user_id : this.getBupayload.user_id,
-        pay_method_id : payMethod ? payMethod.pay_method_id : 1,
+        pay_method_id : payMethod ? payMethod.payment_method_id : 1,
       };
 
       const fullPayload = {

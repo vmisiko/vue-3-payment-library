@@ -3,7 +3,7 @@
     <Processing v-if="loading" text="Please wait while we confirm payment" />
     <div class="card" :class="{'card-min': paymentStatus }" v-else>
 
-      <TopInfo :icon="icon" :title="title" :subtitle="errorText" :mpesaCode="mpesaCode"/>
+      <TopInfo :icon="icon" :title="title" />
 
       <PaymentDetail v-if="defaultPaymentMethod" :currency="currency" :amount="amount" :paymentMethod="defaultPaymentMethod"  :paymentStatus="paymentStatus" />
 
@@ -35,6 +35,7 @@
           :loading="loading"
           color='primary'
           class="mt-10"
+          @click="$router.push({ name: 'Entry'})"
         >
           Try Again
         </sendy-btn>
@@ -108,38 +109,41 @@ export default {
       default:
         break;
     }
+    this.retrievePaymentMethods();
     this.getDefaultpayMethod();
   },
   methods: {
-    ...mapMutations(['setErrorText']),
-    getDefaultpayMethod() {
-      const bupayload = JSON.parse(localStorage.buPayload);
-      this.defaultPaymentMethod = this.getSavedPayMethods ? this.getSavedPayMethods.filter(method => method.default === 1)[0] : [];
-      this.currency = bupayload.currency;
-      this.amount = bupayload.amount;
-      this.errorText = this.getErrorText;
+    ...mapMutations(['setErrorText', 'setPaymentMethods', 'setSavedPayMethods']),
+    async retrievePaymentMethods() {
+      const payload = {
+        country_code : this.getBupayload.country_code,
+        entity_id : this.getBupayload.entity_id,
+        user_id : this.getBupayload.user_id,
+      };
+
+      const fullPayload = {
+        url: '/payment_methods',
+        params: payload,
+      }
+      
+      const response = await this.$paymentAxiosPost(fullPayload);
+      if (response.status) {
+        this.setPaymentMethods(response.payment_methods);
+        this.setSavedPayMethods(response.saved_payment_methods);
+      }
     },
+    getDefaultpayMethod() {
+      this.defaultPaymentMethod = this.getSavedPayMethods ? this.getSavedPayMethods.filter(method => method.default === 1)[0] : [];
+      this.currency = this.getBupayload.currency;
+      this.amount = this.getBupayload.amount;
+    },
+
     sucessView() {
       this.icon = 'success';
       this.title = 'Payment Successful';
       this.subtitle = '';
       this.paymentStatus= 'success';
     },
-
-    failView() {
-      this.icon = 'warning';
-      this.title = 'Payment failed';
-      this.subtitle = 'We are unable to process your transaction. Your card has insufficient funds.';
-      this.paymentStatus= 'failed';
-    },
-
-    retryView() {
-      this.icon = 'warning';
-      this.title = 'Unable to confirm payment';
-      this.subtitle = 'We are unable to confirm your M-PESA payment. Please retry again after a couple of minutes or contact our Support team.';
-      this.paymentStatus= 'retry';
-    },
-
     async submit() {
       if (this.defaultPaymentMethod.pay_method_id === 1) {
         this.amount > 150000 ? this.$router.push('/mpesa-c2b') : this.$router.push('/mpesa-stk');
@@ -165,11 +169,16 @@ export default {
 
       const response = await this.$paymentAxiosPost(fullPayload);
       this.transaction_id = response.transaction_id;
-      // if (response.status) {
-      //   this.pollCard();
-      // }
-      this.pollCard();
+      if (response.status) {
+        this.pollCard();
+        return;
+      }
+      console.log(response);
+      this.setErrorText(response.message);
+      this.loading = false;
+      this.$router.push({ name: 'FailedView' });
     },
+
     pollCard() {
       this.poll_count = 0;
       const poll_limit = 6;

@@ -202,6 +202,7 @@ export default {
                   this.pollCard();
                 } else {
                   this.collectLoad = false,
+                  this.initForm();
                   this.loading = false;
                   this.errorText = res.reason;
                   this.showErrorModal= true;

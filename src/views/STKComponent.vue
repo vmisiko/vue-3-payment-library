@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 
 export default {
   name: 'STKComponent',
@@ -67,6 +67,7 @@ export default {
       promptInfo: false,
       error: '',
       loading: false,
+
     }
   },
   computed: {
@@ -80,6 +81,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['setErrorText']),
      async submit() {
       if (!this.phone) {
         this.error = 'Phone number is required';
@@ -118,7 +120,6 @@ export default {
       return ;
     },
     pollMpesa() {
-      
       this.poll_count = 0;
       const poll_limit = 6;
       for (let poll_count = 0; poll_count < poll_limit; poll_count++) {
@@ -133,8 +134,7 @@ export default {
             that.TransactionIdStatus(); 
             if (poll_count === 5) {
               that.loading = false;
-              this.errorText = 'Failed to charge using Mpesa. Please try again.';
-              this.setErrorText(this.errorText);
+              this.setErrorText('Failed to charge using Mpesa. Please try again.');
               this.$router.push({name: 'FailedView'});
               return;
             }
@@ -153,21 +153,17 @@ export default {
           switch (res.transaction_status) {
             case 'success':
               this.poll_count = this.poll_limit;
-              this.collectLoad = false;
               this.$paymentNotification({
                 text: res.message,
               });
               this.loading = false;
-              this.$router.push({name: 'SuccessView'});
+              this.$router.push({name: 'SuccessView', params: { mpesaCode: res.receipt_no }});
               break;
             case 'failed':
               this.poll_count = this.poll_limit;
               this.loading = false;
-              this.collectLoad = false;
-              this.errorText = res.message;
               this.setErrorText(res.message);
               this.$router.push({name: 'FailedView'});
-              this.failView()
               break;
             case 'pending':
               break;
@@ -176,8 +172,9 @@ export default {
           }
           return res;
         }
-        this.errorText = res.message;
-        this.showErrorModal= true;
+        this.loading = false;
+        this.setErrorText(res.message);
+        this.$router.push({name: 'FailedView'});
       })
     }
   }

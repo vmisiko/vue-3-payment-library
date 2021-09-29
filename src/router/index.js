@@ -15,19 +15,19 @@ const routes = [
         component: () => import('@/views/payment')
       },
       {
-        path: '/success-view',
+        path: '/success-view/:mpesaCode?',
         name: 'SuccessView',
-        component: () => import('@/views/payment')
+        component: () => import('@/views/successView')
       },
       {
         path: '/failed-view',
         name: 'FailedView',
-        component: () => import('@/views/payment')
+        component: () => import('@/views/FailedView')
       },
       {
         path: '/retry-view',
         name: 'RetryView',
-        component: () => import('@/views/payment')
+        component: () => import('@/views/FailedView')
       },
       {
         path: '/processing',
