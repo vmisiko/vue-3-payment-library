@@ -76,7 +76,7 @@ export default {
       paymentStatus: null,
       currency: 'KES',
       amount: 0.00,
-      loading: true,
+      loading: false,
       defaultPaymentMethod: null,
       transaction_id: null,
       poll_count: 0,

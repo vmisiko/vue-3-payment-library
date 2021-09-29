@@ -1,7 +1,7 @@
 <template>
   <div id="payment">
     <div class="container">
-      <img class="mt-8" :src="require('@/assets/logo.svg')" />
+      <img class="mt-8" :src="require('@/assets/logo.svg')"  @click="$router.push({ name: 'Entry' })"/>
         <router-view/>
     </div>
     <NotificationComponent :show="showNotification" :text="notificationText"  :type="type" />
