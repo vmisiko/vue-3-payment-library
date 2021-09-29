@@ -19,8 +19,8 @@ import { mapGetters } from 'vuex';
 export default {
   name: 'AddPayment',
   components: {
-    TopInfo: () => import('@/components/topInfo'),
-    PaymentOption: () => import('@/components/paymentOption'),
+    TopInfo: () => import('../components/topInfo'),
+    PaymentOption: () => import('../components/paymentOption'),
   },
   data() {
     return {

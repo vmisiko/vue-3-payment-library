@@ -71,7 +71,7 @@ import { mapGetters, mapMutations } from 'vuex';
 export default {
   name: 'MpesaC2B',
   components: {
-    TopInfo: () => import('@/components/topInfo'),
+    TopInfo: () => import('../components/topInfo'),
     TimerModal: () => import('../components/modals/timerModal')
   },
   data() {

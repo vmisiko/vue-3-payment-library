@@ -40,7 +40,7 @@ import { mapGetters, mapMutations } from 'vuex';
 export default {
   name: 'PaymentOptionsPage',
   components: {
-    TopInfo: () => import('@/components/topInfo'),
+    TopInfo: () => import('../components/topInfo'),
     PaymentOption: () => import('../components/paymentOptionPage/paymentOption')
   },
   data() {

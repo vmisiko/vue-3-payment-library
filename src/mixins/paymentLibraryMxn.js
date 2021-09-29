@@ -97,6 +97,19 @@ const mixin = {
       const first = card.substr(0,4);
       const last = card.substr(-4)
       return `${first} **** ${last}`;
+    },
+    $paymentInit(payload, entry) {
+      localStorage.setItem('buPayload', JSON.stringify(payload));
+      switch (entry) {
+        case 'checkout':
+          this.$router.push({ name: 'Entry'});
+          break;
+        case 'payment-option':
+          this.$router.push({ name: 'PaymentOptionsPage'});
+          break;
+        default:
+          break;
+      }
     }
      
   }

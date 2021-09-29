@@ -41,7 +41,7 @@ export default {
       bulk: false,
       mpesa_business_no: '',
     }
-
+    
     localStorage.setItem('buPayload', JSON.stringify(buPayload));
     this.retrievePaymentMethods();
   },

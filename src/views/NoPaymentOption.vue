@@ -8,7 +8,7 @@
 export default {
   name: 'AddPaymentOption',
   components: {
-    NoOptionsModal: () => import('@/components/modals/noOptionsModal'),
+    NoOptionsModal: () => import('../components/modals/noOptionsModal'),
   },
   data() {
     return {

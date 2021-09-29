@@ -49,7 +49,7 @@ import { mapGetters } from 'vuex';
 export default {
   name: 'AddMpesa',
   components: {
-    TopInfo: () => import('@/components/topInfo'),
+    TopInfo: () => import('../components/topInfo'),
   },
   data() {
     return {

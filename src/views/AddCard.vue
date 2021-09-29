@@ -63,9 +63,9 @@
 export default {
   name: 'AddCard',
   components: {
-    TopInfo: () => import('@/components/topInfo'),
-    CvvModal: () => import('@/components/modals/cvvModal'),
-    ErrorModal: () => import('@/components/modals/ErrorModal'),
+    TopInfo: () => import('../components/topInfo'),
+    CvvModal: () => import('../components/modals/cvvModal'),
+    ErrorModal: () => import('../components/modals/ErrorModal'),
     Processing: () => import('../components/processing'),
   },
   data() {

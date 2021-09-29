@@ -35,8 +35,8 @@ import { mapGetters } from 'vuex';
 export default {
   name: 'CardDetailsPage',
   components: {
-    TopInfo: () => import('@/components/topInfo'),
-    DeletModal: () => import('@/components/modals/DeleteModal')
+    TopInfo: () => import('../components/topInfo'),
+    DeletModal: () => import('../components/modals/DeleteModal')
   },
   data() {
     return {

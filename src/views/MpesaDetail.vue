@@ -27,8 +27,8 @@
 export default {
   name: 'MpesaDetail',
   components: {
-    TopInfo: () => import('@/components/topInfo'),
-    DeletModal: () => import('@/components/modals/DeleteModal')
+    TopInfo: () => import('../components/topInfo'),
+    DeletModal: () => import('../components/modals/DeleteModal')
   },
   data() {
     return {
