@@ -52,10 +52,6 @@
           Retry in 3min 57seconds...
         </sendy-btn>
       </div>
-
-      <div class="text-center mt-8">
-        <span class="link">Contact Support</span>
-      </div>
     </div>
 
   </div>
@@ -80,7 +76,7 @@ export default {
       paymentStatus: null,
       currency: 'KES',
       amount: 0.00,
-      loading: false,
+      loading: true,
       defaultPaymentMethod: null,
       transaction_id: null,
       poll_count: 0,

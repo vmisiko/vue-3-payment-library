@@ -1,17 +1,14 @@
 <template>
   <div class="card-min">
       <div class="flex-center">
-        <div class="processing-box">
-          <IconView icon="loading" class="flex-center mt-24" />
+        <div class="">
+          <IconView icon="loading1" class="flex-center mt-10" />
         </div>
       </div>
-      <div class="text-center mt-8">
+      <div class="text-center mt-15">
         <span class="normal-text">{{ text }}</span>
       </div>
 
-      <div class="text-center mt-24">
-        <span class="link">Contact Support</span>
-      </div>
   </div>
 </template>
 

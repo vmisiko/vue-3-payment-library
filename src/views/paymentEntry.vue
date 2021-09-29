@@ -34,11 +34,12 @@ export default {
       entity_id: 1,
       currency: "KES",
       country_code: "KE",
-      amount: 41000.00,
+      amount: 415000.00,
       success_callback_url: "",
       fail_callback_url: "",
       txref: "RRRIIIAAAAKK",
       bulk: false,
+      mpesa_business_no: '',
     }
 
     localStorage.setItem('buPayload', JSON.stringify(buPayload));
@@ -52,7 +53,6 @@ export default {
       this.showNotification = !this.showNotification;
     },
     async retrievePaymentMethods() {
-      console.log(this.getBupayload);
       const payload = {
         country_code : this.getBupayload.country_code,
         entity_id : this.getBupayload.entity_id,
@@ -64,54 +64,6 @@ export default {
         params: payload,
       }
 
-      // const payment_methods = [
-      //   {
-      //       "payment_method_id": 1,
-      //       "name": "M-Pesa",
-      //       "available": true
-      //   },
-      //   {
-      //       "payment_method_id": 2,
-      //       "name": "Card",
-      //       "available": true
-      //   }
-      // ];
-
-      // const user_pay_method = [
-      //   {
-      //       "id": 1,
-      //       "user_id": "3435",
-      //       "pay_method_id": 2,
-      //       "pay_method_details": "6565XXXXX7895",
-      //       "pay_detail_id": 34,
-      //       "pay_method_name": "Card",
-      //       "default": 0,
-      //       "psp": "visa",
-      //       "category": "Credit or Debit Card"
-      //   },
-      //   {
-      //       "id": 2,
-      //       "user_id": "3435",
-      //       "pay_method_id": 1,
-      //       "pay_method_details": "0725034298",
-      //       "pay_detail_id": 56,
-      //       "pay_method_name": "M-Pesa",
-      //       "default": 1,
-      //       "psp": "",
-      //       "category": "Mobile Money"
-      //   },
-      //   {
-      //       "id": 4,
-      //       "user_id": "3435",
-      //       "pay_method_id": 2,
-      //       "pay_method_details": "5960XXXXX6076",
-      //       "pay_detail_id": 67,
-      //       "pay_method_name": "Card",
-      //       "default": 0,
-      //       "psp": "MASTERCARD",
-      //       "category": "Credit or Debit Card"
-      //   }
-      // ];
       const response = await this.$paymentAxiosPost(fullPayload);
       if (response.status) {
         this.setPaymentMethods(response.payment_methods);

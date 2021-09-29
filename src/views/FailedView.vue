@@ -14,7 +14,7 @@
           class="mt-10"
           @click="$router.push({ name: 'Entry'})"
         >
-          Try Again
+          {{ $route.params.mpesa ? 'Retry' : 'Try Again' }}
         </sendy-btn>
       </div>
 
@@ -49,7 +49,7 @@ export default {
   data() {
     return {
       icon: 'warning',
-      title: 'Payment failed',
+      title: this.$route.params.mpesa ? 'Unable to confirm payment' : 'Payment failed',
       paymentStatus: true,
       currency: 'KES',
       amount: 0.00,

@@ -20,7 +20,7 @@ const routes = [
         component: () => import('@/views/successView')
       },
       {
-        path: '/failed-view',
+        path: '/failed-view/:mpesa?',
         name: 'FailedView',
         component: () => import('@/views/FailedView')
       },

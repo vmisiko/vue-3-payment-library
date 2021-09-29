@@ -46,7 +46,7 @@
         </div>
 
     </div>
-
+    <TimerModal :show="showTimer" />
     </div>  
   </div>
 </template>
@@ -57,7 +57,8 @@ import { mapGetters, mapMutations } from 'vuex';
 export default {
   name: 'STKComponent',
   components: {
-    TopInfo: () => import('@/components/topInfo'),
+    TopInfo: () => import('../components/topInfo'),
+    TimerModal: () => import('../components/modals/timerModal')
   },
   data() {
     return {
@@ -70,6 +71,7 @@ export default {
       transaction_id: null,
       poll_count: 0,
       poll_limit: 6,
+      showTimer: false,
     }
   },
   computed: {
@@ -91,6 +93,7 @@ export default {
       }
 
       this.loading = true;
+      this.showTimer = true;
       this.promptInfo = true;
       const payload = {
         country: this.getBupayload.country_code,
@@ -112,14 +115,18 @@ export default {
       
       const response = await this.$paymentAxiosPost(fullPayload);
       this.transaction_id = response.transaction_id;
-      // if (response.status) {
-      //   this.pollCard();
-      // }
-      this.pollMpesa();
+      if (response.status) {
+        this.pollMpesa();
+        return;
+      }
+      this.promptInfo = false,
+      this.showTimer = false;
+      this.loading = false;
+      this.setErrorText(res.message);
+      this.$router.push({name: 'FailedView'});
     },
     phoneValidation() {
-
-      return ;
+    return;
     },
     pollMpesa() {
       this.poll_count = 0;
@@ -136,6 +143,8 @@ export default {
             that.TransactionIdStatus(); 
             if (poll_count === 5) {
               that.loading = false;
+              this.showTimer = false;
+              this.promptInfo = false,
               this.setErrorText('Failed to charge using Mpesa. Please try again.');
               this.$router.push({name: 'FailedView'});
               return;
@@ -159,12 +168,16 @@ export default {
                 text: res.message,
               });
               this.loading = false;
+              this.showTimer = false;
+              this.promptInfo = false,
               this.$router.push({name: 'SuccessView', params: { mpesaCode: res.receipt_no }});
               break;
             case 'failed':
               this.poll_count = this.poll_limit;
               this.loading = false;
               this.setErrorText(res.message);
+              this.showTimer = false;
+              this.promptInfo = false,
               this.$router.push({name: 'FailedView'});
               break;
             case 'pending':
@@ -175,6 +188,8 @@ export default {
           return res;
         }
         this.loading = false;
+        this.showTimer = false;
+        this.promptInfo = false,
         this.setErrorText(res.message);
         this.$router.push({name: 'FailedView'});
       })

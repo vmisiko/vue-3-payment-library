@@ -76,7 +76,7 @@
         <path d="M9 5H11V7H9V5ZM9 9H11V15H9V9ZM10 0C4.48 0 0 4.48 0 10C0 15.52 4.48 20 10 20C15.52 20 20 15.52 20 10C20 4.48 15.52 0 10 0ZM10 18C5.59 18 2 14.41 2 10C2 5.59 5.59 2 10 2C14.41 2 18 5.59 18 10C18 14.41 14.41 18 10 18Z" fill="#606266"/>
       </svg>
 
-      
+
 
       <svg v-if="icon === 'union-pay'" :width="width || 34" :height="height || 24" viewBox="0 0 34 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect x="0.5" y="0.5" width="33" height="23" rx="3.5" fill="white" stroke="#D9D9D9"/>
@@ -149,6 +149,12 @@
             begin="0.3s" dur="0.6s" repeatCount="indefinite" />
         </rect>
       </svg>
+
+      <svg v-if="icon === 'loading1'" :width="width || '120px'" :height="height || '120px'" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: #ffff; display: block; shape-rendering: auto;"  viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+        <circle cx="50" cy="50" fill="none" stroke="#868686" stroke-width="10" r="35" stroke-dasharray="164.93361431346415 56.97787143782138">
+          <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 50 50;360 50 50" keyTimes="0;1"></animateTransform>
+        </circle>
+        </svg>
 
       <svg v-if="icon === 'add-payment'" :width="width || 160" :height="height || 160" viewBox="0 0 160 167" fill="none" xmlns="http://www.w3.org/2000/svg">
         <circle opacity="0.5" cx="80" cy="87" r="80" fill="#E2E7ED"/>
