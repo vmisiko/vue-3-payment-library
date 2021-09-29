@@ -201,8 +201,9 @@ export default {
                 if (res.status) {
                   this.pollCard();
                 } else {
+                  this.collectLoad = false,
                   this.loading = false;
-                  this.errorText = res.message;
+                  this.errorText = res.reason;
                   this.showErrorModal= true;
                 }
 
@@ -230,7 +231,7 @@ export default {
               poll_count = poll_limit;
               return;
             }
-
+            
             that.TransactionIdStatus(); 
             if (poll_count === 5) {
               that.loading = false;
@@ -277,6 +278,10 @@ export default {
           }
           return res;
         }
+
+        this.poll_count = this.poll_limit;
+        this.collectLoad = false;
+        this.initForm();
         this.errorText = res.message;
         this.showErrorModal= true;
       })
