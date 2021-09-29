@@ -1,31 +1,21 @@
 <template>
- <div>
-  <div class="text-caption-1 d-flex pa-3" v-if="payMethod.pay_method_id === 2 " @click="$router.push({ name: 'CardDetails', params: { cardno: payMethod.pay_method_details }})">
-    <IconView :icon="$cardIconValidator(payMethod.psp.toLowerCase()) ? payMethod.psp.toLowerCase() : 'card' " />
-    <span class="ml-2">{{ payMethod.psp }}</span>
-    <span class="gray80-text ml-2"> {{$formatLastFour(payMethod.pay_method_details) }}</span>   
-     <span class="spacer"></span>   
-    <div class="">
-      <IconView icon="greator" />
-     </div>
-  </div>
+   <div class="d-flex normal-text" @click="$handlePaymentMethod(paymentMethod)">
 
-  <div v-else class="mt-4 text-caption-1 d-flex pa-3" @click="$router.push({ name: 'MpesaDetails', params: { id: payMethod.pay_detail_id }})">
-    <IconView icon="mpesa" />
-      <span class="ml-2">M-PESA</span>
-    <span class="spacer"></span>   
-     <div class="">
-      <IconView icon="greator" />
-    </div>
+    <IconView :icon="paymentMethod.name.toLowerCase()" />
+
+    <span class="ml-2"> {{ paymentMethod.name }} </span>
+
+    <span class="spacer"></span>
+
+    <IconView icon="greator-gray" width="8" height="12"  />
   </div>
-</div>
 </template>
 
 <script>
 
 export default {
   name: 'PaymentOption',
-  props: ['payMethod'],
+  props: ['paymentMethod'],
   data() {
     return {
     }
@@ -46,7 +36,7 @@ export default {
     }
   },
   mounted() {
-    console.log(this.payMethod);
+    console.log(this.paymentMethod);
   }
 }
 </script>

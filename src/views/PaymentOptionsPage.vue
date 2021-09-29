@@ -41,7 +41,7 @@ export default {
   name: 'PaymentOptionsPage',
   components: {
     TopInfo: () => import('@/components/topInfo'),
-    PaymentOption: () => import('../components/paymentOption')
+    PaymentOption: () => import('../components/paymentOptionPage/paymentOption')
   },
   data() {
     return {
