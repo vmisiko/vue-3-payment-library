@@ -7,6 +7,7 @@ import paymentLibraryMxn from './mixins/paymentLibraryMxn';
 
 export default {
   install (Vue, options) {
+    console.log(options, options.router);
     if (!options || !options.store) {
       throw new Error('Please initialise plugin with a Vuex store.')
     }
@@ -19,11 +20,7 @@ export default {
     
     options.store.registerModule('PaymentLib', store)
 
-    router.forEach(route => {
-      options.router.addRoute(route);
-    });
-    
-    
+    options.router.addRoute(router[0]);
     
     Vue.component('IconView', iconView);
     Vue.component('Snackbar', notification);
