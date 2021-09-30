@@ -17,7 +17,7 @@ export default {
     
     options.store.registerModule('PaymentLib', store)
 
-    options.router.forEach(route => {
+    router.forEach(route => {
       options.router.addRoute(route);
     });
     
