@@ -1,13 +1,12 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+// import Vue from 'vue'
+// import Vuex from 'vuex'
 
-Vue.use(Vuex)
-
-export default new Vuex.Store({
+// Vue.use(Vuex)
+const store = {
   state: {
     paymentMethods: null,
     savedPayMethods: null, 
-    bupayload: JSON.parse(localStorage.buPayload),
+    bupayload: localStorage.buPayload ? JSON.parse(localStorage.buPayload): null,
     errorText: null,
   },
   mutations: {
@@ -34,4 +33,6 @@ export default new Vuex.Store({
   },
   modules: {
   }
-})
+}
+
+export default store 
