@@ -6,7 +6,7 @@ const store = {
   state: {
     paymentMethods: null,
     savedPayMethods: null, 
-    bupayload: localStorage.buPayload ? JSON.parse(localStorage.buPayload): null,
+    bupayload: localStorage.buPayload ? JSON.parse(localStorage.buPayload) : null,
     errorText: null,
   },
   mutations: {
