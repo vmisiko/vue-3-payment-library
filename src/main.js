@@ -11,8 +11,10 @@ export default {
       throw new Error('Please initialise plugin with a Vuex store.')
     }
 
-    if (!options || !options.router) {
+    if ( !options.hasOwnProperty('router')) {
       throw new Error('Please Initialise plugin with vue router.')
+    } else {
+      console.log('has router');
     }
     
     options.store.registerModule('PaymentLib', store)
