@@ -1,7 +1,7 @@
 
 const routes = [
   {
-    path: '/',
+    path: '/paymentlib',
     component: () => import('../views/paymentEntry'),
     children: [
       {
