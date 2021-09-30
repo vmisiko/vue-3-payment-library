@@ -1,88 +1,98 @@
+import paymentEntry from '../views/paymentEntry';
+import payment from '../views/payment';
+import successView from '../views/successView';
+import FailedView from '../views/FailedView';
+import processing from '../views/processing';
+import choosePayment from '../views/choosePayment';
+import AddPayment from '../views/AddPayment';
+import AddCard from '../views/AddCard';
+import AddMpesa from '../views/AddMpesa';
+import STKComponent from '../views/STKComponent';
+import MpesaC2B from '../views/MpesaC2B';
+import NoPaymentOption from '../views/NoPaymentOption';
+import PaymentOptionsPage from '../views/PaymentOptionsPage';
+import CardDetailsPage from '../views/CardDetailsPage';
+import MpesaDetail from '../views/MpesaDetail';
 
 const routes = [
   {
     path: '/paymentlib',
-    component: () => import('../views/paymentEntry'),
+    component: paymentEntry,
     children: [
       {
         path: '/',
         name: 'Entry',
-        component: () => import('../views/payment')
+        component: payment,
       },
       {
         path: '/success-view/:mpesaCode?',
         name: 'SuccessView',
-        component: () => import('../views/successView')
+        component: successView,
       },
       {
         path: '/failed-view/:mpesa?',
         name: 'FailedView',
-        component: () => import('../views/FailedView')
+        component: FailedView,
       },
       {
         path: '/retry-view',
         name: 'RetryView',
-        component: () => import('../views/FailedView')
+        component: FailedView,
       },
       {
         path: '/processing',
         name: 'Processing',
-        component: () => import('../views/processing')
-      },
-      {
-        path: '/success',
-        name: 'Success',
-        component: () => import('../views/payment')
+        component: processing,
       },
       {
         path: '/choose-payment',
         name: 'ChoosePayment',
-        component: () => import('../views/choosePayment')
+        component: choosePayment,
       },
       {
         path: '/add-payment',
         name: 'AddPayment',
-        component: () => import('../views/AddPayment')
+        component: AddPayment,
       },
       {
         path: '/add-card',
         name: 'AddCard',
-        component: () => import('../views/AddCard')
+        component: AddCard,
       },
       {
         path: '/add-mpesa',
         name: 'AddMpesa',
-        component: () => import('../views/AddMpesa')
+        component: AddMpesa,
       },
       {
         path: '/mpesa-stk',
         name: 'STKComponent',
-        component: () => import('../views/STKComponent')
+        component: STKComponent,
       },
       {
         path: '/mpesa-c2b',
         name: 'MpesaC2B',
-        component: () => import('../views/MpesaC2B')
+        component: MpesaC2B,
       },
       {
         path: '/no-payment-option',
         name: 'NoPaymentOption',
-        component: () => import('../views/NoPaymentOption')
+        component: NoPaymentOption,
       },
       {
         path: '/payment-option-page',
         name: 'PaymentOptionsPage',
-        component: () => import('../views/PaymentOptionsPage')
+        component: PaymentOptionsPage,
       },
       {
         path: '/card-details/:cardno',
         name: 'CardDetails',
-        component: () => import('../views/CardDetailsPage')
+        component: CardDetailsPage,
       },
       {
         path: '/mobile-details/:id',
         name: 'MpesaDetails',
-        component: () => import('../views/MpesaDetail')
+        component: MpesaDetail,
       },
     ]
   },
