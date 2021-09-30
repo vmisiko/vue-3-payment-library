@@ -22,6 +22,7 @@ export default {
 
     options.router.addRoute(router[0]);
     
+    Vue.prototype.$router = options.router;
     Vue.component('IconView', iconView);
     Vue.component('Snackbar', notification);
     Vue.component('sendy-btn', sendyBtn);
