@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import NotificationComponent from '../components/notificationComponent';
 
 export default {
