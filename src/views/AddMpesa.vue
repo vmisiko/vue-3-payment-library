@@ -45,11 +45,12 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import TopInfo from '../components/topInfo';
 
 export default {
   name: 'AddMpesa',
   components: {
-    TopInfo: () => import('../components/topInfo'),
+    TopInfo,
   },
   data() {
     return {

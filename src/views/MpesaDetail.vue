@@ -23,12 +23,13 @@
 </template>
 
 <script>
-
+import TopInfo from '../components/topInfo';
+import DeletModal from '../components/modals/DeleteModal';
 export default {
   name: 'MpesaDetail',
   components: {
-    TopInfo: () => import('../components/topInfo'),
-    DeletModal: () => import('../components/modals/DeleteModal')
+    TopInfo,
+    DeletModal,
   },
   data() {
     return {

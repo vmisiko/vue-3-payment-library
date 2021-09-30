@@ -15,12 +15,14 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import TopInfo from '../components/topInfo';
+import PaymentOption from '../components/paymentOption';
 
 export default {
   name: 'AddPayment',
   components: {
-    TopInfo: () => import('../components/topInfo'),
-    PaymentOption: () => import('../components/paymentOption'),
+    TopInfo,
+    PaymentOption,
   },
   data() {
     return {

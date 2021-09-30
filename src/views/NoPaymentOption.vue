@@ -5,10 +5,12 @@
 </template>
 
 <script>
+import NoOptionsModal from '../components/modals/noOptionsModal';
+
 export default {
   name: 'AddPaymentOption',
   components: {
-    NoOptionsModal: () => import('../components/modals/noOptionsModal'),
+    NoOptionsModal,
   },
   data() {
     return {

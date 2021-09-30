@@ -28,12 +28,14 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex';
+import TopInfo from '../components/topInfo';
+import PaymentDetail from '../components/paymentDetail';
 
 export default {
   name: 'Payment',
   components: {
-    TopInfo: () => import('../components/topInfo'),
-    PaymentDetail: () => import('../components/paymentDetail'),
+    TopInfo,
+    PaymentDetail,
   },
   data() {
     return {

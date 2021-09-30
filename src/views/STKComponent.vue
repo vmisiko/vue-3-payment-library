@@ -53,12 +53,14 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex';
+import TopInfo from '../components/topInfo';
+import TimerModal from '../components/modals/timerModal';
 
 export default {
   name: 'STKComponent',
   components: {
-    TopInfo: () => import('../components/topInfo'),
-    TimerModal: () => import('../components/modals/timerModal')
+    TopInfo,
+    TimerModal,
   },
   data() {
     return {

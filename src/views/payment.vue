@@ -59,14 +59,18 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex';
+import TopInfo from '../components/topInfo';
+import PaymentDetail from '../components/paymentDetail';
+import Processing from '../components/processing';
+import NoOptionsModal from '../components/modals/noOptionsModal';
 
 export default {
   name: 'Payment',
   components: {
-    TopInfo: () => import('../components/topInfo'),
-    PaymentDetail: () => import('../components/paymentDetail'),
-    Processing: () => import('../components/processing'),
-    NoOptionsModal: () => import('../components/modals/noOptionsModal'),
+    TopInfo,
+    PaymentDetail,
+    Processing,
+    NoOptionsModal,
   },
   data() {
     return {

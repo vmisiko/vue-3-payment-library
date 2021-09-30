@@ -36,12 +36,14 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex';
+import TopInfo from '../components/topInfo';
+import PaymentOption from '../components/paymentOptionPage/paymentOption';
 
 export default {
   name: 'PaymentOptionsPage',
   components: {
-    TopInfo: () => import('../components/topInfo'),
-    PaymentOption: () => import('../components/paymentOptionPage/paymentOption')
+    TopInfo,
+    PaymentOption,
   },
   data() {
     return {

@@ -9,12 +9,12 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex';
+import NotificationComponent from '../components/notificationComponent';
 
 export default {
   name: 'PaymentEntry',
   components: {
-    NotificationComponent: () => import('../components/notificationComponent'),
+    NotificationComponent,
   },
   data() {
     return {
@@ -28,21 +28,6 @@ export default {
   },
   mounted() {
     this.$root.$on('payment-notification', this.notificationInit);
-    // localStorage.removeItem('buPayload');
-    // const buPayload = {
-    //   user_id: 3435,
-    //   entity_id: 1,
-    //   currency: "KES",
-    //   country_code: "KE",
-    //   amount: 415000.00,
-    //   success_callback_url: "",
-    //   fail_callback_url: "",
-    //   txref: "RRRIIIAAAAKK",
-    //   bulk: false,
-    //   mpesa_business_no: '',
-    // }
-    
-    // localStorage.setItem('buPayload', JSON.stringify(buPayload));
     this.retrievePaymentMethods();
   },
   methods: {

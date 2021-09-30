@@ -31,12 +31,14 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import TopInfo from '../components/topInfo';
+import DeletModal from '../components/modals/DeleteModal';
 
 export default {
   name: 'CardDetailsPage',
   components: {
-    TopInfo: () => import('../components/topInfo'),
-    DeletModal: () => import('../components/modals/DeleteModal')
+    TopInfo,
+    DeletModal,
   },
   data() {
     return {

@@ -47,11 +47,12 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex';
+import TopInfo from '../components/topInfo';
 
 export default {
   name: 'ChoosePayment',
   components: {
-    TopInfo: () => import('../components/topInfo'),
+    TopInfo,
   },
   data() {
     return {

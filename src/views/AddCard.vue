@@ -59,14 +59,18 @@
 
 <script>
 // import { loadVGSCollect } from "@vgs/collect-js";z
+import TopInfo from '../components/topInfo';
+import CvvModal from '../components/modals/cvvModal';
+import ErrorModal from '../components/modals/ErrorModal';
+import Processing from '../components/processing';
 
 export default {
   name: 'AddCard',
   components: {
-    TopInfo: () => import('../components/topInfo'),
-    CvvModal: () => import('../components/modals/cvvModal'),
-    ErrorModal: () => import('../components/modals/ErrorModal'),
-    Processing: () => import('../components/processing'),
+    TopInfo,
+    CvvModal,
+    ErrorModal,
+    Processing,
   },
   data() {
     return {
