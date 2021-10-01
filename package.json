@@ -44,8 +44,5 @@
   "authors": [
     "Victor Misiko <misiko@sendyit.com>",
     "Joyce kemboi <joyce@sendyit.com>"
-  ],
-  "sideEffects": [
-    "*.css"
   ]
 }
