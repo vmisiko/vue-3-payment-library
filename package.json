@@ -1,6 +1,6 @@
 {
   "name": "@vmisiko/payment",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "private": false,
   "scripts": {
     "serve": "vue-cli-service --preserve-symlinks serve",
@@ -45,5 +45,7 @@
     "Victor Misiko <misiko@sendyit.com>",
     "Joyce kemboi <joyce@sendyit.com>"
   ],
-  "sideEffects": ["*.css"]
+  "sideEffects": [
+    "*.css"
+  ]
 }
