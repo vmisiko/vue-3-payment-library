@@ -105,11 +105,18 @@ export default {
     },
   },
   async mounted() {
+    this.loadVGS();
     setTimeout(() => {
       this.setForm();
     }, 500);
   },
   methods: {  
+    loadVGS() {
+      const script = document.createElement('script');
+      script.async = true;
+      script.src = 'https://js.verygoodvault.com/vgs-collect/2.0/vgs-collect.js';
+      document.head.appendChild(script);
+    },
     initForm() {
       setTimeout(() => {
         this.setForm();

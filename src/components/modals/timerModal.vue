@@ -1,9 +1,9 @@
 <template>
   <div id="timer-modal" class="modal">
     <div class="modal-content">
-      <div class="mt-4">
-        <IconView icon="loading1" width="70" height="70" class="flex-center" />
-      </div>
+      <div @click="$router.push({ name: 'Entry' })" class="mt-8">
+       <IconView icon="sendy-logo" />
+      </div> 
     
       <div class="text-center mt-5">
         <span class="text-caption text-gray70"> {{ formatedCountdown }}</span>
