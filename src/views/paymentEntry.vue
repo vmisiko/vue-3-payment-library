@@ -1,8 +1,10 @@
 <template>
   <div id="payment">
     <div class="container">
-      <img class="mt-8" :src="require('@/assets/logo.svg')"  @click="$router.push({ name: 'Entry' })"/>
-        <router-view/>
+      <div @click="$router.push({ name: 'Entry' })" class="mt-8">
+       <IconView icon="sendy-logo" />
+      </div> 
+      <router-view/>
     </div>
     <NotificationComponent :show="showNotification" :text="notificationText"  :type="type" />
   </div>
