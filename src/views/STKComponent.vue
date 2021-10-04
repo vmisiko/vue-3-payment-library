@@ -124,7 +124,7 @@ export default {
       this.promptInfo = false,
       this.showTimer = false;
       this.loading = false;
-      this.setErrorText(res.message);
+      this.setErrorText(response.message);
       this.$router.push({name: 'FailedView'});
     },
     phoneValidation() {

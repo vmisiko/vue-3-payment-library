@@ -245,6 +245,7 @@ export default {
             that.TransactionIdStatus(); 
             if (poll_count === 5) {
               that.loading = false;
+              this.collectLoad = false,
               this.initForm();
               this.errorText = 'Failed to confirm card. Please try again.';
               this.showErrorModal= true;
@@ -294,40 +295,6 @@ export default {
         this.errorText = res.message;
         this.showErrorModal= true;
       })
-      // axios
-      // .get(`${this.paymentBaseUrl}/process/status/${this.transaction_id}`)
-      // .then((res) => {
-      //   if (res.data.status) { 
-      //     switch (res.data.transaction_status) {
-      //       case 'success':
-      //         this.poll_count = this.poll_limit;
-      //         this.collectLoad = false;
-      //         this.$paymentNotification({
-      //           text: 'Card details added and selected for payment.'
-      //         });
-      //         this.$router.push('/choose-payment');
-      //         this.loading = false;
-      //         break;
-      //       case 'failed':
-      //         this.poll_count = this.poll_limit;
-      //         this.loading = false;
-      //         this.collectLoad = false;
-      //         this.initForm();
-      //         this.errorText = res.data.message;
-      //         this.showErrorModal= true;
-      //         break;
-      //       case 'pending':
-      //         break;
-      //       default:
-      //         break;
-      //     }
-      //     return res;
-      //   }
-      //   this.errorText = res.data.message;
-      //   this.showErrorModal= true;
-      // })
-    
-    
     }
   }
 }

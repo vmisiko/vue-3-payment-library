@@ -11,7 +11,7 @@
 
       <hr class=" mt-10" />
 
-      <div class="mt-8 text-btn d-flex" @click="showDeleteModal=true">
+      <div class="mt-8 text-btn d-flex pointer" @click="showDeleteModal=true">
         <IconView icon="delete"/>
         <span class="text-btn">Remove Card</span>
 

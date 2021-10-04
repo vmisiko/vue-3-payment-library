@@ -3,14 +3,14 @@
     <div class="mt-8">
         <span class="normal-text"> Amount to pay</span>
 
-        <div class="float-right">
+        <div class="float-right" :class="{'mt-n2': !paymentStatus}" >
           <span class="amount-text" :class="{'text-caption-1': paymentStatus}">
             {{ currency }} {{ amount.toLocaleString() }}
           </span>
         </div>
     </div>
 
-      <hr />
+      <hr class="mt-4" />
 
       <div class="mt-8">
         <span class="normal-text"> Pay with</span>
@@ -22,7 +22,7 @@
         </div>
       </div>
 
-      <hr />
+      <hr class="mt-4" />
 
       <div class="mt-4 d-flex float-right  link" v-if="!paymentStatus" @click="$router.push('/choose-payment')" >
         <span> Change payment option</span>

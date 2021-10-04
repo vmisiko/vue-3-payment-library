@@ -12,15 +12,12 @@
           :block="true"
           :loading="loading"
           color='primary'
-          class="mt-10"
+          @click="$router.push({name: 'Entry'})"
         >
           Done
         </sendy-btn>
       </div>
 
-      <div class="text-center mt-8">
-        <span class="link">Contact Support</span>
-      </div>
     </div>
 
   </div>

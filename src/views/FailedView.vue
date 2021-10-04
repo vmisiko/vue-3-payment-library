@@ -11,7 +11,6 @@
           :block="true"
           :loading="loading"
           color='primary'
-          class="mt-10"
           @click="$router.push({ name: 'Entry'})"
         >
           {{ $route.params.mpesa ? 'Retry' : 'Try Again' }}
@@ -29,9 +28,6 @@
         </sendy-btn>
       </div>
 
-      <div class="text-center mt-8">
-        <span class="link">Contact Support</span>
-      </div>
     </div>
 
   </div>
