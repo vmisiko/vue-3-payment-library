@@ -1,7 +1,7 @@
 <template>
   <div id="payment">
     <div class="container">
-      <div @click="$router.push({ name: 'Entry' })" class="mt-8">
+      <div @click="$router.push({ name: 'Entry' })" class="">
        <IconView icon="sendy-logo" />
       </div> 
       <router-view/>
