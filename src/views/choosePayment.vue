@@ -35,7 +35,7 @@
          <sendy-btn 
           color='primary'
           class="mt-10"
-          @click="$router.push('/')"
+          @click="$router.push({name: 'Entry'})"
           :loading="loading"
           >
             Continue
