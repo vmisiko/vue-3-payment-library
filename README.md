@@ -1,4 +1,4 @@
-# test-app
+# @Sendyit/paymentlib
 
 ## How to use
 ```
