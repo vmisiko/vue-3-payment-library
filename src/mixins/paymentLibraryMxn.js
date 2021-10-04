@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 
 const mixin = {
   data() {
@@ -13,6 +13,7 @@ const mixin = {
     ...mapGetters(['getPaymentMethods']),
   },
   methods: {
+    ...mapMutations(['setBupayload']),
     $handlePaymentMethod(paymentMethod) {
       switch (paymentMethod.payment_method_id) {
         case 1: 
@@ -100,6 +101,7 @@ const mixin = {
     },
     $paymentInit(payload, entry) {
       localStorage.setItem('buPayload', JSON.stringify(payload));
+      this.setBupayload(payload);
       switch (entry) {
         case 'checkout':
           this.$router.push({ name: 'Entry'});
