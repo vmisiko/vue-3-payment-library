@@ -63,7 +63,7 @@ export default {
   display: none;
   position: fixed;
   z-index: 1;
-  padding-top: 40px;
+  padding-top: 15px;
   left: 0;
   top: 0;
   width: 100%;
@@ -71,7 +71,6 @@ export default {
   overflow: auto;
   background-color: rgb(0,0,0);
   background-color: rgba(0,0,0,0.5);
-
 }
 
 /* Modal Content */
