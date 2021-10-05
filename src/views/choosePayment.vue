@@ -97,10 +97,12 @@ export default {
         this.setSavedPayMethods(response.saved_payment_methods);
       }
     },
+    
     getDefaultpayMethod() {
       const method = this.getSavedPayMethods ? this.getSavedPayMethods.filter(method => method.default === 1)[0] : [];
       this.picked = method.pay_detail_id;
     },
+
     async update() {
       const payload = {
         user_id: this.getBupayload.user_id,
@@ -116,9 +118,14 @@ export default {
       const response = await this.$paymentAxiosPut(fullPayload);
       this.loading = false;
       if (response) {
-        this.$paymentNotification({ text: 'Card selected for payment.'})
+        this.$paymentNotification({ text: `${this.setSelectedName()} selected for payment.`})
       }
-    }
+    },
+
+    setSelectedName() {
+      const result = this.getSavedPayMethods.filter(element => element.pay_detail_id === this.picked)[0];
+      return result ? result.pay_method_name : '';
+    },
   }
 }
 </script>

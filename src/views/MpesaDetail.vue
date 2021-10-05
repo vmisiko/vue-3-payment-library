@@ -13,7 +13,7 @@
 
       <div class="mgt-8 text-btn direction-flex pointer" @click="showDeleteModal=true">
         <IconView icon="delete"/>
-        <span class="text-btn">Remove Card</span>
+        <span class="text-btn">Remove M-PESA</span>
 
       </div>
 
