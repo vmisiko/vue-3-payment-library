@@ -179,3 +179,9 @@ export default {
   props: ['icon', 'width', 'height',],
 }
 </script>
+
+<style lang="scss">
+  svg {
+    all: revert !important;
+  }
+</style>

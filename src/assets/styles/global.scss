@@ -154,7 +154,7 @@
     border: none;
     background-color: $linkColor;
     padding: 12px 32px;
-    color:white;
+    color:white !important;
     text-align: center;
     border-radius: 4px;
     cursor: pointer;
@@ -164,7 +164,7 @@
     border: none;
     background-color: $linkColor;
     padding: 12px 32px;
-    color:white;
+    color:white !important;
     text-align: center;
     border-radius: 4px;
     width: 100%
@@ -174,7 +174,7 @@
     border: none;
     background-color:#D3DDF6;
     padding: 12px 32px;
-    color: $linkColor;
+    color: $linkColor !important;
     text-align: center;
     border-radius: 4px;
     width: 100%;
@@ -183,7 +183,7 @@
     border: none;
     background-color: #9B101C;
     padding: 12px 32px;
-    color: white;
+    color: white !important;
     text-align: center;
     border-radius: 4px;
     width: 100%;
@@ -196,4 +196,8 @@
   .selected-border {
     border: 1px solid $linkColor;
     border-radius: 4px;
+  }
+
+  input {
+    border: 0.5px solid #C0C4CC !important;
   }
