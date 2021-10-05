@@ -6,7 +6,7 @@
 
       <span class="mgt-2 text-overline">CREDIT OR DEBIT CARD</span>
       <div class="" v-if="creditCards.length !== 0" >
-        <div v-for="(card, index) in creditCards" :key="index" class="mgt-4 text-caption-1 d-flex pda-3" :class="{'selected-border': (picked === card.pay_detail_id)}" >
+        <div v-for="(card, index) in creditCards" :key="index" class="mgt-4 text-caption-1 direction-flex pda-3" :class="{'selected-border': (picked === card.pay_detail_id)}" >
             <IconView :icon="$cardIconValidator(card.psp.toLowerCase()) ? card.psp.toLowerCase() : 'card' " />
             <span class="mgl-2">{{ card.psp }}</span>
             <span class="gray80-text mgl-2"> {{$formatLastFour(card.pay_method_details) }}</span>   
@@ -19,7 +19,7 @@
 
       <span class="mgt-8 text-overline">Mobile money</span>
       <div v-if="savedMobile.length !== 0">
-        <div v-for="(mobile, index) in savedMobile" :key="index" class="mgt-4 text-caption-1 d-flex pda-3 " :class="{'selected-border': picked === mobile.pay_detail_id}">
+        <div v-for="(mobile, index) in savedMobile" :key="index" class="mgt-4 text-caption-1 direction-flex pda-3 " :class="{'selected-border': picked === mobile.pay_detail_id}">
             <IconView icon="mpesa" />
             <span class="mgl-2">M-PESA</span>
             <span class="spacer"></span>   

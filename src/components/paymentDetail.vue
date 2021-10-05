@@ -15,7 +15,7 @@
       <div class="mgt-8">
         <span class="normal-text"> Pay with</span>
 
-        <div class="d-flex float-right">  
+        <div class="direction-flex float-right">  
           <IconView v-if="paymentMethod.pay_method_id === 1" icon="mpesa" width="34" height="24" />
           <IconView v-if="paymentMethod.pay_method_id === 2" :icon="$cardIconValidator(paymentMethod.psp.toLowerCase()) ? paymentMethod.psp.toLowerCase() : 'card'" width="34" height="24" />
           <span class="mgl-2 text-caption-1 "> {{ paymentMethod.pay_method_id === 1 ? paymentMethod.pay_method_name : formatLastFour(paymentMethod.pay_method_details)}}</span>
@@ -24,7 +24,7 @@
 
       <hr class="mgt-4" />
 
-      <div class="mgt-4 d-flex float-right  link" v-if="!paymentStatus" @click="$router.push('/choose-payment')" >
+      <div class="mgt-4 direction-flex float-right  link" v-if="!paymentStatus" @click="$router.push('/choose-payment')" >
         <span> Change payment option</span>
         <IconView class="mgl-2" icon="greator"/>
       </div>

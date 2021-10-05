@@ -1,6 +1,6 @@
 <template>
   <div id="snackbar" class="">
-    <div class="mgt-3 d-flex">
+    <div class="mgt-3 direction-flex">
       <IconView v-if="!type" icon='check-circle-sucess' />
       <IconView v-if="type==='info'" icon='info' />
       <IconView v-if="type==='error'" icon='warning' width="20px" height="20px" />

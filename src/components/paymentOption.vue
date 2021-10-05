@@ -1,5 +1,5 @@
 <template>
-   <div class="d-flex normal-text pointer" @click="$handlePaymentMethod(paymentMethod)">
+   <div class="direction-flex normal-text pointer" @click="$handlePaymentMethod(paymentMethod)">
 
     <IconView class="text-center mgt-0" :icon="paymentMethod.name.toLowerCase()" />
 

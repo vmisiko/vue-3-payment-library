@@ -1,5 +1,5 @@
 <template>
-  <div class="mgt-4 text-caption-1 d-flex pda-3 " :class="{'selected-border': picked === card.card_type}">
+  <div class="mgt-4 text-caption-1 direction-flex pda-3 " :class="{'selected-border': picked === card.card_type}">
     <img class="mgt-n1" :src="require('@/assets/icons/mpesa-icon.svg')" alt=""> 
     <span class="mgl-2">{{ card.card_type }}</span>
     <span class="gray80-text mgl-2"> **** {{ card.last_digits }}</span>   

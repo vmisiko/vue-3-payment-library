@@ -19,7 +19,7 @@
             <span class="text-caption-2 text-error" v-if="cardno"> {{ cardno }} </span>
           </div>
 
-          <div class="d-flex mgt-4">
+          <div class="direction-flex mgt-4">
             <div class="form-group">
               <label for="cc-expiration-date" class="text-caption-2">Expiry</label>
               <span id="cc-expiration-date" class="form-field">
