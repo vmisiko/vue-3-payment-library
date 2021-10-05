@@ -24,7 +24,7 @@
               <label for="cc-expiration-date" class="text-caption-2">Expiry</label>
               <span id="cc-expiration-date" class="form-field">
               </span>
-              <span class="text-caption-2 text-error" v-if="expiry_date"> {{ expiry_date }} </span>
+              <span class="text-caption-2 text-error" v-if="expirydate"> {{ expirydate }} </span>
             </div>
 
             <div class="form-group mgl-8">
@@ -58,7 +58,7 @@
 </template>
 
 <script>
-// import { loadVGSCollect } from "@vgs/collect-js";z
+import { mapGetters } from 'vuex';
 import TopInfo from '../components/topInfo';
 import CvvModal from '../components/modals/cvvModal';
 import ErrorModal from '../components/modals/ErrorModal';
@@ -84,14 +84,18 @@ export default {
       form: {},
       cardno: '',
       card_name: '',
-      expiry_date: '',
+      expirydate: '',
       cvv: '',
       transaction_id: '',
       poll_count: 0,
       poll_limit: 6,
       paymentBaseUrl: 'https://payment-gateway-dev.sendyit.com/payment-gateway/api/v1',
       collectLoad: false,
+      vgs_valid_payment: false,
     }
+  },
+  computed: {
+    ...mapGetters(['getBupayload']),
   },
   watch: {
     form: {
@@ -99,6 +103,16 @@ export default {
         const state = val.state;
         for (const [key, value] of Object.entries(state)) {
           this[`${key}`] = !value.isValid && !value.isEmpty? value.errorMessages[0] : '';
+        }
+        if (
+          Object.prototype.hasOwnProperty.call(state, 'cardno')
+          && state.cardno.isValid
+          && state.cvv.isValid
+          && state.expirydate.isValid
+        ) {
+          this.vgs_valid_payment = true;
+        } else {
+          this.vgs_valid_payment = false;
         }
       },
       deep: true
@@ -170,7 +184,7 @@ export default {
 
       this.form.field('#cc-expiration-date', {
         type: 'card-expiration-date',
-        name: 'expiry_date',
+        name: 'expirydate',
         fontSize: '13px',
         errorColor: '#D8000C',
         successColor: '#4F8A10',
@@ -180,15 +194,25 @@ export default {
         classes: classes,
       });
     },
+    setErrors() {
+      const state = this.form.state;
+      for (const [key, value] of Object.entries(state)) {
+        this[`${key}`] = !value.isValid ? value.errorMessages[0] : '';
+      }
+    },
     onsubmit() {
+      if (!this.vgs_valid_payment) {
+        this.setErrors();
+        return;
+      }
       const newCardPayload = {
-        "country": "KE",
-        "currency": "KES",
-        "email": "jamesdoes@gmail.com",
-        "firstname": "james",
-        "lastname": "does",
-        "phonenumber": "0798675432",
-        "userid":"123456"
+        "country": this.getBupayload.country_code,
+        "currency": this.getBupayload.currency,
+        "email": this.getBupayload.email,
+        "firstname": this.getBupayload.firstname,
+        "lastname": this.getBupayload.lastname,
+        "phonenumber": this.getBupayload.phonenumber,
+        "userid": this.getBupayload.user_id,
       };
       this.loading = true;
       this.form.submit(
@@ -219,10 +243,15 @@ export default {
                 }
 
               }).catch(err => {
+                this.collectLoad = false,
+                this.initForm();
                 this.errorText = 'Failed to collect card details. Please try again';
                 this.showErrorModal= true;
               });
+            
             } else {
+              this.collectLoad = false,
+              this.initForm();
               this.errorText = 'Failed to collect card details. Please try again';
               this.showErrorModal= true;
             }

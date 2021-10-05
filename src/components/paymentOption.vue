@@ -3,7 +3,7 @@
 
     <IconView class="text-center mgt-0" :icon="paymentMethod.name.toLowerCase()" />
 
-    <span class="mgl-5"> {{ paymentMethod.name }} </span>
+    <span class="mgl-5"> {{ optionName }} </span>
 
     <span class="spacer"></span>
 
@@ -18,6 +18,23 @@ export default {
   props: ['paymentMethod'],
   data() {
     return {
+    }
+  },
+  computed: {
+    optionName() {
+      let result = 'Credit or Debit Card';
+      switch (this.paymentMethod.payment_method_id) {
+        case 1:
+          result = this.paymentMethod.name
+          break;
+        case 2:
+          result = 'Credit or Debit Card';
+          break;
+        default:
+          break;
+      }
+
+      return result;
     }
   },
   methods: {
