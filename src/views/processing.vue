@@ -4,11 +4,11 @@
       <div class="flex-center">
         <div class="processing-box"></div>
       </div>
-      <div class="text-center mt-8">
+      <div class="text-center mgt-8">
         <span class="normal-text">Processing your card payment</span>
       </div>
 
-      <div class="text-center mt-24">
+      <div class="text-center mgt-24">
         <span class="link">Contact Support</span>
       </div>
     </div>

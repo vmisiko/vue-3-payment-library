@@ -1,10 +1,10 @@
 <template>
   <div id="snackbar" class="">
-    <div class="mt-3 d-flex">
+    <div class="mgt-3 d-flex">
       <IconView v-if="!type" icon='check-circle-sucess' />
       <IconView v-if="type==='info'" icon='info' />
       <IconView v-if="type==='error'" icon='warning' width="20px" height="20px" />
-      <span class="text-caption ml-5"> {{ text }}</span>
+      <span class="text-caption mgl-5"> {{ text }}</span>
     </div>
   </div>
 </template>

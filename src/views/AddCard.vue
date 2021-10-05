@@ -12,14 +12,14 @@
           <span class="text-caption-2 text-error" v-if="card_name"> {{ card_name }} </span>
         </div>
 
-        <div class="form-group mt-4">
-          <label for="cc-number" class="mt-2 text-caption-2">Card number</label>
+        <div class="form-group mgt-4">
+          <label for="cc-number" class="mgt-2 text-caption-2">Card number</label>
             <span id="cc-number" class="form-field">
             </span>
             <span class="text-caption-2 text-error" v-if="cardno"> {{ cardno }} </span>
           </div>
 
-          <div class="d-flex mt-4">
+          <div class="d-flex mgt-4">
             <div class="form-group">
               <label for="cc-expiration-date" class="text-caption-2">Expiry</label>
               <span id="cc-expiration-date" class="form-field">
@@ -27,12 +27,12 @@
               <span class="text-caption-2 text-error" v-if="expiry_date"> {{ expiry_date }} </span>
             </div>
 
-            <div class="form-group ml-8">
+            <div class="form-group mgl-8">
               <label for="cc-cvc" class="text-caption-2">CVC</label>
 
               <span id="cc-cvc" class="form-field">
               </span>
-              <IconView icon="cvv"  class="float-right mr-2 mt-n10" @cvv="showModal=true" />
+              <IconView icon="cvv"  class="float-right mgr-2 mgt-n10" @cvv="showModal=true" />
               <span class="text-caption-2 text-error" v-if="cvv"> {{ cvv }} </span>
 
             </div>
@@ -43,7 +43,7 @@
           :block="true" 
           :loading="loading"
           color='primary'
-          class="mt-10"
+          class="mgt-10"
           type="submit"
         >
           Add Card

@@ -4,10 +4,10 @@
     <div class="card">
       <TopInfo :icon="icon" :title="title"/>
   
-      <div class="mt-6">
+      <div class="mgt-6">
         <div class="" v-for="(method, index) in getPaymentMethods" :key="index">
           <PaymentOption :paymentMethod="method" />
-          <hr v-if="index !== paymentMethods.length-1" class="mt-4 mb-5" />
+          <hr v-if="index !== paymentMethods.length-1" class="mgt-4 mgb-5" />
         </div> 
       </div>
     

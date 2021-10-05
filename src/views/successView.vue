@@ -7,7 +7,7 @@
       <PaymentDetail v-if="defaultPaymentMethod" :currency="currency" :amount="amount" :paymentMethod="defaultPaymentMethod"  :paymentStatus="paymentStatus" />
 
 
-      <div class="mt-8 text-right" >
+      <div class="mgt-8 text-right" >
         <sendy-btn 
           :block="true"
           :loading="loading"

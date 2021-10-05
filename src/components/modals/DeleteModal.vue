@@ -2,7 +2,7 @@
   <div id="delete-modal" class="modal">
       <div class="modal-content">
 
-        <div class="mt-4">
+        <div class="mgt-4">
           <span class="text-body-1">
             Are you sure you want to delete this payment option?
           </span>
@@ -11,7 +11,7 @@
         <sendy-btn 
           :block="true" 
           color='error'
-          class="mt-8"
+          class="mgt-8"
           type="submit"
           @click="handleDelete"
           :loading="loading"
@@ -22,7 +22,7 @@
         <sendy-btn 
           :block="true" 
           color='info'
-          class="mt-4"
+          class="mgt-4"
           type="submit"
          @click="$emit('close')"
         >

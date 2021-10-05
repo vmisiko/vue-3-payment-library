@@ -2,18 +2,18 @@
   <div id="no-option" class="modal">
       <div class="modal-content-option ">
         <div class="flex-center">
-        <div class="text-center mt-11">
+        <div class="text-center mgt-11">
           <IconView icon="add-payment" />
         </div>
       </div>
-      <div class="text-center mt-10">
+      <div class="text-center mgt-10">
         <div><span class="text-subtitle-1">Payment option missing</span></div>
-        <span class="text-body-2 mt-3">
+        <span class="text-body-2 mgt-3">
           Add a new payment method to proceed with the transaction
         </span>
       </div>
 
-      <div class="text-center mt-8">
+      <div class="text-center mgt-8">
         <sendy-btn 
           color='primary'
           class=""
@@ -23,7 +23,7 @@
         </sendy-btn>
       </div>
 
-      <div class="text-center mt-8">
+      <div class="text-center mgt-8">
         <span class="link" @click="$router.go(-1)">Back</span>
       </div>
       </div>

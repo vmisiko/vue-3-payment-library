@@ -16,7 +16,7 @@
       </svg>
 
   
-    <div class="mt-8">
+    <div class="mgt-8">
       <span class="text-list-title">
         How it works
       </span>
@@ -27,11 +27,11 @@
         </p>
       </div>
 
-      <div class="mt-15 float-right">
+      <div class="mgt-15 float-right">
         <sendy-btn 
           :loading="loading"
           color='primary'
-          class="mt-10"
+          class="mgt-10"
           @click="submit"
         >
           Add M-PESA

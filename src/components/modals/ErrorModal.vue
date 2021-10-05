@@ -5,7 +5,7 @@
           <IconView icon='warning' />
         </div>
 
-        <div class="mt-4">
+        <div class="mgt-4">
           <span> Could not add card </span>
           <div>
             <span class="text-caption text-sendy-red-30">
@@ -17,7 +17,7 @@
         <sendy-btn 
           :block="true" 
           color='info'
-          class="mt-8"
+          class="mgt-8"
          @click="$emit('close')"
         >
           close

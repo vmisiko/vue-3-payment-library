@@ -17,30 +17,30 @@
         
         <IconView icon="mpesa" width="68px" height="48px" />
 
-        <div class="mt-3">
+        <div class="mgt-3">
           <span class="text-list-title"> Payment instructions</span>
-          <div class="mt-4 pl-4">
+          <div class="mgt-4 pdl-4">
             <ol style="padding-left: 0px;">
               <li class="text-body-2">Open M-PESA on you phone</li>
-              <li class="text-body-2 mt-2">
+              <li class="text-body-2 mgt-2">
                 Select Lipa na M-PESA > Pay Bill 
               </li>
-              <li class="text-body-2 mt-2">
+              <li class="text-body-2 mgt-2">
                 Enter Business no. <span class="text-bold"> {{ getBupayload.mpesa_business_no }} </span>
               </li>
-              <li class="text-body-2 mt-2">
+              <li class="text-body-2 mgt-2">
                 Enter Account no. <span class="text-bold"> {{ getBupayload.txref }} </span>
               </li> 
-              <li class="text-body-2 mt-2">
+              <li class="text-body-2 mgt-2">
                 Enter Amount no. <span class="text-bold"> {{ getBupayload.currency }} {{ $formatCurrency(getBupayload.amount) }} </span>
               </li>   
-              <li class="text-body-2 mt-2">
+              <li class="text-body-2 mgt-2">
                 Enter your M-PESA PIN and click OK to send
               </li>   
-              <li class="text-body-2 mt-2">
+              <li class="text-body-2 mgt-2">
                 You’ll receive a confirmation SMS from M-PESA
               </li>    
-              <li class="text-body-2 mt-2">
+              <li class="text-body-2 mgt-2">
                 Click "Complete payment" below to continue
               </li>  
             </ol>
@@ -48,7 +48,7 @@
           </div>
         </div>
 
-        <div class="mt-8">
+        <div class="mgt-8">
           <sendy-btn 
           :loading="loading"
           color='primary'

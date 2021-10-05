@@ -1,9 +1,9 @@
 <template>
    <div class="d-flex normal-text pointer" @click="$handlePaymentMethod(paymentMethod)">
 
-    <IconView class="text-center mt-0" :icon="paymentMethod.name.toLowerCase()" />
+    <IconView class="text-center mgt-0" :icon="paymentMethod.name.toLowerCase()" />
 
-    <span class="ml-5"> {{ paymentMethod.name }} </span>
+    <span class="mgl-5"> {{ paymentMethod.name }} </span>
 
     <span class="spacer"></span>
 

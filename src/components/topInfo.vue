@@ -1,14 +1,14 @@
 <template>
   <div class="">
       <IconView :icon="icon" />
-      <div class="mt-4">
+      <div class="mgt-4">
         <span class="title-payment" v-if="title"> {{ title }} </span>
       </div>
 
-      <div class="mt-4">
+      <div class="mgt-4">
         <span class="subtitle-warning"> {{ subtitle }} </span>
       </div>
-      <div class="mt-1 text-caption-1 text-gray80" v-if="mpesaCode">
+      <div class="mgt-1 text-caption-1 text-gray80" v-if="mpesaCode">
         <span>M-PESA code : {{ mpesaCode }} </span>
       </div>
   </div>

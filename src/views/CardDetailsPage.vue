@@ -4,9 +4,9 @@
     <div class="card">
       <TopInfo :icon="icon" :title="title"/>  
 
-      <div class="mt-10">
+      <div class="mgt-10">
         <span class="text-subtitle-1">UnionPay</span>
-        <IconView icon='union-pay' class="float-right mt-n2" width="68" height="48"/>
+        <IconView icon='union-pay' class="float-right mgt-n2" width="68" height="48"/>
       </div>
 
       <div class="text-body-2 text-gray70">
@@ -16,9 +16,9 @@
         </div>
       </div>
 
-      <hr class=" mt-10" />
+      <hr class=" mgt-10" />
 
-      <div class="mt-8 text-btn d-flex pointer" @click="showDeleteModal=true">
+      <div class="mgt-8 text-btn d-flex pointer" @click="showDeleteModal=true">
         <IconView icon="delete"/>
         <span class="text-btn">Remove Card</span>
 

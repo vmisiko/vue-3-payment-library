@@ -15,59 +15,59 @@
   }
 
   @each $size in $sizes {
-    .ml-#{$size} {
+    .mgl-#{$size} {
       margin-left: mult($size);
     }
 
-    .mr-#{$size} {
+    .mgr-#{$size} {
       margin-right: mult($size);
     }
 
-    .mt-#{$size} {
+    .mgt-#{$size} {
       margin-top: mult($size);
     }
 
-    .mt-n#{$size} {
+    .mgt-n#{$size} {
       margin-top: -#{mult($size)};
     }
 
-    .mb-#{$size} {
+    .mgb-#{$size} {
       margin-bottom: mult($size);
     }
 
-    .mb-n#{$size} {
+    .mgb-n#{$size} {
       margin-bottom: -#{mult($size)};
     }
 
-    .mx-#{$size} {
+    .mgx-#{$size} {
       margin: 0 mult($size);
     }
 
-    .my-#{$size} {
+    .mgy-#{$size} {
       margin: mult($size) 0;
     }
 
-    .pl-#{$size} {
+    .pdl-#{$size} {
       padding-left: mult($size);
     }
 
-    .pr-#{$size} {
+    .pdr-#{$size} {
       padding-right: mult($size);
     }
 
-    .pt-#{$size} {
+    .pdt-#{$size} {
       padding-top: mult($size);
     }
 
-    .pb-#{$size} {
+    .pdb-#{$size} {
       padding-bottom: mult($size);
     }
 
-    .px-#{$size} {
+    .pdx-#{$size} {
       padding: 0 mult($size);
     }
     
-    .pa-#{$size} {
+    .pda-#{$size} {
       padding: mult($size);
     }
   }

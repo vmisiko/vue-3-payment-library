@@ -8,41 +8,41 @@
 
       <PaymentDetail v-if="defaultPaymentMethod" :currency="currency" :amount="amount" :paymentMethod="defaultPaymentMethod"  :paymentStatus="paymentStatus" />
 
-      <div class="mt-3 text-right" v-if="!paymentStatus">
+      <div class="mgt-3 text-right" v-if="!paymentStatus">
          <sendy-btn 
           :loading="loading"
           color='primary'
-          class="mt-10"
+          class="mgt-10"
           @click="submit"
           >
             Confirm and Pay
           </sendy-btn>
       </div>
 
-      <div class="mt-8 text-right" v-if="paymentStatus === 'success'" >
+      <div class="mgt-8 text-right" v-if="paymentStatus === 'success'" >
         <sendy-btn 
           :block="true"
           :loading="loading"
           color='primary'
-          class="mt-10"
+          class="mgt-10"
         >
           Done
         </sendy-btn>
       </div>
 
-      <div class="mt-8 text-right" v-if="paymentStatus === 'failed'">
+      <div class="mgt-8 text-right" v-if="paymentStatus === 'failed'">
         <sendy-btn 
           :block="true"
           :loading="loading"
           color='primary'
-          class="mt-10"
+          class="mgt-10"
           @click="$router.push({ name: 'Entry'})"
         >
           Try Again
         </sendy-btn>
       </div>
 
-      <div class="mt-8 text-right" v-if="paymentStatus === 'retry'">
+      <div class="mgt-8 text-right" v-if="paymentStatus === 'retry'">
         <sendy-btn 
           :block="true"
           :loading="loading"

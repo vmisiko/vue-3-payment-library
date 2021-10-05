@@ -1,14 +1,14 @@
 <template>
   <div id="timer-modal" class="modal">
     <div class="modal-content">
-      <div class="mt-4">
+      <div class="mgt-4">
         <IconView icon="loading1" width="70" height="70" class="flex-center" />
       </div>
     
-      <div class="text-center mt-5">
+      <div class="text-center mgt-5">
         <span class="text-caption text-gray70"> {{ formatedCountdown }}</span>
       </div>
-      <div class="mt-4 text-center pb-15">
+      <div class="mgt-4 text-center pdb-15">
         <span class="text-body-2">Please wait while we confirm payment</span>
       </div>
     </div>

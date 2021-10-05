@@ -2,10 +2,10 @@
   <div class="card-min">
       <div class="flex-center">
         <div class="">
-          <IconView icon="loading1" class="flex-center mt-10" />
+          <IconView icon="loading1" class="flex-center mgt-10" />
         </div>
       </div>
-      <div class="text-center mt-15">
+      <div class="text-center mgt-15">
         <span class="normal-text">{{ text }}</span>
       </div>
 

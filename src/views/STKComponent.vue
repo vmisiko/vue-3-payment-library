@@ -4,7 +4,7 @@
     <div class="card-min">
       <TopInfo :icon="icon" :title="title"/>
 
-      <div class="mt-8">
+      <div class="mgt-8">
         <span class="text-caption-1"> Amount to pay</span>
 
         <div class="float-right">
@@ -15,9 +15,9 @@
 
         <hr />
 
-        <div class="mt-8">
+        <div class="mgt-8">
           <label class="text-caption-2 ">M-PESA payment number</label>
-          <div class="mt-1">
+          <div class="mgt-1">
             <input 
               type="text" 
               v-model="phone" 
@@ -30,11 +30,11 @@
           
         </div>
 
-        <div class="alert mt-10" v-show="promptInfo">
-          <span class="text-caption-2 pt-2 text-midnightBlue20">You'll receive a prompt to enter your M-PESA PIN</span>
+        <div class="alert mgt-10" v-show="promptInfo">
+          <span class="text-caption-2 pdt-2 text-midnightBlue20">You'll receive a prompt to enter your M-PESA PIN</span>
         </div>
 
-        <div class="mt-8">
+        <div class="mgt-8">
           <sendy-btn 
             color='primary'
             class="float-right"

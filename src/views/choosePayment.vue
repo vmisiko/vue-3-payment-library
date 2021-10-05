@@ -4,12 +4,12 @@
     <div class="card">
       <TopInfo :icon="icon" :title="title"/>
 
-      <span class="mt-2 text-overline">CREDIT OR DEBIT CARD</span>
+      <span class="mgt-2 text-overline">CREDIT OR DEBIT CARD</span>
       <div class="" v-if="creditCards.length !== 0" >
-        <div v-for="(card, index) in creditCards" :key="index" class="mt-4 text-caption-1 d-flex pa-3" :class="{'selected-border': (picked === card.pay_detail_id)}" >
+        <div v-for="(card, index) in creditCards" :key="index" class="mgt-4 text-caption-1 d-flex pda-3" :class="{'selected-border': (picked === card.pay_detail_id)}" >
             <IconView :icon="$cardIconValidator(card.psp.toLowerCase()) ? card.psp.toLowerCase() : 'card' " />
-            <span class="ml-2">{{ card.psp }}</span>
-            <span class="gray80-text ml-2"> {{$formatLastFour(card.pay_method_details) }}</span>   
+            <span class="mgl-2">{{ card.psp }}</span>
+            <span class="gray80-text mgl-2"> {{$formatLastFour(card.pay_method_details) }}</span>   
             <span class="spacer"></span>   
             <div class="">
               <input name="paymentoption" type="radio" :value="card.pay_detail_id"  v-model="picked" @change="update" >
@@ -17,24 +17,24 @@
         </div>
       </div>
 
-      <span class="mt-8 text-overline">Mobile money</span>
+      <span class="mgt-8 text-overline">Mobile money</span>
       <div v-if="savedMobile.length !== 0">
-        <div v-for="(mobile, index) in savedMobile" :key="index" class="mt-4 text-caption-1 d-flex pa-3 " :class="{'selected-border': picked === mobile.pay_detail_id}">
+        <div v-for="(mobile, index) in savedMobile" :key="index" class="mgt-4 text-caption-1 d-flex pda-3 " :class="{'selected-border': picked === mobile.pay_detail_id}">
             <IconView icon="mpesa" />
-            <span class="ml-2">M-PESA</span>
+            <span class="mgl-2">M-PESA</span>
             <span class="spacer"></span>   
             <div class="">
               <input name="paymentoption" type="radio" :value="mobile.pay_detail_id" v-model="picked" @change="update">
             </div>
         </div>
       </div> 
-      <hr class="mt-5" />
-      <span class="link mt-5" @click="$router.push('/add-payment')"> + Add payment option</span>
+      <hr class="mgt-5" />
+      <span class="link mgt-5" @click="$router.push('/add-payment')"> + Add payment option</span>
 
-      <div class="mt-4 text-right">
+      <div class="mgt-4 text-right">
          <sendy-btn 
           color='primary'
-          class="mt-10"
+          class="mgt-10"
           @click="$router.push({name: 'Entry'})"
           :loading="loading"
           >

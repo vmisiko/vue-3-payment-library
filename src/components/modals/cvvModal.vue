@@ -6,7 +6,7 @@
           <IconView icon='magnify-cvv' />
         </div>
 
-        <div class="mt-4">
+        <div class="mgt-4">
           <span>What is CVV?</span>
           <div>
             <span class="text-caption">This is a 3 or 4 digit security code found on the back of you card.</span>
@@ -16,7 +16,7 @@
         <sendy-btn 
           :block="true" 
           color='primary'
-          class="mt-8"
+          class="mgt-8"
           type="submit"
          @click="$emit('close')"
         >
