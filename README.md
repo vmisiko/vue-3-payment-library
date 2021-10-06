@@ -31,16 +31,18 @@ So there entry files:
 
  ```
   const buPayload = {
-    user_id: 3435,
-    entity_id: 1,
-    currency: "KES",
-    country_code: "KE",
+    user_id: this.user_id,
+    entity_id: this.entity_id,
+    currency: 'KES',
+    country_code: 'KE',
     amount: this.amount,
-    success_callback_url: "",
-    fail_callback_url: "",
-    txref: "RRRIIIAAAAKK",
+    success_callback_url: '',
+    fail_callback_url: '',
+    txref: this.txref,
     bulk: false,
-     mpesa_business_no: '',
+    mpesa_business_no: this.business_no,
+    email: this.email,
+    authToken: '', //Add Jwt token for authentication.
   };
   this.$paymentInit(buPayload, 'checkout'); //the 2nd argument can be a 'checkout' or 'payment-option', in order to access the two entry points of the Bu.
  ```
