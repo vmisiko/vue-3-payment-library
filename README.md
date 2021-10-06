@@ -2,7 +2,7 @@
 
 ## How to use
 ```
-npm install @vmisiko/payment
+npm install @sendyit/payment
 ```
 
 got to the src/main.js and add the following lines
