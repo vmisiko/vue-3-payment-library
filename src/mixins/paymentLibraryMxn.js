@@ -10,10 +10,11 @@ const mixin = {
     }
   },
   computed: {
-    ...mapGetters(['getPaymentMethods']),
+    ...mapGetters(['getPaymentMethods', 'getBupayload']),
     config() {
       return this.$sendyOptions.config;
     },
+    
   },
   methods: {
     ...mapMutations(['setBupayload']),
@@ -36,11 +37,23 @@ const mixin = {
     $initAxiosErrorNotif(payload) {
       this.$root.$emit('axios-notification', payload);
     },
+    paymentCustomHeaders() {
+      const authToken = this.getBupayload.authToken;
+      const param = {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: authToken,
+        },
+      }; 
+      return param;
+    },
     async $paymentAxiosPost(payload) {
       return new Promise(async(resolve, reject) => {
+        const headers = this.paymentCustomHeaders();
         try {
           const { url , params } = payload;
-          const { data } = await axios.post(`${this.config.BASE_URL}${url}`, params);
+          const { data } = await axios.post(`${this.config.BASE_URL}${url}`, params, headers);
           resolve(data);
         } catch (err) {
           this.handlePaymentAxiosErrors(err.response.status);
@@ -52,13 +65,13 @@ const mixin = {
       return new Promise(async(resolve, reject) => {
         try {
           const { url, params } = payload
+          const headers = this.paymentCustomHeaders();
+
           const values = {
            params,
-           headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-           }
+           headers: headers.headers,
           };
+
           const { data } = await axios.get(`${this.config.BASE_URL}${url}`, values);
           resolve(data);
         } catch (err) {
@@ -71,13 +84,8 @@ const mixin = {
       return new Promise(async(resolve, reject) => {
         try {
           const { url, params } = payload
-          const config = {
-            headers: {
-              'Content-Type': 'application/json',
-              Accept: 'application/json',
-            }
-          };
-          const { data } = await axios.put(`${this.config.BASE_URL}${url}`, params, config);
+          const headers = this.paymentCustomHeaders();
+          const { data } = await axios.put(`${this.config.BASE_URL}${url}`, params, headers);
           resolve(data);
         } catch (err) {
             this.handlePaymentAxiosErrors(err.response.status);
@@ -109,6 +117,7 @@ const mixin = {
       return `${first} **** ${last}`;
     },
     $paymentInit(payload, entry) {
+      localStorage.setItem('buPayload', JSON.stringify(payload));
       this.setBupayload(payload);
       switch (entry) {
         case 'checkout':
