@@ -7,30 +7,26 @@ import paymentLibraryMxn from './mixins/paymentLibraryMxn';
 
 export default {
   install (Vue, options) {
-    console.log(options, options.router);
     if (!options || !options.store) {
       throw new Error('Please initialise plugin with a Vuex store.')
     }
 
     if ( !options.hasOwnProperty('router')) {
       throw new Error('Please Initialise plugin with vue router.')
-    } else {
-      console.log('has router');
     }
-    
     
     options.store.registerModule('PaymentLib', store)
 
     options.router.addRoute(router[0]);
     
-    Vue.prototype.$sendy = options;
+    Vue.prototype.$sendyOptions = options;
 
     Vue.component('IconView', iconView);
 
     Vue.component('Snackbar', notification);
 
     Vue.component('sendy-btn', sendyBtn);
-    
+
     Vue.mixin(paymentLibraryMxn);
   }
 }

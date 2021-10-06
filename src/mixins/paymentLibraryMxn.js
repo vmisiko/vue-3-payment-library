@@ -12,7 +12,7 @@ const mixin = {
   computed: {
     ...mapGetters(['getPaymentMethods']),
     config() {
-      return this.$sendy.config;
+      return this.$sendyOptions.config;
     },
   },
   methods: {
