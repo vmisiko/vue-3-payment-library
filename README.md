@@ -10,7 +10,7 @@ got to the src/main.js and add the following lines
 ```
 import router from './router'
 import store from './store'
-import paymentlib from '@vmisiko/payment';
+import paymentlib from '@sendyit/payment';
 
 Vue.use(paymentlib, {
   store,
