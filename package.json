@@ -1,11 +1,11 @@
 {
-  "name": "@vmisiko/payment",
-  "version": "0.1.36",
+  "name": "@sendyit/payment",
+  "version": "0.1.1",
   "private": false,
   "scripts": {
     "serve": "vue-cli-service --preserve-symlinks serve",
     "build": "vue-cli-service --preserve-symlinks build",
-    "build-lib": "vue-cli-service build --target lib --name paymentlib src/main.js",
+    "build-lib": "vue-cli-service build --target lib --name payment src/main.js",
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
