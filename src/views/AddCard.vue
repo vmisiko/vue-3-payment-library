@@ -89,7 +89,6 @@ export default {
       transaction_id: '',
       poll_count: 0,
       poll_limit: 6,
-      paymentBaseUrl: 'https://payment-gateway-dev.sendyit.com/payment-gateway/api/v1',
       collectLoad: false,
       vgs_valid_payment: false,
     }
@@ -148,8 +147,8 @@ export default {
       };
 
       this.form = VGSCollect.create(
-        'tnt4d8qyodm',
-        'sandbox',
+        this.config.VGS_VAULT_ID,
+        this.config.VGS_ENVIRONMENT,
         () => {},
       );
       
