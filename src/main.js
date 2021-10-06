@@ -18,13 +18,19 @@ export default {
       console.log('has router');
     }
     
+    
     options.store.registerModule('PaymentLib', store)
 
     options.router.addRoute(router[0]);
     
+    Vue.prototype.$sendy = options;
+
     Vue.component('IconView', iconView);
+
     Vue.component('Snackbar', notification);
+
     Vue.component('sendy-btn', sendyBtn);
+    
     Vue.mixin(paymentLibraryMxn);
   }
 }

@@ -11,6 +11,9 @@ const mixin = {
   },
   computed: {
     ...mapGetters(['getPaymentMethods']),
+    config() {
+      return this.$sendy.config;
+    },
   },
   methods: {
     ...mapMutations(['setBupayload']),
@@ -34,7 +37,7 @@ const mixin = {
       return new Promise(async(resolve, reject) => {
         try {
           const { url , params } = payload;
-          const { data } = await axios.post(`${this.BASE_URL}${url}`, params);
+          const { data } = await axios.post(`${this.config.BASE_URL}${url}`, params);
           resolve(data);
         } catch (err) {
           reject(err);
@@ -52,7 +55,7 @@ const mixin = {
             Accept: 'application/json',
            }
           };
-          const { data } = await axios.get(`${this.BASE_URL}${url}`, values);
+          const { data } = await axios.get(`${this.config.BASE_URL}${url}`, values);
           resolve(data);
         } catch (err) {
           reject(err);
@@ -69,7 +72,7 @@ const mixin = {
               Accept: 'application/json',
             }
           };
-          const { data } = await axios.put(`${this.BASE_URL}${url}`, params, config);
+          const { data } = await axios.put(`${this.config.BASE_URL}${url}`, params, config);
           resolve(data);
         } catch (err) {
           reject(err);
