@@ -7,23 +7,28 @@
       <router-view/>
     </div>
     <NotificationComponent :show="showNotification" :text="notificationText"  :type="type" />
+    <AxiosErrorModal :show="showAxiosError" :text="errorText" @close="showAxiosError=!showAxiosError" />
   </div>
 </template>
 
 <script>
 import { mapGetters, mapMutations } from 'vuex';
 import NotificationComponent from '../components/notificationComponent';
+import AxiosErrorModal from '../components/modals/AxiosErrorModal';
 
 export default {
   name: 'PaymentEntry',
   components: {
     NotificationComponent,
+    AxiosErrorModal,
   },
   data() {
     return {
       showNotification: false,
+      showAxiosError: false,
       notificationText: 'M-PESA option added and selected for payment.',
       type: null,
+      errorText: 'Failed. Network Error!',
     }
   },
   computed: {
@@ -31,6 +36,7 @@ export default {
   },
   mounted() {
     this.$root.$on('payment-notification', this.notificationInit);
+    this.$root.$on('axios-notification', this.axiosNotif);
     this.retrievePaymentMethods();
   },
   methods: {
@@ -39,6 +45,10 @@ export default {
       this.notificationText = payload.text;
       this.type = payload.type;
       this.showNotification = !this.showNotification;
+    },
+    axiosNotif(payload) {
+      this.showAxiosError = true;
+      this.errorText = payload.text;
     },
     async retrievePaymentMethods() {
       const payload = {

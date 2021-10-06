@@ -33,6 +33,9 @@ const mixin = {
     $paymentNotification(payload) {
       this.$root.$emit('payment-notification', payload);
     },
+    $initAxiosErrorNotif(payload) {
+      this.$root.$emit('axios-notification', payload);
+    },
     async $paymentAxiosPost(payload) {
       return new Promise(async(resolve, reject) => {
         try {
@@ -40,6 +43,7 @@ const mixin = {
           const { data } = await axios.post(`${this.config.BASE_URL}${url}`, params);
           resolve(data);
         } catch (err) {
+          this.handlePaymentAxiosErrors(err.response.status);
           reject(err);
         }
       })
@@ -58,6 +62,7 @@ const mixin = {
           const { data } = await axios.get(`${this.config.BASE_URL}${url}`, values);
           resolve(data);
         } catch (err) {
+            this.handlePaymentAxiosErrors(err.response.status);
           reject(err);
         }
       })
@@ -75,10 +80,12 @@ const mixin = {
           const { data } = await axios.put(`${this.config.BASE_URL}${url}`, params, config);
           resolve(data);
         } catch (err) {
+            this.handlePaymentAxiosErrors(err.response.status);
           reject(err);
         }
       })
     },
+
     $formatCurrency(amount) {
       const result = parseFloat(amount);
       return result.toLocaleString()
@@ -94,7 +101,6 @@ const mixin = {
         'visa',
         'union-pay',
       ];
-
       return icons.includes(icon);
     },
     $formatCardno(card)  {
@@ -103,7 +109,6 @@ const mixin = {
       return `${first} **** ${last}`;
     },
     $paymentInit(payload, entry) {
-      localStorage.setItem('buPayload', JSON.stringify(payload));
       this.setBupayload(payload);
       switch (entry) {
         case 'checkout':
@@ -115,7 +120,22 @@ const mixin = {
         default:
           break;
       }
-    }
+    },
+    async handlePaymentAxiosErrors(error) {
+      switch (error) {
+        case 403:
+          this.$initAxiosErrorNotif({text: 'Please Login Again.'})
+          break;
+        case 204:
+          this.$initAxiosErrorNotif({text: 'Your session has expired. Please login again'})
+          console.clear();
+          break;
+        case 500:
+          this.$initAxiosErrorNotif({text: 'Oops an error has Occurred. Please try again'})
+          break;
+        default:
+      }
+    },
      
   }
 }
