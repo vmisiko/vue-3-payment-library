@@ -22,7 +22,7 @@
               type="text" 
               v-model="phone" 
               class="phone-input"
-              placeholder="0700 00000"
+              placeholder="254 700 00000"
               required
              >
              <span class="text-caption-2 text-error" v-if="error"> {{ error }}</span>
