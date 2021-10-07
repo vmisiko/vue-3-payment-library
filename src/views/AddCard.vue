@@ -218,6 +218,9 @@ export default {
           '/customers/collect_card_details',
           {
             data: newCardPayload,
+             headers: {
+              Authorization: this.getBupayload.authToken,
+            },
           },
           (status, response) => {
             this.loading = false;

@@ -4,14 +4,14 @@
     <div class="card">
       <TopInfo :icon="icon" :title="title"/>
 
-      <span class="mgt-2 text-overline">CREDIT OR DEBIT CARD</span>
+      <span v-if="creditCards.length !== 0" class="mgt-2 text-overline">CREDIT OR DEBIT CARD</span>
       <div class="" v-if="creditCards.length !== 0" >
         <div v-for="(card, index) in creditCards" :key="index" >
           <PaymentOption :payMethod="card" />
         </div>
       </div>
 
-      <span class="mgt-8 text-overline">Mobile money</span>
+      <span v-if="savedMobile.length !== 0" class="mgt-8 text-overline">Mobile money</span>
       <div v-if="savedMobile.length !== 0">
         <div v-for="(mobile, index) in savedMobile" :key="index">
             <PaymentOption :payMethod="mobile" />

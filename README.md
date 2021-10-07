@@ -18,7 +18,7 @@ Vue.use(payments, {
   config: {
     BASE_URL: '/payment-service-base-url', // add payment service base URl
     VGS_VAULT_ID: 'txxxxxxxxxxx',
-    VGS_ENVIRONMENT: 'sandbox', // environment is 'sandbox' for staging and 'production' for prod environment'
+    VGS_ENVIRONMENT: 'sandbox', // environment is 'sandbox' for staging and 'live' for prod environment.
   },
 });
 ```
@@ -36,8 +36,8 @@ So there entry files:
 
  ```
   const buPayload = {
-    user_id: this.user_id,
-    entity_id: this.entity_id,
+    user_id: 1,
+    entity_id: 1,
     currency: 'KES',
     country_code: 'KE',
     amount: this.amount,
@@ -45,8 +45,8 @@ So there entry files:
     fail_callback_url: '',
     txref: this.txref,
     bulk: false,
-    mpesa_business_no: this.business_no,
-    email: this.email,
+    paybill_no: '4444444',
+    email: 'johndoe@gmail.com',
     authToken: '', //Add Jwt token for authentication.
   };
   this.$paymentInit(buPayload, 'checkout'); //the 2nd argument can be a 'checkout' or 'payment-option', in order to access the two entry points of the Bu.

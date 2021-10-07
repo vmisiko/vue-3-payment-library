@@ -145,10 +145,10 @@ export default {
             that.TransactionIdStatus(); 
             if (poll_count === 5) {
               that.loading = false;
-              this.showTimer = false;
-              this.promptInfo = false,
-              this.setErrorText('Failed to charge using Mpesa. Please try again.');
-              this.$router.push({name: 'FailedView'});
+              that.showTimer = false;
+              that.promptInfo = false,
+              that.setErrorText('Failed to charge using Mpesa. Please try again.');
+              that.$router.push({name: 'FailedView'});
               return;
             }
           }, 10000 * poll_count);

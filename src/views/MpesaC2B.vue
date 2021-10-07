@@ -26,7 +26,7 @@
                 Select Lipa na M-PESA > Pay Bill 
               </li>
               <li class="text-body-2 mgt-2">
-                Enter Business no. <span class="text-bold"> {{ getBupayload.mpesa_business_no }} </span>
+                Enter Business no. <span class="text-bold"> {{ getBupayload.paybill_no }} </span>
               </li>
               <li class="text-body-2 mgt-2">
                 Enter Account no. <span class="text-bold"> {{ getBupayload.txref }} </span>
@@ -107,10 +107,10 @@ export default {
             that.TransactionIdStatus(); 
             if (poll_count === 5) {
               that.loading = false;
-              this.showTimer = false;
-              this.promptInfo = false,
-              this.setErrorText('Failed to charge using Mpesa. Please try again.');
-              this.$router.push({name: 'FailedView', params: { mpesa: 'mpesa'} });
+              that.showTimer = false;
+              that.promptInfo = false,
+              that.setErrorText('Failed to charge using Mpesa. Please try again.');
+              that.$router.push({name: 'FailedView', params: { mpesa: 'mpesa'} });
               return;
             }
           }, 10000 * poll_count);
