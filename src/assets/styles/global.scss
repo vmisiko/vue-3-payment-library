@@ -1,0 +1,203 @@
+@import "variables" , "textFont";
+
+#app {
+  font-family: 'Nunito' !important;
+  text-align: center;
+}
+
+#payment {
+  text-align: left;
+}
+
+  @function mult($number) {
+    $result: $number * 4;
+    @return $result + px;
+  }
+
+  @each $size in $sizes {
+    .mgl-#{$size} {
+      margin-left: mult($size);
+    }
+
+    .mgr-#{$size} {
+      margin-right: mult($size);
+    }
+
+    .mgt-#{$size} {
+      margin-top: mult($size);
+    }
+
+    .mgt-n#{$size} {
+      margin-top: -#{mult($size)};
+    }
+
+    .mgb-#{$size} {
+      margin-bottom: mult($size);
+    }
+
+    .mgb-n#{$size} {
+      margin-bottom: -#{mult($size)};
+    }
+
+    .mgx-#{$size} {
+      margin: 0 mult($size);
+    }
+
+    .mgy-#{$size} {
+      margin: mult($size) 0;
+    }
+
+    .pdl-#{$size} {
+      padding-left: mult($size);
+    }
+
+    .pdr-#{$size} {
+      padding-right: mult($size);
+    }
+
+    .pdt-#{$size} {
+      padding-top: mult($size);
+    }
+
+    .pdb-#{$size} {
+      padding-bottom: mult($size);
+    }
+
+    .pdx-#{$size} {
+      padding: 0 mult($size);
+    }
+    
+    .pda-#{$size} {
+      padding: mult($size);
+    }
+  }
+
+  .container {
+    margin-left: 40px;
+    margin-right: 40px;
+  }
+
+  .flex-center {
+    display: flex;
+    justify-content: center;
+  }
+
+  .direction-flex {
+    display: flex;
+    .flex-column {
+      display: flex;
+      flex-direction: column;
+    }
+    .spacer {
+      flex-grow: 1;
+    }
+    .align-center {
+      align-items: center;
+    }
+  }
+
+  .card {
+    border: 1px solid #E2E7ED;
+    box-sizing: border-box;
+    border-radius: 4px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    width: 480px;
+  }
+
+  .card-min {
+    border: 1px solid #E2E7ED;
+    box-sizing: border-box;
+    border-radius: 4px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    width: 360px;
+    text-align: left;
+  }
+
+  .float-right {
+   float: right;
+  }
+
+  @each $direction in $directions {
+
+    .text-#{$direction} {
+      text-align: $direction;
+    }
+  }
+  
+  @each $name, $color in $colors {
+    .text-#{$name} {
+      color: $color !important;
+    }
+  }
+
+
+  
+  hr {
+    border: 1px solid #E2E7ED;
+    width: 100%;
+  }
+
+  .link {
+    color: $linkColor;
+    cursor: pointer;
+  }
+
+  .pointer {
+    cursor: pointer;
+  }
+
+  .primary-btn {
+    border: none;
+    background-color: $linkColor;
+    padding: 12px 32px;
+    color:white !important;
+    text-align: center;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .primary-btn-block {
+    border: none;
+    background-color: $linkColor;
+    padding: 12px 32px;
+    color:white !important;
+    text-align: center;
+    border-radius: 4px;
+    width: 100%
+  }
+
+  .midnightblue-btn-block {
+    border: none;
+    background-color:#D3DDF6;
+    padding: 12px 32px;
+    color: $linkColor !important;
+    text-align: center;
+    border-radius: 4px;
+    width: 100%;
+  }
+  .error-btn-block {
+    border: none;
+    background-color: #9B101C;
+    padding: 12px 32px;
+    color: white !important;
+    text-align: center;
+    border-radius: 4px;
+    width: 100%;
+  }
+
+  .opacity-25 {
+    opacity: 0.5,
+  }
+
+  .selected-border {
+    border: 1px solid $linkColor;
+    border-radius: 4px;
+  }
+
+  input {
+    border: 0.5px solid #C0C4CC !important;
+  }

@@ -1,0 +1,47 @@
+<template>
+  <div class="flex-center">
+
+    <div class="card">
+      <TopInfo :icon="icon" :title="title"/>  
+
+      <div class="mgt-10">
+        <span class="text-subtitle-1">M-PESA</span>
+        <IconView icon='mpesa' class="float-right mgt-n2" width="68" height="48"/>
+      </div>
+
+      <hr class=" mgt-10" />
+
+      <div class="mgt-8 text-btn direction-flex pointer" @click="showDeleteModal=true">
+        <IconView icon="delete"/>
+        <span class="text-btn">Remove M-PESA</span>
+
+      </div>
+
+    </div>  
+    <DeletModal :show="showDeleteModal" @close="showDeleteModal = !showDeleteModal" />
+  </div>
+</template>
+
+<script>
+import TopInfo from '../components/topInfo';
+import DeletModal from '../components/modals/DeleteModal';
+export default {
+  name: 'MpesaDetail',
+  components: {
+    TopInfo,
+    DeletModal,
+  },
+  data() {
+    return {
+      icon: 'back',
+      title: 'Mobile Money',
+      showDeleteModal: false,
+    }
+  },
+  mounted() {
+  },
+  methods: {
+  }
+}
+</script>
+
