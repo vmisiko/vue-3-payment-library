@@ -2,7 +2,7 @@
 
 ## How to use
 ```
-npm install @sendyit/payment
+npm install @sendyit/payments
 ```
 
 got to the src/main.js and add the following lines
@@ -10,15 +10,15 @@ got to the src/main.js and add the following lines
 ```
 import router from './router'
 import store from './store'
-import payment from '@sendyit/payment';
+import payments from '@sendyit/payments';
 
-Vue.use(payment, {
+Vue.use(payments, {
   store,
   router,
   config: {
     BASE_URL: '/payment-service-base-url', // add payment service base URl
     VGS_VAULT_ID: 'txxxxxxxxxxx',
-    VGS_ENVIRONMENT: 'sandbox', // environment is 'sandbox' for staging and 'production' for prod enironment'
+    VGS_ENVIRONMENT: 'sandbox', // environment is 'sandbox' for staging and 'production' for prod environment'
   },
 });
 ```
