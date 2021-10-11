@@ -85,7 +85,7 @@ const routes = [
         component: PaymentOptionsPage,
       },
       {
-        path: '/card-details/:cardno',
+        path: '/card-details/:cardno/:cardTitle?',
         name: 'CardDetails',
         component: CardDetailsPage,
       },

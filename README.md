@@ -48,6 +48,8 @@ So there entry files:
     paybill_no: '4444444',
     email: 'johndoe@gmail.com',
     authToken: '', //Add Jwt token for authentication.
+    firstname: this.firstname,
+    lastname: this.lastname,
   };
   this.$paymentInit(buPayload, 'checkout'); //the 2nd argument can be a 'checkout' or 'payment-option', in order to access the two entry points of the Bu.
  ```

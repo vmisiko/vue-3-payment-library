@@ -5,8 +5,8 @@
       <TopInfo :icon="icon" :title="title"/>  
 
       <div class="mgt-10">
-        <span class="text-subtitle-1">UnionPay</span>
-        <IconView icon='union-pay' class="float-right mgt-n2" width="68" height="48"/>
+        <span class="text-subtitle-1">{{ $route.params.cardTitle }}</span>
+        <IconView :icon="$cardIconValidator($route.params.cardTitle.toLowerCase()) ? $route.params.cardTitle.toLowerCase() : 'card' " class="float-right mgt-n2" width="68" height="48"/>
       </div>
 
       <div class="text-body-2 text-gray70">
@@ -46,6 +46,7 @@ export default {
       title: 'Card Details',
       showDeleteModal: false,
       card_expiry: false,
+      cardDetails: null,
     }
   },
   computed: {
