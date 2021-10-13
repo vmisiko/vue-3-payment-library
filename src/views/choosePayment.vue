@@ -35,7 +35,7 @@
          <sendy-btn 
           color='primary'
           class="mgt-10"
-          @click="$router.push({name: 'Entry'})"
+          @click="handleRouting"
           :loading="loading"
           >
             Continue
@@ -126,6 +126,24 @@ export default {
       const result = this.getSavedPayMethods.filter(element => element.pay_detail_id === this.picked)[0];
       return result ? result.pay_method_name : '';
     },
+    handleRouting() {
+      const entryRoute = localStorage.entry_route;
+      const entryPoint = localStorage.entry;
+      switch(entryPoint) {
+        case 'checkout':
+          this.$router.push({name: 'Entry'});
+          break;
+        case 'choose-payment':
+          this.$router.push({name: entryRoute});
+          break;
+        case 'payment-option':
+          this.$router.push({ name: 'PaymentOptionsPage'});
+          break;
+        default:
+          this.$router.push({name: 'Entry'});
+          break;
+      }
+    }
   }
 }
 </script>

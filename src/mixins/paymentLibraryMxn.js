@@ -119,12 +119,17 @@ const mixin = {
     $paymentInit(payload, entry) {
       localStorage.setItem('buPayload', JSON.stringify(payload));
       this.setBupayload(payload);
+      localStorage.setItem('entry', entry);
+      localStorage.setItem('entry_route', this.$route.name);
       switch (entry) {
         case 'checkout':
           this.$router.push({ name: 'Entry'});
           break;
         case 'payment-option':
           this.$router.push({ name: 'PaymentOptionsPage'});
+          break;
+        case 'choose-payment':
+          this.$router.push({ name: 'ChoosePayment'});
           break;
         default:
           break;

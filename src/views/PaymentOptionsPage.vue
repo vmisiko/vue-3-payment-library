@@ -24,7 +24,7 @@
          <sendy-btn 
           color='primary'
           class="mgt-10"
-          @click="$router.push({ name: 'Entry' })"
+          @click="handleRouting"
           :loading="loading"
           >
             Continue
@@ -87,6 +87,10 @@ export default {
         this.setSavedPayMethods(response.saved_payment_methods);
       }
     },
+    handleRouting() {
+      const entryRoute = localStorage.entry_route;
+      this.$router.push({name: entryRoute});
+    }
   }
 }
 </script>

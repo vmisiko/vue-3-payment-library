@@ -26,10 +26,11 @@ Vue.use(payments, {
 
 ### How to call the payment library.
 
-So there entry files:
+So there 3 entry points:
  ```
  1. checkout
  2. payment-option
+ 3. choose-payment
  ```
 
  To go to checkout page call the following method as shown below by passing the Bu payload
@@ -51,7 +52,7 @@ So there entry files:
     firstname: this.firstname,
     lastname: this.lastname,
   };
-  this.$paymentInit(buPayload, 'checkout'); //the 2nd argument can be a 'checkout' or 'payment-option', in order to access the two entry points of the Bu.
+  this.$paymentInit(buPayload, 'checkout'); //the 2nd argument can be a 'checkout', 'payment-option' or 'choose-payment', in order to access the three entry points of the Bu.
  ```
 
  ### How test and collaborate
