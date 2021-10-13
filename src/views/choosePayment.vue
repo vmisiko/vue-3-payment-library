@@ -134,7 +134,7 @@ export default {
           this.$router.push({name: 'Entry'});
           break;
         case 'choose-payment':
-          this.$router.push({name: entryRoute});
+          this.$router.push({ name: entryRoute });
           break;
         case 'payment-option':
           this.$router.push({ name: 'PaymentOptionsPage'});
