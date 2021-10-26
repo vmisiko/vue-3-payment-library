@@ -5,7 +5,7 @@
 
         <div class="float-right" :class="{'mgt-n2': !paymentStatus}" >
           <span class="amount-text" :class="{'text-caption-1': paymentStatus}">
-            {{ currency }} {{ amount.toLocaleString() }}
+            {{ currency }} {{ $formatCurrency(amount) }}
           </span>
         </div>
     </div>

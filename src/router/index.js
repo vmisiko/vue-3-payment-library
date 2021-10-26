@@ -13,6 +13,7 @@ import NoPaymentOption from '../views/NoPaymentOption';
 import PaymentOptionsPage from '../views/PaymentOptionsPage';
 import CardDetailsPage from '../views/CardDetailsPage';
 import MpesaDetail from '../views/MpesaDetail';
+import ChoosePaymentCheckout from '../views/ChoosePaymentCheckout';
 
 const routes = [
   {
@@ -48,6 +49,11 @@ const routes = [
         path: '/choose-payment',
         name: 'ChoosePayment',
         component: choosePayment,
+      },
+      {
+        path: '/choose-payment-checkout',
+        name: 'ChoosePaymentCheckout',
+        component: ChoosePaymentCheckout,
       },
       {
         path: '/add-payment',

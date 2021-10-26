@@ -12,7 +12,7 @@
           :block="true"
           :loading="loading"
           color='primary'
-          @click="$router.push({name: 'Entry'})"
+          @click="$handlePaymentRouting"
         >
           Done
         </sendy-btn>

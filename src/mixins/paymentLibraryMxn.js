@@ -131,6 +131,9 @@ const mixin = {
         case 'choose-payment':
           this.$router.push({ name: 'ChoosePayment'});
           break;
+        case 'choose-payment-checkout':
+          this.$router.push({ name: 'ChoosePaymentCheckout'});
+          break;
         default:
           break;
       }
@@ -148,6 +151,27 @@ const mixin = {
           this.$initAxiosErrorNotif({text: 'Oops an error has Occurred. Please try again'})
           break;
         default:
+      }
+    },
+    $handlePaymentRouting() {
+      const entryRoute = localStorage.entry_route;
+      const entryPoint = localStorage.entry;
+      switch(entryPoint) {
+        case 'checkout':
+          this.$router.push({name: 'Entry'});
+          break;
+        case 'choose-payment':
+          this.$router.push({ name: entryRoute });
+          break;
+        case 'choose-payment-checkout':
+          this.$router.push({ name: entryRoute});
+          break;
+        case 'payment-option':
+          this.$router.push({ name: 'PaymentOptionsPage'});
+          break;
+        default:
+          this.$router.push({name: 'Entry'});
+          break;
       }
     },
      

@@ -11,7 +11,7 @@
           :block="true"
           :loading="loading"
           color='primary'
-          @click="$router.push({ name: 'Entry'})"
+          @click="routeRetry"
         >
           {{ $route.params.mpesa ? 'Retry' : 'Try Again' }}
         </sendy-btn>
@@ -93,6 +93,19 @@ export default {
       this.currency = this.getBupayload.currency;
       this.amount = this.getBupayload.amount;
     },
+    routeRetry() {
+      const entry = localStorage.entry;
+      switch (entry) {
+        case 'checkout':
+          this.$router.push({ name: 'Entry'});
+          break;
+        case 'choose-payment-checkout':
+          this.$router.push({ name: 'ChoosePaymentCheckout'});
+          break;
+        default:
+          break;
+      }
+    }
   }
 }
 

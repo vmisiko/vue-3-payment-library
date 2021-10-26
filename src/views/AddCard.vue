@@ -1,7 +1,7 @@
 <template>
   <div class="flex-center">
     <Processing text="Processing your card details" v-if="collectLoad" />
-    <div class="card" v-if="!collectLoad">
+    <div class="card-min" v-if="!collectLoad">
       <TopInfo :icon="icon" :title="title"/>    
 
       <form id="cc-form" @submit.prevent="onsubmit">
@@ -38,12 +38,15 @@
             </div>
 
           </div>
-       
+        
+        <div class="mgt-10 text-center">
+          <span class="charge-text"> In order to verify your card details, we will charge a small fee of KES 5.00 and refund your card within 15 days.</span>
+        </div>
         <sendy-btn 
           :block="true" 
           :loading="loading"
           color='primary'
-          class="mgt-10"
+          class="mgt-3"
           type="submit"
         >
           Add Card
@@ -428,5 +431,15 @@ export default {
   cursor: pointer;
 }
 
+.charge-text {
+  font-family: Nunito;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 10px;
+  line-height: 16px;
+  text-align: center;
+  letter-spacing: 0.2px;
+  color: #909399;
+}
 
 </style>
