@@ -26,7 +26,7 @@ const routes = [
         component: payment,
       },
       {
-        path: '/success-view/:mpesaCode?',
+        path: '/success-view/:mpesaCode?:duration?',
         name: 'SuccessView',
         component: successView,
       },

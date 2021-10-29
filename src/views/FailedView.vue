@@ -37,6 +37,7 @@
 import { mapGetters, mapMutations } from 'vuex';
 import TopInfo from '../components/topInfo';
 import PaymentDetail from '../components/paymentDetail';
+import paymentGenMxn from '../mixins/paymentGenMxn';
 
 export default {
   name: 'Payment',
@@ -44,6 +45,7 @@ export default {
     TopInfo,
     PaymentDetail,
   },
+  mixins: [paymentGenMxn],
   data() {
     return {
       icon: 'warning',
@@ -95,6 +97,10 @@ export default {
     },
     routeRetry() {
       const entry = localStorage.entry;
+      window.analytics.track('Try again after Failed Payment', {
+        ...this.commonTrackPayload(),
+      });
+      this.$handlePaymentRouting(); 
       switch (entry) {
         case 'checkout':
           this.$router.push({ name: 'Entry'});

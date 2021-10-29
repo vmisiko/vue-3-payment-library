@@ -24,7 +24,7 @@
           color='info'
           class="mgt-4"
           type="submit"
-         @click="$emit('close')"
+         @click="cancelRemove"
         >
           Cancel
         </sendy-btn>
@@ -34,9 +34,11 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import paymentGenMxn from '../../mixins/paymentGenMxn';
 
 export default {
   name: 'DeletModal',
+  mixins: [paymentGenMxn],
   props: ['show'],
   data() {
     return {
@@ -59,7 +61,7 @@ export default {
       document.getElementById('delete-modal').style.display = 'none';
     },
     handleDelete() {
-       switch (this.$route.name) {
+      switch (this.$route.name) {
         case 'MpesaDetails':
           this.deleteMpesa();
           break;
@@ -73,11 +75,17 @@ export default {
     },
     async deleteCard() {
       this.loading = true;
+      const startTime = new Date();
+      window.analytics.track('Delete card', {
+        ...this.commonTrackPayload(),
+        card_network: this.$route.params.cardTitle,
+      });
+
       const payload = {
         cardno:  this.$route.params.cardno,
         userid: this.getBupayload.user_id,
       };
-
+      
       const fullPayload = {
         url: '/api/v1/card/delete',
         params: payload,
@@ -85,18 +93,30 @@ export default {
 
       const response = await this.$paymentAxiosPost(fullPayload);
       this.loading = false;
+      const finishTime = Date.now() - startTime;
+      window.analytics.track( response.status ? 'Card Deleted Successfully': 'Card Not Deleted' ,  {
+        ...this.commonTrackPayload(),
+        duration_taken: finishTime,
+        card_network: this.$route.params.cardTitle,
+        ...(!response.status && {failure_reason: response.message}),
+      });
 
       if (response.status) {
         this.loading = false;
         this.$paymentNotification({ text: 'Card details removed', type: 'info' });
         this.$router.push({name: 'PaymentOptionsPage'});
+        return;
       }
 
       this.$paymentNotification({ text: response.message, type: 'error' });
-
     },
     async deleteMpesa() {
       this.loading = true;
+      const startTime = new Date();
+      window.analytics.track('Delete Mobile Money', {
+        ...this.commonTrackPayload(),
+        mobile_money_network: 'M-Pesa',
+      });
 
       const payload = {
         pay_detail_id:  this.$route.params.id,
@@ -109,6 +129,13 @@ export default {
       }
 
       const response = await this.$paymentAxiosPost(fullPayload);
+      
+      const finishTime = Date.now() - startTime;
+      window.analytics.track( response.status ? 'Mobile Money Deleted Successfully': 'Mobile Money Not Deleted' ,  {
+        ...this.commonTrackPayload(),
+        duration_taken: finishTime,
+      });
+
       this.loading = false;
       if (response.status) {
         this.$paymentNotification({ text: 'M-PESA option removed', type: "info" })
@@ -117,6 +144,25 @@ export default {
       this.$paymentNotification({ text: response.message, type: 'error' });
 
 
+    },
+    cancelRemove() {
+      switch (this.$route.name) {
+        case 'MpesaDetails':
+          window.analytics.track('Cancel Remove M-Pesa', {
+            ...this.commonTrackPayload(),
+            mobile_money_network: 'M-Pesa',
+          });
+          break;
+        case 'CardDetails':
+          window.analytics.track('Cancel Remove Card', {
+            ...this.commonTrackPayload(),
+            card_network: this.$route.params.cardTitle,
+          });
+          break;
+        default:
+          break;
+      }
+      this.$emit('close');
     }
   }
 }

@@ -69,6 +69,7 @@
 import { mapGetters, mapMutations } from 'vuex';
 import TopInfo from '../components/topInfo';
 import TimerModal from '../components/modals/timerModal';
+import paymentGenMxn from '../mixins/paymentGenMxn';
 
 export default {
   name: 'MpesaC2B',
@@ -76,6 +77,7 @@ export default {
     TopInfo,
     TimerModal,
   },
+  mixins: [paymentGenMxn],
   data() {
     return {
       icon: 'back',
@@ -95,6 +97,11 @@ export default {
       this.poll_count = 0;
       this.showTimer = true;
       const poll_limit = 6;
+
+      window.analytics.track('Complete Payment', {
+        ...this.commonTrackPayload(),
+      });
+
       for (let poll_count = 0; poll_count < poll_limit; poll_count++) {
         const that = this;
         (function (poll_count) {

@@ -18,7 +18,7 @@
 
       <hr class=" mgt-10" />
 
-      <div class="mgt-8 text-btn direction-flex pointer" @click="showDeleteModal=true">
+      <div class="mgt-8 text-btn direction-flex pointer" @click="removeCard">
         <IconView icon="delete"/>
         <span class="text-btn">Remove Card</span>
 
@@ -33,6 +33,7 @@
 import { mapGetters } from 'vuex';
 import TopInfo from '../components/topInfo';
 import DeletModal from '../components/modals/DeleteModal';
+import paymentGenMxn from '../mixins/paymentGenMxn';
 
 export default {
   name: 'CardDetailsPage',
@@ -40,6 +41,7 @@ export default {
     TopInfo,
     DeletModal,
   },
+  mixins: [paymentGenMxn],
   data() {
     return {
       icon: 'back',
@@ -69,7 +71,13 @@ export default {
 
       const response = await this.$paymentAxiosPost(fullPayload);
       this.card_expiry = response.expirydate;
-    }
+    },
+    removeCard() {
+      window.analytics.track('Remove card', {
+        ...this.commonTrackPayload(),
+      });
+      this.showDeleteModal=true;
+    },
   }
 }
 </script>

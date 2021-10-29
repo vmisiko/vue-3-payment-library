@@ -38,6 +38,7 @@
 import { mapGetters, mapMutations } from 'vuex';
 import TopInfo from '../components/topInfo';
 import PaymentOption from '../components/paymentOptionPage/paymentOption';
+import paymentGenMxn from '../mixins/paymentGenMxn';
 
 export default {
   name: 'PaymentOptionsPage',
@@ -45,6 +46,7 @@ export default {
     TopInfo,
     PaymentOption,
   },
+  mixins: [paymentGenMxn],
   data() {
     return {
       icon: 'back',
@@ -66,6 +68,9 @@ export default {
   },
   mounted() {
     this.retrievePaymentMethods();
+    window.analytics.track('Tap Payment Options Menu', {
+      ...this.commonTrackPayload(), 
+    });
   },
   methods: {
     ...mapMutations(['setErrorText', 'setPaymentMethods', 'setSavedPayMethods']),

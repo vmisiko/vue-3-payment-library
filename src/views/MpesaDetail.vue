@@ -11,7 +11,7 @@
 
       <hr class=" mgt-10" />
 
-      <div class="mgt-8 text-btn direction-flex pointer" @click="showDeleteModal=true">
+      <div class="mgt-8 text-btn direction-flex pointer" @click="removeCard">
         <IconView icon="delete"/>
         <span class="text-btn">Remove M-PESA</span>
 
@@ -41,6 +41,13 @@ export default {
   mounted() {
   },
   methods: {
+    removeCard() {
+      window.analytics.track('Remove Mobile Money', {
+        ...this.commonTrackPayload(),
+      });
+      this.showDeleteModal=true;
+    },
+
   }
 }
 </script>

@@ -68,13 +68,13 @@ import paymentGenMxn from '../mixins/paymentGenMxn';
 
 export default {
   name: 'Payment',
-  mixins: [paymentGenMxn],
   components: {
     TopInfo,
     PaymentDetail,
     Processing,
     NoOptionsModal,
   },
+  mixins: [paymentGenMxn],
   data() {
     return {
       icon: 'back',
@@ -90,6 +90,7 @@ export default {
       poll_limit: 6,
       errorText: '',
       mpesaCode: '',
+      startResponseTime: null,
     }
   },
   computed: {
@@ -137,14 +138,15 @@ export default {
       this.paymentStatus= 'success';
     },
     async submit() {
-
-       window.analytics.track('Confirm and Pay', {
+    this.startResponseTime = new Date();
+      window.analytics.track('Confirm and Pay', {
         ...this.commonTrackPayload(), 
         payment_method: this.defaultPaymentMethod.pay_method_name,
         amount: this.getBupayload.amount,
         currency: this.getBupayload.currency,
       }); 
       
+
       if (this.defaultPaymentMethod.pay_method_id === 1) {
         this.amount > 150000 ? this.$router.push('/mpesa-c2b') : this.$router.push('/mpesa-stk');
         return;
@@ -217,9 +219,12 @@ export default {
               this.$paymentNotification({
                 text: res.message,
               });
-              // this.sucessView()
               this.loading = false;
-              this.$router.push({name: 'SuccessView'});
+              const duration = Date.now() - this.startResponseTime;
+              this.$router.push({
+                name: 'SuccessView',
+                duration: duration,
+              });
               break;
             case 'failed':
               this.poll_count = this.poll_limit;

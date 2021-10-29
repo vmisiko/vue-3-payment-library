@@ -12,7 +12,7 @@
           :block="true"
           :loading="loading"
           color='primary'
-          @click="$handlePaymentRouting"
+          @click="routing"
         >
           Done
         </sendy-btn>
@@ -27,6 +27,7 @@
 import { mapGetters, mapMutations } from 'vuex';
 import TopInfo from '../components/topInfo';
 import PaymentDetail from '../components/paymentDetail';
+import paymentGenMxn from '../mixins/paymentGenMxn';
 
 export default {
   name: 'Payment',
@@ -34,6 +35,7 @@ export default {
     TopInfo,
     PaymentDetail,
   },
+  mixins: [paymentGenMxn],
   data() {
     return {
       icon: 'success',
@@ -85,6 +87,14 @@ export default {
         this.setSavedPayMethods(response.saved_payment_methods);
       }
     },
+    routing() {
+      window.analytics.track('Done after Successful Payment', {
+        ...this.commonTrackPayload(), 
+        duration_of_response: this.$route.params.duration,
+      });
+      // this.$handlePaymentRouting(); 
+      this.$router.push({ name: localStorage.entry_route });
+    }
   }
 }
 
