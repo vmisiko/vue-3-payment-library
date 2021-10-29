@@ -29,7 +29,7 @@
         </div>
       </div> 
       <hr class="mgt-5" />
-      <span class="link mgt-5" @click="$router.push('/add-payment')"> + Add payment option</span>
+      <span class="link mgt-5" @click="addPaymentOption"> + Add payment option</span>
 
       <div class="mgt-4 text-right">
          <sendy-btn 
@@ -48,9 +48,11 @@
 <script>
 import { mapGetters, mapMutations } from 'vuex';
 import TopInfo from '../components/topInfo';
+import paymentGenMxn from '../mixins/paymentGenMxn';
 
 export default {
   name: 'ChoosePayment',
+  mixins: [paymentGenMxn],
   components: {
     TopInfo,
   },
@@ -60,6 +62,7 @@ export default {
       title: 'Choose payment option',
       picked: '',
       loading: false,
+      startTime: null,
     }
   },
   computed: {
@@ -76,6 +79,7 @@ export default {
   mounted() {
     this.retrievePaymentMethods();
     this.getDefaultpayMethod();
+    this.startTime = Date.now();
   },
   methods: {
     ...mapMutations(['setPaymentMethods', 'setSavedPayMethods']),
@@ -114,6 +118,12 @@ export default {
         params: payload,
       }
 
+      const payment_method = this.getSavedPayMethods.filter(elements => elements.pay_detail_id === this.picked)[0].pay_method_name;
+      window.analytics.track('Choose Payment Option', {
+        ...this.commonTrackPayload(),
+        payment_method: payment_method,
+      });
+
       this.loading = true
       const response = await this.$paymentAxiosPut(fullPayload);
       this.loading = false;
@@ -129,6 +139,27 @@ export default {
     handleRouting() {
       const entryRoute = localStorage.entry_route;
       const entryPoint = localStorage.entry;
+      const payment_method = this.getSavedPayMethods.filter(elements => elements.pay_detail_id === this.picked)[0];
+      console.log(payment_method);
+      const countSavedCards = this.getSavedPayMethods.filter(element => element.pay_method_id === 2);
+      
+      switch (payment_method.pay_method_id) {
+        case 1:
+          window.analytics.track('Continue after selecting  M-Pesa', {
+            ...this.commonTrackPayload(), 
+          }); 
+          break;
+        case 2: 
+          window.analytics.track('Continue after selecting Card', {
+            ...this.commonTrackPayload(), 
+            number_of_cards: countSavedCards.length,
+            selected_cards_network: payment_method.psp
+          }); 
+          break;
+        default:
+          break;
+      }
+           
       switch(entryPoint) {
         case 'checkout':
           this.$router.push({name: 'Entry'});
@@ -143,6 +174,16 @@ export default {
           this.$router.push({name: 'Entry'});
           break;
       }
+    }, 
+    addPaymentOption() {
+      const finishTime = Date.now - this.startTime;
+      console.log(finishTime);
+      window.analytics.track('Add Payment Option', {
+        ...this.commonTrackPayload(),
+        timezone: this.paymentTimezone,
+        country_code: this.getBupayload.country_code,
+      })
+      this.$router.push('/add-payment');
     }
   }
 }

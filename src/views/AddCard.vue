@@ -94,6 +94,7 @@ export default {
       poll_limit: 6,
       collectLoad: false,
       vgs_valid_payment: false,
+      cardType: null,
     }
   },
   computed: {
@@ -113,6 +114,7 @@ export default {
           && state.expirydate.isValid
         ) {
           this.vgs_valid_payment = true;
+          this.cardType = state.cardno;
         } else {
           this.vgs_valid_payment = false;
         }

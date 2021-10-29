@@ -12,15 +12,19 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+import paymentGenMxn from '../mixins/paymentGenMxn';
 
 export default {
   name: 'PaymentOption',
+  mixins: [paymentGenMxn],
   props: ['paymentMethod'],
   data() {
     return {
     }
   },
   computed: {
+    ...mapGetters(['getBupayload']),
     optionName() {
       let result = 'Credit or Debit Card';
       switch (this.paymentMethod.payment_method_id) {
@@ -41,9 +45,17 @@ export default {
     handleSelect() {
       switch (this.paymentMethod.id) {
         case 1: 
+          window.analytics.track('Add Card', {
+            ...this.commonTrackPayload(),
+            card_network: null,
+          });
           this.$router.push('/add-card')
           break;
         case 2: 
+          window.analytics.track('Add M-Pesa', {
+            ...this.commonTrackPayload(),
+            phone_number: '',
+          });
           this.$router.push('/add-mpesa')
           break;
         default:

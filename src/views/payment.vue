@@ -63,9 +63,12 @@ import TopInfo from '../components/topInfo';
 import PaymentDetail from '../components/paymentDetail';
 import Processing from '../components/processing';
 import NoOptionsModal from '../components/modals/noOptionsModal';
+import paymentGenMxn from '../mixins/paymentGenMxn';
+
 
 export default {
   name: 'Payment',
+  mixins: [paymentGenMxn],
   components: {
     TopInfo,
     PaymentDetail,
@@ -134,6 +137,14 @@ export default {
       this.paymentStatus= 'success';
     },
     async submit() {
+
+       window.analytics.track('Confirm and Pay', {
+        ...this.commonTrackPayload(), 
+        payment_method: this.defaultPaymentMethod.pay_method_name,
+        amount: this.getBupayload.amount,
+        currency: this.getBupayload.currency,
+      }); 
+      
       if (this.defaultPaymentMethod.pay_method_id === 1) {
         this.amount > 150000 ? this.$router.push('/mpesa-c2b') : this.$router.push('/mpesa-stk');
         return;

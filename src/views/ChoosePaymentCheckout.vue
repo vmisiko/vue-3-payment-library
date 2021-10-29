@@ -29,7 +29,7 @@
         </div>
       </div> 
 
-      <span class="link mgt-5" @click="$router.push('/add-payment')"> + Add payment option</span>
+      <span class="link mgt-5" @click="addPaymentOption"> + Add payment option</span>
 
       <hr class="mgt-5" />
 
@@ -59,9 +59,11 @@
 import { mapGetters, mapMutations } from 'vuex';
 import TopInfo from '../components/topInfo';
 import Processing from '../components/processing';
+import paymentGenMxn from '../mixins/paymentGenMxn';
 
 export default {
   name: 'ChoosePaymentCheckout',
+  mixins: [paymentGenMxn],
   components: {
     TopInfo,
     Processing,
@@ -138,6 +140,12 @@ export default {
         url: `/set_default`,
         params: payload,
       }
+
+      const payment_method = this.getSavedPayMethods.filter(elements => elements.pay_detail_id === this.picked)[0].pay_method_name;
+      window.analytics.track('Choose Payment Option', {
+        ...this.commonTrackPayload(),
+        payment_method: payment_method,
+      });
 
       this.loading1 = true
       const response = await this.$paymentAxiosPut(fullPayload);
@@ -245,8 +253,18 @@ export default {
         this.errorText = res.message;
         this.showErrorModal= true;
       })
-    }
+    },
 
+    addPaymentOption() {
+      const finishTime = Date.now - this.startTime;
+      console.log(finishTime);
+      window.analytics.track('Add Payment Option', {
+        ...this.commonTrackPayload(),
+        timezone: this.paymentTimezone,
+        country_code: this.getBupayload.country_code,
+      })
+      this.$router.push('/add-payment');
+    }
 
   }
 }
