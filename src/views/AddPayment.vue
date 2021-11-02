@@ -19,6 +19,7 @@
 import { mapGetters } from 'vuex';
 import TopInfo from '../components/topInfo';
 import PaymentOption from '../components/paymentOption';
+import paymentGenMxn from '../mixins/paymentGenMxn';
 
 export default {
   name: 'AddPayment',
@@ -26,6 +27,7 @@ export default {
     TopInfo,
     PaymentOption,
   },
+  mixins: [paymentGenMxn],
   data() {
     return {
       icon: 'back',
@@ -47,7 +49,8 @@ export default {
   computed: {
     ...mapGetters(['getPaymentMethods']),
   },
-  methods: {
-  }
+  mounted() {
+    this.retrievePaymentMethods();
+  },
 }
 </script>

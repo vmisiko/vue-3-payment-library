@@ -37,7 +37,6 @@ export default {
   mounted() {
     this.$root.$on('payment-notification', this.notificationInit);
     this.$root.$on('axios-notification', this.axiosNotif);
-    this.retrievePaymentMethods();
   },
   methods: {
     ...mapMutations(['setPaymentMethods', 'setSavedPayMethods']),
@@ -49,24 +48,6 @@ export default {
     axiosNotif(payload) {
       this.showAxiosError = true;
       this.errorText = payload.text;
-    },
-    async retrievePaymentMethods() {
-      const payload = {
-        country_code : this.getBupayload.country_code,
-        entity_id : this.getBupayload.entity_id,
-        user_id : this.getBupayload.user_id,
-      };
-
-      const fullPayload = {
-        url: '/payment_methods',
-        params: payload,
-      }
-
-      const response = await this.$paymentAxiosPost(fullPayload);
-      if (response.status) {
-        this.setPaymentMethods(response.payment_methods);
-        this.setSavedPayMethods(response.saved_payment_methods);
-      }
     },
   }
  }

@@ -110,7 +110,6 @@ export default {
   },
   watch: {
     phone(val) {
-      console.log(val);
       if (val && val.length > 8) {
         this.error = '';
       }

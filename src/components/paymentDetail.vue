@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     formatLastFour(cardno) {
-      const result = cardno.substr(-4)
+      const result = cardno ? cardno.substr(-4): '';
       return `**** ${result}`;
     }
   }

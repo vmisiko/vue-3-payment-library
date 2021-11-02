@@ -116,24 +116,6 @@ export default {
   },
   methods: {
     ...mapMutations(['setErrorText', 'setPaymentMethods', 'setSavedPayMethods']),
-    async retrievePaymentMethods() {
-      const payload = {
-        country_code : this.getBupayload.country_code,
-        entity_id : this.getBupayload.entity_id,
-        user_id : this.getBupayload.user_id,
-      };
-
-      const fullPayload = {
-        url: '/payment_methods',
-        params: payload,
-      }
-      
-      const response = await this.$paymentAxiosPost(fullPayload);
-      if (response.status) {
-        this.setPaymentMethods(response.payment_methods);
-        this.setSavedPayMethods(response.saved_payment_methods);
-      }
-    },
     getDefaultpayMethod() {
       this.defaultPaymentMethod = this.getSavedPayMethods ? this.getSavedPayMethods.filter(method => method.default === 1)[0] : [];
       this.picked = this.defaultPaymentMethod ? this.defaultPaymentMethod.pay_detail_id : '';
@@ -272,7 +254,6 @@ export default {
 
     addPaymentOption() {
       const finishTime = Date.now - this.startTime;
-      console.log(finishTime);
       window.analytics.track('Add Payment Option', {
         ...this.commonTrackPayload(),
         timezone: this.paymentTimezone,
