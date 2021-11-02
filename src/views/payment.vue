@@ -115,7 +115,8 @@ export default {
         userid: this.getBupayload.user_id,
         currency: this.getBupayload.currency,
         bulk: this.getBupayload.bulk,
-        entity: this.getBupayload.entity_id
+        entity: this.getBupayload.entity_id,
+        company_code: this.getBupayload.company_code,
       }
 
       const fullPayload = {

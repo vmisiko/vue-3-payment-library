@@ -132,6 +132,7 @@ export default {
         firstname: "",
         lastname: "",
         phonenumber: this.formattedPhone,
+        company_code: this.getBupayload.company_code,
       }
 
       const fullPayload = {
