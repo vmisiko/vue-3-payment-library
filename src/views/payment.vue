@@ -18,42 +18,8 @@
             Confirm and Pay
           </sendy-btn>
       </div>
-
-      <div class="mgt-8 text-right" v-if="paymentStatus === 'success'" >
-        <sendy-btn 
-          :block="true"
-          :loading="loading"
-          color='primary'
-          class="mgt-10"
-        >
-          Done
-        </sendy-btn>
-      </div>
-
-      <div class="mgt-8 text-right" v-if="paymentStatus === 'failed'">
-        <sendy-btn 
-          :block="true"
-          :loading="loading"
-          color='primary'
-          class="mgt-10"
-          @click="$router.push({ name: 'Entry'})"
-        >
-          Try Again
-        </sendy-btn>
-      </div>
-
-      <div class="mgt-8 text-right" v-if="paymentStatus === 'retry'">
-        <sendy-btn 
-          :block="true"
-          :loading="loading"
-          color='primary'
-          class=""
-        >
-          Retry in 3min 57seconds...
-        </sendy-btn>
-      </div>
     </div>
-
+    <TransactionLimitModal :show="showTransactionLimit" @close="showTransactionLimit = false" />
   </div>
 </template>
 
@@ -64,7 +30,7 @@ import PaymentDetail from '../components/paymentDetail';
 import Processing from '../components/processing';
 import NoOptionsModal from '../components/modals/noOptionsModal';
 import paymentGenMxn from '../mixins/paymentGenMxn';
-
+import TransactionLimitModal from '../components/modals/transactionalLimitModal';
 
 export default {
   name: 'Payment',
@@ -73,6 +39,7 @@ export default {
     PaymentDetail,
     Processing,
     NoOptionsModal,
+    TransactionLimitModal,
   },
   mixins: [paymentGenMxn],
   data() {
@@ -91,6 +58,7 @@ export default {
       errorText: '',
       mpesaCode: '',
       startResponseTime: null,
+      showTransactionLimit: false,
     }
   },
   computed: {
@@ -146,9 +114,13 @@ export default {
         currency: this.getBupayload.currency,
       }); 
       
+      if (this.defaultPaymentMethod.daily_limit !== 0 && this.amount > this.defaultPaymentMethod.daily_limit) {
+        this.showTransactionLimit = true;
+        return;
+      }
 
       if (this.defaultPaymentMethod.pay_method_id === 1) {
-        this.amount > 150000 ? this.$router.push('/mpesa-c2b') : this.$router.push('/mpesa-stk');
+        this.amount > this.defaultPaymentMethod.stk_limit ? this.$router.push('/mpesa-c2b') : this.$router.push('/mpesa-stk');
         return;
       }
 

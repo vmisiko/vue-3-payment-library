@@ -4,6 +4,7 @@ import iconView from './components/iconView';
 import notification from './components/notificationComponent';
 import sendyBtn from './components/sendyBtn';
 import paymentLibraryMxn from './mixins/paymentLibraryMxn';
+import 'vue-tel-input/dist/vue-tel-input.css';
 
 export default {
   install (Vue, options) {

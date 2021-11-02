@@ -22,6 +22,11 @@
         </div>
       </div>
 
+      <div v-if="paymentMethod.daily_limit !== 0 && getBupayload.amount > paymentMethod.daily_limit" class="direction-flex text-caption-2 text-sendy-red-30 mgt-6 mgl-8" >
+        <IconView icon="warning-text" class="mgt-1" />
+        <span class="mgl-3">Unavailable. Amount exceeds daily transaction limit</span>
+      </div>
+
       <hr class="mgt-4" />
 
       <div class="mgt-4 direction-flex float-right  link" v-if="!paymentStatus" @click="$router.push('/choose-payment')" >
@@ -32,6 +37,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'PaymentDetail',
   props: ['currency', 'amount', 'paymentMethod', 'paymentStatus'],
@@ -39,7 +46,9 @@ export default {
     return {
     }
   },
-
+  computed: {
+    ...mapGetters(['getBupayload']),
+  },
   methods: {
     formatLastFour(cardno) {
       const result = cardno.substr(-4)

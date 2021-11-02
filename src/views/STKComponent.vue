@@ -16,21 +16,35 @@
         <hr />
 
         <div class="mgt-8">
-          <label class="text-caption-2 ">M-PESA payment number</label>
+          <div class="direction-flex">
+            <span class="text-caption-2">Country Code</span>
+            <label class="mgl-11 text-caption-2">M-PESA payment number</label>
+          </div>
+          
           <div class="mgt-1">
-            <input 
+            <!-- <input 
               type="text" 
               v-model="phone" 
               class="phone-input"
               placeholder="254 700 00000"
               required
-             >
+             > -->
+            <vue-tel-input 
+              v-model="phone" 
+              autoFormat 
+              :defaultCountry="getBupayload.country_code"
+              :dropdownOptions="dropdownOptions"
+              mode="national"
+              invalidMsg="Phone number is Invalid"
+              @validate="validatePhone"
+            >
+            </vue-tel-input>
              <span class="text-caption-2 text-error" v-if="error"> {{ error }}</span>
           </div>
           
         </div>
 
-        <div class="alert mgt-10" v-show="promptInfo">
+        <div class="alert mgt-10">
           <span class="text-caption-2 pdt-2 text-midnightBlue20">You'll receive a prompt to enter your M-PESA PIN</span>
         </div>
 
@@ -40,27 +54,33 @@
             class="float-right"
             @click="submit"
             :loading="loading"
+            :disabled="!disable"
           >
-            continue
+            Continue
           </sendy-btn>
         </div>
 
     </div>
     <TimerModal :show="showTimer" />
+    <MpesaErrorModal :show="showErrorModal" :text="errorText" />
     </div>  
   </div>
 </template>
 
 <script>
 import { mapGetters, mapMutations } from 'vuex';
+import { VueTelInput } from 'vue-tel-input';
 import TopInfo from '../components/topInfo';
 import TimerModal from '../components/modals/timerModal';
+import MpesaErrorModal from '../components/modals/MpesaErrorModal';
 
 export default {
   name: 'STKComponent',
   components: {
     TopInfo,
     TimerModal,
+    VueTelInput,
+    MpesaErrorModal,
   },
   data() {
     return {
@@ -74,6 +94,15 @@ export default {
       poll_count: 0,
       poll_limit: 6,
       showTimer: false,
+      dropdownOptions: {
+        disabled: true,
+        showFlags: true,
+        showDialCodeInSelection: true
+      },
+      formattedPhone: null,
+      disable: false,
+      showErrorModal: false,
+      errorText: 'We are unable to send an M-PESA payment request to you phone. You can still complete your payment with M-PESA Pay Bill'
     }
   },
   computed: {
@@ -81,6 +110,7 @@ export default {
   },
   watch: {
     phone(val) {
+      console.log(val);
       if (val && val.length > 8) {
         this.error = '';
       }
@@ -89,11 +119,6 @@ export default {
   methods: {
     ...mapMutations(['setErrorText']),
      async submit() {
-      if (!this.phone) {
-        this.error = 'Phone number is required';
-        return;
-      }
-
       this.loading = true;
       this.showTimer = true;
       this.promptInfo = true;
@@ -107,7 +132,7 @@ export default {
         entity: this.getBupayload.entity_id,
         firstname: "",
         lastname: "",
-        phonenumber: this.phone,
+        phonenumber: this.formattedPhone,
       }
 
       const fullPayload = {
@@ -124,10 +149,11 @@ export default {
       this.promptInfo = false,
       this.showTimer = false;
       this.loading = false;
-      this.setErrorText(response.message);
-      this.$router.push({name: 'FailedView'});
+      this.showErrorModal = true;
     },
-    phoneValidation() {
+    validatePhone(val) {
+     this.formattedPhone = val.valid ? val.number.split('+')[1] : null;
+     this.disable = val.valid;
     return;
     },
     pollMpesa() {
@@ -223,5 +249,36 @@ export default {
   top: 268px;
   background: rgba(211, 221, 246, 0.5);
   border-radius: 4px;
+}
+.vti__input {
+    width: 100%;
+    outline: none;
+    padding-left: 7px;
+    margin-left: 24px !important;
+    border: 0.5px solid #C0C4CC !important;
+    box-sizing: border-box;
+    border-radius: 4px !important;
+}
+.vti__dropdown {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  position: relative;
+  padding: 7px;
+  cursor: pointer;
+  border: 1px solid #bbb;
+  border: 0.5px solid #DCDFE6;
+  box-sizing: border-box;
+  border-radius: 4px;
+  width: 100px;
+  height: 40px;
+}
+.vue-tel-input {
+  border-radius: 3px;
+  display: flex;
+  // border: 1px solid #bbb;
+  border: none !important;
+  text-align: left;
 }
 </style>
