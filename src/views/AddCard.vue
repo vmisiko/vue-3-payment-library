@@ -217,7 +217,8 @@ export default {
         "lastname": this.getBupayload.lastname,
         "phonenumber": this.getBupayload.phonenumber,
         "userid": this.getBupayload.user_id,
-      };
+        "company_code": this.getBupayload.company_code,
+      }
       this.loading = true;
       this.form.submit(
           '/customers/collect_card_details',
