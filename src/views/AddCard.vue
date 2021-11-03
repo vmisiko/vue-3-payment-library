@@ -157,13 +157,6 @@ export default {
         () => {},
       );
       
-       this.form.field('#cc-name', {
-        type: "text",
-        name: "card_name",
-        placeholder: 'Enter full name',
-        validations: ['required'],
-      });
-
       this.form.field('#cc-number', {
         type: 'card-number',
         name: 'cardno',
