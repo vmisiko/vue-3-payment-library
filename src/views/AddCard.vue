@@ -6,10 +6,14 @@
 
       <form id="cc-form" @submit.prevent="onsubmit">
         <div class="form-group">
-          <label for="cc-name" class="text-caption-2">Cardholder name</label>
-          <span id="cc-name" class="form-field">
-          </span>
-          <span class="text-caption-2 text-error" v-if="card_name"> {{ card_name }} </span>
+          <label class="text-caption-2">Cardholder name</label>
+          <input
+            type="text"
+            v-model="card_name"
+            class="form-field"
+            placeholder="Enter full name"
+            required
+          >
         </div>
 
         <div class="form-group mgt-4">
@@ -157,6 +161,13 @@ export default {
         () => {},
       );
       
+      //  this.form.field('#cc-name', {
+      //   type: "text",
+      //   name: "card_name",
+      //   placeholder: 'Enter full name',
+      //   validations: ['required'],
+      // });
+
       this.form.field('#cc-number', {
         type: 'card-number',
         name: 'cardno',
@@ -332,6 +343,22 @@ export default {
 
 
 <style lang="scss">
+
+.form-name {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 8px;
+  position: absolute;
+  height: 40px;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  background: #FFFFFF;
+  border: 0.5px solid #C0C4CC;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
 
 .form-field {
   display: block;
