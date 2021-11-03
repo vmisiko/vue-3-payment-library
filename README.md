@@ -55,7 +55,7 @@ So there 4 entry points:
     authToken: '', //Add Jwt token for authentication.
     firstname: 'John',
     lastname: 'doe',
-    payment_options: [1, 2],// This is the payment_methods_id you get from the paymeht methods available.
+    payment_options: [1, 2],// This are the payment_methods_id you get from the paymeht methods available. They are used to filter the payment methods you want the user shown.
     company_code: 'SKML', // add compnay code to associate a transaction to it's repective company.
   };
 
