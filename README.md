@@ -1,5 +1,8 @@
 # @sendyit/payment
 
+## Live Demo of the App. 
+http://payments-library-dev.sendyit.com
+
 ## How to use
 ```
 npm install @sendyit/payments
@@ -26,11 +29,12 @@ Vue.use(payments, {
 
 ### How to call the payment library.
 
-So there 3 entry points:
+So there 4 entry points:
  ```
  1. checkout
  2. payment-option
  3. choose-payment
+ 4. Choose-payment-checkout - Choose payment page with checkout.
  ```
 
  To go to checkout page call the following method as shown below by passing the Bu payload
@@ -41,7 +45,7 @@ So there 3 entry points:
     entity_id: 1,
     currency: 'KES',
     country_code: 'KE',
-    amount: this.amount,
+    amount: '100',
     success_callback_url: '',
     fail_callback_url: '',
     txref: this.txref,
@@ -49,10 +53,13 @@ So there 3 entry points:
     paybill_no: '4444444',
     email: 'johndoe@gmail.com',
     authToken: '', //Add Jwt token for authentication.
-    firstname: this.firstname,
-    lastname: this.lastname,
+    firstname: 'John',
+    lastname: 'doe',
+    payment_options: [1, 2],// This is the payment_methods_id you get from the paymeht methods available.
+    company_code: 'SKML', // add compnay code to associate a transaction to it's repective company.
   };
-  this.$paymentInit(buPayload, 'checkout'); //the 2nd argument can be a 'checkout', 'payment-option' or 'choose-payment', in order to access the three entry points of the Bu.
+
+  this.$paymentInit(buPayload, 'checkout'); //the 2nd argument can be a 'checkout', 'payment-option', 'choose-payment' or 'choose-payment-checkout, in order to access the three entry points of the Bu.
  ```
 
  ### How test and collaborate
