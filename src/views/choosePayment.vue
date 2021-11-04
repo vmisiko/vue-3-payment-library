@@ -82,6 +82,13 @@ export default {
       return result;
     }
   },
+  watch: {
+    getSavedPayMethods(newVal, oldVal) {
+      if (newVal !== oldVal ) {
+        this.getDefaultpayMethod();
+      }
+    }
+  },
   mounted() {
     this.retrievePaymentMethods();
     this.getDefaultpayMethod();
