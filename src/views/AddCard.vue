@@ -245,12 +245,26 @@ export default {
               this.$paymentAxiosPost(payload).then((res)=> {
                 this.transaction_id = res.transaction_id;
                 if (res.status) {
-                  this.pollCard();
+                  switch (res.transaction_status) {
+                    case 'pending':
+                      this.pollCard();
+                      break;
+                    case 'success':
+                      this.collectLoad = false;
+                      this.$paymentNotification({
+                        text: 'Card details added and selected for payment.'
+                      });
+                      this.$router.push('/choose-payment');
+                      this.loading = false;
+                      break;
+                    default:
+                      break;
+                  }
                 } else {
                   this.collectLoad = false,
                   this.initForm();
                   this.loading = false;
-                  this.errorText = res.reason;
+                  this.errorText = res.message;
                   this.showErrorModal= true;
                 }
 
