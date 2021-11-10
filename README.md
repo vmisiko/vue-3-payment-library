@@ -1,6 +1,6 @@
 # @sendyit/payment
 
-## indepth documentation can be found using the link below
+## In-depth documentation can be found using the link below
 https://sendy.atlassian.net/wiki/spaces/PF/pages/edit-v2/1966440548
 
 ## How to use
