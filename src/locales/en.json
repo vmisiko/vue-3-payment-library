@@ -1,0 +1,107 @@
+{
+  "error_alert": "Error Alert",
+  "close": "Close",
+  "what_is_cvv": "What is CVV?",
+  "cvv_info": "This is a 3 or 4 digit security code found on the back of you card.",
+  "ok": "OK",
+  
+  "sure_delete" : "Are you sure you want to delete this payment option?",
+  "delete": "Delete",
+  "cancel": "Cancel",
+  "card_details_removed": "Card details removed",
+  "could_not_add_card": "Could not add card",
+
+  "unable_pay_request": "Unable to send payment request",
+  "pay_with_mpesa_pay_bill": "Pay with M-PESA Pay Bill",
+  "payment_option_missing": "Payment option missing",
+  "add_new_payment_method_proceed": "Add a new payment method to proceed with the transaction",
+  "add_payment_option": "Add payment option",
+  "back": "Back",
+
+  "please_wait": "Please wait while we confirm payment",
+  "amount_exceeds_limit_title": "Amount exceeds transaction limit",
+  "amount_exceeds_limit_text":" The amount to pay exceeds the daily transaction limit for M-PESA. You can choose another payment option to continue.",
+  "change_payment_option": "Change payment option",
+  "cancel_payment": "Cancel Payment",
+
+  // paymentDetail.vue,
+  "amount_to_pay": "Amount to pay",
+  "pay_with": "Pay with",
+  "unavailable": "Unavailable. Amount exceeds daily transaction limit",
+  "submit": "Submit",
+  "M-PESA code": "M-PESA code",
+
+  //addCard
+  "cardholder_name": "Cardholder name",
+  "enter_full_name": "Enter full name",
+  "card_number": "Card number",
+  "expiry": "Expiry",
+  "cvc": "CVC",
+  "in_order_to_verify": "In order to verify your card details, we will charge a small fee of KES 5.00 and refund your card within 15 days.",
+  "add_card": "Add Card",
+  "card_declined": "Your card issuer has declined this transaction. Contact your bank or card issuer for more information.",
+  "add_a_card": "Add a Card",
+  "card_details_added": "Card details added and selected for payment.",
+  "failed_to_collect_card_details": "Failed to collect card details. Please try again",
+
+  //addMpesa
+  "how_it_works": "How it works",
+  "whenever_choose_mpesa":" Whenever you choose to pay with M-Pesa, you will be requested to provide a phone number during payment.",
+  "add_mpesa": "Add M-PESA",
+  "add_a_mpesa": "Add a Mpesa",
+  "mpesa_added": "M-PESA option added and selected for payment.",
+  "mpesa_already_added": "M-PESA option already exists",
+
+  //cardDetails
+  "expiry_date": "Expiry Date",
+  "remove_card": "Remove Card",
+  "card_details": "Card Details",
+
+  //choosePayment
+  "credit_card_card": "CREDIT OR DEBIT CARD",
+  "mobile_money": "Mobile Money",
+  "confirm_and_pay": "Confirm and Pay",
+  "selected_payment_name": "${this.setSelectedName()} selected for payment.",
+  "failed_to_charge_card": "Failed to charge card. Please try again.",
+
+  //failedView
+  "retry": "Retry",
+  "try_again": "Try Again",
+  "retry_in": "Retry in 3min 57seconds...",
+  "unable_to_confirm": "Unable to confirm payment",
+  "payment_failed": "Payment failed",
+  "could_not_process": "Could not process transaction",
+
+  //mpesaC2B
+  "payment_instruction": "Payment instructions",
+  "open_mpesa": "Open M-PESA on you phone",
+  "select_lipa_na_mpesa": "Select Lipa na M-PESA > Pay Bill",
+  "enter_business_no": "Enter Business no.",
+  "enter_account_no": "Enter Account no.",
+  "enter_amount_no": "Enter Amount no.",
+  "enter_mpesa_pin": "Enter your M-PESA PIN and click OK to send",
+  "confirmation_from_mpesa": "You’ll receive a confirmation SMS from M-PESA",
+  "click_complete_payment": "Click 'Complete payment' below to continue",
+  "complete_payment": "Complete payment",
+  "pay_with_mpesa": "Pay with M-PESA",
+
+  "remove_mpesa": "Remove M-PESA",
+
+  "payment": "Payment",
+
+  "mpesa_option_added": "M-PESA option added and selected for payment.",
+  "failed_network_error": "Failed. Network Error!",
+
+  "continue": "Continue",
+  "payment_options": "Payment options",
+
+  "country_code": "Country Code",
+  "mpesa_payment_number": "M-PESA payment number",
+  "phone_number": "Phone number is Invalid",
+  "mpesa_prompt": "You'll receive a prompt to enter your M-PESA PIN",
+  "unable_to_send_mpesa_request": "We are unable to send an M-PESA payment request to your phone. You can still complete your payment with M-PESA Pay Bill",
+  "failed_to_charge_using_mpesa": "Failed to charge using Mpesa. Please try again.",
+
+  "done": "Done",
+  "payment_successful": "Payment successful"
+}

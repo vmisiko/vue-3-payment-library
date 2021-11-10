@@ -222,7 +222,7 @@ export default {
         "phonenumber": this.getBupayload.phonenumber,
         "userid": this.getBupayload.user_id,
         "company_code": this.getBupayload.company_code,
-      }
+      };
       this.loading = true;
       this.form.submit(
           '/customers/collect_card_details',
@@ -236,7 +236,7 @@ export default {
             this.loading = false;
             if (response.status) {
               this.collectLoad = true;
-
+              
               const payload = {
                 url: '/api/v1/save',
                 params: response.data,
@@ -261,9 +261,10 @@ export default {
                       break;
                   }
                 } else {
+                  this.loading = false;
                   this.collectLoad = false,
                   this.initForm();
-                  this.loading = false;
+
                   this.errorText = res.message;
                   this.showErrorModal= true;
                 }
@@ -278,6 +279,7 @@ export default {
             } else {
               this.collectLoad = false,
               this.initForm();
+              this.form.reset();
               this.errorText = 'Failed to collect card details. Please try again';
               this.showErrorModal= true;
             }

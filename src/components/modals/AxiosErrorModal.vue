@@ -20,7 +20,7 @@
           class="mgt-8"
          @click="$emit('close')"
         >
-          close
+          Close
         </sendy-btn>
       </div>
   </div>

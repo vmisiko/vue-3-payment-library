@@ -20,7 +20,7 @@
           type="submit"
          @click="$emit('close')"
         >
-          ok
+          OK
         </sendy-btn>
       </div>
   </div>

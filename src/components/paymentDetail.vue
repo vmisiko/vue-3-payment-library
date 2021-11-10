@@ -22,7 +22,7 @@
         </div>
       </div>
 
-      <div v-if="paymentMethod.daily_limit !== 0 && getBupayload.amount > paymentMethod.daily_limit" class="direction-flex text-caption-2 text-sendy-red-30 mgt-6 mgl-8" >
+      <div v-if="paymentMethod.daily_limit && getBupayload.amount > paymentMethod.daily_limit" class="direction-flex text-caption-2 text-sendy-red-30 mgt-6 mgl-8" >
         <IconView icon="warning-text" class="mgt-1" />
         <span class="mgl-3">Unavailable. Amount exceeds daily transaction limit</span>
       </div>

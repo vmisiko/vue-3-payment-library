@@ -1,0 +1,27 @@
+{
+  "error_alert": "FR_Error Alert",
+  "close": "FR_Close",
+  "what_is_cvv": "FR_What is CVV?",
+  "cvv_info": "FR_This is a 3 or 4 digit security code found on the back of you card.",
+  "ok": "FR_OK",
+  
+  "sure_delete" : "FR_Are you sure you want to delete this payment option?",
+  "delete": "FR_Delete",
+  "cancel": "FR_Cancel",
+  "card_details_removed": "FR_Card details removed",
+  "could_not_add_card": "FR_Could not add card",
+  
+  "unable_pay_request": "FR_Unable to send payment request",
+  "pay_with_mpesa": "FR_Pay with M-PESA Pay Bill",
+  "payment_option_missing": "FR_Payment option missing",
+  "add_new_payment_method_proceed": "FR_Add a new payment method to proceed with the transaction",
+  "add_payment_option": "FR_Add payment option",
+  "back": "FR_Back",
+
+  "please_wait": "FR_Please wait while we confirm payment",
+  "amount_exceeds_limit_title": "FR_Amount exceeds transaction limit",
+  "amount_exceeds_limit_text":" FR_The amount to pay exceeds the daily transaction limit for M-PESA. You can choose another payment option to continue.",
+  "change_payment_option": "FR_Change payment option",
+  "cancel_payment": "FR_Cancel Payment"
+
+}

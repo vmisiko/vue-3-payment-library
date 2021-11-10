@@ -19,16 +19,16 @@
 
       <span v-if="savedMobile.length !== 0" class="mgt-8 text-overline">Mobile Money</span>
       <div v-if="savedMobile.length !== 0">
-        <div v-for="(mobile, index) in savedMobile" :key="index" class="mgt-4 option-border text-caption-1 pda-3 " :class="{'selected-border': picked === mobile.pay_detail_id, 'disabled': mobile.daily_limit !== 0 && getBupayload.amount > mobile.daily_limit }">
+        <div v-for="(mobile, index) in savedMobile" :key="index" class="mgt-4 option-border text-caption-1 pda-3 " :class="{'selected-border': picked === mobile.pay_detail_id, 'disabled': mobile.daily_limit && getBupayload.amount > mobile.daily_limit }">
           <div class="direction-flex">
             <IconView icon="mpesa" />
             <span class="mgl-2">M-PESA</span>
             <span class="spacer"></span>   
             <div class="">
-              <input name="paymentoption" type="radio" :value="mobile.pay_detail_id" :disabled="mobile.daily_limit !== 0 && getBupayload.amount > mobile.daily_limit" v-model="picked" @change="update">
+              <input name="paymentoption" type="radio" :value="mobile.pay_detail_id" :disabled="mobile.daily_limit && getBupayload.amount > mobile.daily_limit" v-model="picked" @change="update">
             </div>
           </div> 
-          <div class="text-caption-2 text-sendy-red-30 mgt-3" v-if="mobile.daily_limit !== 0 && getBupayload.amount > mobile.daily_limit" >
+          <div class="text-caption-2 text-sendy-red-30 mgt-3" v-if="mobile.daily_limit && getBupayload.amount > mobile.daily_limit" >
             <span class="">Unavailable. Amount exceeds daily transaction limit</span>
           </div>
 

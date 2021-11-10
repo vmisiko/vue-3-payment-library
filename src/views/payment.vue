@@ -96,7 +96,7 @@ export default {
         currency: this.getBupayload.currency,
       }); 
       
-      if (this.defaultPaymentMethod.daily_limit !== 0 && this.amount > this.defaultPaymentMethod.daily_limit) {
+      if (this.defaultPaymentMethod.daily_limit && this.amount > this.defaultPaymentMethod.daily_limit) {
         this.showTransactionLimit = true;
         return;
       }
