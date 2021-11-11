@@ -1,7 +1,9 @@
 <template>
   <div class="flex-center">
-    <Processing text="Processing your card details" v-if="collectLoad" />
-    <div class="card-min" v-if="!collectLoad">
+    <Processing text="Processing your card details" v-if="showProcessing" />
+    <AdditionalCardFields :additionalData="additionalData" :transaction_id="transaction_id" v-if="!showProcessing && showAdditionalCardFields" />
+
+    <div class="card-min" v-if="!showProcessing && !showAdditionalCardFields">
       <TopInfo :icon="icon" :title="title"/>    
 
       <form id="cc-form" @submit.prevent="onsubmit">
@@ -70,6 +72,7 @@ import TopInfo from '../components/topInfo';
 import CvvModal from '../components/modals/cvvModal';
 import ErrorModal from '../components/modals/ErrorModal';
 import Processing from '../components/processing';
+import AdditionalCardFields from './AdditionalCardFields';
 
 export default {
   name: 'AddCard',
@@ -78,6 +81,7 @@ export default {
     CvvModal,
     ErrorModal,
     Processing,
+    AdditionalCardFields,
   },
   data() {
     return {
@@ -96,9 +100,11 @@ export default {
       transaction_id: '',
       poll_count: 0,
       poll_limit: 6,
-      collectLoad: false,
+      showProcessing: false,
       vgs_valid_payment: false,
       cardType: null,
+      showAdditionalCardFields: true,
+      additionalData: ["address","zip_code","state","city"],
     }
   },
   computed: {
@@ -235,49 +241,50 @@ export default {
           (status, response) => {
             this.loading = false;
             if (response.status) {
-              this.collectLoad = true;
+              this.showProcessing = true;
               
               const payload = {
-                url: '/api/v1/save',
+                url: '/api/v2/save',
                 params: response.data,
               }
 
               this.$paymentAxiosPost(payload).then((res)=> {
+                console.log(res);
                 this.transaction_id = res.transaction_id;
-                if (res.status) {
-                  switch (res.transaction_status) {
-                    case 'pending':
-                      this.pollCard();
-                      break;
-                    case 'success':
-                      this.collectLoad = false;
-                      this.$paymentNotification({
-                        text: 'Card details added and selected for payment.'
-                      });
-                      this.$router.push('/choose-payment');
-                      this.loading = false;
-                      break;
-                    default:
-                      break;
-                  }
-                } else {
-                  this.loading = false;
-                  this.collectLoad = false,
-                  this.initForm();
+                // if (res.status) {
+                //   switch (res.transaction_status) {
+                //     case 'pending':
+                //       this.pollCard();
+                //       break;
+                //     case 'success':
+                //       this.showProcessing = false;
+                //       this.$paymentNotification({
+                //         text: 'Card details added and selected for payment.'
+                //       });
+                //       this.$router.push('/choose-payment');
+                //       this.loading = false;
+                //       break;
+                //     default:
+                //       break;
+                //   }
+                // } else {
+                //   this.loading = false;
+                //   this.showProcessing = false,
+                //   this.initForm();
 
-                  this.errorText = res.message;
-                  this.showErrorModal= true;
-                }
+                //   this.errorText = res.message;
+                //   this.showErrorModal= true;
+                // }
 
               }).catch(err => {
-                this.collectLoad = false,
+                this.showProcessing = false,
                 this.initForm();
                 this.errorText = 'Failed to collect card details. Please try again';
                 this.showErrorModal= true;
               });
             
             } else {
-              this.collectLoad = false,
+              this.showProcessing = false,
               this.initForm();
               this.form.reset();
               this.errorText = 'Failed to collect card details. Please try again';
@@ -286,6 +293,7 @@ export default {
           },
       );
     },
+    
 
     pollCard() {
       this.poll_count = 0;
@@ -302,7 +310,7 @@ export default {
             that.TransactionIdStatus(); 
             if (poll_count === 5) {
               that.loading = false;
-              this.collectLoad = false,
+              this.showProcessing = false,
               this.initForm();
               this.errorText = 'Failed to confirm card. Please try again.';
               this.showErrorModal= true;
@@ -323,7 +331,7 @@ export default {
           switch (res.transaction_status) {
             case 'success':
               this.poll_count = this.poll_limit;
-              this.collectLoad = false;
+              this.showProcessing = false;
               this.$paymentNotification({
                 text: 'Card details added and selected for payment.'
               });
@@ -333,7 +341,7 @@ export default {
             case 'failed':
               this.poll_count = this.poll_limit;
               this.loading = false;
-              this.collectLoad = false;
+              this.showProcessing = false;
               this.initForm();
               this.errorText = res.message;
               this.showErrorModal= true;
@@ -347,7 +355,7 @@ export default {
         }
 
         this.poll_count = this.poll_limit;
-        this.collectLoad = false;
+        this.showProcessing = false;
         this.initForm();
         this.errorText = res.message;
         this.showErrorModal= true;
