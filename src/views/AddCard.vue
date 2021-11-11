@@ -1,7 +1,13 @@
 <template>
   <div class="flex-center">
     <Processing text="Processing your card details" v-if="showProcessing && !showAdditionalCardFields" />
-    <AdditionalCardFields :additionalData="additionalData" :transaction_id="transaction_id" :is3DS="is3DS" v-if=" showAdditionalCardFields" />
+    <AdditionalCardFields 
+      :additionalData="additionalData" 
+      :transaction_id="transaction_id" 
+      :is3DS="is3DS" v-if=" 
+      showAdditionalCardFields"
+      @continue="handleContinue"
+     />
 
     <div class="card-min" v-if="!showProcessing && !showAdditionalCardFields">
       <TopInfo :icon="icon" :title="title"/>    
@@ -115,9 +121,9 @@ export default {
     form: {
       handler(val) {
         const state = val.state;
-        for (const [key, value] of Object.entries(state)) {
-          this[`${key}`] = !value.isValid && !value.isEmpty? value.errorMessages[0] : '';
-        }
+        // for (const [key, value] of Object.entries(state)) {
+        //   this[`${key}`] = !value.isValid && !value.isEmpty? value.errorMessages[0] : '';
+        // }
         if (
           Object.prototype.hasOwnProperty.call(state, 'cardno')
           && state.cardno.isValid
@@ -183,7 +189,7 @@ export default {
         showCardIcon: true,
         fontSize: '13px',
         placeholder: '0000 0000 0000 0000',
-        validations: ['required', 'validCardNumber'],
+        // validations: ['required', 'validCardNumber'],
         classes: classes,
       });
 
@@ -218,7 +224,7 @@ export default {
     onsubmit() {
       if (!this.vgs_valid_payment) {
         this.setErrors();
-        return;
+        // return;
       }
       const newCardPayload = {
         "country": this.getBupayload.country_code,
@@ -254,32 +260,34 @@ export default {
                 if (res.status) {
 
                   if(res.additional_data) {
-                     this.additionalData = res.additional_data;
-                     this.is3DS = res.tds;
+                    this.additionalData = res.additional_data;
+                    this.is3DS = res.tds;
                     this.showAdditionalCardFields = true;
+                    return;
                   } 
-                //   switch (res.transaction_status) {
-                //     case 'pending':
-                //       this.pollCard();
-                //       break;
-                //     case 'success':
-                //       this.showProcessing = false;
-                //       this.$paymentNotification({
-                //         text: 'Card details added and selected for payment.'
-                //       });
-                //       this.$router.push('/choose-payment');
-                //       this.loading = false;
-                //       break;
-                //     default:
-                //       break;
-                //   }
-                // } else {
-                //   this.loading = false;
-                //   this.showProcessing = false,
-                //   this.initForm();
 
-                //   this.errorText = res.message;
-                //   this.showErrorModal= true;
+                  switch (res.transaction_status) {
+                    case 'pending':
+                      this.pollCard();
+                      break;
+                    case 'success':
+                      this.showProcessing = false;
+                      this.$paymentNotification({
+                        text: 'Card details added and selected for payment.'
+                      });
+                      this.$router.push('/choose-payment');
+                      this.loading = false;
+                      break;
+                    default:
+                      break;
+                  }
+                } else {
+                  this.loading = false;
+                  this.showProcessing = false,
+                  this.initForm();
+
+                  this.errorText = res.message;
+                  this.showErrorModal= true;
                 }
 
               }).catch(err => {
@@ -299,7 +307,16 @@ export default {
           },
       );
     },
-    
+    handleContinue(val) {
+      if (val) {
+        this.pollCard();
+        return;
+      }
+      this.showProcessing = false,
+      this.initForm();
+      this.errorText = 'Failed to collect card details. Please try again';
+      this.showErrorModal= true;
+    },
 
     pollCard() {
       this.poll_count = 0;
@@ -316,10 +333,10 @@ export default {
             that.TransactionIdStatus(); 
             if (poll_count === 5) {
               that.loading = false;
-              this.showProcessing = false,
-              this.initForm();
-              this.errorText = 'Failed to confirm card. Please try again.';
-              this.showErrorModal= true;
+              that.showProcessing = false,
+              that.initForm();
+              that.errorText = 'Failed to confirm card. Please try again.';
+              that.showErrorModal= true;
               return;
             }
           }, 10000 * poll_count);
@@ -330,7 +347,7 @@ export default {
     async TransactionIdStatus() {
 
       const payload = {
-        url: `/api/v1/process/status/${this.transaction_id}`,
+        url: `/api/v2/process/status/${this.transaction_id}`,
       }
       this.$paymentAxiosGet(payload).then((res) => {
         if (res.status) { 

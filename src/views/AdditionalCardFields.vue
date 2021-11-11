@@ -1,73 +1,31 @@
 <template>
   <div class="card-min">
     <span v-if="!is3DS">
-    <div class="textfield mgt-5" v-if="additionalData.includes('address')">
-      <label for="" class="normal-text"> Address</label>
-      <input
-        type="text"
-        class="phone-input"
-        placeholder="Marsabit Plaza-3rd Floor"
-        required
-        v-model="address"
-      >
-    </div>
 
-    <div class="mgt-5" :class="{ 'direction-flex': additionalData.includes('city') && additionalData.includes('state')}">
-      <div v-if="additionalData.includes('city')">
-        <label for="" class="normal-text"> City</label>
-        <input
-          type="text"
-          class="phone-input"
-          placeholder="Nairobi"
-          required
-          v-model="city"
-        >
-      </div> 
-      
-      <div v-if="additionalData.includes('state')">
-        <label for="" class="normal-text"> State</label>
-        <input
-          type="text"
-          class="phone-input"
-          placeholder="Kayole"
-          required
-          v-model="state"
-        >
-      </div> 
-    </div>
-
-    <div class="mgt-5">
-      <div v-if="additionalData.includes('zip_code')">
-        <label for="" class="normal-text"> Zip Code</label>
-        <input
-          type="text"
-          class="phone-input"
-          placeholder="00100"
-          required
-          v-model="zip_code"
-        >
-      </div> 
-    </div>
-
-    <div class="textfield mgt-5" v-if="additionalData.includes('phone')">>
-      <label for="" class="normal-text"> Phone Number</label>
-      <!-- <input
-        type="text"
-        class="phone-input"
-        placeholder="Enter Phone Number"
-        required
-        v-model="address"
-      > -->
-      <vue-tel-input 
-        autoFormat 
-        :defaultCountry="getBupayload.country_code"
-        :dropdownOptions="dropdownOptions"
-        mode="national"
-        invalidMsg="Phone number is Invalid"
-        @validate="validatePhone"
-      >
-      </vue-tel-input>
-    </div>
+    <div v-for="(item, index) in fields" :key="index">
+       <div class="textfield mgt-5" v-if="item !== 'phone' && item !== 'birthday'" >
+          <label for="" class="normal-text"> {{ capitalize(item) }}</label>
+          <input
+            type="text"
+            class="phone-input"
+            :placeholder="`Entery ${item}`"
+            required
+            v-model="form[item]"
+          >
+        </div>
+        <div class="textfield mgt-5" v-if="item === 'phone'" >
+          <label for="" class="normal-text"> {{ capitalize(item) }}</label>
+          <vue-tel-input 
+            autoFormat 
+            :defaultCountry="getBupayload.country_code"
+            :dropdownOptions="dropdownOptions"
+            mode="national"
+            invalidMsg="Phone number is Invalid"
+            @validate="validatePhone"
+          >
+          </vue-tel-input>
+        </div>
+    </div> 
 
     <sendy-btn 
       :block="true" 
@@ -75,6 +33,7 @@
       color='primary'
       class="mgt-5"
       type="submit"
+      @click="submit"
     >
       Submit
     </sendy-btn>
@@ -110,10 +69,20 @@ export default {
         showDialCodeInSelection: true
       },
       formattedPhone: null,
+      form: {},
+      fields: this.additionalData,
     }
   },
   computed: {
     ...mapGetters(['getBupayload']),
+  },
+  watch: {
+    form(val) {
+      console.log(val, 'form');
+    },
+    additionalData(val) {
+      this.fields = val;
+    }
   },
   mounted () {
     if (this.is3DS) {
@@ -121,6 +90,7 @@ export default {
       const urlWindow = window.open(JSON.parse(url), '');
 
       const timer = setInterval(() => {
+        
 			  if (urlWindow.closed) {
           clearInterval(timer);
         }
@@ -132,8 +102,43 @@ export default {
   methods: {
     validatePhone(val) {
       this.formattedPhone = val.valid ? val.number.split('+')[1] : null;
+      this.form['phone'] = this.formattedPhone;
       return;
     },
+    async submit() {
+      console.log('this.form submitted', this.form);
+      this.loading = true;
+      const payload = {
+        transaction_id: this.transaction_id,
+        ...this.form,
+      }
+
+      console.log(payload);
+      const fullPayload = {
+        params: payload,
+        url: '/api/v2/submit_info'
+      }
+
+      const response = await this.$paymentAxiosPost(fullPayload);
+      console.log(response);
+      this.loading = false;
+      if (response.status) {
+
+        if (response.additional_data) {
+          this.fields = response.additional_data;
+          return;
+        };
+
+        this.$emit('continue', true);
+        return;
+      }
+
+      this.$emit('continue', false);
+    },
+    capitalize(str) {
+      const result = str.charAt(0).toUpperCase() + str.slice(1);
+      return result;
+    }
   }
 }
 </script>
