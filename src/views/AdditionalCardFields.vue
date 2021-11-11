@@ -1,5 +1,6 @@
 <template>
   <div class="card-min">
+    <span v-if="!is3DS">
     <div class="textfield mgt-5" v-if="additionalData.includes('address')">
       <label for="" class="normal-text"> Address</label>
       <input
@@ -77,6 +78,10 @@
     >
       Submit
     </sendy-btn>
+    </span>
+    <span v-else>
+      Add 3ds logic here
+    </span>
 
   </div> 
 </template>
@@ -90,7 +95,7 @@ export default {
   components: {
     VueTelInput,
   },
-  props: ['additionalData', 'transaction_id'],
+  props: ['additionalData', 'transaction_id', 'is3DS'],
   data() {
     return {
       loading: false,
@@ -109,6 +114,20 @@ export default {
   },
   computed: {
     ...mapGetters(['getBupayload']),
+  },
+  mounted () {
+    if (this.is3DS) {
+      const url = !this.additionalData ? this.additionalData : this.additionalData[0];
+      const urlWindow = window.open(JSON.parse(url), '');
+
+      const timer = setInterval(() => {
+			  if (urlWindow.closed) {
+          clearInterval(timer);
+        }
+	  	}, 500)
+
+    }
+
   },
   methods: {
     validatePhone(val) {

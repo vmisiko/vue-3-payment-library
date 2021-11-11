@@ -1,7 +1,7 @@
 <template>
   <div class="flex-center">
-    <Processing text="Processing your card details" v-if="showProcessing" />
-    <AdditionalCardFields :additionalData="additionalData" :transaction_id="transaction_id" v-if="!showProcessing && showAdditionalCardFields" />
+    <Processing text="Processing your card details" v-if="showProcessing && !showAdditionalCardFields" />
+    <AdditionalCardFields :additionalData="additionalData" :transaction_id="transaction_id" :is3DS="is3DS" v-if=" showAdditionalCardFields" />
 
     <div class="card-min" v-if="!showProcessing && !showAdditionalCardFields">
       <TopInfo :icon="icon" :title="title"/>    
@@ -103,8 +103,9 @@ export default {
       showProcessing: false,
       vgs_valid_payment: false,
       cardType: null,
-      showAdditionalCardFields: true,
-      additionalData: ["address","zip_code","state","city"],
+      showAdditionalCardFields: false,
+      additionalData: null,
+      is3DS: false,
     }
   },
   computed: {
@@ -231,7 +232,7 @@ export default {
       };
       this.loading = true;
       this.form.submit(
-          '/customers/collect_card_details',
+          '/customers/collect_card_details/',
           {
             data: newCardPayload,
              headers: {
@@ -249,9 +250,14 @@ export default {
               }
 
               this.$paymentAxiosPost(payload).then((res)=> {
-                console.log(res);
                 this.transaction_id = res.transaction_id;
-                // if (res.status) {
+                if (res.status) {
+
+                  if(res.additional_data) {
+                     this.additionalData = res.additional_data;
+                     this.is3DS = res.tds;
+                    this.showAdditionalCardFields = true;
+                  } 
                 //   switch (res.transaction_status) {
                 //     case 'pending':
                 //       this.pollCard();
@@ -274,7 +280,7 @@ export default {
 
                 //   this.errorText = res.message;
                 //   this.showErrorModal= true;
-                // }
+                }
 
               }).catch(err => {
                 this.showProcessing = false,
