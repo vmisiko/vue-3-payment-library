@@ -39,20 +39,23 @@
     </sendy-btn>
     </span>
     <span v-else>
-      Add 3ds logic here
+    <Processing text="Processing your card details" />
     </span>
 
   </div> 
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations, Mutation } from 'vuex';
 import { VueTelInput } from 'vue-tel-input';
+import Processing from '../components/processing';
+
 
 export default {
   name: 'AdditionalCardFields',
   components: {
     VueTelInput,
+    Processing,
   },
   props: ['additionalData', 'transaction_id', 'is3DS'],
   data() {
@@ -92,6 +95,7 @@ export default {
       const timer = setInterval(() => {
         
 			  if (urlWindow.closed) {
+          this.setTwoFACompleted(true);
           clearInterval(timer);
         }
 	  	}, 500)
@@ -100,6 +104,8 @@ export default {
 
   },
   methods: {
+    ...mapMutations(['setTwoFACompleted']),
+
     validatePhone(val) {
       this.formattedPhone = val.valid ? val.number.split('+')[1] : null;
       this.form['phone'] = this.formattedPhone;
@@ -120,16 +126,17 @@ export default {
       }
 
       const response = await this.$paymentAxiosPost(fullPayload);
-      console.log(response);
       this.loading = false;
       if (response.status) {
 
         if (response.additional_data) {
           this.fields = response.additional_data;
+           this.$emit('continue', true);
           return;
-        };
+        } else {
+          this.setTwoFACompleted(true);
+        }
 
-        this.$emit('continue', true);
         return;
       }
 

@@ -8,6 +8,7 @@ const store = {
     savedPayMethods: null, 
     bupayload: localStorage.buPayload ? JSON.parse(localStorage.buPayload) : null,
     errorText: null,
+    twoFACompleted: false,
   },
   mutations: {
     setPaymentMethods(state, val) {
@@ -21,13 +22,19 @@ const store = {
     },
     setErrorText(state, val) {
       state.errorText = val;
+    },
+    setTwoFACompleted(state, val) {
+      state.twoFACompleted = val;
     }
+    
   },
   getters: {
     getPaymentMethods: ( state) => state.paymentMethods,
     getSavedPayMethods: ( state) => state.savedPayMethods,
     getBupayload: (state) => state.bupayload,
     getErrorText: (state) => state.errorText,
+    getTwoFACompleted: (state) => state.twoFACompleted,
+    
   },
   actions: {
   },
