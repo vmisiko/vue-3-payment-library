@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 import TopInfo from '../components/topInfo';
 import CvvModal from '../components/modals/cvvModal';
 import ErrorModal from '../components/modals/ErrorModal';
@@ -112,12 +112,35 @@ export default {
       showAdditionalCardFields: false,
       additionalData: null,
       is3DS: false,
+      twoFACompleted: false,
+      transactionStatus: null,
     }
   },
   computed: {
-    ...mapGetters(['getBupayload']),
+    ...mapGetters(['getBupayload', 'getTwoFACompleted']),
   },
   watch: {
+    getTwoFACompleted(status) {
+      this.twoFACompleted = status;
+      
+      if (status) {
+          switch (this.transactionStatus) {
+              case 'pending':
+                this.pollCard();
+                break;
+              case 'success':
+                this.showProcessing = false;
+                this.$paymentNotification({
+                  text: 'Card details added and selected for payment.'
+                });
+                this.$router.push('/choose-payment');
+                this.loading = false;
+                break;
+              default:
+                break;
+          }
+      }
+    },
     form: {
       handler(val) {
         const state = val.state;
@@ -146,6 +169,8 @@ export default {
     }, 500);
   },
   methods: {  
+    ...mapMutations(['setTwoFACompleted']),
+
     loadVGS() {
       const script = document.createElement('script');
       script.async = true;
@@ -189,7 +214,7 @@ export default {
         showCardIcon: true,
         fontSize: '13px',
         placeholder: '0000 0000 0000 0000',
-        // validations: ['required', 'validCardNumber'],
+        validations: ['required'],
         classes: classes,
       });
 
@@ -258,6 +283,7 @@ export default {
               this.$paymentAxiosPost(payload).then((res)=> {
                 this.transaction_id = res.transaction_id;
                 if (res.status) {
+                  this.transactionStatus = res.transaction_status;
 
                   if(res.additional_data) {
                     this.additionalData = res.additional_data;
@@ -266,21 +292,6 @@ export default {
                     return;
                   } 
 
-                  switch (res.transaction_status) {
-                    case 'pending':
-                      this.pollCard();
-                      break;
-                    case 'success':
-                      this.showProcessing = false;
-                      this.$paymentNotification({
-                        text: 'Card details added and selected for payment.'
-                      });
-                      this.$router.push('/choose-payment');
-                      this.loading = false;
-                      break;
-                    default:
-                      break;
-                  }
                 } else {
                   this.loading = false;
                   this.showProcessing = false,
@@ -342,6 +353,7 @@ export default {
           }, 10000 * poll_count);
         }(poll_count));
       }
+      this.setTwoFACompleted(false);
     },
 
     async TransactionIdStatus() {
