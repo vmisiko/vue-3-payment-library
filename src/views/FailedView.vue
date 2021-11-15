@@ -1,8 +1,9 @@
 <template>
   <div class="flex-center">
     <div class="card" :class="{'card-min': paymentStatus }">
+      <IconView icon='back'/>
 
-      <TopInfo :icon="icon" :title="title" :subtitle="getErrorText" />
+      <TopInfo class="mgt-9" :icon="icon" :title="title" :subtitle="getErrorText" />
 
       <PaymentDetail v-if="defaultPaymentMethod" :currency="currency" :amount="amount" :paymentMethod="defaultPaymentMethod"  :paymentStatus="paymentStatus" />
 
@@ -11,7 +12,7 @@
           :block="true"
           :loading="loading"
           color='primary'
-          @click="routeRetry"
+          @click="submitRetry"
         >
           {{ $route.params.mpesa ? 'Retry' : 'Try Again' }}
         </sendy-btn>
@@ -56,6 +57,9 @@ export default {
       loading: false,
       defaultPaymentMethod: null,
       errorText: "Could not process transaction",
+      transaction_id: null,
+      poll_count: 0,
+      poll_limit: 6,
     }
   },
   computed: {
@@ -100,17 +104,110 @@ export default {
       window.analytics.track('Try again after Failed Payment', {
         ...this.commonTrackPayload(),
       });
-      this.$handlePaymentRouting(); 
-      switch (entry) {
-        case 'checkout':
-          this.$router.push({ name: 'Entry'});
-          break;
-        case 'choose-payment-checkout':
-          this.$router.push({ name: 'ChoosePaymentCheckout'});
-          break;
-        default:
-          break;
+     
+    },
+    async submitRetry() {
+    this.startResponseTime = new Date(); 
+
+      window.analytics.track('Try again after Failed Payment', {
+        ...this.commonTrackPayload(),
+      });
+
+
+      if (this.defaultPaymentMethod.pay_method_id === 1) {
+        this.amount > this.defaultPaymentMethod.stk_limit ? this.$router.push('/mpesa-c2b') : this.$router.push('/mpesa-stk');
+        return;
       }
+
+      this.loading = true;
+      const payload = {
+        country: this.getBupayload.country_code,
+        amount: this.getBupayload.amount,
+        cardno: this.defaultPaymentMethod.pay_method_details,
+        txref: this.getBupayload.txref,
+        userid: this.getBupayload.user_id,
+        currency: this.getBupayload.currency,
+        bulk: this.getBupayload.bulk,
+        entity: this.getBupayload.entity_id,
+        company_code: this.getBupayload.company_code,
+      }
+
+      const fullPayload = {
+        url: '/api/v1/process',
+        params: payload,
+      }
+
+      const response = await this.$paymentAxiosPost(fullPayload);
+      this.transaction_id = response.transaction_id;
+      if (response.status) {
+        this.pollCard();
+        return;
+      }
+      this.setErrorText(response.message);
+      this.loading = false;
+    },
+
+    pollCard() {
+      this.poll_count = 0;
+      for (let poll_count = 0; poll_count < this.poll_limit; poll_count++) {
+        const that = this;
+        (function (poll_count) {
+          setTimeout(() => {
+            if (that.poll_count === that.poll_limit) {
+              poll_count = that.poll_limit;
+              return;
+            }
+
+            that.TransactionIdStatus(); 
+            if (poll_count === (that.poll_limit - 1)) {
+              that.loading = false;
+              that.errorText = 'Failed to charge card. Please try again.';
+              that.setErrorText(that.errorText);
+              return;
+            }
+          }, 10000 * poll_count);
+        }(poll_count));
+      }
+    },
+
+    async TransactionIdStatus() {
+
+      const payload = {
+        url: `/api/v1/process/status/${this.transaction_id}`,
+      }
+      this.$paymentAxiosGet(payload).then((res) => {
+        if (res.status) { 
+          switch (res.transaction_status) {
+            case 'success':
+              this.poll_count = this.poll_limit;
+              this.collectLoad = false;
+              this.$paymentNotification({
+                text: res.message,
+              });
+              this.loading = false;
+              const duration = Date.now() - this.startResponseTime;
+              this.$router.push({
+                name: 'SuccessView',
+                duration: duration,
+              });
+              break;
+            case 'failed':
+              this.poll_count = this.poll_limit;
+              this.loading = false;
+              this.collectLoad = false;
+              this.errorText = res.message;
+              this.setErrorText(res.message);
+              break;
+            case 'pending':
+              break;
+            default:
+              break;
+          }
+          return res;
+        }
+        this.errorText = res.message;
+        this.showErrorModal= true;
+      })
     }
   }
 }

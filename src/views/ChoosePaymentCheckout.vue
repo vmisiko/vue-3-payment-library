@@ -1,6 +1,7 @@
 <template>
   <div class="flex-center">
     <Processing v-if="loading" text="Please wait while we confirm payment" />
+    <NoOptionsModal v-if="!defaultPaymentMethod" />
     <div class="card" v-else>
       <TopInfo :icon="icon" :title="title"/>
 
@@ -67,6 +68,7 @@ import TopInfo from '../components/topInfo';
 import Processing from '../components/processing';
 import paymentGenMxn from '../mixins/paymentGenMxn';
 import TransactionLimitModal from '../components/modals/transactionalLimitModal';
+import NoOptionsModal from '../components/modals/noOptionsModal';
 
 export default {
   name: 'ChoosePaymentCheckout',
@@ -75,6 +77,7 @@ export default {
     TopInfo,
     Processing,
     TransactionLimitModal,
+    NoOptionsModal,
   },
   data() {
     return {
@@ -193,22 +196,21 @@ export default {
 
     pollCard() {
       this.poll_count = 0;
-      const poll_limit = 6;
-      for (let poll_count = 0; poll_count < poll_limit; poll_count++) {
+      for (let poll_count = 0; poll_count < this.poll_limit; poll_count++) {
         const that = this;
         (function (poll_count) {
           setTimeout(() => {
-            if (that.poll_count === poll_limit) {
-              poll_count = poll_limit;
+            if (that.poll_count === that.poll_limit) {
+              poll_count = that.poll_limit;
               return;
             }
 
             that.TransactionIdStatus(); 
-            if (poll_count === 5) {
+            if (poll_count === (that.poll_limit - 1)) {
               that.loading = false;
-              this.errorText = 'Failed to charge card. Please try again.';
-              this.setErrorText(this.errorText);
-              this.$router.push({name: 'FailedView'});
+              that.errorText = 'Failed to charge card. Please try again.';
+              that.setErrorText(that.errorText);
+              that.$router.push({name: 'FailedView'});
               return;
             }
           }, 10000 * poll_count);
@@ -253,7 +255,6 @@ export default {
     },
 
     addPaymentOption() {
-      const finishTime = Date.now - this.startTime;
       window.analytics.track('Add Payment Option', {
         ...this.commonTrackPayload(),
         timezone: this.paymentTimezone,

@@ -17,7 +17,7 @@
         <sendy-btn 
           color='primary'
           class=""
-         @click="$router.push('/add-payment')"
+         @click="addPaymentOption"
         >
           Add payment option
         </sendy-btn>
@@ -31,12 +31,19 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+import paymentGenMxn from '../../mixins/paymentGenMxn';
+
 export default {
   name: 'cvvModule',
+  mixins: [paymentGenMxn],
   props: ['show'],
   data() {
     return {
     }
+  },
+  computed: {
+    ...mapGetters(['getBupayload']),
   },
   watch: {
     show(val) {
@@ -53,6 +60,14 @@ export default {
     handleClose() {
       document.getElementById('no-option').style.display = 'none';
     },
+    addPaymentOption() {
+      window.analytics.track('Add Payment Option', {
+        ...this.commonTrackPayload(),
+        timezone: this.paymentTimezone,
+        country_code: this.getBupayload.country_code,
+      })
+      this.$router.push('/add-payment');
+    }
   }
 }
 </script>

@@ -61,7 +61,7 @@
         </div>
 
     </div>
-    <TimerModal :show="showTimer" />
+    <TimerModal :show="showTimer" @close="closeTimer" />
     <MpesaErrorModal :show="showErrorModal" :text="errorText" />
     </div>  
   </div>
@@ -158,23 +158,23 @@ export default {
     },
     pollMpesa() {
       this.poll_count = 0;
-      const poll_limit = 6;
-      for (let poll_count = 0; poll_count < poll_limit; poll_count++) {
+      
+      for (let poll_count = 0; poll_count < this.poll_limit; poll_count++) {
         const that = this;
         (function (poll_count) {
           setTimeout(() => {
-            if (that.poll_count === poll_limit) {
-              poll_count = poll_limit;
+            if (that.poll_count === that.poll_limit) {
+              poll_count = that.poll_limit;
               return;
             }
 
             that.TransactionIdStatus(); 
-            if (poll_count === 5) {
+            if (poll_count === (that.poll_limit - 1) ) {
               that.loading = false;
               that.showTimer = false;
-              that.promptInfo = false,
+              that.promptInfo = false;
               that.setErrorText('Failed to charge using Mpesa. Please try again.');
-              that.$router.push({name: 'FailedView'});
+              that.$router.push({name: 'FailedView', params: { mpesa: 'mpesa'}  });
               return;
             }
           }, 10000 * poll_count);
@@ -197,7 +197,7 @@ export default {
               });
               this.loading = false;
               this.showTimer = false;
-              this.promptInfo = false,
+              this.promptInfo = false;
               this.$router.push({name: 'SuccessView', params: { mpesaCode: res.receipt_no }});
               break;
             case 'failed':
@@ -205,8 +205,8 @@ export default {
               this.loading = false;
               this.setErrorText(res.message);
               this.showTimer = false;
-              this.promptInfo = false,
-              this.$router.push({name: 'FailedView'});
+              this.promptInfo = false;
+              this.$router.push({name: 'FailedView', params: { mpesa: 'mpesa'}  });
               break;
             case 'pending':
               break;
@@ -219,8 +219,15 @@ export default {
         this.showTimer = false;
         this.promptInfo = false,
         this.setErrorText(res.message);
-        this.$router.push({name: 'FailedView'});
+        this.$router.push({name: 'FailedView', params: { mpesa: 'M-Pesa' }});
       })
+    },
+    closeTimer() {
+      this.loading = false;
+      this.showTimer = false;              
+      this.promptInfo = false;
+      this.setErrorText("We are unable to confirm your M-PESA payment. Please retry again after a couple of minutes. ");
+      this.$router.push({name: 'FailedView', params: { mpesa: 'mpesa' }});
     }
   }
 }

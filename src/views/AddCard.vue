@@ -108,9 +108,6 @@ export default {
     form: {
       handler(val) {
         const state = val.state;
-        for (const [key, value] of Object.entries(state)) {
-          this[`${key}`] = !value.isValid && !value.isEmpty? value.errorMessages[0] : '';
-        }
         if (
           Object.prototype.hasOwnProperty.call(state, 'cardno')
           && state.cardno.isValid
@@ -289,23 +286,22 @@ export default {
 
     pollCard() {
       this.poll_count = 0;
-      const poll_limit = 6;
-      for (let poll_count = 0; poll_count < poll_limit; poll_count++) {
+      for (let poll_count = 0; poll_count < this.poll_limit; poll_count++) {
         const that = this;
         (function (poll_count) {
           setTimeout(() => {
-            if (that.poll_count === poll_limit) {
-              poll_count = poll_limit;
+            if (that.poll_count === that.poll_limit) {
+              poll_count = that.poll_limit;
               return;
             }
             
             that.TransactionIdStatus(); 
-            if (poll_count === 5) {
+            if (poll_count === (that.poll_limit - 1)) {
               that.loading = false;
-              this.collectLoad = false,
-              this.initForm();
-              this.errorText = 'Failed to confirm card. Please try again.';
-              this.showErrorModal= true;
+              that.collectLoad = false,
+              that.initForm();
+              that.errorText = 'Failed to confirm card. Please try again.';
+              that.showErrorModal= true;
               return;
             }
           }, 10000 * poll_count);

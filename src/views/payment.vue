@@ -72,6 +72,8 @@ export default {
   mounted() {
     this.retrievePaymentMethods();
     this.getDefaultpayMethod();
+    console.log('mmounted no optional modal');
+
   },
   methods: {
     ...mapMutations(['setErrorText', 'setPaymentMethods', 'setSavedPayMethods']),
@@ -137,22 +139,21 @@ export default {
 
     pollCard() {
       this.poll_count = 0;
-      const poll_limit = 6;
-      for (let poll_count = 0; poll_count < poll_limit; poll_count++) {
+      for (let poll_count = 0; poll_count < this.poll_limit; poll_count++) {
         const that = this;
         (function (poll_count) {
           setTimeout(() => {
-            if (that.poll_count === poll_limit) {
-              poll_count = poll_limit;
+            if (that.poll_count === that.poll_limit) {
+              poll_count = that.poll_limit;
               return;
             }
 
             that.TransactionIdStatus(); 
-            if (poll_count === 5) {
+            if (poll_count === (that.poll_limit - 1)) {
               that.loading = false;
-              this.errorText = 'Failed to charge card. Please try again.';
-              this.setErrorText(this.errorText);
-              this.$router.push({name: 'FailedView'});
+              that.errorText = 'Failed to charge card. Please try again.';
+              that.setErrorText(that.errorText);
+              that.$router.push({name: 'FailedView'});
               return;
             }
           }, 10000 * poll_count);
