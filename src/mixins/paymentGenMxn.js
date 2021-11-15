@@ -27,7 +27,7 @@ const mixin = {
       const finishTime = date - this.startTime;
       const payload = {
         user_id: this.getBupayload.user_id,
-        product: '',
+        product: this.getBupayload.entity_id,
         time: Date.now(),
         device: this.isMobile ? 'mobile' : 'desktop',
         duration_on_page: finishTime,
