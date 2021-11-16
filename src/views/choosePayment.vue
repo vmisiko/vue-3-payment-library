@@ -1,7 +1,8 @@
 <template>
   <div class="flex-center">
+  <NoOptionsModal v-if="!defaultPaymentMethod && getSavedPayMethods && getSavedPayMethods.length === 0" />
 
-    <div class="card">
+    <div class="card" v-else>
       <TopInfo :icon="icon" :title="title"/>
 
       <span v-if="creditCards.length !== 0" class="mgt-2 text-overline">CREDIT OR DEBIT CARD</span>
@@ -55,12 +56,14 @@
 import { mapGetters, mapMutations } from 'vuex';
 import TopInfo from '../components/topInfo';
 import paymentGenMxn from '../mixins/paymentGenMxn';
+import NoOptionsModal from '../components/modals/noOptionsModal';
 
 export default {
   name: 'ChoosePayment',
   mixins: [paymentGenMxn],
   components: {
     TopInfo,
+    NoOptionsModal,
   },
   data() {
     return {
