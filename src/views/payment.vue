@@ -66,14 +66,13 @@ export default {
   },
   watch: {
     getSavedPayMethods(val) {
-      this.defaultPaymentMethod = val ? val.filter(method => method.default === 1)[0]: [];
+      this.defaultPaymentMethod = val ? val.filter(method => method.default === 1)[0]: null;
+      this.checkAvailableOptions(this.defaultPaymentMethod);
     }
   },
   mounted() {
     this.retrievePaymentMethods();
     this.getDefaultpayMethod();
-    console.log('mmounted no optional modal');
-
   },
   methods: {
     ...mapMutations(['setErrorText', 'setPaymentMethods', 'setSavedPayMethods']),
@@ -81,6 +80,7 @@ export default {
       this.defaultPaymentMethod = this.getSavedPayMethods ? this.getSavedPayMethods.filter(method => method.default === 1)[0] : [];
       this.currency = this.getBupayload.currency;
       this.amount = this.getBupayload.amount;
+      this.checkAvailableOptions(this.defaultPaymentMethod);
     },
 
     sucessView() {

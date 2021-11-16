@@ -98,7 +98,7 @@ export default {
     ...mapMutations(['setPaymentMethods', 'setSavedPayMethods']),
     getDefaultpayMethod() {
       const method = this.getSavedPayMethods ? this.getSavedPayMethods.filter(method => method.default === 1)[0] : [];
-      this.picked = method.pay_detail_id;
+      this.picked = method ? method.pay_detail_id : '';
     },
 
     async update() {

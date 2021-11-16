@@ -1,7 +1,7 @@
 <template>
   <div class="flex-center">
     <Processing v-if="loading" text="Please wait while we confirm payment" />
-    <NoOptionsModal v-if="!defaultPaymentMethod" />
+    <NoOptionsModal v-if="!defaultPaymentMethod && getSavedPayMethods && getSavedPayMethods.length === 0" />
     <div class="card" v-else>
       <TopInfo :icon="icon" :title="title"/>
 

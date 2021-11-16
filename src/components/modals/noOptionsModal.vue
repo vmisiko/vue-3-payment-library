@@ -63,7 +63,7 @@ export default {
     addPaymentOption() {
       window.analytics.track('Add Payment Option', {
         ...this.commonTrackPayload(),
-        timezone: this.paymentTimezone,
+        timestamp_zone: this.paymentTimezone,
         country_code: this.getBupayload.country_code,
       })
       this.$router.push('/add-payment');
