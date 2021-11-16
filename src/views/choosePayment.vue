@@ -1,6 +1,6 @@
 <template>
   <div class="flex-center">
-  <NoOptionsModal v-if="!defaultPaymentMethod && getSavedPayMethods && getSavedPayMethods.length === 0" />
+    <NoOptionsModal v-if="!defaultPaymentMethod && getSavedPayMethods && getSavedPayMethods.length === 0" />
 
     <div class="card" v-else>
       <TopInfo :icon="icon" :title="title"/>
