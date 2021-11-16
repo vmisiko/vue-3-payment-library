@@ -19,7 +19,6 @@ const mixin = {
   },
   mounted() {
     this.startTime = new Date()
-    console.log(window.navigator.userAgent, this.getMobileOs());
   },
   methods: {
     ...mapMutations(['setPaymentMethods', 'setSavedPayMethods']),
