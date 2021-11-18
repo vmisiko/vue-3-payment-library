@@ -100,8 +100,9 @@ export default {
   },
   mounted () {
     if (this.is3DS) {
-      const url = !this.additionalData ? this.additionalData : this.additionalData[0];
-      const urlWindow = window.open(JSON.parse(url.field), '');
+      const res = !this.additionalData ? this.additionalData : this.additionalData[0];
+      const url = res.field;
+      const urlWindow = window.open(url, '');
 
       const timer = setInterval(() => {
         
