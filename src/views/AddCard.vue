@@ -245,7 +245,7 @@ export default {
     onsubmit() {
       if (!this.vgs_valid_payment) {
         this.setErrors();
-        return;
+        // return;
       }
       const newCardPayload = {
         "country": this.getBupayload.country_code,
@@ -332,6 +332,16 @@ export default {
           },
       );
     },
+    handleContinue(val) {
+      if (val) {
+        this.pollCard();
+        return;
+      }
+      this.showProcessing = false,
+      this.initForm();
+      this.errorText = 'Failed to collect card details. Please try again';
+      this.showErrorModal= true;
+    },
 
     handleContinue(val) {
       if (val) {
@@ -368,6 +378,7 @@ export default {
         }(poll_count));
         this.setTwoFACompleted(false);
       }
+      this.setTwoFACompleted(false);
     },
 
     async TransactionIdStatus() {
