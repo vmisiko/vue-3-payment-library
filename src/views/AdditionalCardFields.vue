@@ -60,7 +60,6 @@
 import { mapGetters, mapMutations, Mutation } from 'vuex';
 import { VueTelInput } from 'vue-tel-input';
 import Processing from '../components/processing';
-// import birthDatepicker from 'vue-birth-datepicker';
 import birthDatepicker from 'vue-birth-datepicker/src/birth-datepicker';
 
 
@@ -98,28 +97,10 @@ export default {
       this.fields = val;
     }
   },
-  mounted () {
-    if (this.is3DS) {
-      const res = !this.additionalData ? this.additionalData : this.additionalData[0];
-      const url = res.field;
-      const urlWindow = window.open(url, '');
-
-      const timer = setInterval(() => {
-        
-			  if (urlWindow.closed) {
-          this.setTwoFACompleted(true);
-          clearInterval(timer);
-        }
-	  	}, 500)
-
-    }
-
-  },
   methods: {
     ...mapMutations(['setTwoFACompleted']),
-
     validatePhone(val) {
-      this.formattedPhone = val.valid ? val.number.split('+')[1] : null;
+      this.formattedPhone = val.valid ? val.number : null;
       this.form['phone'] = this.formattedPhone;
       return;
     },
@@ -141,12 +122,10 @@ export default {
 
         if (response.additional_data) {
           this.fields = response.additional_data;
-          //  this.$emit('continue', true);
           return;
-        } else {
-          this.setTwoFACompleted(true);
         }
-
+        
+        this.$emit('continue', true);
         return;
       }
 

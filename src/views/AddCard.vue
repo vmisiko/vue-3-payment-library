@@ -4,7 +4,6 @@
     <AdditionalCardFields 
       :additionalData="additionalData" 
       :transaction_id="transaction_id" 
-      :is3DS="is3DS"  
       v-if="!showProcessing && showAdditionalCardFields" 
       @continue="handleContinue"
     />
@@ -285,6 +284,10 @@ export default {
                   if(res.additional_data) {
                     this.additionalData = res.additional_data;
                     this.is3DS = res.tds;
+                    if (res.tds) {
+                      this.init3DS();
+                      return;
+                    }
                     this.showAdditionalCardFields = true;
                     this.showProcessing = false;
                     return;
@@ -409,7 +412,34 @@ export default {
         this.errorText = res.message;
         this.showErrorModal= true;
       })
-    }
+    },
+    init3DS() {
+      const res = !this.additionalData ? this.additionalData : this.additionalData[0];
+      const url = res.field;
+      const urlWindow = window.open(url, '');
+
+      const timer = setInterval(() => {
+			  if (urlWindow.closed) {
+          switch (this.transactionStatus) {
+            case 'pending':
+              this.pollCard();
+              break;
+            case 'success':
+              this.showProcessing = false;
+              this.$paymentNotification({
+                text: 'Card details added and selected for payment.'
+              });
+              this.$router.push('/choose-payment');
+              this.loading = false;
+              break;
+            default:
+              break;
+          };
+          clearInterval(timer);
+        }
+	  	}, 500);
+
+    },
   }
 }
 </script>
