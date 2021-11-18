@@ -244,7 +244,7 @@ export default {
     onsubmit() {
       if (!this.vgs_valid_payment) {
         this.setErrors();
-        // return;
+        return;
       }
       const newCardPayload = {
         "country": this.getBupayload.country_code,
