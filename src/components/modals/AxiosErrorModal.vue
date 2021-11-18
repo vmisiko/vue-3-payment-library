@@ -18,7 +18,7 @@
           :block="true" 
           color='info'
           class="mgt-8"
-         @click="$emit('close')"
+         @click="close"
         >
           Close
         </sendy-btn>
@@ -48,6 +48,11 @@ export default {
     },
     handleClose() {
       document.getElementById('axios-modal').style.display = 'none';
+    },
+    close() {
+      const entryRoute = localStorage.entry_route;
+      this.$router.push({name: entryRoute});
+      this.$emit('close');
     },
   }
 }
