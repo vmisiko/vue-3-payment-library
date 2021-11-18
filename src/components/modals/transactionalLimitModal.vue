@@ -25,7 +25,7 @@
         </sendy-btn>
 
         <div class="text-center mgt-7">
-          <span class="link" @click="$emit('close')">
+          <span class="link" @click="handleRouting">
             Cancel Payment
           </span>
         </div>
@@ -55,6 +55,10 @@ export default {
     },
     handleClose() {
       document.getElementById('error-limit').style.display = 'none';
+    },
+    handleRouting() {
+      const entryRoute = localStorage.entry_route;
+      this.$router.push({name: entryRoute});
     },
   }
 }

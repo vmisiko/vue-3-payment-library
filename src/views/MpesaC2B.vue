@@ -84,7 +84,7 @@ export default {
       title: 'Pay with M-PESA',
       loading: false,
       poll_count: 0,
-      poll_limit: 6,
+      poll_limit: 30,
       showTimer: false,
     }
   },
@@ -102,17 +102,17 @@ export default {
         ...this.commonTrackPayload(),
       });
 
-      for (let poll_count = 0; poll_count < poll_limit; poll_count++) {
+      for (let poll_count = 0; poll_count < this.poll_limit; poll_count++) {
         const that = this;
         (function (poll_count) {
           setTimeout(() => {
-            if (that.poll_count === poll_limit) {
-              poll_count = poll_limit;
+            if (that.poll_count === that.poll_limit) {
+              poll_count = that.poll_limit;
               return;
             }
 
             that.TransactionIdStatus(); 
-            if (poll_count === 5) {
+            if (poll_count === (that.poll_limit - 1)) {
               that.loading = false;
               that.showTimer = false;
               that.promptInfo = false,

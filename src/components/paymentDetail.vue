@@ -29,7 +29,7 @@
 
       <hr class="mgt-4" />
 
-      <div class="mgt-4 direction-flex float-right  link" v-if="!paymentStatus" @click="$router.push('/choose-payment')" >
+      <div class="mgt-4 direction-flex float-right  link" @click="$router.push('/choose-payment')" >
         <span> Change payment option</span>
         <IconView class="mgl-2" icon="greator"/>
       </div>

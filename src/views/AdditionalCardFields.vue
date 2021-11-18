@@ -3,18 +3,18 @@
     <span v-if="!is3DS">
 
     <div v-for="(item, index) in fields" :key="index">
-       <div class="textfield mgt-5" v-if="item !== 'phone' && item !== 'birthday'" >
-          <label for="" class="normal-text"> {{ capitalize(item) }}</label>
+       <div class="textfield mgt-5" v-if="item.type === 'text'" >
+          <label for="" class="normal-text"> {{ capitalize(item.field) }}</label>
           <input
             type="text"
             class="phone-input"
-            :placeholder="`Entery ${item}`"
+            :placeholder="`Enter ${item.field}`"
             required
-            v-model="form[item]"
+            v-model="form[item.field]"
           >
         </div>
-        <div class="textfield mgt-5" v-if="item === 'phone'" >
-          <label for="" class="normal-text"> {{ capitalize(item) }}</label>
+        <div class="textfield mgt-5" v-if="item.type === 'phone'" >
+          <label for="" class="normal-text"> {{ capitalize(item.field) }}</label>
           <vue-tel-input 
             autoFormat 
             :defaultCountry="getBupayload.country_code"
@@ -25,6 +25,17 @@
           >
           </vue-tel-input>
         </div>
+        <div class="textfield mgt-5" v-if="item.type === 'date'" >
+          <birth-datepicker
+            placeholder="Enter Date of birth"
+            v-model="form[item.field]"
+            :valueIsString="true"
+            delimiter="-"
+            :yearFirst="true"
+            class="phone-input"
+          />
+        </div>
+       
     </div> 
 
     <sendy-btn 
@@ -39,7 +50,7 @@
     </sendy-btn>
     </span>
     <span v-else>
-    <Processing text="Processing your card details" />
+      <Processing text="Processing your card details" />
     </span>
 
   </div> 
@@ -49,6 +60,7 @@
 import { mapGetters, mapMutations, Mutation } from 'vuex';
 import { VueTelInput } from 'vue-tel-input';
 import Processing from '../components/processing';
+import birthDatepicker from 'vue-birth-datepicker/src/birth-datepicker';
 
 
 export default {
@@ -56,6 +68,7 @@ export default {
   components: {
     VueTelInput,
     Processing,
+    birthDatepicker,
   },
   props: ['additionalData', 'transaction_id', 'is3DS'],
   data() {
@@ -80,46 +93,24 @@ export default {
     ...mapGetters(['getBupayload']),
   },
   watch: {
-    form(val) {
-      console.log(val, 'form');
-    },
     additionalData(val) {
       this.fields = val;
     }
   },
-  mounted () {
-    if (this.is3DS) {
-      const url = !this.additionalData ? this.additionalData : this.additionalData[0];
-      const urlWindow = window.open(JSON.parse(url), '');
-
-      const timer = setInterval(() => {
-        
-			  if (urlWindow.closed) {
-          this.setTwoFACompleted(true);
-          clearInterval(timer);
-        }
-	  	}, 500)
-
-    }
-
-  },
   methods: {
     ...mapMutations(['setTwoFACompleted']),
-
     validatePhone(val) {
-      this.formattedPhone = val.valid ? val.number.split('+')[1] : null;
+      this.formattedPhone = val.valid ? val.number : null;
       this.form['phone'] = this.formattedPhone;
       return;
     },
     async submit() {
-      console.log('this.form submitted', this.form);
       this.loading = true;
       const payload = {
         transaction_id: this.transaction_id,
         ...this.form,
       }
 
-      console.log(payload);
       const fullPayload = {
         params: payload,
         url: '/api/v2/submit_info'
@@ -131,12 +122,10 @@ export default {
 
         if (response.additional_data) {
           this.fields = response.additional_data;
-           this.$emit('continue', true);
           return;
-        } else {
-          this.setTwoFACompleted(true);
         }
-
+        
+        this.$emit('continue', true);
         return;
       }
 
@@ -150,7 +139,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .phone-input {
   padding: 8px;
   height: 40px;
