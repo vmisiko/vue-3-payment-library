@@ -6,6 +6,7 @@
       :transaction_id="transaction_id" 
       :is3DS="is3DS"  
       v-if="!showProcessing && showAdditionalCardFields" 
+      @continue="handleContinue"
     />
     <div class="card-min" v-if="!showProcessing && !showAdditionalCardFields">
       <TopInfo :icon="icon" :title="title"/>    
