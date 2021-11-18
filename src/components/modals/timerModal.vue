@@ -49,7 +49,10 @@ export default {
       document.getElementById('timer-modal').style.display = 'block';
       const stopCountdown = setInterval(() => {
         this.countdown -= 1;
-        if (!this.countdown) clearInterval(stopCountdown);
+        if (!this.countdown) {
+          clearInterval(stopCountdown);
+          this.$emit('close');
+        } 
       }, 1000);
     },
     

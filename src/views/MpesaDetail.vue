@@ -25,12 +25,15 @@
 <script>
 import TopInfo from '../components/topInfo';
 import DeletModal from '../components/modals/DeleteModal';
+import paymentGenMxn from '../mixins/paymentGenMxn';
+
 export default {
   name: 'MpesaDetail',
   components: {
     TopInfo,
     DeletModal,
   },
+  mixins: [paymentGenMxn],
   data() {
     return {
       icon: 'back',

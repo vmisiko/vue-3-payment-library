@@ -8,7 +8,7 @@ const mixin = {
     }
   },
   computed: {
-    ...mapGetters(['getPaymentMethods', 'getBupayload']),
+    ...mapGetters(['getPaymentMethods', 'getBupayload', 'getSavedPayMethods']),
     paymentTimezone() {
       const localtz = moment.tz.guess();
       return localtz;
@@ -27,9 +27,9 @@ const mixin = {
       const finishTime = date - this.startTime;
       const payload = {
         user_id: this.getBupayload.user_id,
-        product: '',
-        time: Date.now(),
-        device: this.isMobile ? 'mobile' : 'desktop',
+        product: this.getBupayload.entity_id,
+        timestamp: Date.now(),
+        platform_name: this.isMobile ? this.getMobileOs() : 'web',
         duration_on_page: finishTime,
       }
       return payload;
@@ -55,6 +55,23 @@ const mixin = {
         this.setSavedPayMethods(savedMethods);
       }
     },
+    checkAvailableOptions(defaultPaymentMethod) {
+      if (this.getSavedPayMethods.length > 0 && !defaultPaymentMethod) {
+        this.$router.push({ name: 'ChoosePayment'});
+        return;
+      };
+    },
+    getMobileOs() {
+      let name = 'web'
+      if (navigator.userAgent.indexOf("Android") != -1)  {
+        name = "Android";
+      }
+      if (navigator.userAgent.indexOf("like Mac") != -1) {
+        name = "iOS";
+      }
+      return name;
+    }
+    
   }
 
 }
