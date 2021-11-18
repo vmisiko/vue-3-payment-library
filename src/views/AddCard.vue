@@ -1,7 +1,12 @@
 <template>
   <div class="flex-center">
     <Processing text="Processing your card details" v-if="showProcessing && !showAdditionalCardFields" />
-    <AdditionalCardFields :additionalData="additionalData" :transaction_id="transaction_id" v-if="!showProcessing && showAdditionalCardFields" />
+    <AdditionalCardFields 
+      :additionalData="additionalData" 
+      :transaction_id="transaction_id" 
+      :is3DS="is3DS"  
+      v-if="!showProcessing && showAdditionalCardFields" 
+    />
     <div class="card-min" v-if="!showProcessing && !showAdditionalCardFields">
       <TopInfo :icon="icon" :title="title"/>    
 
