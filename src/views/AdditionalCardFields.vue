@@ -8,9 +8,9 @@
           <input
             type="text"
             class="phone-input"
-            :placeholder="`Enter ${item.field}`"
+            :placeholder="`${item.field}`"
             required
-            v-model="form[item.field]"
+            v-model="form[item.field_id]"
           >
         </div>
         <div class="textfield mgt-5" v-if="item.type === 'phone'" >
@@ -28,7 +28,7 @@
         <div class="textfield mgt-5" v-if="item.type === 'date'" >
           <birth-datepicker
             placeholder="Enter Date of birth"
-            v-model="form[item.field]"
+            v-model="form[item.field_id]"
             :valueIsString="true"
             delimiter="-"
             :yearFirst="true"
