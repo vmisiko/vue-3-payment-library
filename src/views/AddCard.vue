@@ -258,7 +258,7 @@ export default {
       };
       this.loading = true;
       this.form.submit(
-          '/customers/collect_card_details/',
+          '/customers/collect_card_details',
           {
             data: newCardPayload,
              headers: {
