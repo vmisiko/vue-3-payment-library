@@ -46,7 +46,7 @@ const routes = [
         component: processing,
       },
       {
-        path: '/choose-payment',
+        path: '/choose-payment/:entry?',
         name: 'ChoosePayment',
         component: choosePayment,
       },

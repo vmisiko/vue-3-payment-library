@@ -1,63 +1,66 @@
 <template>
   <div class="flex-center">
-    <Processing v-if="loading" text="Please wait while we confirm payment" />
     <NoOptionsModal v-if="!defaultPaymentMethod && getSavedPayMethods && getSavedPayMethods.length === 0" />
-    <div class="card" v-if="!loading && getSavedPayMethods">
-      <TopInfo :icon="icon" :title="title"/>
+    <div v-else>
+      <Processing v-if="loading" text="Please wait while we confirm payment" />
+      <div class="card" v-if="!loading">
+        <TopInfo :icon="icon" :title="title"/>
 
-      <span v-if="creditCards.length !== 0" class="mgt-2 text-overline">CREDIT OR DEBIT CARD</span>
-      <div class="" v-if="creditCards.length !== 0" >
-        <div v-for="(card, index) in creditCards" :key="index" class="mgt-4 text-caption-1 direction-flex pda-3" :class="{'selected-border': (picked === card.pay_detail_id)}" >
-            <IconView :icon="$cardIconValidator(card.psp.toLowerCase()) ? card.psp.toLowerCase() : 'card' " />
-            <span class="mgl-2">{{ card.psp }}</span>
-            <span class="gray80-text mgl-2"> {{$formatLastFour(card.pay_method_details) }}</span>   
-            <span class="spacer"></span>   
-            <div class="">
-              <input name="paymentoption" type="radio" :value="card.pay_detail_id"  v-model="picked" @change="update" >
-             </div>
+        <span v-if="creditCards.length !== 0" class="mgt-2 text-overline">CREDIT OR DEBIT CARD</span>
+        <div class="" v-if="creditCards.length !== 0" >
+          <div v-for="(card, index) in creditCards" :key="index" class="mgt-4 text-caption-1 direction-flex pda-3" :class="{'selected-border': (picked === card.pay_detail_id)}" >
+              <IconView :icon="$cardIconValidator(card.psp.toLowerCase()) ? card.psp.toLowerCase() : 'card' " />
+              <span class="mgl-2">{{ card.psp }}</span>
+              <span class="gray80-text mgl-2"> {{$formatLastFour(card.pay_method_details) }}</span>   
+              <span class="spacer"></span>   
+              <div class="">
+                <input name="paymentoption" type="radio" :value="card.pay_detail_id"  v-model="picked" @change="update" >
+              </div>
+          </div>
         </div>
-      </div>
 
-      <span v-if="savedMobile.length !== 0" class="mgt-8 text-overline">Mobile Money</span>
-      <div v-if="savedMobile.length !== 0">
-        <div v-for="(mobile, index) in savedMobile" :key="index" class="mgt-4 option-border text-caption-1 pda-3 " :class="{'selected-border': picked === mobile.pay_detail_id, 'disabled': mobile.daily_limit && getBupayload.amount > mobile.daily_limit }">
-          <div class="direction-flex">
-            <IconView icon="mpesa" />
-            <span class="mgl-2">M-PESA</span>
-            <span class="spacer"></span>   
-            <div class="">
-              <input name="paymentoption" type="radio" :value="mobile.pay_detail_id" :disabled="mobile.daily_limit && getBupayload.amount > mobile.daily_limit" v-model="picked" @change="update">
+        <span v-if="savedMobile.length !== 0" class="mgt-8 text-overline">Mobile Money</span>
+        <div v-if="savedMobile.length !== 0">
+          <div v-for="(mobile, index) in savedMobile" :key="index" class="mgt-4 option-border text-caption-1 pda-3 " :class="{'selected-border': picked === mobile.pay_detail_id, 'disabled': mobile.daily_limit && getBupayload.amount > mobile.daily_limit }">
+            <div class="direction-flex">
+              <IconView icon="mpesa" />
+              <span class="mgl-2">M-PESA</span>
+              <span class="spacer"></span>   
+              <div class="">
+                <input name="paymentoption" type="radio" :value="mobile.pay_detail_id" :disabled="mobile.daily_limit && getBupayload.amount > mobile.daily_limit" v-model="picked" @change="update">
+              </div>
+            </div> 
+            <div class="text-caption-2 text-sendy-red-30 mgt-3" v-if="mobile.daily_limit && getBupayload.amount > mobile.daily_limit" >
+              <span class="">Unavailable. Amount exceeds daily transaction limit</span>
             </div>
-          </div> 
-          <div class="text-caption-2 text-sendy-red-30 mgt-3" v-if="mobile.daily_limit && getBupayload.amount > mobile.daily_limit" >
-            <span class="">Unavailable. Amount exceeds daily transaction limit</span>
           </div>
-        </div>
-      </div> 
+        </div> 
 
-      <span class="link mgt-5" @click="addPaymentOption"> + Add payment option</span>
+        <span class="link mgt-5" @click="addPaymentOption"> + Add payment option</span>
 
-      <hr class="mgt-5" />
+        <hr class="mgt-5" />
 
-      <div class="mgt-4 direction-flex pda-3">
-        <div class="">
-          <span class="text-caption text-gray70">Amount to pay</span>
-          <div class="text-secondary">
-            {{ getBupayload.currency }} {{ $formatCurrency(getBupayload.amount) }}
+        <div class="mgt-4 direction-flex pda-3">
+          <div class="">
+            <span class="text-caption text-gray70">Amount to pay</span>
+            <div class="text-secondary">
+              {{ getBupayload.currency }} {{ $formatCurrency(getBupayload.amount) }}
+            </div>
           </div>
+          <span class="spacer"></span> 
+          <sendy-btn 
+            color='primary'
+            class="mgt-2"
+            @click="submit"
+            :loading="loading1"
+            :disabled="!picked"
+          >
+            Confirm and Pay
+          </sendy-btn>
         </div>
-        <span class="spacer"></span> 
-        <sendy-btn 
-          color='primary'
-          class="mgt-2"
-          @click="submit"
-          :loading="loading1"
-          :disabled="!picked"
-        >
-          Confirm and Pay
-        </sendy-btn>
       </div>
     </div>
+    
     <TransactionLimitModal :show="showTransactionLimit" @close="showTransactionLimit = false" />
   </div>
 </template>

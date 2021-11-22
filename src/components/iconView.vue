@@ -185,7 +185,7 @@ export default {
   methods: {
     handleBack() {
       const entryRoute = localStorage.entry_route;
-      if (this.$route.name === 'FailedView' || this.$route.name === 'SuccessView' || this.$route.name === 'ChoosePaymentCheckout' || this.$route.name === 'Entry' ) {
+      if (this.$route.name === 'FailedView' || this.$route.name === 'SuccessView' || this.$route.name === 'ChoosePaymentCheckout' || this.$route.name === 'Entry' || this.$route.params.entry) {
         this.$router.push({name: entryRoute});
         return;
       }

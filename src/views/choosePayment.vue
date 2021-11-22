@@ -42,6 +42,7 @@
          <sendy-btn 
           color='primary'
           class="mgt-10"
+          :disabled="!picked"
           @click="handleRouting"
           :loading="loading"
           >
