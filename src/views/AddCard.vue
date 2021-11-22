@@ -66,7 +66,7 @@
 
     </div>
     <CvvModal :show="showModal" @close="showModal=!showModal"/>
-    <ErrorModal :show="showErrorModal" :text="errorText" @close="showErrorModal=!showErrorModal" />
+    <ErrorModal :show="showErrorModal" :text="errorText" @close="handleErrorClose" />
   </div>
 </template>
 
@@ -337,17 +337,6 @@ export default {
     },
     handleContinue(val) {
       if (val) {
-        this.pollCard();
-        return;
-      }
-      this.showProcessing = false,
-      this.initForm();
-      this.errorText = 'Failed to collect card details. Please try again';
-      this.showErrorModal= true;
-    },
-
-    handleContinue(val) {
-      if (val) {
         this.showProcessing = true;
         this.pollCard();
         return;
@@ -357,7 +346,7 @@ export default {
       this.errorText = 'Failed to collect card details. Please try again';
       this.showErrorModal= true;
     },
-
+    
     pollCard() {
       this.poll_count = 0;
       for (let poll_count = 0; poll_count < this.poll_limit; poll_count++) {
@@ -452,6 +441,10 @@ export default {
 	  	}, 500);
 
     },
+    handleErrorClose() {
+      this.showErrorModal = !this.showErrorModal;
+      this.$router.push({name: 'ChoosePayment'})
+    }
   }
 }
 </script>
