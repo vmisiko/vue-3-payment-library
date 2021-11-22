@@ -2,7 +2,7 @@
   <div class="flex-center">
     <Processing v-if="loading" text="Please wait while we confirm payment" />
     <NoOptionsModal v-if="!defaultPaymentMethod && getSavedPayMethods && getSavedPayMethods.length === 0" />
-    <div class="card" v-if="!loading && defaultPaymentMethod">
+    <div class="card" v-if="!loading && getSavedPayMethods">
       <TopInfo :icon="icon" :title="title"/>
 
       <span v-if="creditCards.length !== 0" class="mgt-2 text-overline">CREDIT OR DEBIT CARD</span>

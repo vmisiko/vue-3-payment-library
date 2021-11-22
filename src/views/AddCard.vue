@@ -348,6 +348,7 @@ export default {
 
     handleContinue(val) {
       if (val) {
+        this.showProcessing = true;
         this.pollCard();
         return;
       }
