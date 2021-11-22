@@ -328,7 +328,6 @@ export default {
             } else {
               this.showProcessing = false,
               this.initForm();
-              this.form.reset();
               this.errorText = 'Failed to collect card details. Please try again';
               this.showErrorModal= true;
             }
