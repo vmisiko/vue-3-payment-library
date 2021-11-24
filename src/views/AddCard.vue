@@ -1,6 +1,6 @@
 <template>
   <div class="flex-center">
-    <Processing text="Processing your card details" v-if="showProcessing && !showAdditionalCardFields" />
+    <Processing :count="count" text="Processing your card details" v-if="showProcessing && !showAdditionalCardFields" />
     <AdditionalCardFields 
       :additionalData="additionalData" 
       :transaction_id="transaction_id" 
@@ -103,7 +103,7 @@ export default {
       cvv: '',
       transaction_id: '',
       poll_count: 0,
-      poll_limit: 6,
+      poll_limit: 30,
       showProcessing: false,
       vgs_valid_payment: false,
       cardType: null,
@@ -112,11 +112,11 @@ export default {
       is3DS: false,
       twoFACompleted: false,
       transactionStatus: null,
+      count: false,
     }
   },
   computed: {
     ...mapGetters(['getBupayload', 'getTwoFACompleted']),
-
   },
   watch: {
     getTwoFACompleted(status) {
@@ -420,9 +420,35 @@ export default {
 
       const timer = setInterval(() => {
 			  if (urlWindow.closed) {
-          switch (this.transactionStatus) {
+          this.init3dsPoll();
+          clearInterval(timer);
+        }
+	  	}, 500);
+
+    },
+    handleErrorClose() {
+      this.showErrorModal = !this.showErrorModal;
+      this.$router.push({name: 'ChoosePayment'})
+    },
+    async init3dsPoll() {
+      this.loading = true;
+      const payload = {
+        transaction_id: this.transaction_id,
+        tds: true,
+      }
+
+      const fullPayload = {
+        params: payload,
+        url: '/api/v2/submit_info'
+      }
+
+      const response = await this.$paymentAxiosPost(fullPayload);
+      this.loading = false;
+      if (response.status) {
+        switch (response.transaction_status) {
             case 'pending':
               this.pollCard();
+              this.count = true;
               break;
             case 'success':
               this.showProcessing = false;
@@ -434,16 +460,14 @@ export default {
               break;
             default:
               break;
-          };
-          clearInterval(timer);
-        }
-	  	}, 500);
-
+        };
+        return;
+      }
+      this.showProcessing = false,
+      this.initForm();
+      this.errorText = 'Failed to collect card details. Please try again';
+      this.showErrorModal= true;
     },
-    handleErrorClose() {
-      this.showErrorModal = !this.showErrorModal;
-      this.$router.push({name: 'ChoosePayment'})
-    }
   }
 }
 </script>

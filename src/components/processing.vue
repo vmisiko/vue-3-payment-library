@@ -5,6 +5,9 @@
           <IconView icon="loading1" class="flex-center mgt-10" />
         </div>
       </div>
+      <div class="text-center mgt-5" v-if="count">
+        <span class="text-caption text-gray70"> {{ formatedCountdown }}</span>
+      </div>
       <div class="text-center mgt-15">
         <span class="normal-text">{{ text }}</span>
       </div>
@@ -13,9 +16,41 @@
 </template>
 
 <script>
+  import * as moment from "moment";
+  import "moment-duration-format";
+
   export default {
     name: 'Processing',
-    props: ['text']
+    props: ['text', 'count'],
+    data() {
+      return {
+        countdown: 300,
+      }
+    },
+    computed: {
+      formatedCountdown() {
+        return moment.duration(this.countdown, "seconds").format("mm:ss");
+      },
+    },
+    watch: {
+      count(val) {
+        if (val) {
+          this.startCount();
+        }
+      }
+    },
+    methods: {
+      startCount() {
+        const stopCountdown = setInterval(() => {
+        this.countdown -= 1;
+        if (!this.countdown) {
+          clearInterval(stopCountdown);
+          this.$emit('close');
+        } 
+      }, 1000);
+
+      }
+    },
   }
 </script>
 
