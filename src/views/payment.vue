@@ -54,7 +54,7 @@ export default {
       defaultPaymentMethod: null,
       transaction_id: null,
       poll_count: 0,
-      poll_limit: 6,
+      poll_limit: 30,
       errorText: '',
       mpesaCode: '',
       startResponseTime: null,
