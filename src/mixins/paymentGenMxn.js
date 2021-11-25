@@ -56,7 +56,7 @@ const mixin = {
       }
     },
     checkAvailableOptions(defaultPaymentMethod) {
-      if (this.getSavedPayMethods.length > 0 && !defaultPaymentMethod) {
+      if (this.getSavedPayMethods && this.getSavedPayMethods.length > 0 && !defaultPaymentMethod) {
         this.$router.push({ name: 'ChoosePayment', params: { entry: 'entry'}});
         return;
       };

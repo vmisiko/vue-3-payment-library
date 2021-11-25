@@ -24,7 +24,7 @@
       </div>
 
       <div class="text-center mgt-8">
-        <span class="link" @click="$router.go(-1)">Back</span>
+        <span class="link" @click="handleBack">Back</span>
       </div>
       </div>
   </div>
@@ -67,6 +67,10 @@ export default {
         country_code: this.getBupayload.country_code,
       })
       this.$router.push('/add-payment');
+    },
+    handleBack() {
+      const entryRoute = localStorage.entry_route;
+      this.$router.push({name: entryRoute});
     }
   }
 }

@@ -80,7 +80,9 @@ export default {
       this.defaultPaymentMethod = this.getSavedPayMethods ? this.getSavedPayMethods.filter(method => method.default === 1)[0] : [];
       this.currency = this.getBupayload.currency;
       this.amount = this.getBupayload.amount;
-      this.checkAvailableOptions(this.defaultPaymentMethod);
+      if (this.defaultPaymentMethod) {
+        this.checkAvailableOptions(this.defaultPaymentMethod);
+      }
     },
 
     sucessView() {
