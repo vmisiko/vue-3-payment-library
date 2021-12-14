@@ -1,6 +1,14 @@
 <template>
   <div class="flex-center">
-    <div class="card" :class="{'card-min': paymentStatus }">
+    <AdditionalCardFields 
+      :additionalData="additionalData" 
+      :transaction_id="transaction_id" 
+      v-if="showAdditionalCardFields" 
+      @continue="handleContinue"
+      @continue3DS="handleContinue3DS"
+    />
+
+    <div class="card" :class="{'card-min': paymentStatus }" v-else>
       <IconView icon='back'/>
 
       <TopInfo class="mgt-9" :icon="icon" :title="title" :subtitle="getErrorText" />
@@ -30,7 +38,7 @@
       </div>
 
     </div>
-
+    <ErrorModal :show="showErrorModal" :text="errorText" @close="handleErrorModalClose" />
   </div>
 </template>
 
@@ -39,12 +47,16 @@ import { mapGetters, mapMutations } from 'vuex';
 import TopInfo from '../components/topInfo';
 import PaymentDetail from '../components/paymentDetail';
 import paymentGenMxn from '../mixins/paymentGenMxn';
+import AdditionalCardFields from './AdditionalCardFields';
+import ErrorModal from '../components/modals/ErrorModal';
 
 export default {
-  name: 'Payment',
+  name: 'FailedView',
   components: {
     TopInfo,
     PaymentDetail,
+    ErrorModal,
+    AdditionalCardFields,
   },
   mixins: [paymentGenMxn],
   data() {
@@ -60,6 +72,10 @@ export default {
       transaction_id: null,
       poll_count: 0,
       poll_limit: 30,
+      showTransactionLimit: false,
+      showAdditionalCardFields: false,
+      additionalData: null,
+      showErrorModal: false,
     }
   },
   computed: {
@@ -140,7 +156,28 @@ export default {
       const response = await this.$paymentAxiosPost(fullPayload);
       this.transaction_id = response.transaction_id;
       if (response.status) {
-        this.pollCard();
+        if(response.additional_data) {
+          this.additionalData = response.additional_data;
+          this.showAdditionalCardFields = true;
+          this.loading = false;
+          return;
+        }
+
+        switch (response.transaction_status) {
+          case 'pending':
+            this.pollCard();
+            break;
+          case 'success':
+            this.loading = false;
+            this.$paymentNotification({
+              text: 'Card details added and selected for payment.'
+            });
+            this.$router.push('/choose-payment');
+            this.loading = false;
+            break;
+          default:
+            break;
+        }
         return;
       }
       this.setErrorText(response.message);
@@ -148,6 +185,7 @@ export default {
     },
 
     pollCard() {
+      this.loading = true;
       this.poll_count = 0;
       for (let poll_count = 0; poll_count < this.poll_limit; poll_count++) {
         const that = this;
@@ -208,6 +246,80 @@ export default {
         this.errorText = res.message;
         this.showErrorModal= true;
       })
+    },
+
+    handleContinue(val) {
+      if (val) {
+        this.loading = true;
+        this.pollCard();
+        return;
+      }
+      this.loading = false,
+      this.errorText = 'Failed to collect card details. Please try again';
+      this.showErrorModal= true;
+    },
+
+    handleContinue3DS(val) {
+      this.showAdditionalCardFields = false;
+      this.additionalData = val.additionalData.filter(element => element.field_id === 'url');
+      this.init3DS();
+    },
+
+    init3DS() {
+      const res = !this.additionalData ? this.additionalData : this.additionalData[0];
+      const url = res.field;
+      const urlWindow = window.open(url, '');
+
+      const timer = setInterval(() => {
+			  if (urlWindow.closed) {
+          this.init3dsPoll();
+          clearInterval(timer);
+        }
+	  	}, 500);
+
+    },
+
+    async init3dsPoll() {
+      this.loading = true;
+      const payload = {
+        transaction_id: this.transaction_id,
+        tds: true,
+      }
+
+      const fullPayload = {
+        params: payload,
+        url: '/api/v2/submit_info'
+      }
+
+      const response = await this.$paymentAxiosPost(fullPayload);
+      this.loading = false;
+      if (response.status) {
+        switch (response.transaction_status) {
+            case 'pending':
+              this.pollCard();
+              this.count = true;
+              break;
+            case 'success':
+              this.showProcessing = false;
+              this.$paymentNotification({
+                text: 'Card details added and selected for payment.'
+              });
+              this.$router.push('/choose-payment');
+              this.loading = false;
+              break;
+            default:
+              break;
+        };
+        return;
+      }
+      this.showProcessing = false,
+      this.errorText = 'Failed to collect card details. Please try again';
+      this.showErrorModal= true;
+    },
+
+    handleErrorModalClose() {
+      this.showErrorModal = false;
+      this.showAdditionalCardFields = false;
     }
   }
 }

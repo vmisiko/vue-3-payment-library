@@ -1,67 +1,81 @@
 <template>
   <div class="flex-center">
     <NoOptionsModal v-if="!defaultPaymentMethod && getSavedPayMethods && getSavedPayMethods.length === 0" />
+    
     <div v-else>
       <Processing v-if="loading" text="Please wait while we confirm payment" />
-      <div class="card" v-if="!loading">
-        <TopInfo :icon="icon" :title="title"/>
+      <div v-if="!loading">
+        <AdditionalCardFields 
+          :additionalData="additionalData" 
+          :transaction_id="transaction_id" 
+          v-if="showAdditionalCardFields" 
+          @continue="handleContinue"
+          @continue3DS="handleContinue3DS"
+        />
 
-        <span v-if="creditCards.length !== 0" class="mgt-2 text-overline">CREDIT OR DEBIT CARD</span>
-        <div class="" v-if="creditCards.length !== 0" >
-          <div v-for="(card, index) in creditCards" :key="index" class="mgt-4 text-caption-1 direction-flex pda-3" :class="{'selected-border': (picked === card.pay_detail_id)}" >
-              <IconView :icon="$cardIconValidator(card.psp.toLowerCase()) ? card.psp.toLowerCase() : 'card' " />
-              <span class="mgl-2">{{ card.psp }}</span>
-              <span class="gray80-text mgl-2"> {{$formatLastFour(card.pay_method_details) }}</span>   
-              <span class="spacer"></span>   
-              <div class="">
-                <input name="paymentoption" type="radio" :value="card.pay_detail_id"  v-model="picked" @change="update" >
-              </div>
-          </div>
-        </div>
+        <div class="card" v-else>
+          <TopInfo :icon="icon" :title="title"/>
 
-        <span v-if="savedMobile.length !== 0" class="mgt-8 text-overline">Mobile Money</span>
-        <div v-if="savedMobile.length !== 0">
-          <div v-for="(mobile, index) in savedMobile" :key="index" class="mgt-4 option-border text-caption-1 pda-3 " :class="{'selected-border': picked === mobile.pay_detail_id, 'disabled': mobile.daily_limit && getBupayload.amount > mobile.daily_limit }">
-            <div class="direction-flex">
-              <IconView icon="mpesa" />
-              <span class="mgl-2">M-PESA</span>
-              <span class="spacer"></span>   
-              <div class="">
-                <input name="paymentoption" type="radio" :value="mobile.pay_detail_id" :disabled="mobile.daily_limit && getBupayload.amount > mobile.daily_limit" v-model="picked" @change="update">
-              </div>
-            </div> 
-            <div class="text-caption-2 text-sendy-red-30 mgt-3" v-if="mobile.daily_limit && getBupayload.amount > mobile.daily_limit" >
-              <span class="">Unavailable. Amount exceeds daily transaction limit</span>
+          <span v-if="creditCards.length !== 0" class="mgt-2 text-overline">CREDIT OR DEBIT CARD</span>
+          <div class="" v-if="creditCards.length !== 0" >
+            <div v-for="(card, index) in creditCards" :key="index" class="mgt-4 text-caption-1 direction-flex pda-3" :class="{'selected-border': (picked === card.pay_detail_id)}" >
+                <IconView :icon="$cardIconValidator(card.psp.toLowerCase()) ? card.psp.toLowerCase() : 'card' " />
+                <span class="mgl-2">{{ card.psp }}</span>
+                <span class="gray80-text mgl-2"> {{$formatLastFour(card.pay_method_details) }}</span>   
+                <span class="spacer"></span>   
+                <div class="">
+                  <input name="paymentoption" type="radio" :value="card.pay_detail_id"  v-model="picked" @change="update" >
+                </div>
             </div>
           </div>
-        </div> 
 
-        <span class="link mgt-5" @click="addPaymentOption"> + Add payment option</span>
-
-        <hr class="mgt-5" />
-
-        <div class="mgt-4 direction-flex pda-3">
-          <div class="">
-            <span class="text-caption text-gray70">Amount to pay</span>
-            <div class="text-secondary">
-              {{ getBupayload.currency }} {{ $formatCurrency(getBupayload.amount) }}
+          <span v-if="savedMobile.length !== 0" class="mgt-8 text-overline">Mobile Money</span>
+          <div v-if="savedMobile.length !== 0">
+            <div v-for="(mobile, index) in savedMobile" :key="index" class="mgt-4 option-border text-caption-1 pda-3 " :class="{'selected-border': picked === mobile.pay_detail_id, 'disabled': mobile.daily_limit && getBupayload.amount > mobile.daily_limit }">
+              <div class="direction-flex">
+                <IconView icon="mpesa" />
+                <span class="mgl-2">M-PESA</span>
+                <span class="spacer"></span>   
+                <div class="">
+                  <input name="paymentoption" type="radio" :value="mobile.pay_detail_id" :disabled="mobile.daily_limit && getBupayload.amount > mobile.daily_limit" v-model="picked" @change="update">
+                </div>
+              </div> 
+              <div class="text-caption-2 text-sendy-red-30 mgt-3" v-if="mobile.daily_limit && getBupayload.amount > mobile.daily_limit" >
+                <span class="">Unavailable. Amount exceeds daily transaction limit</span>
+              </div>
             </div>
+          </div> 
+
+          <span class="link mgt-5" @click="addPaymentOption"> + Add payment option</span>
+
+          <hr class="mgt-5" />
+
+          <div class="mgt-4 direction-flex pda-3">
+            <div class="">
+              <span class="text-caption text-gray70">Amount to pay</span>
+              <div class="text-secondary">
+                {{ getBupayload.currency }} {{ $formatCurrency(getBupayload.amount) }}
+              </div>
+            </div>
+            <span class="spacer"></span> 
+            <sendy-btn 
+              color='primary'
+              class="mgt-2"
+              @click="submit"
+              :loading="loading1"
+              :disabled="!picked"
+            >
+              Confirm and Pay
+            </sendy-btn>
           </div>
-          <span class="spacer"></span> 
-          <sendy-btn 
-            color='primary'
-            class="mgt-2"
-            @click="submit"
-            :loading="loading1"
-            :disabled="!picked"
-          >
-            Confirm and Pay
-          </sendy-btn>
         </div>
       </div>
+      
     </div>
     
     <TransactionLimitModal :show="showTransactionLimit" @close="showTransactionLimit = false" />
+    <ErrorModal :show="showErrorModal" :text="errorText" @close="handleErrorModalClose" />
+
   </div>
 </template>
 
@@ -72,6 +86,8 @@ import Processing from '../components/processing';
 import paymentGenMxn from '../mixins/paymentGenMxn';
 import TransactionLimitModal from '../components/modals/transactionalLimitModal';
 import NoOptionsModal from '../components/modals/noOptionsModal';
+import AdditionalCardFields from './AdditionalCardFields';
+import ErrorModal from '../components/modals/ErrorModal';
 
 export default {
   name: 'ChoosePaymentCheckout',
@@ -81,6 +97,8 @@ export default {
     Processing,
     TransactionLimitModal,
     NoOptionsModal,
+    AdditionalCardFields,
+    ErrorModal,
   },
   data() {
     return {
@@ -96,6 +114,9 @@ export default {
       mpesaCode: '',
       loading1: false,
       showTransactionLimit: false,
+      showAdditionalCardFields: false,
+      additionalData: null,
+      showErrorModal: false,
     }
   },
   computed: {
@@ -125,6 +146,7 @@ export default {
     getDefaultpayMethod() {
       const method = this.getSavedPayMethods ? this.getSavedPayMethods.filter(method => method.default === 1)[0] : null;
       this.picked = method ? method.pay_detail_id : '';
+      this.defaultPaymentMethod = method;
     },
 
     async update() {
@@ -178,7 +200,8 @@ export default {
         userid: this.getBupayload.user_id,
         currency: this.getBupayload.currency,
         bulk: this.getBupayload.bulk,
-        entity: this.getBupayload.entity_id
+        entity: this.getBupayload.entity_id,
+        company_code: this.getBupayload.company_code,
       }
 
       const fullPayload = {
@@ -189,7 +212,28 @@ export default {
       const response = await this.$paymentAxiosPost(fullPayload);
       this.transaction_id = response.transaction_id;
       if (response.status) {
-        this.pollCard();
+        if(response.additional_data) {
+          this.additionalData = response.additional_data;
+          this.showAdditionalCardFields = true;
+          this.loading = false;
+          return;
+        }
+
+        switch (response.transaction_status) {
+          case 'pending':
+            this.pollCard();
+            break;
+          case 'success':
+            this.loading = false;
+            this.$paymentNotification({
+              text: 'Card details added and selected for payment.'
+            });
+            this.$router.push('/choose-payment');
+            this.loading = false;
+            break;
+          default:
+            break;
+        }
         return;
       }
       this.setErrorText(response.message);
@@ -226,7 +270,9 @@ export default {
       const payload = {
         url: `/api/v1/process/status/${this.transaction_id}`,
       }
-      this.$paymentAxiosGet(payload).then((res) => {
+
+      this.$paymentAxiosGet(payload)
+      .then((res) => {
         if (res.status) { 
           switch (res.transaction_status) {
             case 'success':
@@ -264,6 +310,80 @@ export default {
         country_code: this.getBupayload.country_code,
       })
       this.$router.push('/add-payment');
+    },
+
+    handleContinue(val) {
+      if (val) {
+        this.loading = true;
+        this.pollCard();
+        return;
+      }
+      this.loading = false,
+      this.errorText = 'Failed to collect card details. Please try again';
+      this.showErrorModal= true;
+    },
+
+    handleContinue3DS(val) {
+      this.showAdditionalCardFields = false;
+      this.additionalData = val.additionalData.filter(element => element.field_id === 'url');
+      this.init3DS();
+    },
+
+    init3DS() {
+      const res = !this.additionalData ? this.additionalData : this.additionalData[0];
+      const url = res.field;
+      const urlWindow = window.open(url, '');
+
+      const timer = setInterval(() => {
+			  if (urlWindow.closed) {
+          this.init3dsPoll();
+          clearInterval(timer);
+        }
+	  	}, 500);
+
+    },
+
+    async init3dsPoll() {
+      this.loading = true;
+      const payload = {
+        transaction_id: this.transaction_id,
+        tds: true,
+      }
+
+      const fullPayload = {
+        params: payload,
+        url: '/api/v2/submit_info'
+      }
+
+      const response = await this.$paymentAxiosPost(fullPayload);
+      this.loading = false;
+      if (response.status) {
+        switch (response.transaction_status) {
+            case 'pending':
+              this.pollCard();
+              this.count = true;
+              break;
+            case 'success':
+              this.showProcessing = false;
+              this.$paymentNotification({
+                text: 'Card details added and selected for payment.'
+              });
+              this.$router.push('/choose-payment');
+              this.loading = false;
+              break;
+            default:
+              break;
+        };
+        return;
+      }
+      this.showProcessing = false,
+      this.errorText = 'Failed to collect card details. Please try again';
+      this.showErrorModal= true;
+    },
+    handleErrorModalClose() {
+      console.log('handleErrorModalClose, clicked');
+      this.showErrorModal = false;
+      this.showAdditionalCardFields = false;
     }
 
   }
