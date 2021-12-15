@@ -5,21 +5,21 @@
     <div class="card" v-else>
       <TopInfo :icon="icon" :title="title"/>
 
-      <span v-if="creditCards.length !== 0" class="mgt-2 text-overline">CREDIT OR DEBIT CARD</span>
+      <span v-if="creditCards.length !== 0" class="mgt-2 text-overline">{{ $t('credit_card_payment') }}</span>
       <div class="" v-if="creditCards.length !== 0" >
         <div v-for="(card, index) in creditCards" :key="index" >
           <PaymentOption :payMethod="card" />
         </div>
       </div>
 
-      <span v-if="savedMobile.length !== 0" class="mgt-8 text-overline">Mobile money</span>
+      <span v-if="savedMobile.length !== 0" class="mgt-8 text-overline">{{ $t('mobile_money') }}</span>
       <div v-if="savedMobile.length !== 0">
         <div v-for="(mobile, index) in savedMobile" :key="index">
             <PaymentOption :payMethod="mobile" />
         </div>
       </div> 
       <hr class="mgt-5" />
-      <span class="link mgt-5" @click="$router.push('/add-payment')"> + Add payment option</span>
+      <span class="link mgt-5" @click="$router.push('/add-payment')"> + {{ $t('add_payment_option') }}</span>
 
       <div class="mgt-4 text-right">
          <sendy-btn 
@@ -28,7 +28,7 @@
           @click="handleRouting"
           :loading="loading"
           >
-            Continue
+            {{ $t('add_payment_option') }}
           </sendy-btn>
       </div>
     </div>
@@ -53,7 +53,7 @@ export default {
   data() {
     return {
       icon: 'back',
-      title: 'Payment options',
+      title: this.$t('payment_options'),
       picked: '',
       loading: false,
     }

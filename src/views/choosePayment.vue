@@ -5,7 +5,7 @@
     <div class="card" v-else>
       <TopInfo :icon="icon" :title="title"/>
 
-      <span v-if="creditCards.length !== 0" class="mgt-2 text-overline">CREDIT OR DEBIT CARD</span>
+      <span v-if="creditCards.length !== 0" class="mgt-2 text-overline">{{ $t('credit_card_payment') }}</span>
       <div class="" v-if="creditCards.length !== 0" >
         <div v-for="(card, index) in creditCards" :key="index" class="mgt-4 option-border text-caption-1 direction-flex pda-3" :class="{'selected-border': (picked === card.pay_detail_id)}" >
             <IconView :icon="$cardIconValidator(card.psp.toLowerCase()) ? card.psp.toLowerCase() : 'card' " />
@@ -18,7 +18,7 @@
         </div>
       </div>
 
-      <span v-if="savedMobile.length !== 0" class="mgt-8 text-overline">Mobile Money</span>
+      <span v-if="savedMobile.length !== 0" class="mgt-8 text-overline">{{ $t('mobile_money')}}</span>
       <div v-if="savedMobile.length !== 0">
         <div v-for="(mobile, index) in savedMobile" :key="index" class="mgt-4 option-border text-caption-1 pda-3 " :class="{'selected-border': picked === mobile.pay_detail_id, 'disabled': mobile.daily_limit && getBupayload.amount > mobile.daily_limit }">
           <div class="direction-flex">
@@ -30,13 +30,13 @@
             </div>
           </div> 
           <div class="text-caption-2 text-sendy-red-30 mgt-3" v-if="mobile.daily_limit && getBupayload.amount > mobile.daily_limit" >
-            <span class="">Unavailable. Amount exceeds daily transaction limit</span>
+            <span class="">{{ $t('unavailable') }}</span>
           </div>
 
         </div>
       </div> 
       <hr class="mgt-5" />
-      <span class="link mgt-5" @click="addPaymentOption"> + Add payment option</span>
+      <span class="link mgt-5" @click="addPaymentOption"> + {{ $t('add_payment_option') }}</span>
 
       <div class="mgt-4 text-right">
          <sendy-btn 
@@ -46,7 +46,7 @@
           @click="handleRouting"
           :loading="loading"
           >
-            Continue
+            {{ $t('continue') }}
           </sendy-btn>
       </div>
     </div>
@@ -69,7 +69,7 @@ export default {
   data() {
     return {
       icon: 'back',
-      title: 'Choose payment option',
+      title: this.$t('choose_payment_option'),
       picked: '',
       loading: false,
       startTime: null,

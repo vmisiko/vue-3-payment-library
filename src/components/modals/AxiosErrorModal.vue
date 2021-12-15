@@ -6,7 +6,7 @@
         </div>
 
         <div class="mgt-4">
-          <span> Error Alert </span>
+          <span> {{ $t('error_alert') }} </span>
           <div>
             <span class="text-caption text-sendy-red-30">
              {{ text }}
@@ -20,7 +20,7 @@
           class="mgt-8"
          @click="close"
         >
-          Close
+          {{ $t('close')}}
         </sendy-btn>
       </div>
   </div>

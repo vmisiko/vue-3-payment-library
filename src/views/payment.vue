@@ -3,7 +3,7 @@
     <NoOptionsModal v-if="!defaultPaymentMethod" />
 
     <div v-else>
-      <Processing v-if="loading" text="Please wait while we confirm payment" />
+      <Processing v-if="loading" :text="$t('please_wait')" />
       <div v-else>
         <AdditionalCardFields 
           :additionalData="additionalData" 
@@ -30,7 +30,7 @@
               class="mgt-10"
               @click="submit"
               >
-                Confirm and Pay
+                {{ $t('confirm_and_pay') }}
               </sendy-btn>
           </div>
         </div>
@@ -68,7 +68,7 @@ export default {
   data() {
     return {
       icon: 'back',
-      title: 'Payment',
+      title: $t('payment'),
       subtitle: '',
       paymentStatus: null,
       currency: 'KES',
@@ -165,7 +165,7 @@ export default {
           case 'success':
             this.loading = false;
             this.$paymentNotification({
-              text: 'Card details added and selected for payment.'
+              text: this.$t('card_details_added'),
             });
             this.$router.push('/choose-payment');
             this.loading = false;
@@ -194,7 +194,7 @@ export default {
             that.TransactionIdStatus(); 
             if (poll_count === (that.poll_limit - 1)) {
               that.loading = false;
-              that.errorText = 'Failed to charge card. Please try again.';
+              that.errorText =  this.$t('failed_to_charge_card');
               that.setErrorText(that.errorText);
               that.$router.push({name: 'FailedView'});
               return;
@@ -252,7 +252,7 @@ export default {
         return;
       }
       this.loading = false,
-      this.errorText = 'Failed to collect card details. Please try again';
+      this.errorText = this.$t('failed_to_collect_card_details');
       this.showErrorModal= true;
     },
 
@@ -298,7 +298,7 @@ export default {
               break;
             case 'success':
               this.$paymentNotification({
-                text: 'Card details added and selected for payment.'
+                text: this.$t('card_details_added')
               });
               this.$router.push('/choose-payment');
               this.loading = false;
@@ -308,7 +308,7 @@ export default {
         };
         return;
       }
-      this.errorText = 'Failed to collect card details. Please try again';
+      this.errorText = this.$t('failed_to_collect_card_details');
       this.showErrorModal= true;
     },
 

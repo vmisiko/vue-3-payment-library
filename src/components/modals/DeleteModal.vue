@@ -4,7 +4,7 @@
 
         <div class="mgt-4">
           <span class="text-body-1">
-            Are you sure you want to delete this payment option?
+            {{ $t('sure_delete') }}
           </span>
         </div>
         
@@ -16,7 +16,7 @@
           @click="handleDelete"
           :loading="loading"
         >
-          Delete
+          {{ $t('delete') }}
         </sendy-btn>
 
         <sendy-btn 
@@ -26,7 +26,7 @@
           type="submit"
          @click="cancelRemove"
         >
-          Cancel
+          {{ $t('cancel') }}
         </sendy-btn>
       </div>
   </div>
@@ -103,7 +103,7 @@ export default {
 
       if (response.status) {
         this.loading = false;
-        this.$paymentNotification({ text: 'Card details removed', type: 'info' });
+        this.$paymentNotification({ text: this.$t('card_details_removed'), type: 'info' });
         this.$router.push({name: 'PaymentOptionsPage'});
         return;
       }

@@ -7,9 +7,9 @@
         </div>
       </div>
       <div class="text-center mgt-10">
-        <div><span class="text-subtitle-1">Payment option missing</span></div>
+        <div><span class="text-subtitle-1">{{ $t('payment_option_missing') }}</span></div>
         <span class="text-body-2 mgt-3">
-          Add a new payment method to proceed with the transaction
+          {{ $t('add_new_payment_method_proceed') }}
         </span>
       </div>
 
@@ -19,12 +19,12 @@
           class=""
          @click="addPaymentOption"
         >
-          Add payment option
+          {{ $t('add_payment_option') }}
         </sendy-btn>
       </div>
 
       <div class="text-center mgt-8">
-        <span class="link" @click="handleBack">Back</span>
+        <span class="link" @click="handleBack">{{ $t('back') }}</span>
       </div>
       </div>
   </div>

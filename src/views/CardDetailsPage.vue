@@ -12,7 +12,7 @@
       <div class="text-body-2 text-gray70">
         <span >{{ $formatCardno($route.params.cardno) }}</span>
         <div>
-          <span>Expiry Date {{ card_expiry || 'N/A' }}</span>
+          <span>{{ $t('expiry_date') }} {{ card_expiry || 'N/A' }}</span>
         </div>
       </div>
 
@@ -20,7 +20,7 @@
 
       <div class="mgt-8 text-btn direction-flex pointer" @click="removeCard">
         <IconView icon="delete"/>
-        <span class="text-btn">Remove Card</span>
+        <span class="text-btn">{{ $t('remove_card') }}</span>
 
       </div>
 
@@ -45,7 +45,7 @@ export default {
   data() {
     return {
       icon: 'back',
-      title: 'Card Details',
+      title: $t('card_details'),
       showDeleteModal: false,
       card_expiry: false,
       cardDetails: null,

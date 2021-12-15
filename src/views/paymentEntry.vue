@@ -26,9 +26,9 @@ export default {
     return {
       showNotification: false,
       showAxiosError: false,
-      notificationText: 'M-PESA option added and selected for payment.',
+      notificationText: this.$t('mpesa_added'),
       type: null,
-      errorText: 'Failed. Network Error!',
+      errorText: this.$t('failed_network_error')
     }
   },
   computed: {

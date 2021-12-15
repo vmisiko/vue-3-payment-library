@@ -7,7 +7,7 @@
         </div>
 
         <div class="mgt-4">
-          <span>What is CVV?</span>
+          <span>{{ $t('what_is_cvv') }}</span>
           <div>
             <span class="text-caption">This is a 3 or 4 digit security code found on the back of you card.</span>
           </div>
@@ -20,7 +20,7 @@
           type="submit"
          @click="$emit('close')"
         >
-          OK
+          {{ $t('ok') }}
         </sendy-btn>
       </div>
   </div>

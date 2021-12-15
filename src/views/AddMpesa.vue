@@ -7,12 +7,12 @@
       <IconView icon="mpesa" width="68" height="48" />
     <div class="mgt-8">
       <span class="text-list-title">
-        How it works
+        {{ $t('how_it_works') }}
       </span>
 
       <div>
         <p class="text-caption-1 text-gray80">
-          Whenever you choose to pay with M-Pesa, you will be requested to provide a phone number during payment.
+          {{ $t('whenever_choose_mpesa') }}
         </p>
       </div>
 
@@ -23,7 +23,7 @@
           class="mgt-10"
           @click="submit"
         >
-          Add M-PESA
+         {{ $t('add_mpesa') }}
         </sendy-btn>
       </div>
     </div>
@@ -44,7 +44,7 @@ export default {
   data() {
     return {
       icon: 'back',
-      title: 'Add a Mpesa',
+      title: this.$t('add_a_mpesa'),
       loading: false,
     }
   },
@@ -71,8 +71,8 @@ export default {
       const response = await this.$paymentAxiosPost(fullPayload);
       this.loading = false;      
       response.status
-        ? this.$paymentNotification( {text: 'M-PESA option added and selected for payment.'})
-        : this.$paymentNotification( {text: 'M-PESA option already exists', type: "error"});
+        ? this.$paymentNotification( {text: this.$t('mpesa_added') })
+        : this.$paymentNotification( {text: this.$t('mpesa_already_added'),  type: "error"});
       this.$router.push({ name: 'ChoosePayment' });
     }
   }

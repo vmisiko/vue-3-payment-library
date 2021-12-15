@@ -6,11 +6,10 @@
         </div>
 
         <div class="mgt-4">
-          <span class="text-list-title text-gray90"> Amount exceeds transaction limit </span>
+          <span class="text-list-title text-gray90"> {{ $t('amount_exceeds_limit_title') }} </span>
           <div>
             <span class="text-caption">
-             <!-- {{ text }} -->
-             The amount to pay exceeds the daily transaction limit for M-PESA. You can choose another payment option to continue.
+             {{ $t('amount_exceeds_limit_text') }}
             </span>
           </div>
         </div>
@@ -21,12 +20,12 @@
           class="mgt-8"
          @click="$router.push({name: 'ChoosePayment'})"
         >
-          Change payment option
+          {{ $t('change_payment_option') }}
         </sendy-btn>
 
         <div class="text-center mgt-7">
           <span class="link" @click="handleRouting">
-            Cancel Payment
+           {{ $t('cancel_payment') }}
           </span>
         </div>
       </div>

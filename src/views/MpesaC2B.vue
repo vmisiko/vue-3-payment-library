@@ -5,7 +5,7 @@
       <TopInfo :icon="icon" :title="title"/>
 
       <div class="">
-        <span class="text-caption-1"> Amount to pay</span>
+        <span class="text-caption-1"> {{ $t('amount_to_pay') }}</span>
 
         <div class="float-right">
           <span class="text-caption-1">
@@ -18,30 +18,30 @@
         <IconView icon="mpesa" width="68px" height="48px" />
 
         <div class="mgt-3">
-          <span class="text-list-title"> Payment instructions</span>
+          <span class="text-list-title"> {{ $t('payment_instruction') }}</span>
           <div class="mgt-4 pdl-4">
             <ol style="padding-left: 0px;">
-              <li class="text-body-2">Open M-PESA on you phone</li>
+              <li class="text-body-2">{{ $t('open_mpesa') }}</li>
               <li class="text-body-2 mgt-2">
-                Select Lipa na M-PESA > Pay Bill 
+                {{ $t('select_lipa_na_mpesa') }}
               </li>
               <li class="text-body-2 mgt-2">
-                Enter Business no. <span class="text-bold"> {{ getBupayload.paybill_no }} </span>
+                {{ $t('enter_business_no') }} <span class="text-bold"> {{ getBupayload.paybill_no }} </span>
               </li>
               <li class="text-body-2 mgt-2">
-                Enter Account no. <span class="text-bold"> {{ getBupayload.txref }} </span>
+                {{ $t('enter_account_no') }} <span class="text-bold"> {{ getBupayload.txref }} </span>
               </li> 
               <li class="text-body-2 mgt-2">
-                Enter Amount no. <span class="text-bold"> {{ getBupayload.currency }} {{ $formatCurrency(getBupayload.amount) }} </span>
+                {{ $t('enter_amount_no') }} <span class="text-bold"> {{ getBupayload.currency }} {{ $formatCurrency(getBupayload.amount) }} </span>
               </li>   
               <li class="text-body-2 mgt-2">
-                Enter your M-PESA PIN and click OK to send
+                {{ $t('enter_mpesa_pin') }}
               </li>   
               <li class="text-body-2 mgt-2">
-                You’ll receive a confirmation SMS from M-PESA
+                {{ $t('confirmation_from_mpesa') }}
               </li>    
               <li class="text-body-2 mgt-2">
-                Click "Complete payment" below to continue
+               {{ $t('click_complete_payment')}}
               </li>  
             </ol>
             
@@ -55,7 +55,7 @@
           class="float-right"
           @click="pollC2B"
           >
-            Complete payment
+            {{ $t('complete_payment') }}
           </sendy-btn>
         </div>
 
@@ -81,7 +81,7 @@ export default {
   data() {
     return {
       icon: 'back',
-      title: 'Pay with M-PESA',
+      title: $t('pay_with_mpesa'),
       loading: false,
       poll_count: 0,
       poll_limit: 30,
@@ -116,7 +116,7 @@ export default {
               that.loading = false;
               that.showTimer = false;
               that.promptInfo = false,
-              that.setErrorText('Failed to charge using Mpesa. Please try again.');
+              that.setErrorText( this.$t('failed_to_charge_using_mpesa'));
               that.$router.push({name: 'FailedView', params: { mpesa: 'mpesa'} });
               return;
             }

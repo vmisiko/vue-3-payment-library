@@ -16,7 +16,7 @@
         <div class="card" v-else>
           <TopInfo :icon="icon" :title="title"/>
 
-          <span v-if="creditCards.length !== 0" class="mgt-2 text-overline">CREDIT OR DEBIT CARD</span>
+          <span v-if="creditCards.length !== 0" class="mgt-2 text-overline">{{ $t('credit_card_payment') }}</span>
           <div class="" v-if="creditCards.length !== 0" >
             <div v-for="(card, index) in creditCards" :key="index" class="mgt-4 text-caption-1 direction-flex pda-3" :class="{'selected-border': (picked === card.pay_detail_id)}" >
                 <IconView :icon="$cardIconValidator(card.psp.toLowerCase()) ? card.psp.toLowerCase() : 'card' " />
@@ -29,7 +29,7 @@
             </div>
           </div>
 
-          <span v-if="savedMobile.length !== 0" class="mgt-8 text-overline">Mobile Money</span>
+          <span v-if="savedMobile.length !== 0" class="mgt-8 text-overline">{{ $t('mobile_money') }}</span>
           <div v-if="savedMobile.length !== 0">
             <div v-for="(mobile, index) in savedMobile" :key="index" class="mgt-4 option-border text-caption-1 pda-3 " :class="{'selected-border': picked === mobile.pay_detail_id, 'disabled': mobile.daily_limit && getBupayload.amount > mobile.daily_limit }">
               <div class="direction-flex">
@@ -41,18 +41,18 @@
                 </div>
               </div> 
               <div class="text-caption-2 text-sendy-red-30 mgt-3" v-if="mobile.daily_limit && getBupayload.amount > mobile.daily_limit" >
-                <span class="">Unavailable. Amount exceeds daily transaction limit</span>
+                <span class="">{{ $t('unavailable') }}</span>
               </div>
             </div>
           </div> 
 
-          <span class="link mgt-5" @click="addPaymentOption"> + Add payment option</span>
+          <span class="link mgt-5" @click="addPaymentOption"> + {{ $t('add_payment_option') }}</span>
 
           <hr class="mgt-5" />
 
           <div class="mgt-4 direction-flex pda-3">
             <div class="">
-              <span class="text-caption text-gray70">Amount to pay</span>
+              <span class="text-caption text-gray70">{{ $t('amount_to_pay')}}</span>
               <div class="text-secondary">
                 {{ getBupayload.currency }} {{ $formatCurrency(getBupayload.amount) }}
               </div>
@@ -65,7 +65,7 @@
               :loading="loading1"
               :disabled="!picked"
             >
-              Confirm and Pay
+              {{ $t('confirm_and_pay') }}
             </sendy-btn>
           </div>
         </div>
@@ -103,7 +103,7 @@ export default {
   data() {
     return {
       icon: 'back',
-      title: 'Choose payment option',
+      title: this.$t('choose_payment_option'),
       picked: '',
       loading: false,
       defaultPaymentMethod: null,
@@ -171,7 +171,7 @@ export default {
       this.loading1 = false;
       if (response) {
         this.retrievePaymentMethods();
-        this.$paymentNotification({ text: `${this.setSelectedName()} selected for payment.`})
+        this.$paymentNotification({ text: this.$t('selected_payment_name', { selected_name: this.setSelectedName()}) })
       }
     },
 
@@ -226,7 +226,7 @@ export default {
           case 'success':
             this.loading = false;
             this.$paymentNotification({
-              text: 'Card details added and selected for payment.'
+              text: this.$t('card_details_added')
             });
             this.$router.push('/choose-payment');
             this.loading = false;
@@ -255,7 +255,7 @@ export default {
             that.TransactionIdStatus(); 
             if (poll_count === (that.poll_limit - 1)) {
               that.loading = false;
-              that.errorText = 'Failed to charge card. Please try again.';
+              that.errorText = this.$t('failed_to_charge_card');
               that.setErrorText(that.errorText);
               that.$router.push({name: 'FailedView'});
               return;
@@ -319,7 +319,7 @@ export default {
         return;
       }
       this.loading = false,
-      this.errorText = 'Failed to collect card details. Please try again';
+      this.errorText = this.$t('failed_to_collect_card_details');
       this.showErrorModal= true;
     },
 
@@ -366,7 +366,7 @@ export default {
             case 'success':
               this.showProcessing = false;
               this.$paymentNotification({
-                text: 'Card details added and selected for payment.'
+                text: this.$t('card_details_added'),
               });
               this.$router.push('/choose-payment');
               this.loading = false;
@@ -377,11 +377,10 @@ export default {
         return;
       }
       this.showProcessing = false,
-      this.errorText = 'Failed to collect card details. Please try again';
+      this.errorText = this.$t('failed_to_collect_card_details');
       this.showErrorModal= true;
     },
     handleErrorModalClose() {
-      console.log('handleErrorModalClose, clicked');
       this.showErrorModal = false;
       this.showAdditionalCardFields = false;
     }
