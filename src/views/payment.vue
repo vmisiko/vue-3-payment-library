@@ -68,7 +68,7 @@ export default {
   data() {
     return {
       icon: 'back',
-      title: $t('payment'),
+      title: this.$t('payment'),
       subtitle: '',
       paymentStatus: null,
       currency: 'KES',

@@ -25,7 +25,6 @@
   "change_payment_option": "Change payment option",
   "cancel_payment": "Cancel Payment",
 
-  // paymentDetail.vue,
   "amount_to_pay": "Amount to pay",
   "pay_with": "Pay with",
   "submit": "Submit",
@@ -33,7 +32,6 @@
 
   "credit_card_payment_small": "Credit or Debit Card",
 
-  //addCard
   "cardholder_name": "Cardholder name",
   "enter_full_name": "Enter full name",
   "card_number": "Card number",
@@ -46,7 +44,6 @@
   "card_details_added": "Card details added and selected for payment.",
   "failed_to_collect_card_details": "Failed to collect card details. Please try again",
 
-  //addMpesa
   "how_it_works": "How it works",
   "whenever_choose_mpesa":" Whenever you choose to pay with M-Pesa, you will be requested to provide a phone number during payment.",
   "add_mpesa": "Add M-PESA",
@@ -54,12 +51,10 @@
   "mpesa_added": "M-PESA option added and selected for payment.",
   "mpesa_already_added": "M-PESA option already exists",
 
-  //cardDetails
   "expiry_date": "Expiry Date",
   "remove_card": "Remove Card",
   "card_details": "Card Details",
 
-  //choosePayment
   "credit_card_payment": "CREDIT OR DEBIT CARD",
   "mobile_money": "Mobile Money",
   "confirm_and_pay": "Confirm and Pay",
@@ -68,7 +63,6 @@
   "unavailable": "Unavailable. Amount exceeds daily transaction limit",
   "choose_payment_option": "Choose payment option",
 
-  //failedView
   "retry": "Retry",
   "try_again": "Try Again",
   "retry_in": "Retry in 3min 57seconds...",
@@ -76,7 +70,6 @@
   "payment_failed": "Payment failed",
   "could_not_process": "Could not process transaction",
 
-  //mpesaC2B
   "payment_instruction": "Payment instructions",
   "open_mpesa": "Open M-PESA on you phone",
   "select_lipa_na_mpesa": "Select Lipa na M-PESA > Pay Bill",
