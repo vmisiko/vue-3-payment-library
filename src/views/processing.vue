@@ -5,7 +5,7 @@
         <div class="processing-box"></div>
       </div>
       <div class="text-center mgt-8">
-        <span class="normal-text">Processing your card payment</span>
+        <span class="normal-text">{{ $t('processing_card') }}</span>
       </div>
 
       <div class="text-center mgt-24">

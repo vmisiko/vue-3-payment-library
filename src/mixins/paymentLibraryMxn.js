@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { mapGetters, mapMutations } from 'vuex';
+import i18n from '../plugins/i18n'
 
 const mixin = {
   data() {
@@ -46,6 +47,7 @@ const mixin = {
           'Content-Type': 'application/json',
           Accept: 'application/json',
           Authorization: authToken,
+          "Accept-Language": this.getBupayload.locale ? this.getBupayload.locale : 'en-US,en;q=0.5',
         },
       }; 
       return param;
@@ -123,6 +125,12 @@ const mixin = {
       this.setBupayload(payload);
       localStorage.setItem('entry', entry);
       localStorage.setItem('entry_route', this.$route.name);
+      const locales = require.context(
+        "../lang",
+        true,
+        /[A-Za-z0-9-_,\s]+\.json$/i
+      );
+      this.loadLanguageAsync(payload.locale ? payload.locale : 'en');
       window.analytics.identify(payload.user_id, {
         email: payload.email
       });
@@ -143,6 +151,26 @@ const mixin = {
           break;
       }
     },
+    loadLanguageAsync(lang) {
+      const locales = require.context(
+        "../lang",
+        true,
+        /[A-Za-z0-9-_,\s]+\.json$/i
+      );
+
+      const localeKeys = []
+      locales.keys().forEach(key => {
+        const matched = key.match(/([A-Za-z0-9-_]+)\./i);
+        if (matched && matched.length > 1) {
+          localeKeys.push(matched[1])
+        }
+      });
+
+      if (localeKeys.includes(lang)) {
+        i18n.locale = lang
+      }
+    },
+    
     async handlePaymentAxiosErrors(error) {
       switch (error) {
         case 403:

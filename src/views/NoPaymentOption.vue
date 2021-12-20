@@ -15,7 +15,7 @@ export default {
   data() {
     return {
       icon: 'back',
-      title: 'Add Payment option',
+      title: this.$t('add_payment_option'),
     }
   }
 }

@@ -6,7 +6,7 @@
         </div>
 
         <div class="mgt-4">
-          <span class="text-list-title text-gray90"> Unable to send payment request </span>
+          <span class="text-list-title text-gray90"> {{ $t('unable_pay_request') }} </span>
           <div>
             <span class="text-caption">
              {{ text }}
@@ -20,7 +20,7 @@
           class="mgt-8"
          @click="$router.push({name: 'MpesaC2B'})"
         >
-          Pay with M-PESA Pay Bill
+          {{ $t('pay_with_mpesa_pay_bill') }}
         </sendy-btn>
       </div>
   </div>

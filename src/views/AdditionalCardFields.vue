@@ -20,14 +20,14 @@
                 :defaultCountry="getBupayload.country_code"
                 :dropdownOptions="dropdownOptions"
                 mode="national"
-                invalidMsg="Phone number is Invalid"
+                :invalidMsg="$t('phone_number_invalid')"
                 @validate="validatePhone"
               >
               </vue-tel-input>
             </div>
             <div class="textfield mgt-5" v-if="item.type === 'date'" >
               <birth-datepicker
-                placeholder="Enter Date of birth"
+                :placeholder="$t('phone_number_invalid')"
                 v-model="form[item.field_id]"
                 :valueIsString="true"
                 delimiter="-"
@@ -44,7 +44,7 @@
           class="mgt-5"
           type="submit"
         >
-          Submit
+          {{ $t('submit') }}
         </sendy-btn>
       </form>
     </div>
@@ -63,7 +63,7 @@
         class="mgt-5"
         type="submit"
         >
-          Submit
+          {{ $t('submit') }}
         </sendy-btn>
       </form>
     </div>

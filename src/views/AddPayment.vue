@@ -31,12 +31,12 @@ export default {
   data() {
     return {
       icon: 'back',
-      title: 'Add Payment option',
+      title: this.$t('add_payment_option'),
       paymentMethods:[
         {
           id: 1,
           icon: 'credit',
-          name: 'Credit or Debit card',
+          name: this.$t('credit_card_payment_small'),
         },
         {
           id: 2,

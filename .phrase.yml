@@ -1,0 +1,19 @@
+phrase:
+  access_token: f8e4c2b1127b7f58814bd5894c21293709b414ac2b20aa589bd2acbcbdc2551d
+  project_id: 615104c1796293cac83a3b03b8366136
+  push:
+    sources:
+    - file: src/lang/en.json
+      params:
+        file_format: simple_json
+        locale_id: ed934d9347aeac7e449bb893fc04a34a
+        update_translations: true
+        tags: PaymentUi
+  pull:
+    targets:
+    - file: src/lang/en.json
+      params:
+        file_format: simple_json
+        locale_id: ed934d9347aeac7e449bb893fc04a34a
+        update_translations: true
+        tags: PaymentUi

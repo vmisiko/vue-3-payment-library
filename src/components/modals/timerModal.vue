@@ -9,7 +9,7 @@
         <span class="text-caption text-gray70"> {{ formatedCountdown }}</span>
       </div>
       <div class="mgt-4 text-center pdb-15">
-        <span class="text-body-2">Please wait while we confirm payment</span>
+        <span class="text-body-2">{{ $t('please_wait') }}</span>
       </div>
     </div>
   </div>

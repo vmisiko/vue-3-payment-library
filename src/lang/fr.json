@@ -1,0 +1,106 @@
+{
+  "error_alert": "FR_Error Alert",
+  "close": "FR_Close",
+  "what_is_cvv": "FR_What is CVV?",
+  "cvv_info": "FR_This is a 3 or 4 digit security code found on the back of you card.",
+  "ok": "FR_OK",
+  
+  "sure_delete" : "FR_Are you sure you want to delete this payment option?",
+  "delete": "FR_Delete",
+  "cancel": "FR_Cancel",
+  "card_details_removed": "FR_Card details removed",
+  "could_not_add_card": "FR_Could not add card",
+
+
+  "unable_pay_request": "FR_Unable to send payment request",
+  "pay_with_mpesa_pay_bill": "FR_Pay with M-PESA Pay Bill",
+  "payment_option_missing": "FR_Payment option missing",
+  "add_new_payment_method_proceed": "FR_Add a new payment method to proceed with the transaction",
+  "add_payment_option": "FR_Add payment option",
+  "back": "FR_Back",
+
+  "please_wait": "FR_Please wait while we confirm payment",
+  "amount_exceeds_limit_title": "FR_Amount exceeds transaction limit",
+  "amount_exceeds_limit_text":" FR_The amount to pay exceeds the daily transaction limit for M-PESA. You can choose another payment option to continue.",
+  "change_payment_option": "FR_Change payment option",
+  "cancel_payment": "FR_Cancel Payment",
+
+  "amount_to_pay": "FR_Amount to pay",
+  "pay_with": "FR_Pay with",
+  "submit": "Submit",
+  "mpesa_code": "FR_M-PESA code",
+
+  "credit_card_payment_small": "FR_Credit or Debit Card",
+
+  "cardholder_name": "FR_Cardholder name",
+  "enter_full_name": "FR_Enter full name",
+  "card_number": "FR_Card number",
+  "expiry": "FR_Expiry",
+  "cvc": "FR_CVC",
+  "in_order_to_verify": "FR_In order to verify your card details, we will charge a small fee of KES 5.00 and refund your card within 15 days.",
+  "add_card": "FR_Add Card",
+  "card_declined": "FR_Your card issuer has declined this transaction. Contact your bank or card issuer for more information.",
+  "add_a_card": "FR_Add a Card",
+  "card_details_added": "FR_Card details added and selected for payment.",
+  "failed_to_collect_card_details": "FR_Failed to collect card details. Please try again",
+
+  "how_it_works": "FR_How it works",
+  "whenever_choose_mpesa":" FR_Whenever you choose to pay with M-Pesa, you will be requested to provide a phone number during payment.",
+  "add_mpesa": "FR_Add M-PESA",
+  "add_a_mpesa": "FR_Add a Mpesa",
+  "mpesa_added": "FR_M-PESA option added and selected for payment.",
+  "mpesa_already_added": "FR_M-PESA option already exists",
+
+  "expiry_date": "FR_Expiry Date",
+  "remove_card": "FR_Remove Card",
+  "card_details": "FR_Card Details",
+
+  "credit_card_payment": "FR_CREDIT OR DEBIT CARD",
+  "mobile_money": "FR_Mobile Money",
+  "confirm_and_pay": "FR_Confirm and Pay",
+  "selected_payment_name": "FR_{selected_name} selected for payment.",
+  "failed_to_charge_card": "FR_Failed to charge card. Please try again.",
+  "unavailable": "FR_Unavailable. Amount exceeds daily transaction limit",
+  "choose_payment_option": "FR_Choose payment option",
+
+  "retry": "FR_Retry",
+  "try_again": "FR_Try Again",
+  "retry_in": "FR_Retry in 3min 57seconds...",
+  "unable_to_confirm": "FR_Unable to confirm payment",
+  "payment_failed": "FR_Payment failed",
+  "could_not_process": "FR_Could not process transaction",
+
+  "payment_instruction": "FR_Payment instructions",
+  "open_mpesa": "FR_Open M-PESA on you phone",
+  "select_lipa_na_mpesa": "FR_Select Lipa na M-PESA > Pay Bill",
+  "enter_business_no": "FR_Enter Business no.",
+  "enter_account_no": "FR_Enter Account no.",
+  "enter_amount_no": "FR_Enter Amount no.",
+  "enter_mpesa_pin": "FR_Enter your M-PESA PIN and click OK to send",
+  "confirmation_from_mpesa": "FR_You’ll receive a confirmation SMS from M-PESA",
+  "click_complete_payment": "FR_Click 'Complete payment' below to continue",
+  "complete_payment": "FR_Complete payment",
+  "pay_with_mpesa": "FR_Pay with M-PESA",
+
+  "remove_mpesa": "FR_Remove M-PESA",
+
+  "payment": "FR_Payment",
+
+  "mpesa_option_added": "FR_M-PESA option added and selected for payment.",
+  "failed_network_error": "FR_Failed. Network Error!",
+
+  "continue": "FR_Continue",
+  "payment_options": "FR_Payment options",
+
+  "country_code": "FR_Country Code",
+  "mpesa_payment_number": "FR_M-PESA payment number",
+  "phone_number_invalid": "FR_Phone number is Invalid",
+  "mpesa_prompt": "FR_You'll receive a prompt to enter your M-PESA PIN",
+  "unable_to_send_mpesa_request": "FR_We are unable to send an M-PESA payment request to your phone. You can still complete your payment with M-PESA Pay Bill",
+  "failed_to_charge_using_mpesa": "FR_Failed to charge using Mpesa. Please try again.",
+  "unable_to_confirm_mpesa": "FR_We are unable to confirm your M-PESA payment. Please retry again after a couple of minutes.",
+
+  "done": "FR_Done",
+  "payment_successful": "FR_Payment successful",
+  "processing_card": "FR_Processing your card payment"
+}

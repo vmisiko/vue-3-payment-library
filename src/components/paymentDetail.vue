@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="mgt-8">
-        <span class="normal-text"> Amount to pay</span>
+        <span class="normal-text"> {{ $t('amount_to_pay') }}</span>
 
         <div class="float-right" :class="{'mgt-n2': !paymentStatus}" >
           <span class="amount-text" :class="{'text-caption-1': paymentStatus}">
@@ -13,7 +13,7 @@
       <hr class="mgt-4" />
 
       <div class="mgt-8">
-        <span class="normal-text"> Pay with</span>
+        <span class="normal-text"> {{ $t('pay_with') }}</span>
 
         <div class="direction-flex float-right">  
           <IconView v-if="paymentMethod.pay_method_id === 1" icon="mpesa" width="34" height="24" />
@@ -24,13 +24,13 @@
 
       <div v-if="paymentMethod.daily_limit && getBupayload.amount > paymentMethod.daily_limit" class="direction-flex text-caption-2 text-sendy-red-30 mgt-6 mgl-8" >
         <IconView icon="warning-text" class="mgt-1" />
-        <span class="mgl-3">Unavailable. Amount exceeds daily transaction limit</span>
+        <span class="mgl-3">{{ $t('unavailable') }}</span>
       </div>
 
       <hr class="mgt-4" />
 
       <div class="mgt-4 direction-flex float-right  link" @click="$router.push('/choose-payment')" >
-        <span> Change payment option</span>
+        <span> {{ $t('change_payment_option') }}</span>
         <IconView class="mgl-2" icon="greator"/>
       </div>
   </div>

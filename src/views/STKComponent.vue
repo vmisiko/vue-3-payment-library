@@ -35,7 +35,7 @@
               :defaultCountry="getBupayload.country_code"
               :dropdownOptions="dropdownOptions"
               mode="national"
-              invalidMsg="Phone number is Invalid"
+              :invalidMsg="$t('phone_number_invalid')"
               @validate="validatePhone"
             >
             </vue-tel-input>
@@ -45,7 +45,7 @@
         </div>
 
         <div class="alert mgt-10">
-          <span class="text-caption-2 pdt-2 text-midnightBlue20">You'll receive a prompt to enter your M-PESA PIN</span>
+          <span class="text-caption-2 pdt-2 text-midnightBlue20">{{ $t('mpesa_prompt') }}</span>
         </div>
 
         <div class="mgt-8">
@@ -56,7 +56,7 @@
             :loading="loading"
             :disabled="!disable"
           >
-            Continue
+            {{ $t('continue')}}
           </sendy-btn>
         </div>
 
@@ -85,7 +85,7 @@ export default {
   data() {
     return {
       icon: 'back',
-      title: 'Pay with M-PESA',
+      title: this.$t('pay_with_mpesa'),
       phone: null,
       promptInfo: false,
       error: '',
@@ -102,7 +102,7 @@ export default {
       formattedPhone: null,
       disable: false,
       showErrorModal: false,
-      errorText: 'We are unable to send an M-PESA payment request to you phone. You can still complete your payment with M-PESA Pay Bill'
+      errorText: this.$t('unable_to_send_mpesa_request'),
     }
   },
   computed: {
@@ -173,7 +173,7 @@ export default {
               that.loading = false;
               that.showTimer = false;
               that.promptInfo = false;
-              that.setErrorText('Failed to charge using Mpesa. Please try again.');
+              that.setErrorText(this.$t('failed_to_charge_using_mpesa'));
               that.$router.push({name: 'FailedView', params: { mpesa: 'mpesa'}  });
               return;
             }
@@ -226,7 +226,7 @@ export default {
       this.loading = false;
       this.showTimer = false;              
       this.promptInfo = false;
-      this.setErrorText("We are unable to confirm your M-PESA payment. Please retry again after a couple of minutes. ");
+      this.setErrorText(this.$t('unable_to_confirm_mpesa'));
       this.$router.push({name: 'FailedView', params: { mpesa: 'mpesa' }});
     }
   }

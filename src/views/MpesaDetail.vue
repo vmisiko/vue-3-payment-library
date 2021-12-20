@@ -13,7 +13,7 @@
 
       <div class="mgt-8 text-btn direction-flex pointer" @click="removeCard">
         <IconView icon="delete"/>
-        <span class="text-btn">Remove M-PESA</span>
+        <span class="text-btn">{{ $t('remove_mpesa')}}</span>
 
       </div>
 

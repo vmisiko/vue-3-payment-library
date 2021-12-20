@@ -26,13 +26,13 @@ export default {
   computed: {
     ...mapGetters(['getBupayload']),
     optionName() {
-      let result = 'Credit or Debit Card';
+      let result = this.$t('credit_card_payment_small');
       switch (this.paymentMethod.payment_method_id) {
         case 1:
           result = this.paymentMethod.name
           break;
         case 2:
-          result = 'Credit or Debit Card';
+          result = this.$t('credit_card_payment_small');
           break;
         default:
           break;

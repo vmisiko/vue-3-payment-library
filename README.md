@@ -57,6 +57,7 @@ So there 4 entry points:
     lastname: 'doe',
     payment_options: [1, 2],// This are the payment_methods_id you get from the paymeht methods available. They are used to filter the payment methods you want the user shown.
     company_code: 'SKML', // add compnay code to associate a transaction to it's repective company.
+    locale: 'en', // add locale. 'en' & 'fr' are the supported languages now.
   };
 
   this.$paymentInit(buPayload, 'checkout'); //the 2nd argument can be a 'checkout', 'payment-option', 'choose-payment' or 'choose-payment-checkout, in order to access the three entry points of the Bu.

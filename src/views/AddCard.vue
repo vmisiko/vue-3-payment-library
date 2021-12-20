@@ -12,7 +12,7 @@
 
       <form id="cc-form" @submit.prevent="onsubmit">
         <div class="form-group">
-          <label class="text-caption-2">Cardholder name</label>
+          <label class="text-caption-2">{{ $t('cardholder_name') }}</label>
           <input
             type="text"
             v-model="card_name"
@@ -23,7 +23,7 @@
         </div>
 
         <div class="form-group mgt-4">
-          <label for="cc-number" class="mgt-2 text-caption-2">Card number</label>
+          <label for="cc-number" class="mgt-2 text-caption-2">{{ $t('card_number') }}</label>
             <span id="cc-number" class="form-field">
             </span>
             <span class="text-caption-2 text-error" v-if="cardno"> {{ cardno }} </span>
@@ -31,14 +31,14 @@
 
           <div class="direction-flex mgt-4">
             <div class="form-group">
-              <label for="cc-expiration-date" class="text-caption-2">Expiry</label>
+              <label for="cc-expiration-date" class="text-caption-2">{{ $t('expiry') }}</label>
               <span id="cc-expiration-date" class="form-field">
               </span>
               <span class="text-caption-2 text-error" v-if="expirydate"> {{ expirydate }} </span>
             </div>
 
             <div class="form-group mgl-8">
-              <label for="cc-cvc" class="text-caption-2">CVC</label>
+              <label for="cc-cvc" class="text-caption-2">{{ $t('cvv') }}</label>
 
               <span id="cc-cvc" class="form-field">
               </span>
@@ -50,7 +50,7 @@
           </div>
         
         <div class="mgt-10 text-center">
-          <span class="charge-text"> In order to verify your card details, we will charge a small fee of KES 5.00 and refund your card within 15 days.</span>
+          <span class="charge-text"> {{ $t('in_order_to_verify') }}</span>
         </div>
         <sendy-btn 
           :block="true" 
@@ -59,7 +59,7 @@
           class="mgt-3"
           type="submit"
         >
-          Add Card
+          {{ $t('add_card') }}
         </sendy-btn>
 
       </form>
@@ -93,9 +93,9 @@ export default {
       showSnackbar: true,
       showModal: false,
       showErrorModal: false,
-      errorText: 'Your card issuer has declined this transaction. Contact your bank or card issuer for more information.',
+      errorText: this.$t('card_declined'),
       icon: 'back',
-      title: 'Add a Card',
+      title: this.$t('add_a_card'),
       form: {},
       cardno: '',
       card_name: '',
@@ -130,7 +130,7 @@ export default {
               case 'success':
                 this.showProcessing = false;
                 this.$paymentNotification({
-                  text: 'Card details added and selected for payment.'
+                  text: this.$t('card_details_added')
                 });
                 this.$router.push('/choose-payment');
                 this.loading = false;
@@ -300,7 +300,7 @@ export default {
                     case 'success':
                       this.showProcessing = false;
                       this.$paymentNotification({
-                        text: 'Card details added and selected for payment.'
+                        text: this.$t('card_details_added')
                       });
                       this.$router.push('/choose-payment');
                       this.loading = false;
@@ -321,14 +321,14 @@ export default {
               }).catch(err => {
                 this.showProcessing = false,
                 this.initForm();
-                this.errorText = 'Failed to collect card details. Please try again';
+                this.errorText = this.$t('failed_to_collect_card_details');
                 this.showErrorModal= true;
               });
             
             } else {
               this.showProcessing = false,
               this.initForm();
-              this.errorText = 'Failed to collect card details. Please try again';
+              this.errorText = this.$t('failed_to_collect_card_details');
               this.showErrorModal= true;
             }
           },
@@ -342,7 +342,7 @@ export default {
       }
       this.showProcessing = false,
       this.initForm();
-      this.errorText = 'Failed to collect card details. Please try again';
+      this.errorText = this.$t('failed_to_collect_card_details');
       this.showErrorModal= true;
     },
     
@@ -362,7 +362,7 @@ export default {
               that.loading = false;
               that.showProcessing = false,
               that.initForm();
-              that.errorText = 'Failed to confirm card. Please try again.';
+              that.errorText = this.$t('failed_to_collect_card_details');
               that.showErrorModal= true;
               return;
             }
@@ -385,7 +385,7 @@ export default {
               this.poll_count = this.poll_limit;
               this.showProcessing = false;
               this.$paymentNotification({
-                text: 'Card details added and selected for payment.'
+                text: this.$t('card_details_added')
               });
               this.$router.push('/choose-payment');
               this.loading = false;
@@ -453,7 +453,7 @@ export default {
             case 'success':
               this.showProcessing = false;
               this.$paymentNotification({
-                text: 'Card details added and selected for payment.'
+                text: this.$t('card_details_added')
               });
               this.$router.push('/choose-payment');
               this.loading = false;
@@ -465,7 +465,7 @@ export default {
       }
       this.showProcessing = false,
       this.initForm();
-      this.errorText = 'Failed to collect card details. Please try again';
+      this.errorText = this.$t('failed_to_collect_card_details');
       this.showErrorModal= true;
     },
   }
