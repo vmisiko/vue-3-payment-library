@@ -1,5 +1,5 @@
 <template>
-  <div id="error-limit" class="modal">
+  <div id="error-limit" class="modal" ref="transactionLimitModal">
       <div class="modal-content">
         <div>
           <IconView icon='warning' />
@@ -50,10 +50,12 @@ export default {
   },
   methods: {
     handleOpen() {
-      document.getElementById('error-limit').style.display = 'block';
+      let el = this.$refs.transactionLimitModal;
+      el.style.display = 'block';
     },
     handleClose() {
-      document.getElementById('error-limit').style.display = 'none';
+      let el = this.$refs.transactionLimitModal;
+      el.style.display = 'none';
     },
     handleRouting() {
       const entryRoute = localStorage.entry_route;

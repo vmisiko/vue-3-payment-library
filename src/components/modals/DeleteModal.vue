@@ -1,5 +1,5 @@
 <template>
-  <div id="delete-modal" class="modal">
+  <div id="delete-modal" class="modal" ref="deleteModal">
       <div class="modal-content">
 
         <div class="mgt-4">
@@ -55,10 +55,12 @@ export default {
   },
   methods: {
     handleOpen() {
-      document.getElementById('delete-modal').style.display = 'block';
+      let el = this.$refs.deleteModal;
+      el.style.display = 'block';
     },
     handleClose() {
-      document.getElementById('delete-modal').style.display = 'none';
+      let el = this.$refs.deleteModal;
+      el.style.display = 'none';
     },
     handleDelete() {
       switch (this.$route.name) {

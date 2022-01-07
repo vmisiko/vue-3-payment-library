@@ -1,5 +1,5 @@
 <template>
-  <div id="no-option" class="modal">
+  <div id="no-option" class="modal" ref="noOptionsModal">
       <div class="modal-content-option ">
         <div class="flex-center">
         <div class="text-center mgt-11">
@@ -55,10 +55,12 @@ export default {
   },
   methods: {
     handleOpen() {
-      document.getElementById('no-option').style.display = 'block';
+      let el = this.$refs.noOptionsModal;
+      el.style.display = 'block';
     },
     handleClose() {
-      document.getElementById('no-option').style.display = 'none';
+      let el = this.$refs.noOptionsModal;
+      el.style.display = 'none';
     },
     addPaymentOption() {
       window.analytics.track('Add Payment Option', {
