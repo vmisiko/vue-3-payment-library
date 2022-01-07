@@ -1,5 +1,5 @@
 <template>
-  <div id="timer-modal" class="modal">
+  <div id="timer-modal" class="modal" ref="timerModal">
     <div class="modal-content">
       <div class="mgt-4">
         <IconView icon="loading1" width="70" height="70" class="flex-center" />
@@ -46,7 +46,8 @@ export default {
   },
   methods: {
     handleOpen() {
-      document.getElementById('timer-modal').style.display = 'block';
+      let el = this.$refs.timerModal;
+      el.style.display = 'block';
       const stopCountdown = setInterval(() => {
         this.countdown -= 1;
         if (!this.countdown) {
@@ -57,7 +58,8 @@ export default {
     },
     
     handleClose() {
-      document.getElementById('timer-modal').style.display = 'none';
+      let el = this.$refs.timerModal;
+      el.style.display = 'none';
     },
   }
 }

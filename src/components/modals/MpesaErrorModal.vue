@@ -1,5 +1,5 @@
 <template>
-  <div id="error-mpesa" class="modal">
+  <div id="error-mpesa" class="modal" ref="mpesaErrorModal">
       <div class="modal-content">
         <div>
           <IconView icon='warning' />
@@ -44,10 +44,12 @@ export default {
   },
   methods: {
     handleOpen() {
-      document.getElementById('error-mpesa').style.display = 'block';
+      let el = this.$refs.mpesaErrorModal;
+      el.style.display = 'block';
     },
     handleClose() {
-      document.getElementById('error-mpesa').style.display = 'none';
+      let el = this.$refs.mpesaErrorModal;
+      el.style.display = 'none';
     },
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div id="cvv-modal" class="modal">
+  <div id="cvv-modal" class="modal" ref="cvvModal">
       <div class="modal-content">
         <span class="close" @click="$emit('close')">&times;</span>
         <div>
@@ -42,10 +42,12 @@ export default {
   },
   methods: {
     handleCvv() {
-      document.getElementById('cvv-modal').style.display = 'block';
+      let elCvv = this.$refs.cvvModal;
+      elCvv.style.display = 'block';
     },
     closeCvv() {
-      document.getElementById('cvv-modal').style.display = 'none';
+      let elCvv = this.$refs.cvvModal;
+      elCvv.style.display = 'none';
     },
   }
 }

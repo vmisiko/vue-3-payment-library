@@ -1,5 +1,5 @@
 <template>
-  <div id="error-modal" class="modal">
+  <div id="error-modal" class="modal" ref="errorModal">
       <div class="modal-content">
         <div>
           <IconView icon='warning' />
@@ -44,10 +44,12 @@ export default {
   },
   methods: {
     handleOpen() {
-      document.getElementById('error-modal').style.display = 'block';
+      let el = this.$refs.errorModal;
+      el.style.display = 'block';
     },
     handleClose() {
-      document.getElementById('error-modal').style.display = 'none';
+      let el = this.$refs.errorModal;
+      el.style.display = 'none';
     },
   }
 }

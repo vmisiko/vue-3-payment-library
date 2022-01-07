@@ -1,9 +1,10 @@
 <template>
-  <div id="axios-modal" class="modal">
+  <div id="axios-modal" class="modal" ref="axiosErrorModal">
       <div class="modal-content">
         <div>
           <IconView icon='warning' />
         </div>
+
 
         <div class="mgt-4">
           <span> {{ $t('error_alert') }} </span>
@@ -44,10 +45,12 @@ export default {
   },
   methods: {
     handleOpen() {
-      document.getElementById('axios-modal').style.display = 'block';
+      let elementAxiosModal = this.$refs.axiosErrorModal;
+      elementAxiosModal.style.display = 'block';
     },
     handleClose() {
-      document.getElementById('axios-modal').style.display = 'none';
+      let elementAxiosModal = this.$refs.axiosErrorModal;
+      elementAxiosModal.style.display = 'none';
     },
     close() {
       const entryRoute = localStorage.entry_route;
