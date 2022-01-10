@@ -45,7 +45,7 @@ export default {
   data() {
     return {
       icon: 'back',
-      title: $t('card_details'),
+      title: this.$t('card_details'),
       showDeleteModal: false,
       card_expiry: false,
       cardDetails: null,
