@@ -81,7 +81,7 @@ export default {
   data() {
     return {
       icon: 'back',
-      title: $t('pay_with_mpesa'),
+      title: this.$t('pay_with_mpesa'),
       loading: false,
       poll_count: 0,
       poll_limit: 30,

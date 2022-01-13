@@ -14,6 +14,7 @@ import PaymentOptionsPage from '../views/PaymentOptionsPage';
 import CardDetailsPage from '../views/CardDetailsPage';
 import MpesaDetail from '../views/MpesaDetail';
 import ChoosePaymentCheckout from '../views/ChoosePaymentCheckout';
+import ResolvePayment from '../views/ResolvePayment';
 
 const routes = [
   {
@@ -34,6 +35,11 @@ const routes = [
         path: '/failed-view/:mpesa?',
         name: 'FailedView',
         component: FailedView,
+      },
+      {
+        path: '/resolve-payment/',
+        name: 'ResolvePayment',
+        component: ResolvePayment,
       },
       {
         path: '/retry-view',

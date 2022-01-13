@@ -29,7 +29,7 @@
 
       <hr class="mgt-4" />
 
-      <div class="mgt-4 direction-flex float-right  link" @click="$router.push('/choose-payment')" >
+      <div class="mgt-4 direction-flex float-right  link" @click="$route.name === 'ResolvePayment' ? $router.push('/choose-payment-checkout') : $router.push('/choose-payment')" >
         <span> {{ $t('change_payment_option') }}</span>
         <IconView class="mgl-2" icon="greator"/>
       </div>
