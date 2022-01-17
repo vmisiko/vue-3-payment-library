@@ -102,5 +102,8 @@
 
   "done": "FR_Done",
   "payment_successful": "FR_Payment successful",
-  "processing_card": "FR_Processing your card payment"
+  "processing_card": "FR_Processing your card payment",
+  "retry_card": "FR_Retry Card",
+  "payment_unsuccessful": "FR_Payment Unsuccessful",
+  "Unable_process_transaction": "FR_We are unable to process your transaction. Your card has insufficient funds."
 }

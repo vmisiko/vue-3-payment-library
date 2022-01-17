@@ -26,7 +26,7 @@
               color='primary'
               @click="submitRetry"
             >
-              Retry Card
+              {{ $t('retry_card') }}
             </sendy-btn>
           </div>
         </div>
@@ -61,8 +61,8 @@ export default {
   data() {
     return {
       icon: 'warning',
-      title: 'Payment Unsuccessful',
-      subtitle: "We are unable to process your transaction. Your card has insufficient funds.",
+      title: this.$t('payment_unsuccessful'),
+      subtitle: this.$t('Unable_process_transaction'),
       paymentStatus: true,
       currency: 'KES',
       amount: 0.00,
@@ -88,7 +88,6 @@ export default {
     },
   },
   mounted() {
-    // console.log(this.getBupayload.resolve_payment_message);
     this.subtitle = this.getBupayload.resolve_payment_message;
     this.retrievePaymentMethods();
     this.getDefaultpayMethod();
