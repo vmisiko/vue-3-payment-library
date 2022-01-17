@@ -30,6 +30,7 @@
             </sendy-btn>
           </div>
         </div>
+      </div>
     </div>
 
     <ErrorModal :show="showErrorModal" :text="errorText" @close="handleErrorModalClose" />
