@@ -62,9 +62,9 @@ export default {
     return {
       icon: 'warning',
       title: this.$t('payment_unsuccessful'),
-      subtitle: this.$t('Unable_process_transaction'),
+      subtitle: '',
       paymentStatus: true,
-      currency: 'KES',
+      currency: '',
       amount: 0.00,
       loading: false,
       defaultPaymentMethod: null,
