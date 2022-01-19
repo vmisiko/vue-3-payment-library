@@ -11,9 +11,8 @@ phrase:
         tags: PaymentUi
   pull:
     targets:
-    - file: src/lang/en.json
+    - file: src/lang/fr.json
       params:
         file_format: simple_json
-        locale_id: ed934d9347aeac7e449bb893fc04a34a
-        update_translations: true
+        locale_id: c88e27a25fcc96ca2db41e23c60b67bf
         tags: PaymentUi

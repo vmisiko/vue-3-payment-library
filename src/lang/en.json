@@ -102,5 +102,8 @@
 
   "done": "Done",
   "payment_successful": "Payment successful",
-  "processing_card": "Processing your card payment"
+  "processing_card": "Processing your card payment",
+  "retry_card": "Retry Card",
+  "payment_unsuccessful": "Payment Unsuccessful",
+  "Unable_process_transaction": "We are unable to process your transaction. Your card has insufficient funds."
 }

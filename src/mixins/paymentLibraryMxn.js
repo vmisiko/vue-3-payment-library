@@ -11,7 +11,7 @@ const mixin = {
     }
   },
   computed: {
-    ...mapGetters(['getPaymentMethods', 'getBupayload']),
+    ...mapGetters(['getPaymentMethods', 'getSavedPayMethods', 'getBupayload']),
     config() {
       return this.$sendyOptions.config;
     },
@@ -20,11 +20,17 @@ const mixin = {
     this.LoadSegment();
   },
   methods: {
-    ...mapMutations(['setBupayload']),
+    ...mapMutations(['setBupayload', 'setErrorText']),
     $handlePaymentMethod(paymentMethod) {
+      const entry = localStorage.getItem('entry');
+
       switch (paymentMethod.payment_method_id) {
         case 1: 
-          this.$router.push('/add-mpesa');
+          if (entry === 'resolve-payment-checkout') {
+            this.getBupayload.amount > paymentMethod.stk_limit ? this.$router.push('/mpesa-c2b') : this.$router.push('/mpesa-stk');   
+          } else {
+            this.$router.push('/add-mpesa');
+          }
           break;
         case 2: 
           this.$router.push('/add-card');
@@ -134,6 +140,7 @@ const mixin = {
       window.analytics.identify(payload.user_id, {
         email: payload.email
       });
+      
       switch (entry) {
         case 'checkout':
           this.$router.push({ name: 'Entry'});
@@ -146,6 +153,9 @@ const mixin = {
           break;
         case 'choose-payment-checkout':
           this.$router.push({ name: 'ChoosePaymentCheckout'});
+          break;
+        case 'resolve-payment-checkout':
+          this.$router.push({ name: 'ResolvePayment' });
           break;
         default:
           break;
