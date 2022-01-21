@@ -2,7 +2,7 @@
   <div class="flex-center">
     <NoOptionsModal v-if="!defaultPaymentMethod" />
     <div v-else>
-       <Processing v-if="loading" :count="count" :text="$t('please_wait')" />
+       <Processing v-if="loading" :count="count" :text="loading_text" />
       <div v-else>
         <AdditionalCardFields 
           :additionalData="additionalData" 
@@ -67,6 +67,7 @@ export default {
       currency: '',
       amount: 0.00,
       loading: false,
+      loading_text: 'Confirming your payment. This may takes a moment.',
       defaultPaymentMethod: null,
       errorText: this.$t('could_not_process'),
       transaction_id: null,
@@ -102,7 +103,7 @@ export default {
       };
 
       const fullPayload = {
-        url: '/payment_methods',
+        url: '/payment_methods/retry',
         params: payload,
       }
       
@@ -125,46 +126,26 @@ export default {
      
     },
     async submitRetry() {
-    this.startResponseTime = new Date(); 
+      this.startResponseTime = new Date(); 
 
       window.analytics.track('Try again after Failed Payment', {
         ...this.commonTrackPayload(),
       });
 
-
-      if (this.defaultPaymentMethod.pay_method_id === 1) {
-        this.amount > this.defaultPaymentMethod.stk_limit ? this.$router.push('/mpesa-c2b') : this.$router.push('/mpesa-stk');
-        return;
-      }
-
       this.loading = true;
       const payload = {
-        country: this.getBupayload.country_code,
-        amount: this.getBupayload.amount,
-        cardno: this.defaultPaymentMethod.pay_method_details,
-        txref: this.getBupayload.txref,
-        userid: this.getBupayload.user_id,
-        currency: this.getBupayload.currency,
-        bulk: this.getBupayload.bulk,
-        entity: this.getBupayload.entity_id,
-        company_code: this.getBupayload.company_code,
+        user_id: this.getBupayload.user_id,
+        bulk_reference_number: this.getBupayload.txref,
       }
 
       const fullPayload = {
-        url: '/api/v1/process',
+        url: '/bulk/retry',
         params: payload,
       }
 
       const response = await this.$paymentAxiosPost(fullPayload);
       this.transaction_id = response.transaction_id;
       if (response.status) {
-        if(response.additional_data) {
-          this.additionalData = response.additional_data;
-          this.showAdditionalCardFields = true;
-          this.loading = false;
-          return;
-        }
-
         switch (response.transaction_status) {
           case 'pending':
             this.pollCard();
@@ -262,7 +243,7 @@ export default {
         return;
       }
       this.loading = false;
-      this.errorText = this.$t('failed_to_collect_card_details')
+      this.errorText = this.$t('failed_to_collect_card_details');
       this.showErrorModal= true;
     },
 
