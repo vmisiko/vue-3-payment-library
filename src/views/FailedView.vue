@@ -148,6 +148,13 @@ export default {
         company_code: this.getBupayload.company_code,
       }
 
+      const entryPoint = localStorage.entry;
+
+      if (entryPoint === 'resolve-payment-checkout' ) {
+        payload.bulkrefno = this.getBupayload.bulk_reference_number;
+        payload.bulk = true;
+      }
+
       const fullPayload = {
         url: '/api/v1/process',
         params: payload,
@@ -243,6 +250,9 @@ export default {
           }
           return res;
         }
+        this.poll_count = this.poll_limit;
+        this.showAdditionalCardFields = false;
+        this.loading = false;
         this.errorText = res.message;
         this.showErrorModal= true;
       })

@@ -26,7 +26,7 @@
               color='primary'
               @click="submitRetry"
             >
-              {{ $t('retry_card') }}
+              {{ $t('retry_payment') }}
             </sendy-btn>
           </div>
         </div>
@@ -118,13 +118,6 @@ export default {
       this.currency = this.getBupayload.currency;
       this.amount = this.getBupayload.amount;
     },
-    routeRetry() {
-      const entry = localStorage.entry;
-      window.analytics.track('Try again after Failed Payment', {
-        ...this.commonTrackPayload(),
-      });
-     
-    },
     async submitRetry() {
       this.startResponseTime = new Date(); 
 
@@ -134,12 +127,20 @@ export default {
 
       this.loading = true;
       const payload = {
-        user_id: this.getBupayload.user_id,
-        bulk_reference_number: this.getBupayload.txref,
+        country: this.getBupayload.country_code,
+        amount: this.getBupayload.amount,
+        cardno: this.defaultPaymentMethod.pay_method_details,
+        bulkrefno: this.getBupayload.bulk_reference_number,
+        txref: this.getBupayload.txref,
+        userid: this.getBupayload.user_id,
+        currency: this.getBupayload.currency,
+        bulk: this.getBupayload.bulk,
+        entity: this.getBupayload.entity_id,
+        company_code: this.getBupayload.company_code,
       }
 
       const fullPayload = {
-        url: '/bulk/retry',
+        url: '/api/v1/process',
         params: payload,
       }
 

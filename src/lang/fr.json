@@ -73,7 +73,7 @@
   "remove_card": "Supprimer la carte",
   "remove_mpesa": "Supprimer MTN Mobile Money",
   "retry": "Réessayer",
-  "retry_card": "Carte de nouvelle tentative",
+  "retry_payment": "Réessayer le paiement",
   "retry_in": "Réessayer dans 3min 57secondes...",
   "select_lipa_na_mpesa": "Sélectionnez 'Lipa na M-PESA'/Payer avec Mobile Money > Facture de paiement.",
   "selected_payment_name": "{nom_sélectionné} sélectionné pour le paiement.",
