@@ -87,5 +87,7 @@
   "unable_to_send_mpesa_request": "Nous ne sommes pas en mesure d'envoyer une demande de paiement Mobile Money sur votre téléphone. Vous pouvez toujours compléter votre paiement avec un numéro de facture de paiement. ",
   "unavailable": "Indisponible. Le montant dépasse la limite quotidienne de transaction",
   "what_is_cvv": "Qu'est-ce que le CVC ?",
-  "whenever_choose_mpesa": "Lorsque vous choisissez de payer avec Mobile Money, vous serez invité à fournir un numéro de téléphone lors du paiement."
+  "whenever_choose_mpesa": "Lorsque vous choisissez de payer avec Mobile Money, vous serez invité à fournir un numéro de téléphone lors du paiement.",
+  "error_occurred": "Une erreur s’est produite. Veuillez réessayer!"
+
 }

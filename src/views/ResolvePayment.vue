@@ -118,28 +118,34 @@ export default {
         params: payload,
       }
 
-      const response = await this.$paymentAxiosPost(fullPayload);
-      this.transaction_id = response.transaction_id;
-      if (response.status) {
-        switch (response.transaction_status) {
-          case 'pending':
-            this.pollCard();
-            break;
-          case 'success':
-            this.loading = false;
-            this.$paymentNotification({
-              text: this.$t('card_details_added')
-            });
-            this.$router.push('/choose-payment');
-            this.loading = false;
-            break;
-          default:
-            break;
+      try {
+        const response = await this.$paymentAxiosPost(fullPayload);    
+        this.transaction_id = response.transaction_id;
+        if (response.status) {
+          switch (response.transaction_status) {
+            case 'pending':
+              this.pollCard();
+              break;
+            case 'success':
+              this.loading = false;
+              this.$paymentNotification({
+                text: this.$t('card_details_added')
+              });
+              this.$router.push('/choose-payment');
+              this.loading = false;
+              break;
+            default:
+              break;
+          }
+          return;
         }
-        return;
+        this.setErrorText(response.message);
+        this.loading = false;
+      } catch {
+        this.$paymentNotification({ text: this.$t('error_occurred'), type: 'error' });
+        this.setErrorText('An error occured. Please try again.');
+        this.loading = false;
       }
-      this.setErrorText(response.message);
-      this.loading = false;
     },
 
     pollCard() {
