@@ -43,10 +43,13 @@ const mixin = {
 
       const paymentOptions = this.getBupayload.payment_options;
       const fullPayload = {
-        url: '/payment_methods',
         params: payload,
       }
       
+      const entryPoint = localStorage.entry;
+
+      fullPayload['url']  = entryPoint === 'resolve-payment-checkout' ? '/payment_methods/retry' : '/payment_methods';
+
       const response = await this.$paymentAxiosPost(fullPayload);
       if (response.status) {
         const paymentMethods = response.payment_methods.filter(item => paymentOptions.includes(item.payment_method_id));
