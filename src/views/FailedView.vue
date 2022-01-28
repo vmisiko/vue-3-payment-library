@@ -92,24 +92,6 @@ export default {
   },
   methods: {
     ...mapMutations(['setErrorText', 'setPaymentMethods', 'setSavedPayMethods']),
-    async retrievePaymentMethods() {
-      const payload = {
-        country_code : this.getBupayload.country_code,
-        entity_id : this.getBupayload.entity_id,
-        user_id : this.getBupayload.user_id,
-      };
-
-      const fullPayload = {
-        url: '/payment_methods',
-        params: payload,
-      }
-      
-      const response = await this.$paymentAxiosPost(fullPayload);
-      if (response.status) {
-        this.setPaymentMethods(response.payment_methods);
-        this.setSavedPayMethods(response.saved_payment_methods);
-      }
-    },
     getDefaultpayMethod() {
       this.defaultPaymentMethod = this.getSavedPayMethods ? this.getSavedPayMethods.filter(method => method.default === 1)[0] : [];
       this.currency = this.getBupayload.currency;
@@ -146,6 +128,13 @@ export default {
         bulk: this.getBupayload.bulk,
         entity: this.getBupayload.entity_id,
         company_code: this.getBupayload.company_code,
+      }
+
+      const entryPoint = localStorage.entry;
+
+      if (entryPoint === 'resolve-payment-checkout' ) {
+        payload.bulkrefno = this.getBupayload.bulk_reference_number;
+        payload.bulk = true;
       }
 
       const fullPayload = {
@@ -243,6 +232,9 @@ export default {
           }
           return res;
         }
+        this.poll_count = this.poll_limit;
+        this.showAdditionalCardFields = false;
+        this.loading = false;
         this.errorText = res.message;
         this.showErrorModal= true;
       })

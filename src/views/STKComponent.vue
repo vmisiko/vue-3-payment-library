@@ -125,6 +125,7 @@ export default {
         country: this.getBupayload.country_code,
         amount: this.getBupayload.amount,
         txref: this.getBupayload.txref,
+        bulkrefno: this.getBupayload.bulk_reference_number,
         userid: this.getBupayload.user_id,
         currency: this.getBupayload.currency,
         bulk: this.getBupayload.bulk,
@@ -135,10 +136,18 @@ export default {
         company_code: this.getBupayload.company_code,
       }
 
+      const entryPoint = localStorage.entry;
+
+      if (entryPoint === 'resolve-payment-checkout' ) {
+        payload.bulkrefno = this.getBupayload.bulk_reference_number;
+        payload.bulk = true;
+      }
+
       const fullPayload = {
         url: '/api/v1/process',
         params: payload,
       }
+
       
       const response = await this.$paymentAxiosPost(fullPayload);
       this.transaction_id = response.transaction_id;
