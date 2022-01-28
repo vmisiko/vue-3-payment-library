@@ -143,7 +143,7 @@ export default {
         this.loading = false;
       } catch {
         this.$paymentNotification({ text: this.$t('error_occurred'), type: 'error' });
-        this.setErrorText('An error occured. Please try again.');
+        this.setErrorText(this.$t('error_occurred'));
         this.loading = false;
       }
     },
