@@ -100,7 +100,7 @@ export default {
       this.currency = this.getBupayload.currency;
       this.amount = this.getBupayload.amount;
     },
-    async submitRetry() {
+    async bulkretry() {
       this.startResponseTime = new Date(); 
 
       window.analytics.track('Try again after Failed Payment', {
@@ -114,7 +114,7 @@ export default {
       }
 
       const fullPayload = {
-        url: '/bulk/retry',
+        url: '/api/v1/bulk/retry',
         params: payload,
       }
 
@@ -141,11 +141,80 @@ export default {
         }
         this.setErrorText(response.message);
         this.loading = false;
+        this.subtitle = response.message;
       } catch {
         this.$paymentNotification({ text: this.$t('error_occurred'), type: 'error' });
         this.setErrorText(this.$t('error_occurred'));
         this.loading = false;
       }
+    },
+
+    async submitRetry() {
+      if (this.getBupayload.bulk && this.getBupayload.bulk_reference_number) {
+        this.bulkretry();
+        return;
+      }
+
+      this.startResponseTime = new Date(); 
+
+      window.analytics.track('Try again after Failed Payment', {
+        ...this.commonTrackPayload(),
+      });
+
+      
+      if (this.defaultPaymentMethod.pay_method_id === 1) {
+        this.amount > this.defaultPaymentMethod.stk_limit ? this.$router.push('/mpesa-c2b') : this.$router.push('/mpesa-stk');
+        return;
+      }
+
+      this.loading = true;
+      const payload = {
+        country: this.getBupayload.country_code,
+        amount: this.getBupayload.amount,
+        cardno: this.defaultPaymentMethod.pay_method_details,
+        txref: this.getBupayload.txref,
+        userid: this.getBupayload.user_id,
+        currency: this.getBupayload.currency,
+        bulk: this.getBupayload.bulk,
+        entity: this.getBupayload.entity_id,
+        company_code: this.getBupayload.company_code,
+        bulkrefno: this.getBupayload.bulk_reference_number,
+      }
+
+      const fullPayload = {
+        url: '/api/v1/process',
+        params: payload,
+      }
+
+      const response = await this.$paymentAxiosPost(fullPayload);
+      this.transaction_id = response.transaction_id;
+      if (response.status) {
+        if(response.additional_data) {
+          this.additionalData = response.additional_data;
+          this.showAdditionalCardFields = true;
+          this.loading = false;
+          return;
+        }
+
+        switch (response.transaction_status) {
+          case 'pending':
+            this.pollCard();
+            break;
+          case 'success':
+            this.loading = false;
+            this.$paymentNotification({
+              text: this.$t('card_details_added')
+            });
+            this.$router.push('/choose-payment');
+            this.loading = false;
+            break;
+          default:
+            break;
+        }
+        return;
+      }
+      this.setErrorText(response.message);
+      this.loading = false;
     },
 
     pollCard() {

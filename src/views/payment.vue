@@ -213,7 +213,6 @@ export default {
           switch (res.transaction_status) {
             case 'success':
               this.poll_count = this.poll_limit;
-              this.collectLoad = false;
               this.$paymentNotification({
                 text: res.message,
               });
@@ -227,7 +226,6 @@ export default {
             case 'failed':
               this.poll_count = this.poll_limit;
               this.loading = false;
-              this.collectLoad = false;
               this.errorText = res.message;
               this.setErrorText(res.message);
               this.$router.push({name: 'FailedView'});
@@ -240,6 +238,8 @@ export default {
           }
           return res;
         }
+        this.poll_count = this.poll_limit;
+        this.loading = false;
         this.errorText = res.message;
         this.showErrorModal= true;
       })

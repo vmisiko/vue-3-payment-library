@@ -202,13 +202,7 @@ export default {
         bulk: this.getBupayload.bulk,
         entity: this.getBupayload.entity_id,
         company_code: this.getBupayload.company_code,
-      }
-
-      const entryPoint = localStorage.entry;
-
-      if (entryPoint === 'resolve-payment-checkout' ) {
-        payload.bulkrefno = this.getBupayload.bulk_reference_number;
-        payload.bulk = true;
+        bulkrefno: this.getBupayload.bulk_reference_number,
       }
 
       const fullPayload = {
