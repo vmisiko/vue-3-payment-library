@@ -222,6 +222,13 @@ export default {
 
         switch (response.transaction_status) {
           case 'pending':
+            if (this.getBupayload.bulk) {
+              this.loading = false;
+              this.$router.push({
+                name: 'SuccessView',
+              });
+              return;
+            }
             this.pollCard();
             break;
           case 'success':

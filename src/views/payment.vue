@@ -160,6 +160,15 @@ export default {
 
         switch (response.transaction_status) {
           case 'pending':
+            const duration = Date.now() - this.startResponseTime;
+            if (this.getBupayload.bulk) {
+              this.loading = false;
+              this.$router.push({
+                name: 'SuccessView',
+                duration: duration,
+              });
+              return;
+            }
             this.pollCard();
             break;
           case 'success':

@@ -105,7 +105,7 @@ export default {
      
     },
     async submitRetry() {
-    this.startResponseTime = new Date(); 
+      this.startResponseTime = new Date();
 
       window.analytics.track('Try again after Failed Payment', {
         ...this.commonTrackPayload(),
@@ -139,6 +139,7 @@ export default {
       const response = await this.$paymentAxiosPost(fullPayload);
       this.transaction_id = response.transaction_id;
       if (response.status) {
+      
         if(response.additional_data) {
           this.additionalData = response.additional_data;
           this.showAdditionalCardFields = true;
@@ -146,8 +147,18 @@ export default {
           return;
         }
 
+        const duration = Date.now() - this.startResponseTime;
+
         switch (response.transaction_status) {
           case 'pending':
+            if (this.getBupayload.bulk) {
+              this.loading = false;
+              this.$router.push({
+                name: 'SuccessView',
+                duration: duration,
+              });
+              return;
+            }
             this.pollCard();
             break;
           case 'success':
