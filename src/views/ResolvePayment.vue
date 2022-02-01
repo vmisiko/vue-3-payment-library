@@ -29,6 +29,12 @@
               {{ $t('retry_payment') }}
             </sendy-btn>
           </div>
+
+          <div class="mgt-8 direction-flex flex-center link" @click="$route.name === 'ResolvePayment' ? $router.push('/choose-payment-checkout') : $router.push('/choose-payment')"  >
+            <span> {{ $t('change_payment_option') }}</span>
+            <IconView class="mgl-2" icon="greator"/>
+          </div>
+
         </div>
       </div>
     </div>
