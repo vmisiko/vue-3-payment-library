@@ -37,6 +37,11 @@
         </sendy-btn>
       </div>
 
+      <div class="mgt-8 direction-flex flex-center link" @click="$route.name === 'ResolvePayment' ? $router.push('/choose-payment-checkout') : $router.push('/choose-payment')"  >
+        <span> {{ $t('change_payment_option') }}</span>
+        <IconView class="mgl-2" icon="greator"/>
+      </div>
+
     </div>
     <ErrorModal :show="showErrorModal" :text="errorText" @close="handleErrorModalClose" />
   </div>
@@ -105,7 +110,7 @@ export default {
      
     },
     async submitRetry() {
-    this.startResponseTime = new Date(); 
+      this.startResponseTime = new Date();
 
       window.analytics.track('Try again after Failed Payment', {
         ...this.commonTrackPayload(),
@@ -128,13 +133,7 @@ export default {
         bulk: this.getBupayload.bulk,
         entity: this.getBupayload.entity_id,
         company_code: this.getBupayload.company_code,
-      }
-
-      const entryPoint = localStorage.entry;
-
-      if (entryPoint === 'resolve-payment-checkout' ) {
-        payload.bulkrefno = this.getBupayload.bulk_reference_number;
-        payload.bulk = true;
+        bulkrefno: this.getBupayload.bulk_reference_number,
       }
 
       const fullPayload = {
@@ -145,6 +144,7 @@ export default {
       const response = await this.$paymentAxiosPost(fullPayload);
       this.transaction_id = response.transaction_id;
       if (response.status) {
+      
         if(response.additional_data) {
           this.additionalData = response.additional_data;
           this.showAdditionalCardFields = true;
@@ -152,8 +152,18 @@ export default {
           return;
         }
 
+        const duration = Date.now() - this.startResponseTime;
+
         switch (response.transaction_status) {
           case 'pending':
+            if (this.getBupayload.bulk) {
+              this.loading = false;
+              this.$router.push({
+                name: 'SuccessView',
+                duration: duration,
+              });
+              return;
+            }
             this.pollCard();
             break;
           case 'success':
@@ -171,6 +181,7 @@ export default {
       }
       this.setErrorText(response.message);
       this.loading = false;
+      this.subtitle = response.message;
     },
 
     pollCard() {

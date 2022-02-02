@@ -279,7 +279,7 @@ export default {
                 this.transaction_id = res.transaction_id;
 
                 if (res.status) {
-                  this.transactionStatus = res.transaction_status;
+                  this.transactionStatus = res.transaction_status.toLowerCase();
 
                   if(res.additional_data) {
                     this.additionalData = res.additional_data;
@@ -293,7 +293,7 @@ export default {
                     return;
                   }
 
-                  switch (res.transaction_status) {
+                  switch (res.transaction_status.toLowerCase()) {
                     case 'pending':
                       this.pollCard();
                       break;
@@ -380,7 +380,7 @@ export default {
       }
       this.$paymentAxiosGet(payload).then((res) => {
         if (res.status) { 
-          switch (res.transaction_status) {
+          switch (res.transaction_status.toLowerCase()) {
             case 'success':
               this.poll_count = this.poll_limit;
               this.showProcessing = false;
@@ -445,7 +445,7 @@ export default {
       const response = await this.$paymentAxiosPost(fullPayload);
       this.loading = false;
       if (response.status) {
-        switch (response.transaction_status) {
+        switch (response.transaction_status.toLowerCase()) {
             case 'pending':
               this.pollCard();
               this.count = true;

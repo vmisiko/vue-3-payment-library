@@ -134,13 +134,7 @@ export default {
         lastname: "",
         phonenumber: this.formattedPhone,
         company_code: this.getBupayload.company_code,
-      }
-
-      const entryPoint = localStorage.entry;
-
-      if (entryPoint === 'resolve-payment-checkout' ) {
-        payload.bulkrefno = this.getBupayload.bulk_reference_number;
-        payload.bulk = true;
+        bulkrefno: this.getBupayload.bulk_reference_number,
       }
 
       const fullPayload = {
@@ -148,7 +142,6 @@ export default {
         params: payload,
       }
 
-      
       const response = await this.$paymentAxiosPost(fullPayload);
       this.transaction_id = response.transaction_id;
       if (response.status) {
