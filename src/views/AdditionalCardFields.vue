@@ -193,6 +193,16 @@ export default {
           this.fields = response.additional_data;
           return;
         }
+
+        if (this.getBupayload.bulk) {
+          this.loading = false;
+          this.$router.push({
+            name: 'SuccessView',
+            duration: '',
+          });
+
+          return;
+        }
         
         this.$emit('continue', true);
         return;
@@ -237,6 +247,15 @@ export default {
                     }
 
                     this.$emit('continue3DS', responsePayload)
+                    return;
+                  }
+
+                  if (this.getBupayload.bulk) {
+                    this.loading = false;
+                    this.$router.push({
+                      name: 'SuccessView',
+                      duration: '',
+                    });
                     return;
                   }
 
