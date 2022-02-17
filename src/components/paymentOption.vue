@@ -56,7 +56,7 @@ export default {
             ...this.commonTrackPayload(),
             phone_number: '',
           });
-          this.$router.push('/add-mpesa')
+          this.$router.push('/mpesa-stk')
           break;
         default:
           this.$router.push('/add-card')
