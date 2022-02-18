@@ -64,7 +64,7 @@ const mixin = {
         return;
       };
       if (!defaultPaymentMethod) {
-        this.$router.push({name: "AddPayment"});
+        this.$router.push({name: "AddPayment", params: { entry: 'entry'}});
         return;
       }
     },

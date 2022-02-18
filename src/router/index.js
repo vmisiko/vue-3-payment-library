@@ -62,7 +62,7 @@ const routes = [
         component: ChoosePaymentCheckout,
       },
       {
-        path: '/add-payment',
+        path: '/add-payment/:entry?',
         name: 'AddPayment',
         component: AddPayment,
       },
