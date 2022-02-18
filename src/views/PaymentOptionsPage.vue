@@ -1,42 +1,35 @@
 <template>
   <div class="flex-center">
-    <NoOptionsModal v-if="getSavedPayMethods && getSavedPayMethods.length === 0" />
+    <div>
+      <Processing v-if="loading1" :text="loadingText" />
+      <div class="card" v-else>
+        <TopInfo :icon="icon" :title="title"/>
 
-    <div class="card" v-else>
-      <TopInfo :icon="icon" :title="title"/>
-
-      <span v-if="creditCards.length !== 0" class="mgt-2 text-overline">{{ $t('credit_card_payment') }}</span>
-      <div class="" v-if="creditCards.length !== 0" >
-        <div v-for="(card, index) in creditCards" :key="index" >
-          <PaymentOption :payMethod="card" />
+        <span v-if="creditCards.length !== 0" class="mgt-2 text-overline">{{ $t('credit_card_payment') }}</span>
+        <div class="" v-if="creditCards.length !== 0" >
+          <div v-for="(card, index) in creditCards" :key="index" >
+            <PaymentOption :payMethod="card" />
+          </div>
         </div>
+
+        <span v-if="savedMobile.length !== 0" class="mgt-8 text-overline">{{ $t('mobile_money') }}</span>
+        <div v-if="savedMobile.length !== 0">
+          <div v-for="(mobile, index) in savedMobile" :key="index">
+              <PaymentOption :payMethod="mobile" />
+          </div>
+        </div> 
+        <hr class="mgt-5" />
+        <span class="link mgt-5" @click="$router.push('/add-payment')"> + {{ $t('add_payment_option') }}</span>
+
+        <div class="mgt-10"></div>
       </div>
 
-      <span v-if="savedMobile.length !== 0" class="mgt-8 text-overline">{{ $t('mobile_money') }}</span>
-      <div v-if="savedMobile.length !== 0">
-        <div v-for="(mobile, index) in savedMobile" :key="index">
-            <PaymentOption :payMethod="mobile" />
-        </div>
-      </div> 
-      <hr class="mgt-5" />
-      <span class="link mgt-5" @click="$router.push('/add-payment')"> + {{ $t('add_payment_option') }}</span>
-
-      <div class="mgt-4 text-right">
-         <sendy-btn 
-          color='primary'
-          class="mgt-10"
-          @click="handleRouting"
-          :loading="loading"
-          >
-            {{ $t('add_payment_option') }}
-          </sendy-btn>
-      </div>
-    </div>
+    </div>    
   </div>
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex';
+import { mapGetters } from 'vuex';
 import TopInfo from '../components/topInfo';
 import PaymentOption from '../components/paymentOptionPage/paymentOption';
 import paymentGenMxn from '../mixins/paymentGenMxn';
@@ -56,6 +49,8 @@ export default {
       title: this.$t('payment_options'),
       picked: '',
       loading: false,
+      loading1: false,
+      loadingText: '',
     }
   },
   computed: {
@@ -69,30 +64,21 @@ export default {
       return result;
     }
   },
-  mounted() {
-    this.retrievePaymentMethods();
+  async mounted() {
+    this.loading1 = false;
+    this.loadingText = "Loading ..."
+    await this.retrievePaymentMethods();
+    this.loading1 = false;
+    this.getDefaultpayMethod();
     window.analytics.track('Tap Payment Options Menu', {
       ...this.commonTrackPayload(), 
     });
   },
   methods: {
-    ...mapMutations(['setErrorText', 'setPaymentMethods', 'setSavedPayMethods']),
-    async retrievePaymentMethods() {
-      const payload = {
-        country_code : this.getBupayload.country_code,
-        entity_id : this.getBupayload.entity_id,
-        user_id : this.getBupayload.user_id,
-      };
-
-      const fullPayload = {
-        url: '/payment_methods',
-        params: payload,
-      }
-      
-      const response = await this.$paymentAxiosPost(fullPayload);
-      if (response.status) {
-        this.setPaymentMethods(response.payment_methods);
-        this.setSavedPayMethods(response.saved_payment_methods);
+    getDefaultpayMethod() {
+      this.defaultPaymentMethod = this.getSavedPayMethods ? this.getSavedPayMethods.filter(method => method.default === 1)[0] : [];
+      if (!this.defaultPaymentMethod) {
+        this.checkAvailableOptions(this.defaultPaymentMethod);
       }
     },
     handleRouting() {
