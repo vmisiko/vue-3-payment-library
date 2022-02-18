@@ -108,7 +108,7 @@ export default {
       this.defaultPaymentMethod = this.getSavedPayMethods ? this.getSavedPayMethods.filter(method => method.default === 1)[0] : [];
       this.currency = this.getBupayload.currency;
       this.amount = this.getBupayload.amount;
-      this.defaultPaymentMethod ? this.checkAvailableOptions(this.defaultPaymentMethod) : this.$router.push({name: "AddPayment"});
+      this.defaultPaymentMethod ? this.checkAvailableOptions(this.defaultPaymentMethod) : this.$router.push({name: "AddPayment", params: { entry: 'entry'}});
     },
     async bulkretry() {
       this.startResponseTime = new Date(); 

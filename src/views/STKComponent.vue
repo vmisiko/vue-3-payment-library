@@ -288,6 +288,7 @@ export default {
           return res;
         }
         this.loading = false;
+        this.poll_count = this.poll_limit;
         this.showTimer = false;
         this.promptInfo = false,
         this.setErrorText(res.message);
