@@ -155,7 +155,7 @@ const mixin = {
           this.$router.push({ name: 'ChoosePaymentCheckout'});
           break;
         case 'resolve-payment-checkout':
-          this.$router.push({ name: 'ResolvePayment' });
+          this.$router.push({ name: 'ChoosePaymentCheckout' });
           break;
         default:
           break;

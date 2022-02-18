@@ -1,9 +1,8 @@
 <template>
   <div class="flex-center">
-    <NoOptionsModal v-if="!defaultPaymentMethod && getSavedPayMethods && getSavedPayMethods.length === 0" />
     
-    <div v-else>
-      <Processing v-if="loading" text="Please wait while we confirm payment" />
+    <div>
+      <Processing v-if="loading" :text="loadingText" />
       <div v-if="!loading">
         <AdditionalCardFields 
           :additionalData="additionalData" 
@@ -117,6 +116,7 @@ export default {
       showAdditionalCardFields: false,
       additionalData: null,
       showErrorModal: false,
+      loadingText: 'Loading'
     }
   },
   computed: {
@@ -137,8 +137,12 @@ export default {
       }
     }
   },
-  mounted() {
-    this.retrievePaymentMethods();
+  async mounted() {
+    this.loading = true;
+    this.loadingText = 'Loading...';
+    await this.retrievePaymentMethods();
+    this.loading = false;
+    this.loadingText = this.$t('please_wait');
     this.getDefaultpayMethod();
   },
   methods: {
@@ -147,6 +151,10 @@ export default {
       const method = this.getSavedPayMethods ? this.getSavedPayMethods.filter(method => method.default === 1)[0] : null;
       this.picked = method ? method.pay_detail_id : '';
       this.defaultPaymentMethod = method;
+      if (!this.defaultPaymentMethod) {
+        this.$router.push({name: "AddPayment", params: { entry: 'entry'}});
+        return;
+      } 
     },
 
     async update() {
@@ -180,6 +188,12 @@ export default {
       return result ? result.pay_method_name : '';
     },
     async submit() {
+      const entry = localStorage.getItem('entry');
+
+      if (entry === "resolve-payment-checkout") {
+        this.submitRetry();
+        return;
+      }
 
       if (this.defaultPaymentMethod.daily_limit && this.getBupayload.amount > this.defaultPaymentMethod.daily_limit) {
         this.showTransactionLimit = true;
@@ -187,7 +201,7 @@ export default {
       }
 
       if (this.defaultPaymentMethod.pay_method_id === 1) {
-        this.amount > this.defaultPaymentMethod.stk_limit ? this.$router.push('/mpesa-c2b') : this.$router.push('/mpesa-stk');
+        this.getBupayload.amount > this.defaultPaymentMethod.stk_limit ? this.$router.push('/mpesa-c2b') : this.$router.push('/mpesa-stk');
         return;
       }
 
@@ -206,7 +220,7 @@ export default {
       }
 
       const fullPayload = {
-        url: '/api/v1/process',
+        url: '/api/v3/process',
         params: payload,
       }
 
@@ -248,7 +262,115 @@ export default {
       this.loading = false;
       this.$router.push({ name: 'FailedView' });
     },
+    async bulkretry() {
+      this.startResponseTime = new Date(); 
 
+      if (this.defaultPaymentMethod.pay_method_id === 1) {
+        this.amount > this.defaultPaymentMethod.stk_limit ? this.$router.push('/mpesa-c2b') : this.$router.push('/mpesa-stk');
+        return;
+      }
+
+      this.loading = true;
+      const payload = {
+        user_id: this.getBupayload.user_id,
+        company_code: this.getBupayload.company_code,
+        entity: this.getBupayload.entity_id,
+        pay_detail_id: this.defaultPaymentMethod.pay_method_details,
+        payment_method: this.defaultPaymentMethod.pay_method_id,
+        references: this.getBupayload.references
+      }
+
+      const fullPayload = {
+        url: '/api/v3/bulk/retry',
+        params: payload,
+      }
+
+      try {
+        const response = await this.$paymentAxiosPost(fullPayload);    
+        this.transaction_id = response.transaction_id;
+        if (response.status) {
+          switch (response.transaction_status) {
+            case 'pending':
+              this.pollCard();
+              break;
+            case 'success':
+              this.loading = false;
+              this.$paymentNotification({
+                text: this.$t('card_details_added')
+              });
+              this.$router.push('/choose-payment');
+              this.loading = false;
+              break;
+            default:
+              break;
+          }
+          return;
+        }
+        this.setErrorText(response.message);
+        this.loading = false;
+        this.subtitle = response.message;
+      } catch {
+        this.$paymentNotification({ text: this.$t('error_occurred'), type: 'error' });
+        this.setErrorText(this.$t('error_occurred'));
+        this.loading = false;
+      }
+    },
+
+    async submitRetry() {
+      if (this.getBupayload.bulk) {
+        this.bulkretry();
+        return;
+      }
+
+      this.startResponseTime = new Date(); 
+
+      if (this.defaultPaymentMethod.pay_method_id === 1) {
+        this.getBupayload.amount > this.defaultPaymentMethod.stk_limit ? this.$router.push('/mpesa-c2b') : this.$router.push('/mpesa-stk');
+        return;
+      }
+
+      this.loading = true;
+      const payload = {
+        user_id: this.getBupayload.user_id,
+        company_code: this.getBupayload.company_code,
+        entity: this.getBupayload.entity_id,
+        pay_detail_id: this.defaultPaymentMethod.pay_method_details,
+        payment_method: this.defaultPaymentMethod.pay_method_id,
+        references: this.getBupayload.references
+      }
+
+      const fullPayload = {
+        url: '/api/v3/process/retry',
+        params: payload,
+      }
+
+      const response = await this.$paymentAxiosPost(fullPayload);
+      this.transaction_id = response.transaction_id;
+      if (response.status) {
+        if(response.additional_data) {
+          this.additionalData = response.additional_data;
+          this.showAdditionalCardFields = true;
+          this.loading = false;
+          return;
+        }
+
+        switch (response.transaction_status) {
+          case 'pending':
+            this.pollCard();
+            break;
+          case 'success':
+            this.loading = false;
+            this.$router.push({name: 'SuccessView'});
+            this.loading = false;
+            break;
+          default:
+            break;
+        }
+        return;
+      }
+      this.setErrorText(response.message);
+      this.loading = false;
+    },
     pollCard() {
       this.poll_count = 0;
       for (let poll_count = 0; poll_count < this.poll_limit; poll_count++) {

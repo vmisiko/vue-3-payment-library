@@ -1,7 +1,6 @@
 <template>
   <div class="flex-center">
-    <NoOptionsModal v-if="!defaultPaymentMethod" />
-    <div v-else>
+    <div>
        <Processing v-if="loading" :count="count" :text="loading_text" />
       <div v-else>
         <AdditionalCardFields 
@@ -94,9 +93,13 @@ export default {
       this.defaultPaymentMethod = val ? val.filter(method => method.default === 1)[0]: [];
     },
   },
-  mounted() {
+  async mounted() {
     this.subtitle = this.getBupayload.resolve_payment_message;
-    this.retrievePaymentMethods();
+    this.loading = true;
+    this.loading_text = "Loading...";
+    await this.retrievePaymentMethods();
+    this.loading = false;
+    this.loading_text = "Confirming your payment. This may takes a moment.";
     this.getDefaultpayMethod();
   },
   methods: {
@@ -105,6 +108,7 @@ export default {
       this.defaultPaymentMethod = this.getSavedPayMethods ? this.getSavedPayMethods.filter(method => method.default === 1)[0] : [];
       this.currency = this.getBupayload.currency;
       this.amount = this.getBupayload.amount;
+      this.defaultPaymentMethod ? this.checkAvailableOptions(this.defaultPaymentMethod) : this.$router.push({name: "AddPayment", params: { entry: 'entry'}});
     },
     async bulkretry() {
       this.startResponseTime = new Date(); 
@@ -115,12 +119,16 @@ export default {
 
       this.loading = true;
       const payload = {
-        bulk_reference_number: this.getBupayload.bulk_reference_number,
         user_id: this.getBupayload.user_id,
+        company_code: this.getBupayload.company_code,
+        entity: this.getBupayload.entity_id,
+        pay_detail_id: this.defaultPaymentMethod.pay_method_details,
+        payment_method: this.defaultPaymentMethod.pay_method_id,
+        references: this.getBupayload.references
       }
 
       const fullPayload = {
-        url: '/api/v1/bulk/retry',
+        url: '/api/v3/bulk/retry',
         params: payload,
       }
 
@@ -156,7 +164,7 @@ export default {
     },
 
     async submitRetry() {
-      if (this.getBupayload.bulk && this.getBupayload.bulk_reference_number) {
+      if (this.getBupayload.bulk) {
         this.bulkretry();
         return;
       }
@@ -175,20 +183,16 @@ export default {
 
       this.loading = true;
       const payload = {
-        country: this.getBupayload.country_code,
-        amount: this.getBupayload.amount,
-        cardno: this.defaultPaymentMethod.pay_method_details,
-        txref: this.getBupayload.txref,
-        userid: this.getBupayload.user_id,
-        currency: this.getBupayload.currency,
-        bulk: this.getBupayload.bulk,
-        entity: this.getBupayload.entity_id,
+        user_id: this.getBupayload.user_id,
         company_code: this.getBupayload.company_code,
-        bulkrefno: this.getBupayload.bulk_reference_number,
+        entity: this.getBupayload.entity_id,
+        pay_detail_id: this.defaultPaymentMethod.pay_method_details,
+        payment_method: this.defaultPaymentMethod.pay_method_id,
+        references: this.getBupayload.references
       }
 
       const fullPayload = {
-        url: '/api/v1/process',
+        url: '/api/v3/process/retry',
         params: payload,
       }
 

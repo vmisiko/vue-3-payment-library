@@ -63,6 +63,10 @@ const mixin = {
         this.$router.push({ name: 'ChoosePayment', params: { entry: 'entry'}});
         return;
       };
+      if (!defaultPaymentMethod) {
+        this.$router.push({name: "AddPayment", params: { entry: 'entry'}});
+        return;
+      }
     },
     getMobileOs() {
       let name = 'web'

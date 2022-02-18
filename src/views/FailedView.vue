@@ -134,10 +134,11 @@ export default {
         entity: this.getBupayload.entity_id,
         company_code: this.getBupayload.company_code,
         bulkrefno: this.getBupayload.bulk_reference_number,
+        paymethod: this.defaultPaymentMethod.pay_method_id,
       }
 
       const fullPayload = {
-        url: '/api/v1/process',
+        url: '/api/v3/process',
         params: payload,
       }
 
