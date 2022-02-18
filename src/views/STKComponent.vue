@@ -151,6 +151,14 @@ export default {
       const response = await this.$paymentAxiosPost(fullPayload);
       this.transaction_id = response.transaction_id;
       if (response.status) {
+        if (this.getBupayload.bulk) {
+          this.loading = false;
+          this.$router.push({
+            name: 'SuccessView',
+            duration: duration,
+          });
+          return;
+        }
         this.pollMpesa();
         return;
       }
