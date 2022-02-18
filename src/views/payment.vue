@@ -1,9 +1,9 @@
 <template>
   <div class="flex-center">
-    <NoOptionsModal v-if="!defaultPaymentMethod" />
+    <!-- <NoOptionsModal v-if="!defaultPaymentMethod" /> -->
 
-    <div v-else>
-      <Processing v-if="loading" :text="$t('please_wait')" />
+    <div>
+      <Processing v-if="loading" :text="loadingText" />
       <div v-else>
         <AdditionalCardFields 
           :additionalData="additionalData" 
@@ -85,6 +85,7 @@ export default {
       showAdditionalCardFields: false,
       additionalData: null,
       showErrorModal: false,
+      loadingText: this.$t('please_wait')
       
     }
   },
@@ -97,8 +98,12 @@ export default {
       this.checkAvailableOptions(this.defaultPaymentMethod);
     }
   },
-  mounted() {
-    this.retrievePaymentMethods();
+  async mounted() {
+    this.loading = true;
+    this.loadingText = 'Loading...';
+    await this.retrievePaymentMethods();
+    this.loading = false;
+    this.loadingText = this.$t('please_wait');
     this.getDefaultpayMethod();
   },
   methods: {
@@ -107,7 +112,7 @@ export default {
       this.defaultPaymentMethod = this.getSavedPayMethods ? this.getSavedPayMethods.filter(method => method.default === 1)[0] : [];
       this.currency = this.getBupayload.currency;
       this.amount = this.getBupayload.amount;
-      if (this.defaultPaymentMethod) {
+      if (!this.defaultPaymentMethod) {
         this.checkAvailableOptions(this.defaultPaymentMethod);
       }
     },
@@ -141,10 +146,11 @@ export default {
         bulk: this.getBupayload.bulk,
         entity: this.getBupayload.entity_id,
         company_code: this.getBupayload.company_code,
+        paymethod: this.defaultPaymentMethod.pay_method_id,
       }
 
       const fullPayload = {
-        url: '/api/v1/process',
+        url: '/api/v3/process',
         params: payload,
       }
 

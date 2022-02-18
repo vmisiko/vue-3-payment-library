@@ -1,8 +1,7 @@
 <template>
   <div class="flex-center">
-    <NoOptionsModal v-if="!defaultPaymentMethod && getSavedPayMethods && getSavedPayMethods.length === 0" />
 
-    <div class="card" v-else>
+    <div class="card">
       <TopInfo :icon="icon" :title="title"/>
 
       <span v-if="creditCards.length !== 0" class="mgt-2 text-overline">{{ $t('credit_card_payment') }}</span>

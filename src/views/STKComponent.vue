@@ -118,6 +118,12 @@ export default {
   methods: {
     ...mapMutations(['setErrorText']),
      async submit() {
+      const entrypoint = localStorage.getItem('entry')
+      if (entrypoint === 'resolve-payment-checkout') {
+        this.submitRetry()
+        return;
+      }
+
       this.loading = true;
       this.showTimer = true;
       this.promptInfo = true;
@@ -125,13 +131,13 @@ export default {
         country: this.getBupayload.country_code,
         amount: this.getBupayload.amount,
         txref: this.getBupayload.txref,
-        bulkrefno: this.getBupayload.bulk_reference_number,
         userid: this.getBupayload.user_id,
         currency: this.getBupayload.currency,
         bulk: this.getBupayload.bulk,
         entity: this.getBupayload.entity_id,
         firstname: "",
         lastname: "",
+        paymethod: 1,
         phonenumber: this.formattedPhone,
         company_code: this.getBupayload.company_code,
         bulkrefno: this.getBupayload.bulk_reference_number,
@@ -143,6 +149,70 @@ export default {
       }
 
       const response = await this.$paymentAxiosPost(fullPayload);
+      this.transaction_id = response.transaction_id;
+      if (response.status) {
+        this.pollMpesa();
+        return;
+      }
+      this.promptInfo = false,
+      this.showTimer = false;
+      this.loading = false;
+      this.showErrorModal = true;
+    },
+    async submitRetry() {
+      if (this.getBupayload.bulk) {
+        this.bulkretry();
+        return;
+      }
+
+      this.startResponseTime = new Date(); 
+
+      this.loading = true;
+      const payload = {
+        user_id: this.getBupayload.user_id,
+        company_code: this.getBupayload.company_code,
+        entity: this.getBupayload.entity_id,
+        pay_detail_id: this.formattedPhone,
+        payment_method: 1,
+        references: this.getBupayload.references
+      }
+
+      const fullPayload = {
+        url: '/api/v3/process/retry',
+        params: payload,
+      }
+
+      const response = await this.$paymentAxiosPost(fullPayload);
+
+      this.transaction_id = response.transaction_id;
+      if (response.status) {
+        this.pollMpesa();
+        return;
+      }
+      this.promptInfo = false;
+      this.showTimer = false;
+      this.loading = false;
+      this.showErrorModal = true;
+    },
+    async bulkretry() {
+      this.startResponseTime = new Date(); 
+      this.loading = true;
+      const payload = {
+        user_id: this.getBupayload.user_id,
+        company_code: this.getBupayload.company_code,
+        entity: this.getBupayload.entity_id,
+        pay_detail_id: this.formattedPhone,
+        payment_method: 1,
+        references: this.getBupayload.references
+      }
+
+      const fullPayload = {
+        url: '/api/v3/bulk/retry',
+        params: payload,
+      }
+
+      const response = await this.$paymentAxiosPost(fullPayload);    
+
       this.transaction_id = response.transaction_id;
       if (response.status) {
         this.pollMpesa();
