@@ -15,6 +15,7 @@ import CardDetailsPage from '../views/CardDetailsPage';
 import MpesaDetail from '../views/MpesaDetail';
 import ChoosePaymentCheckout from '../views/ChoosePaymentCheckout';
 import ResolvePayment from '../views/ResolvePayment';
+import HowitWorks from '../views/PayBybank/howitworks';
 
 const routes = [
   {
@@ -105,6 +106,11 @@ const routes = [
         path: '/mobile-details/:id',
         name: 'MpesaDetails',
         component: MpesaDetail,
+      },
+      {
+        path: '/bank/how-it-works',
+        name: 'HowitWorks',
+        component: HowitWorks,
       },
     ]
   },
