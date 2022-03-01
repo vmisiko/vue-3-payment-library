@@ -12,7 +12,7 @@
       }"
     >
       <IconView icon="loading" v-if="loading" />
-      <slot v-if="!loading"> {{ $t('submit') }} </slot>
+      <slot v-if="!loading"> {{ text ? text : $t('submit') }} </slot>
     </button>
   </div>
 </template>
@@ -20,7 +20,7 @@
 <script>
 export default {
   name: 'sendy-btn',
-  props: ['block', 'color', 'loading', 'type', 'disabled'],
+  props: ['block', 'color', 'loading', 'type', 'disabled', 'text'],
 }
 </script>
 

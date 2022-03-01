@@ -16,6 +16,7 @@ import MpesaDetail from '../views/MpesaDetail';
 import ChoosePaymentCheckout from '../views/ChoosePaymentCheckout';
 import ResolvePayment from '../views/ResolvePayment';
 import HowitWorks from '../views/PayBybank/howitworks';
+import TermsOfService from '../views/PayBybank/TermsOfService';
 
 const routes = [
   {
@@ -111,6 +112,11 @@ const routes = [
         path: '/bank/how-it-works',
         name: 'HowitWorks',
         component: HowitWorks,
+      },
+      {
+        path: '/bank/terms-of-service',
+        name: 'TermsOfService',
+        component: TermsOfService,
       },
     ]
   },

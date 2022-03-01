@@ -37,6 +37,8 @@
         :loading="loading"
         color='primary'
         class="mgt-13"
+        text = 'Setup Pay by Bank'
+        @click="$router.push('/bank/terms-of-service')"
       />
 
       <div class="mgt-6 text-center">
