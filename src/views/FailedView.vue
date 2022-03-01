@@ -22,7 +22,7 @@
           color='primary'
           @click="submitRetry"
         >
-          {{ $route.params.mpesa ? 'Retry' : 'Try Again' }}
+          Retry Payment
         </sendy-btn>
       </div>
 
