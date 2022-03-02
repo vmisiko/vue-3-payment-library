@@ -17,6 +17,7 @@ import ChoosePaymentCheckout from '../views/ChoosePaymentCheckout';
 import ResolvePayment from '../views/ResolvePayment';
 import HowitWorks from '../views/PayBybank/howitworks';
 import TermsOfService from '../views/PayBybank/TermsOfService';
+import AccountReadyView from '../views/PayBybank/AccountReadyView';
 
 const routes = [
   {
@@ -117,6 +118,11 @@ const routes = [
         path: '/bank/terms-of-service',
         name: 'TermsOfService',
         component: TermsOfService,
+      },
+      {
+        path: '/bank/account-ready',
+        name: 'AccountReadyView',
+        component: AccountReadyView,
       },
     ]
   },

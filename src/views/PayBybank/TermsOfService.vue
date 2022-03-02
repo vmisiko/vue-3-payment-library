@@ -1,7 +1,7 @@
 <template>
   <div class="flex-center">
-    
-    <div class="card">
+    <Processing @close="showProcessing=false" :count="count" title="Pay by Bank Setup" text="Assinging your unique account details..." v-if="showProcessing" />
+    <div class="card" v-else>
       <div class="">
         <span class="link" @click="$router.go(-1)"> Cancel </span>
 
@@ -26,10 +26,17 @@
 </template>
 
 <script>
+import Processing from '../../components/processing'
+
 export default {
   name: 'TermsOfService',
+  components: {
+    Processing,
+  },
   data() {
     return {
+      showProcessing: true,
+      count: true,
     }
   }
 }

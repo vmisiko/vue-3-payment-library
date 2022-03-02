@@ -1,5 +1,8 @@
 <template>
-  <div class="card-min">
+  <div class="card-min height-space">
+      <div class="text-center">
+        <span class="title-body1-bold"> {{title}} </span>
+      </div>
       <div class="flex-center">
         <div class="">
           <IconView icon="loading1" class="flex-center mgt-10" />
@@ -8,7 +11,7 @@
       <div class="text-center mgt-5" v-if="count">
         <span class="text-caption text-gray70"> {{ formatedCountdown }}</span>
       </div>
-      <div class="text-center mgt-15">
+      <div class="text-center mgt-5">
         <span class="normal-text">{{ text }}</span>
       </div>
 
@@ -21,7 +24,7 @@
 
   export default {
     name: 'Processing',
-    props: ['text', 'count'],
+    props: ['text', 'count', 'title'],
     data() {
       return {
         countdown: 300,
@@ -61,5 +64,9 @@
     left: 60px;
     top: 32px;
     background: rgb(240, 237, 237);
+  }
+
+  .height-space {
+    height: 500px;
   }
 </style>

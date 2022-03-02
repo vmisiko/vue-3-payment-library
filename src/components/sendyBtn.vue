@@ -9,6 +9,7 @@
       'primary-btn-block': block && color === 'primary',
       'midnightblue-btn-block': color === 'info',
       'error-btn-block': color === 'error',
+      'btn-outline-primary': outline,
       }"
     >
       <IconView icon="loading" v-if="loading" />
@@ -20,7 +21,7 @@
 <script>
 export default {
   name: 'sendy-btn',
-  props: ['block', 'color', 'loading', 'type', 'disabled', 'text'],
+  props: ['block', 'color', 'loading', 'type', 'disabled', 'text', 'outline'],
 }
 </script>
 
