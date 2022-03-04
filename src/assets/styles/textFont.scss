@@ -152,3 +152,261 @@
   color: #303133;
 }
 
+
+/* Desktop fonts
+Link - https://www.figma.com/file/7JRqeukuiodCx4ims2MR3O/?node-id=1%3A2
+*/
+
+/* Title 1 Group */
+.title-1-regular {
+  font-family: 'Nunito' 'Sans';
+  font-style: normal;
+  font-weight: normal;
+  font-size: 31px;
+  line-height: 36px;
+  letter-spacing: -0.01em;
+}
+
+.title-1-semibold {
+  font-family: Nunito Sans;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 31px;
+  line-height: 36px;
+  letter-spacing: -0.01em;
+}
+
+
+
+
+/* Title 2 Group */
+.title-2-regular {
+  font-family: Nunito Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 27px;
+  line-height: 28px;
+  letter-spacing: -0.01em;
+}
+
+.title-2-semibold {
+  font-family: 'Nunito' 'Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 27px;
+  line-height: 28px;
+  letter-spacing: -0.01em;
+}
+
+
+
+/* Subtitle 1 Group */
+.subtitle-1-regular{
+  font-family: Nunito Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 28px;
+  letter-spacing: -0.005em;
+}
+
+.subtitle-1-semibold{
+  font-family: Nunito Sans;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 28px;
+  letter-spacing: -0.005em;
+}
+
+
+
+
+/* Subtitle 2 Group */
+.subtitle-2-regular{
+  font-family: Nunito Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 22px;
+  line-height: 24px;
+  letter-spacing: -0.005em;
+}
+
+.subtitle-2-semibold{
+  font-family: Nunito Sans;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 24px;
+  letter-spacing: -0.005em;
+}
+
+
+
+
+/* Body 1 Group */
+.body-1-regular{
+  font-family: Nunito Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 24px;
+  letter-spacing: -0.003em;
+}
+
+.body-1-semibold{
+  font-family: Nunito Sans;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 24px;
+  letter-spacing: -0.003em;
+}
+
+.body-1-bold{
+  font-family: Nunito Sans;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 24px;
+  letter-spacing: -0.003em;
+}
+
+.body-1-link-underlined{
+  font-family: Nunito Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 24px;
+  letter-spacing: -0.003em;
+  text-decoration-line: underline;
+}
+
+
+
+
+/* Body 2 Group */
+.body-2-regular{
+  font-family: Nunito Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.body-2-semibold{
+  font-family: Nunito Sans;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.body-2-bold{
+  font-family: Nunito Sans;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.body-2-link-underlined{
+  font-family: Nunito Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 20px;
+  text-decoration-line: underline;
+}
+
+
+
+
+/* Caption 1 Group */
+.caption-1-regular{
+  font-family: Nunito Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: 0.005em;
+}
+
+.caption-1-semibold{
+  font-family: Nunito Sans;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: 0.005em;
+}
+
+.caption-1-bold{
+  font-family: Nunito Sans;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: 0.005em;
+}
+
+.caption-1-link-underlined{
+  font-family: Nunito Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: 0.005em;
+  text-decoration-line: underline;
+}
+
+
+
+
+/* Caption 2 Group */
+.caption-2-regular{
+  font-family: Nunito Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.01em;
+}
+
+.caption-2-semibold{
+  font-family: Nunito Sans;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.01em;
+}
+
+.caption-2-bold{
+  font-family: Nunito Sans;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.01em;
+}
+
+.caption-2-caps-bold{
+  font-family: Nunito Sans;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+.caption-2-link-underlined {
+  font-family: Nunito Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.01em;
+  text-decoration-line: underline;
+}
