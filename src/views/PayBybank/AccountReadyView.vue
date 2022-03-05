@@ -1,35 +1,42 @@
 <template>
 <div class="flex-center">
   <div class="card-mini-full">
-    <div class="row">
+    <div class="grid-container">
 
-      <div class="">
+      <div class="first-row pdr-4 pdt-22">
 
         <AvatarListView 
           icon="success"
           title="Pay by Bank is ready!"
           subtitle= "During checkout, we will show you the account details below to make payments."
+          class=""
         />
 
-        <div class="hr"></div>
 
       </div>
 
-      <div class="mgt-8">
-        <span class="text-subtitle-1"> Account Details</span>
+      <div class="mgt-8 pdl-6">
+        <span class="text-subtitle-1">Your account details</span>
 
         <AccountsDisplay
           v-model="account"
           :accounts="accounts"
-          class="mgt-6"
+          class="mgy-6"
         />
 
-        <div class="mgt-24"> 
-          <button @click="$router.push({name: 'ChoosePayment'})" class="btn-outline primary"> Return to Payment options </button>
-        </div>
       </div>
     </div>
 
+    <div class="direction-flex">
+      <span class="spacer"></span>
+      <div class="mgt-14"> 
+        <sendy-btn
+        color="primary"
+        text="Finishe Setup"
+        @click="$router.push({ name: 'ChoosePayment' })"
+        ></sendy-btn>
+      </div>
+    </div>
   </div>
 <div>
 </template>
@@ -70,50 +77,14 @@ export default {
 </script>
 
 <style scoped>
-.input-label {
-  font-family: 'Nunito' 'Sans';
-  font-style: normal;
-  font-weight: bold;
-  font-size: 12px;
-  line-height: 16px;
-  display: flex;
-  align-items: center;
-  letter-spacing: 0.005em;
-  color: #606266;
+.grid-container {
+  display: grid;
+  grid-template-columns: 50% 50%;
 }
 
-.select-input {
-  display: block;
-  height: 40px;
-  width: -webkit-fill-available;
-  color: #495057;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
+.first-row {
+  border-right: 1px solid #E2E7ED;
 }
 
-.bank-account {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 16px;
-  height: 100px;
-  background: rgba(211, 221, 246, 0.4);
-  border-radius: 8px;
-}
-
-.title-regular-2 {
-  font-family: 'Nunito' 'Sans';
-  font-style: normal;
-  font-weight: normal;
-  font-size: 25px;
-  line-height: 28px;
-  display: flex;
-  align-items: center;
-  letter-spacing: -0.01em;
-  color: #303133;
-}
 
 </style>
