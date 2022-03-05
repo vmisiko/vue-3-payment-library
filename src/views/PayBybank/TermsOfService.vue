@@ -3,23 +3,27 @@
     <Processing @close="showProcessing=false" :count="count" title="Pay by Bank Setup" text="Assinging your unique account details..." v-if="showProcessing" />
     <div class="card" v-else>
       <div class="">
-        <span class="link" @click="$router.go(-1)"> Cancel </span>
-
-        <div class="mgt-n6 text-center">
+        <div class="">
           <span class="title text-gray90">Terms of Service</span>
         </div>
       </div>
-      <div class="mgt-8">
-        <iframe width="100%" height="450" src="https://docs.google.com/document/d/e/2PACX-1vRPx-4L-5lSb1QZ0L3Amph5mtRGR3wxiVgfmahbZIOZZIhty2b6tdEqWJqHNoFSfg/pub?embedded=true"></iframe>
+      <div class="mgt-4 iframe-div">
+        <iframe frameBorder="0" width="100%" height="450" src="https://docs.google.com/document/d/e/2PACX-1vRPx-4L-5lSb1QZ0L3Amph5mtRGR3wxiVgfmahbZIOZZIhty2b6tdEqWJqHNoFSfg/pub?embedded=true"></iframe>
       </div>
 
-      <sendy-btn
-        :block="true" 
-        :loading="loading"
-        color='primary'
-        class="mgt-13"
-        text='Agree and Continue'
-      />
+       <div class="direction-flex mgt-13">
+        <div class="mgy-auto">
+          <span @click="$router.go(-1)" class="link"> cancel</span>
+        </div>
+
+        <div class="spacer"></div>
+        <sendy-btn
+          :loading="loading"
+          color='primary'
+          text = 'Agree and Continue'
+          @click="$router.push({name: 'AccountReadyView'})"
+        />
+      </div>
 
     </div>
   </div>
@@ -35,10 +39,10 @@ export default {
   },
   data() {
     return {
-      showProcessing: true,
+      showProcessing: false,
       count: true,
     }
-  }
+  },
 }
 </script>
 
@@ -52,5 +56,19 @@ export default {
   text-align: center;
   letter-spacing: -0.003em;
   color: #303133;
+}
+
+.iframe-div {
+  display: block;
+  overflow: hidden;
+  background: #F7F9FC;
+  height: 450px;
+  border-radius: 10px;
+  transform: translateZ(0px);
+  /* border: 3px solid #eee; */
+}
+
+iframe .c27 {
+  background-color: #F7F9FC !important;
 }
 </style>
