@@ -1,45 +1,49 @@
 <template>
 <div class="flex-center">
-  <div class="card-min">
-    <IconView icon="success" width="64px"  height="64px" />
+  <div class="card-mini-full">
+    <div class="row">
 
-    <div class="mgt-6">
-      <span class="title3-semibold">Pay by Bank is ready!</span>
-      <div class="mgt-2">
-        <span class="text-body-2 text-gray90">During checkout, we will show you the account details below to make payments.</span>
+      <div class="">
+
+        <AvatarListView 
+          icon="success"
+          title="Pay by Bank is ready!"
+          subtitle= "During checkout, we will show you the account details below to make payments."
+        />
+
+        <div class="hr"></div>
+
       </div>
-    </div>
 
-    <hr class="mgt-6">
+      <div class="mgt-8">
+        <span class="text-subtitle-1"> Account Details</span>
 
-    <div class="mgt-8">
-      <span class="text-subtitle-1"> Account Details</span>
-
-      <div class="mgt-4">
-        <span class="input-label">Available Banks</span>
-        <div class="mgt-1">
-          <select
-            type="text"
-            v-model="account"
-            class="select-input"
-            placeholder="Select payment methods to use"
-          > 
-            <template v-for="(obj, index) in accounts" >
-              <option :key="index"  :value="obj.account"> {{ obj.bank }} </option>
-            </template>
-          </select>
+        <div class="mgt-4">
+          <span class="input-label">Available Banks</span>
+          <div class="mgt-1">
+            <select
+              type="text"
+              v-model="account"
+              class="select-input"
+              placeholder="Select payment methods to use"
+            > 
+              <template v-for="(obj, index) in accounts" >
+                <option :key="index"  :value="obj.account"> {{ obj.bank }} </option>
+              </template>
+            </select>
+          </div>
         </div>
-      </div>
 
-      <div class="bank-account mgt-6" v-if="selectedAccount">
-        <span class="text-body-1"> {{ selectedAccount.bank }} </span>
-        <div class="mgt-3">
-          <span class="title-regular-2">{{ selectedAccount.account }}</span>
+        <div class="bank-account mgt-6" v-if="selectedAccount">
+          <span class="text-body-1"> {{ selectedAccount.bank }} </span>
+          <div class="mgt-3">
+            <span class="title-regular-2">{{ selectedAccount.account }}</span>
+          </div>
         </div>
-      </div>
 
-      <div class="mgt-24"> 
-        <button @click="$router.push({name: 'ChoosePayment'})" class="btn-outline primary"> Return to Payment options </button>
+        <div class="mgt-24"> 
+          <button @click="$router.push({name: 'ChoosePayment'})" class="btn-outline primary"> Return to Payment options </button>
+        </div>
       </div>
     </div>
 
@@ -48,8 +52,13 @@
 </template>
 
 <script>
+import AvatarListView from './components/AvatarListView';
+
 export default {
   name: 'AccountReadyView',
+  components: {
+    AvatarListView
+  },
   data() {
     return {
       account: 3343545454545,
@@ -127,4 +136,5 @@ export default {
   letter-spacing: -0.01em;
   color: #303133;
 }
+
 </style>
