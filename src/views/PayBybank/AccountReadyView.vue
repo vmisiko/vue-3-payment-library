@@ -18,28 +18,11 @@
       <div class="mgt-8">
         <span class="text-subtitle-1"> Account Details</span>
 
-        <div class="mgt-4">
-          <span class="input-label">Available Banks</span>
-          <div class="mgt-1">
-            <select
-              type="text"
-              v-model="account"
-              class="select-input"
-              placeholder="Select payment methods to use"
-            > 
-              <template v-for="(obj, index) in accounts" >
-                <option :key="index"  :value="obj.account"> {{ obj.bank }} </option>
-              </template>
-            </select>
-          </div>
-        </div>
-
-        <div class="bank-account mgt-6" v-if="selectedAccount">
-          <span class="text-body-1"> {{ selectedAccount.bank }} </span>
-          <div class="mgt-3">
-            <span class="title-regular-2">{{ selectedAccount.account }}</span>
-          </div>
-        </div>
+        <AccountsDisplay
+          v-model="account"
+          :accounts="accounts"
+          class="mgt-6"
+        />
 
         <div class="mgt-24"> 
           <button @click="$router.push({name: 'ChoosePayment'})" class="btn-outline primary"> Return to Payment options </button>
@@ -53,11 +36,13 @@
 
 <script>
 import AvatarListView from './components/AvatarListView';
+import AccountsDisplay from './components/AccountDisplay';
 
 export default {
   name: 'AccountReadyView',
   components: {
-    AvatarListView
+    AvatarListView,
+    AccountsDisplay
   },
   data() {
     return {
@@ -79,12 +64,6 @@ export default {
           primary: false,
         }
       ]
-    }
-  },
-  computed: {
-    selectedAccount() {
-      const bank = this.accounts.filter(el => el.account === this.account);
-      return bank[0];
     }
   },
 }

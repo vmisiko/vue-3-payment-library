@@ -19,6 +19,7 @@ import HowitWorks from '../views/PayBybank/howitworks';
 import TermsOfService from '../views/PayBybank/TermsOfService';
 import AccountReadyView from '../views/PayBybank/AccountReadyView';
 import FailedAccountSetup from '../views/PayBybank/FailedAccountSetup';
+import PayByBank from '../views/PayBybank';
 
 const routes = [
   {
@@ -129,6 +130,11 @@ const routes = [
         path: '/bank/failed-setup',
         name: 'FailedAccountSetup',
         component: FailedAccountSetup,
+      },
+      {
+        path: '/bank/pay',
+        name: 'PayByBank',
+        component: PayByBank,
       },
     ]
   },

@@ -6,7 +6,7 @@
         title="Unable to setup Pay by Bank"
       >
         <template v-slot:list-subtitle>
-          <span class="text-error"> Error message from OnePipe</span>
+          <span class="text-error"> {{ getErrorText }}</span>
         </template>
       </AvatarListView>
 
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import AvatarListView from './components/AvatarListView';
  
 export default {
@@ -38,6 +39,9 @@ export default {
     return {
       loading: false,
     }
+  },
+  computed: {
+    ...mapGetters(['getErrorText']),
   }
 }
 </script>
