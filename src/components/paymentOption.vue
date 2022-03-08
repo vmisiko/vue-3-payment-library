@@ -34,6 +34,9 @@ export default {
         case 2:
           result = this.$t('credit_card_payment_small');
           break;
+        case 20:
+          result = "Pay by Bank";
+          break;
         default:
           break;
       }
@@ -58,18 +61,24 @@ export default {
           });
           this.$router.push('/add-card')
           break;
+        case 20: 
+          window.analytics.track('Add Pay by Bank', {
+            ...this.commonTrackPayload(),
+            card_network: null,
+          });
+          this.$router.push({name: 'HowitWorks'})
+          break;
         default:
           this.$router.push('/add-card')
           break;
       }
     },
     async submit() {
-      this.loading = true;
-      const payMethod = this.getPaymentMethods.find(element => element.name === 'M-Pesa');
+      this.$emit('loading', true);
       
       const payload = {
         user_id : this.getBupayload.user_id,
-        pay_method_id : payMethod ? payMethod.payment_method_id : 1,
+        pay_method_id : this.paymentMethod.payment_method_id,
       };
 
       const fullPayload = {
@@ -78,9 +87,9 @@ export default {
       };
 
       const response = await this.$paymentAxiosPost(fullPayload);
-      this.loading = false;      
+      this.$emit('loading', false); 
       response.status
-        ? this.$paymentNotification( {text: this.$t('mpesa_added') })
+        ? this.$paymentNotification( {text: this.$('mpesa_added')})
         : this.$paymentNotification( {text: this.$t('mpesa_already_added'),  type: "error"});
       const entry = localStorage.getItem('entry')
       entry === "resolve-payment-checkout" ? this.$router.push({ name: 'ChoosePaymentCheckout' }) : this.$router.push({ name: 'ChoosePayment' });
