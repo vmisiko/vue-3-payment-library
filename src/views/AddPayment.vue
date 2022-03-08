@@ -1,7 +1,7 @@
 <template>
   <div class="flex-center">
-
-    <div class="card">
+    <Processing v-if="showProcessing" text="Please wait ..." />
+    <div class="card" v-else>
       <TopInfo :icon="icon" :title="title"> 
         <template v-slot:subtitle>
           <span class="body-2-regular text-gray70"> Click below to add a payment option </span>
@@ -10,8 +10,8 @@
   
       <div class="mgt-10">
         <div class="" v-for="(method, index) in getPaymentMethods" :key="index">
-          <PaymentOption :paymentMethod="method" />
-          <hr v-if="index !== paymentMethods.length-1" class="mgt-4 mgb-5" />
+          <PaymentOption :paymentMethod="method" @loading="handleLoading" />
+          <hr v-if="index !== getPaymentMethods.length-1" class="mgt-4 mgb-5" />
         </div> 
       </div>
     
@@ -24,30 +24,21 @@ import { mapGetters } from 'vuex';
 import TopInfo from '../components/topInfo';
 import PaymentOption from '../components/paymentOption';
 import paymentGenMxn from '../mixins/paymentGenMxn';
+import Processing from '../components/processing';
 
 export default {
   name: 'AddPayment',
   components: {
     TopInfo,
     PaymentOption,
+    Processing,
   },
   mixins: [paymentGenMxn],
   data() {
     return {
       icon: 'back',
       title: this.$t('add_payment_option'),
-      paymentMethods:[
-        {
-          id: 1,
-          icon: 'credit',
-          name: this.$t('credit_card_payment_small'),
-        },
-        {
-          id: 2,
-          icon: 'mobile',
-          name: 'M-Pesa',
-        },
-      ]
+      showProcessing: false,
     }
   },
   computed: {
@@ -56,5 +47,10 @@ export default {
   mounted() {
     this.retrievePaymentMethods();
   },
+  methods: {
+    handleLoading(val) {
+      this.showProcessing = val;
+    }
+  }
 }
 </script>
