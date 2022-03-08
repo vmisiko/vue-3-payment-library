@@ -2,9 +2,13 @@
   <div class="flex-center">
 
     <div class="card">
-      <TopInfo :icon="icon" :title="title"/>
+      <TopInfo :icon="icon" :title="title"> 
+        <template v-slot:subtitle>
+          <span class="body-2-regular text-gray70"> Click below to add a payment option </span>
+        </template>
+      </TopInfo>
   
-      <div class="mgt-6">
+      <div class="mgt-10">
         <div class="" v-for="(method, index) in getPaymentMethods" :key="index">
           <PaymentOption :paymentMethod="method" />
           <hr v-if="index !== paymentMethods.length-1" class="mgt-4 mgb-5" />
