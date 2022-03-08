@@ -32,8 +32,8 @@
       <div class="mgt-14"> 
         <sendy-btn
         color="primary"
-        text="Finishe Setup"
-        @click="$router.push({ name: 'ChoosePayment' })"
+        text="Finish Setup"
+        @click="finish"
         ></sendy-btn>
       </div>
     </div>
@@ -73,6 +73,12 @@ export default {
       ]
     }
   },
+  methods: {
+    finish() {
+      this.$paymentNotification({text: 'Pay by bank added and selected for payment.'});
+      this.$router.push({ name: 'ChoosePayment' })
+    }
+  }
 }
 </script>
 

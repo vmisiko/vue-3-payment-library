@@ -21,7 +21,7 @@
           :loading="loading"
           color='primary'
           text = 'Agree and Continue'
-          @click="$router.push({name: 'AccountReadyView'})"
+          @click="handleAccount"
         />
       </div>
 
@@ -43,6 +43,18 @@ export default {
       count: true,
     }
   },
+  methods: {
+    handleAccount() {
+      this.loading = true;
+      this.showProcessing = true;
+      this.count = true;
+      setTimeout(() => {
+        this.loading = false;
+        this.showProcessing = false;
+        this.$router.push({ name: 'AccountReadyView'});
+      }, 2000);
+    }
+  }
 }
 </script>
 
