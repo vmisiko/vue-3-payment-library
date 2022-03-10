@@ -44,9 +44,12 @@
 <script>
 import AvatarListView from './components/AvatarListView';
 import AccountsDisplay from './components/AccountDisplay';
+import { mapGetters } from 'vuex';
+import paymentGenMxn from '../../mixins/paymentGenMxn';
 
 export default {
   name: 'AccountReadyView',
+  mixins: [paymentGenMxn],
   components: {
     AvatarListView,
     AccountsDisplay
@@ -56,28 +59,51 @@ export default {
       account: 3343545454545,
       accounts: [
         {
-          account: 3343545454545,
-          bank: 'SunTrust',
-          primary: true,
+            "account_number": "8886924200",
+            "bank_name": "SunTrust",
+            "is_primary": true,
+            "primary": true
         },
         {
-          account: 33435454345545,
-          bank: 'Equity',
-          primary: false,
+            "account_number": "1009551071",
+            "bank_name": "VBank",
+            "is_primary": false,
+            "primary": false
         },
         {
-          account: 33435454345535,
-          bank: 'Polaris',
-          primary: false,
+            "account_number": "9019741157",
+            "bank_name": "Polaris Bank Limited",
+            "is_primary": false,
+            "primary": false
+        },
+        {
+            "account_number": "5500635127",
+            "bank_name": "SUPPORT MFB",
+            "is_primary": false,
+            "primary": false
         }
-      ]
+      ],
     }
+  },
+  computed: {
+    ...mapGetters(['getBupayload'])
+  },
+  watch: {
+    getVirtualAccounts(val) {
+      this.accounts = val;
+    },
+    getSelectedVirtualAccount(val) {
+      this.account = account;
+    }
+  },
+  mounted() {
+    this.getAccounts();
   },
   methods: {
     finish() {
       this.$paymentNotification({text: 'Pay by bank added and selected for payment.'});
       this.$router.push({ name: 'ChoosePayment' })
-    }
+    },
   }
 }
 </script>

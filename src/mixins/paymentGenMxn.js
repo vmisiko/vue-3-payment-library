@@ -8,7 +8,13 @@ const mixin = {
     }
   },
   computed: {
-    ...mapGetters(['getPaymentMethods', 'getBupayload', 'getSavedPayMethods']),
+    ...mapGetters([
+      'getPaymentMethods', 
+      'getBupayload', 
+      'getSavedPayMethods',
+      'getVirtualAccounts',
+      'getSelectedVirtualAccount'
+    ]),
     paymentTimezone() {
       const localtz = moment.tz.guess();
       return localtz;
@@ -21,7 +27,12 @@ const mixin = {
     this.startTime = new Date()
   },
   methods: {
-    ...mapMutations(['setPaymentMethods', 'setSavedPayMethods']),
+    ...mapMutations([
+      'setPaymentMethods',
+      'setSavedPayMethods', 
+      'setVirtualAccounts',
+      'setSelectedVirtualAccount',
+    ]),
     commonTrackPayload() {
       const date = new Date();
       const finishTime = date - this.startTime;
@@ -74,6 +85,21 @@ const mixin = {
         name = "iOS";
       }
       return name;
+    },
+    async getAccounts() {
+      const entityId = this.getBupayload.entity_id;
+      const userId = this.getBupayload.user_id;
+      const fullPayload = {
+        url: `onepipe/accounts/${entityId}/${userId}`
+      }
+
+      const response = await this.$paymentAxiosGet(fullPayload);
+      console.log(response);
+      if (response.status) {
+        this.setVirtualAccounts(response.accounts)
+        const account = response.accounts.filter(el => el.is_primary === true);
+        this.setSelectedVirtualAccount(account[0].account_number);
+      }
     }
     
   }

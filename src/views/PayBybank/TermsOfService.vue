@@ -21,7 +21,7 @@
           :loading="loading"
           color='primary'
           text = 'Agree and Continue'
-          @click="handleAccount"
+          @click="openAccount"
         />
       </div>
 
@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex';
 import Processing from '../../components/processing'
 
 export default {
@@ -43,17 +44,42 @@ export default {
       count: true,
     }
   },
+  computed: {
+    ...mapGetters(['getBupayload']),
+  },
   methods: {
-    handleAccount() {
+    ...mapMutations('setErrorText'),
+    async openAccount() {
       this.loading = true;
       this.showProcessing = true;
       this.count = true;
-      setTimeout(() => {
-        this.loading = false;
-        this.showProcessing = false;
+
+      const payload = {
+        user_id: this.getBupayload.user_id,
+        first_name: this.getBupayload.first_name,
+        surname: this.getBupayload.last_name,
+        email: this.getBupayload.email,
+        mobile_number: this.getBupayload.phonenumber,
+        entity: this.getBupayload.entity_id,
+        country_code: this.getBupayload.currency,
+      }
+
+      const fullPayload = {
+        url: '/api/v3/onepipe/open_account',
+        params: payload ,
+      }
+
+      const response = await this.$paymentAxiosPost(fullPayload);
+      console.log(response);
+      this.loading = false;
+      this.showProcessing = false;
+      if (response.status) {
         this.$router.push({ name: 'AccountReadyView'});
-      }, 2000);
-    }
+        return;
+      }
+      this.$router.push({ name: 'FailedAccountSetup'});
+      this.setErrorText(response.message);
+    },
   }
 }
 </script>

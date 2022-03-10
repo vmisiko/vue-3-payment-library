@@ -9,6 +9,8 @@ const store = {
     bupayload: localStorage.buPayload ? JSON.parse(localStorage.buPayload) : null,
     errorText: null,
     twoFACompleted: false,
+    virtualAccounts: [],
+    selectedAccount: null,
   },
   mutations: {
     setPaymentMethods(state, val) {
@@ -25,6 +27,12 @@ const store = {
     },
     setTwoFACompleted(state, val) {
       state.twoFACompleted = val;
+    },
+    setVirtualAccounts(state, val) {
+      state.virtualAccounts = val
+    } ,
+    setSelectedVirtualAccount(state, val) {
+      state.selectedAccount = val
     }
     
   },
@@ -34,7 +42,8 @@ const store = {
     getBupayload: (state) => state.bupayload,
     getErrorText: (state) => state.errorText,
     getTwoFACompleted: (state) => state.twoFACompleted,
-    
+    getVirtualAccounts: (state) => state.virtualAccounts,
+    getSelectedVirtualAccount: (state) => state.selectedAccount,
   },
   actions: {
   },

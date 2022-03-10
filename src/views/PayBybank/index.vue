@@ -44,9 +44,11 @@
 import { mapGetters, mapMutations } from 'vuex';
 import AccountsDisplay from './components/AccountDisplay';
 import Processing from '../../components/processing'
+import paymentGenMxn from '../../mixins/paymentGenMxn';
 
 export default {
   name: 'PayByBank',
+  mixins: [paymentGenMxn],
   components: {
     AccountsDisplay,
     Processing,
@@ -80,9 +82,15 @@ export default {
     ...mapGetters(['getBupayload']),
   },
   watch: {
-    account(e) {
-      console.log(e);
+    getVirtualAccounts(val) {
+      this.accounts = val;
     },
+    getSelectedVirtualAccount(val) {
+      this.account = account;
+    }
+  },
+  mounted() {
+    this.getAccounts();
   },
   methods: {
     ...mapMutations(['setErrorText']),
@@ -94,7 +102,7 @@ export default {
         this.loading = false;
         this.showProcessing = false;
         this.setErrorText("{Error message from OnePipe}");
-        this.$router.push({ name: 'FailedAccountSetup'});
+        this.$router.push({ name: 'FailedView'});
       }, 2000);
     }
   }
