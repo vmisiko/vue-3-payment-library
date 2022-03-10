@@ -11,7 +11,7 @@
         <div class="direction-flex mgt-2">
           <span class="body-2-regular text-gray70">Amount to transfer</span>
           <span class="spacer"></span>
-          <span class="body-1-semibold text-gray90"> {{ getBupayload.currency }} {{getBupayload.amount }}</span>
+          <span class="body-1-semibold text-gray90"> {{ getBupayload.currency }} {{ $formatCurrency(topupAmount) }}</span>
         </div>
       </div>
 
@@ -75,11 +75,16 @@ export default {
           bank: 'Polaris',
           primary: false,
         }
-      ]
+      ],
+      balance: 0,
     }
   },
   computed: {
     ...mapGetters(['getBupayload']),
+    topupAmount() {
+      const amount = this.getBupayload.amount - this.balance
+      return amount;
+    }
   },
   watch: {
     getVirtualAccounts(val) {
@@ -94,6 +99,16 @@ export default {
   },
   methods: {
     ...mapMutations(['setErrorText']),
+    async getBalance() {
+      const entityId = this.getBupayload.entity_id;
+      const userId = this.getBupayload.user_id;
+      const fullPayload = {
+        url: `onepipe/accounts/${entityId}/${userId}`
+      }
+
+      const response = await this.$paymentAxiosGet(fullPayload);
+      this.balance = response.balance;
+    },
     confirm() {
       this.loading = true;
       this.showProcessing = true;
