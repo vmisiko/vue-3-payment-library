@@ -48,7 +48,11 @@ export default {
     ...mapGetters(['getBupayload']),
   },
   methods: {
-    ...mapMutations('setErrorText'),
+    ...mapMutations([
+      'setErrorText',
+      'setVirtualAccounts',
+      'setSelectedVirtualAccount',
+    ]),
     async openAccount() {
       this.loading = true;
       this.showProcessing = true;
@@ -74,6 +78,9 @@ export default {
       this.loading = false;
       this.showProcessing = false;
       if (response.status) {
+        this.setVirtualAccounts(response.accounts);
+        const account = response.accounts.filter(el => el.is_primary === true);
+        this.setSelectedVirtualAccount(account[0].account_number);
         this.$router.push({ name: 'AccountReadyView'});
         return;
       }

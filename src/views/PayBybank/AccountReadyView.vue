@@ -20,7 +20,7 @@
 
         <AccountsDisplay
           v-model="account"
-          :accounts="accounts"
+          :accounts="getVirtualAccounts"
           class="mgy-6"
         />
 
@@ -57,43 +57,14 @@ export default {
   data() {
     return {
       account: 3343545454545,
-      accounts: [
-        {
-            "account_number": "8886924200",
-            "bank_name": "SunTrust",
-            "is_primary": true,
-            "primary": true
-        },
-        {
-            "account_number": "1009551071",
-            "bank_name": "VBank",
-            "is_primary": false,
-            "primary": false
-        },
-        {
-            "account_number": "9019741157",
-            "bank_name": "Polaris Bank Limited",
-            "is_primary": false,
-            "primary": false
-        },
-        {
-            "account_number": "5500635127",
-            "bank_name": "SUPPORT MFB",
-            "is_primary": false,
-            "primary": false
-        }
-      ],
     }
   },
   computed: {
     ...mapGetters(['getBupayload'])
   },
   watch: {
-    getVirtualAccounts(val) {
-      this.accounts = val;
-    },
     getSelectedVirtualAccount(val) {
-      this.account = account;
+      this.account = val;
     }
   },
   mounted() {

@@ -23,7 +23,7 @@
    
       <AccountsDisplay
         v-model="account"
-        :accounts="accounts"
+        :accounts="getVirtualAccounts"
         class="mgt-6"
       />
 
@@ -58,24 +58,7 @@ export default {
       loading: false,
       showProcessing: false,
       count: false,
-      account: 3343545454545,
-      accounts: [
-        {
-          account: 3343545454545,
-          bank: 'SunTrust',
-          primary: true,
-        },
-        {
-          account: 33435454345545,
-          bank: 'Equity',
-          primary: false,
-        },
-        {
-          account: 33435454345535,
-          bank: 'Polaris',
-          primary: false,
-        }
-      ],
+      account: '',
       balance: 0,
     }
   },
@@ -87,11 +70,8 @@ export default {
     }
   },
   watch: {
-    getVirtualAccounts(val) {
-      this.accounts = val;
-    },
     getSelectedVirtualAccount(val) {
-      this.account = account;
+      this.account = val;
     }
   },
   mounted() {
@@ -99,7 +79,9 @@ export default {
     this.getBalance();
   },
   methods: {
-    ...mapMutations(['setErrorText']),
+    ...mapMutations([
+      'setErrorText',
+    ]),
     async getBalance() {
       const payload = {
         userId: this.getBupayload.user_id,
@@ -111,7 +93,6 @@ export default {
       }
 
       const response = await this.$paymentAxiosPost(fullPayload);
-      console.log(response);
       this.balance = response.balance;
     },
     confirm() {
