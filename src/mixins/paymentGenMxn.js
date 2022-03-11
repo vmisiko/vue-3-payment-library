@@ -87,10 +87,15 @@ const mixin = {
       return name;
     },
     async getAccounts() {
-      const entityId = this.getBupayload.entity_id;
-      const userId = this.getBupayload.user_id;
+
+      const payload = {
+        entityId: this.getBupayload.entity_id,
+        userId: this.getBupayload.user_id,
+      }
+
       const fullPayload = {
-        url: `onepipe/accounts/${entityId}/${userId}`
+        url: `/api/v3/onepipe/accounts/`,
+        params: payload
       }
 
       const response = await this.$paymentAxiosGet(fullPayload);
@@ -101,7 +106,7 @@ const mixin = {
         this.setSelectedVirtualAccount(account[0].account_number);
       }
     }
-    
+
   }
 
 }

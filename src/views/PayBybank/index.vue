@@ -96,17 +96,22 @@ export default {
   },
   mounted() {
     this.getAccounts();
+    this.getBalance();
   },
   methods: {
     ...mapMutations(['setErrorText']),
     async getBalance() {
-      const entityId = this.getBupayload.entity_id;
-      const userId = this.getBupayload.user_id;
-      const fullPayload = {
-        url: `onepipe/accounts/${entityId}/${userId}`
+      const payload = {
+        userId: this.getBupayload.user_id,
       }
 
-      const response = await this.$paymentAxiosGet(fullPayload);
+      const fullPayload = {
+        url: `/api/v3/onepipe/balance`,
+        params: payload
+      }
+
+      const response = await this.$paymentAxiosPost(fullPayload);
+      console.log(response);
       this.balance = response.balance;
     },
     confirm() {
