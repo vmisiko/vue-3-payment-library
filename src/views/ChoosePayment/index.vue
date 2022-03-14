@@ -18,7 +18,17 @@
         </div>
       </div> 
 
+      <div class="mgt-8" v-if="virtualAccounts.length !== 0">
+        <span class="text-overline"> BANK TRANSFER</span>
+        <div>
+          <div v-for="(vaccount, index) in virtualAccounts" :key="index" class="mgt-4 option-border text-caption-1 pda-3 " :class="{'selected-border': picked === vaccount.pay_detail_id, 'disabled': vaccount.daily_limit && getBupayload.amount > vaccount.daily_limit }">
+            <ChooseOption :paymentOption="vaccount" v-model="picked" @change="update" />
+          </div>
+        </div> 
+      </div>
+
       <hr class="mgt-5" />
+
       <span class="link mgt-5" @click="addPaymentOption"> + {{ $t('add_payment_option') }}</span>
 
       <div class="mgt-4 text-right">
@@ -68,6 +78,10 @@ export default {
     },
     savedMobile() {
       const result = this.getSavedPayMethods ? this.getSavedPayMethods.filter(element => element.pay_method_id === 1) : [];
+      return result;
+    },
+    virtualAccounts() {
+      const result = this.getSavedPayMethods ? this.getSavedPayMethods.filter(element => element.pay_method_id === 20) : [];
       return result;
     }
   },

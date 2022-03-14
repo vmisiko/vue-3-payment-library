@@ -10,9 +10,20 @@
         <span class="mgl-2">{{ paymentOption.psp }}</span>
         <span class="gray80-text mgl-2"> {{$formatLastFour(paymentOption.pay_method_details) }}</span>  
       </div>
+
+      <div v-if="paymentOption.pay_method_id === 20" class="direction-flex">
+        <IconView icon="pay-bank" class="mgt-1" />
+        <div class="mgl-2 mgy-auto">
+          <span>  Pay by Bank</span>
+          <div class="caption-2-semibold text-gray70">
+            <span> Available Balance {{ getBupayload.currency }} {{ balance }}</span>
+          </div>
+        </div>
+        
+      </div>
       
       <span class="spacer"></span> 
-      <div>
+      <div :class="{'mgt-2': paymentOption.pay_method_id === 20}">
         <input class="float-right" name="paymentoption" type="radio" :value="paymentOption.pay_detail_id" :disabled="paymentOption.daily_limit && getBupayload.amount > paymentOption.daily_limit" v-model="picked" v-on="inputListeners">
       </div>
     </div> 
@@ -32,6 +43,7 @@ export default {
   data() {
     return {
       picked: this.value,
+      balance: 0,
     }
   },
   computed: {
@@ -48,5 +60,27 @@ export default {
       )
     },
   },
+  mounted() {
+    if (this.paymentOption.pay_method_id === 20) {
+      this.getBalance();
+    }
+  },
+  methods: {
+    async getBalance() {
+      this.loading = true;
+      const payload = {
+        userId: this.getBupayload.user_id,
+      }
+
+      const fullPayload = {
+        url: `/api/v3/onepipe/balance`,
+        params: payload
+      }
+
+      const response = await this.$paymentAxiosPost(fullPayload);
+      this.loading = false;
+      this.balance = response.balance;
+    },
+  }
 }
 </script>
