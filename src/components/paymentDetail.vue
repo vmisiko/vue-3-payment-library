@@ -18,7 +18,11 @@
         <div class="direction-flex float-right">  
           <IconView v-if="paymentMethod.pay_method_id === 1" icon="mpesa" width="34" height="24" />
           <IconView v-if="paymentMethod.pay_method_id === 2" :icon="$cardIconValidator(paymentMethod.psp.toLowerCase()) ? paymentMethod.psp.toLowerCase() : 'card'" width="34" height="24" />
-          <span class="mgl-2 text-caption-1 "> {{ paymentMethod.pay_method_id === 1 ? paymentMethod.pay_method_name : formatLastFour(paymentMethod.pay_method_details)}}</span>
+          <IconView v-if="paymentMethod.pay_method_id === 20" icon="pay-bank" width="34" height="24" />
+          <span class="mgl-2 text-caption-1 " v-if="paymentMethod.pay_method_id === 1"> {{ paymentMethod.pay_method_name }}</span>
+          <span class="mgl-2 text-caption-1 " v-if="paymentMethod.pay_method_id === 2"> {{ formatLastFour(paymentMethod.pay_method_details) }} </span>
+          <span class="mgl-2 text-caption-1 " v-if="paymentMethod.pay_method_id === 20"> Pay by Bank </span>
+
         </div>
       </div>
 

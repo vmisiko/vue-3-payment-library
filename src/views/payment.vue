@@ -135,6 +135,11 @@ export default {
         return;
       }
 
+      if (this.defaultPaymentMethod.pay_method_id === 20) {
+        this.$router.push({name: 'PayByBank'});
+        return;
+      }
+
       this.loading = true;
       const payload = {
         country: this.getBupayload.country_code,

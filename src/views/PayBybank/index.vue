@@ -1,6 +1,6 @@
 <template>
   <div class="flex-center">
-    <Processing @close="showProcessing=false" :count="count" title="Confirming your transfer" text="" v-if="showProcessing" />
+    <Processing @close="showProcessing=false" :count="count" :title="title" :text="processingText" v-if="showProcessing" />
     <div class="card" v-else>
       <div class="">
         <IconView icon="back" />
@@ -57,6 +57,8 @@ export default {
     return {
       loading: false,
       showProcessing: false,
+      title: 'Confirming your transfer',
+      processingText: '',
       count: false,
       account: '',
       balance: 0,
@@ -74,9 +76,15 @@ export default {
       this.account = val;
     }
   },
-  mounted() {
-    this.getAccounts();
-    this.getBalance();
+  async mounted() {
+    this.showProcessing = true;
+    this.title = "";
+    this.processingText = "Laoding ..."
+    await this.getAccounts();
+    await this.getBalance();
+    this.showProcessing = false;
+    this.title = "Confirming your transfer";
+    this.processingText = ""
   },
   methods: {
     ...mapMutations([
