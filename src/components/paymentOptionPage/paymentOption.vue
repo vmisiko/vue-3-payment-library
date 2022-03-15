@@ -1,23 +1,25 @@
 <template>
  <div>
-  <div class="text-caption-1 direction-flex pda-3" v-if="payMethod.pay_method_id === 2 " @click="handleSelect">
-    <IconView :icon="$cardIconValidator(payMethod.psp.toLowerCase()) ? payMethod.psp.toLowerCase() : 'card' " />
-    <span class="mgl-2">{{ payMethod.psp }}</span>
-    <span class="gray80-text mgl-2"> {{$formatLastFour(payMethod.pay_method_details) }}</span>   
-     <span class="spacer"></span>   
+  <div class="text-caption-1 direction-flex pda-3" @click="handleSelect">
+    <div class="direction-flex" v-if="payMethod.pay_method_id === 2 " >
+      <IconView :icon="$cardIconValidator(payMethod.psp.toLowerCase()) ? payMethod.psp.toLowerCase() : 'card' " />
+      <span class="mgl-2">{{ payMethod.psp }}</span>
+      <span class="gray80-text mgl-2"> {{$formatLastFour(payMethod.pay_method_details) }}</span>   
+    </div>
+    <div class="direction-flex" v-if="payMethod.pay_method_id === 1 ">
+      <IconView icon="mpesa" />
+      <span class="mgl-2">M-PESA</span>
+    </div>
+     <div class="direction-flex" v-if="payMethod.pay_method_id === 20">
+      <IconView icon="pay-bank" />
+      <span class="mgl-2"> Pay By bank </span>
+    </div>
+    <span class="spacer"></span>   
     <div class="">
       <IconView icon="greator" />
      </div>
   </div>
 
-  <div v-else class="mgt-4 text-caption-1 direction-flex pda-3" @click="handleSelect">
-    <IconView icon="mpesa" />
-      <span class="mgl-2">M-PESA</span>
-    <span class="spacer"></span>   
-     <div class="">
-      <IconView icon="greator" />
-    </div>
-  </div>
 </div>
 </template>
 
@@ -56,6 +58,15 @@ export default {
           });
           break;
         default:
+          this.$router.push({ 
+            name: 'MpesaDetails', 
+            params: { 
+              id: this.payMethod.pay_detail_id,
+              title: "Pay by bank",
+              paymentOption: "Pay by Bank",
+              icon: 'virtual accounts',
+            }
+          });
           break;
       }
     }

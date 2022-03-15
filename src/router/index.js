@@ -107,7 +107,7 @@ const routes = [
         component: CardDetailsPage,
       },
       {
-        path: '/mobile-details/:id',
+        path: '/mobile-details/:id/:title?/:icon?/:paymentOption?',
         name: 'MpesaDetails',
         component: MpesaDetail,
       },

@@ -18,7 +18,20 @@
               <PaymentOption :payMethod="mobile" />
           </div>
         </div> 
-        <hr class="mgt-5" />
+
+         <div class="mgt-8" v-if="virtualAccounts.length !== 0">
+          <span class="text-overline"> BANK TRANSFER</span>
+          <div>
+            <div v-for="(vaccount, index) in virtualAccounts" :key="index">
+              <PaymentOption :payMethod="vaccount" v-model="picked" @change="update" />
+            </div>
+          </div> 
+        </div>        
+      
+      <hr class="mgt-5" />
+
+
+
         <span class="link mgt-5" @click="$router.push('/add-payment')"> + {{ $t('add_payment_option') }}</span>
 
         <div class="mgt-10"></div>
@@ -62,6 +75,10 @@ export default {
     savedMobile() {
       const result = this.getSavedPayMethods ? this.getSavedPayMethods.filter(element => element.pay_method_id === 1) : [];
       return result;
+    },
+    virtualAccounts() {
+      const result = this.getSavedPayMethods ? this.getSavedPayMethods.filter(element => element.pay_method_id === 20) : [];
+      return result;
     }
   },
   async mounted() {
@@ -77,9 +94,9 @@ export default {
   methods: {
     getDefaultpayMethod() {
       this.defaultPaymentMethod = this.getSavedPayMethods ? this.getSavedPayMethods.filter(method => method.default === 1)[0] : [];
-      if (!this.defaultPaymentMethod) {
-        this.checkAvailableOptions(this.defaultPaymentMethod);
-      }
+      // if (!this.defaultPaymentMethod) {
+      //   // this.checkAvailableOptions(this.defaultPaymentMethod);
+      // }
     },
     handleRouting() {
       const entryRoute = localStorage.entry_route;
