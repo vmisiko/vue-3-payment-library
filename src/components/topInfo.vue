@@ -2,7 +2,7 @@
   <div class="">
       <IconView :icon="icon" />
       <div class="mgt-4">
-        <span class="title-payment" v-if="title"> {{ title }} </span>
+        <span class="title-payment" v-if="title"> {{ $route.name === 'SuccessView' && $route.params.title ? $route.params.title : title }} </span>
       </div>
 
       <slot name="subtitle">

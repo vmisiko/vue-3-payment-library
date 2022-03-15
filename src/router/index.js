@@ -32,7 +32,7 @@ const routes = [
         component: payment,
       },
       {
-        path: '/success-view/:mpesaCode?:duration?',
+        path: '/success-view/:mpesaCode?:duration?/:transferredAmount?/:title?',
         name: 'SuccessView',
         component: successView,
       },

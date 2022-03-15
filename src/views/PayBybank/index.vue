@@ -139,7 +139,10 @@ export default {
 
       if (this.getBupayload.amount <= response.availableBalance) {
         this.poll_count = this.poll_limit;
-        this.$router.push({name: "SuccessView"});
+        this.$router.push({name: "SuccessView", params: {
+          transferredAmount: this.topupAmount,
+          title: "Transfer Successful",
+        }});
         return;
       }
 

@@ -1,11 +1,11 @@
 <template>
   <div>
     <div class="mgt-8">
-        <span class="normal-text"> {{ $t('amount_to_pay') }}</span>
+        <span class="normal-text"> {{ $route.name === 'SuccessView' ? $t('amount_paid') : $t('amount_to_pay') }}</span>
 
         <div class="float-right" :class="{'mgt-n2': !paymentStatus}" >
           <span class="amount-text" :class="{'text-caption-1': paymentStatus}">
-            {{ currency }} {{ $formatCurrency(amount) }}
+            {{ currency }} {{ $formatCurrency(amount)  }}
           </span>
         </div>
     </div>
@@ -13,7 +13,7 @@
       <hr class="mgt-4" />
 
       <div class="mgt-8">
-        <span class="normal-text"> {{ $t('pay_with') }}</span>
+        <span class="normal-text" > {{ $route.name === 'SuccessView' ? $t('paymentOption') : $t('pay_with') }}</span>
 
         <div class="direction-flex float-right">  
           <IconView v-if="paymentMethod.pay_method_id === 1" icon="mpesa" width="34" height="24" />
