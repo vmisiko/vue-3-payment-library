@@ -15,8 +15,12 @@
         <IconView icon="pay-bank" class="mgt-1" />
         <div class="mgl-2 mgy-auto">
           <span>  Pay by Bank</span>
-          <div class="caption-2-semibold text-gray70">
-            <span> Available Balance {{ getBupayload.currency }} {{ balance }}</span>
+          <div class="caption-2-semibold text-gray70 direction-flex">
+            <span> Available Balance</span>
+
+            <IconView class="mgl-2" icon="loading1" width="1.5em" height="1.5em" v-if="loading" />
+            <span class="mgl-2" v-else > {{ getBupayload.currency }} {{ balance }}</span>
+            
           </div>
         </div>
         
@@ -44,6 +48,7 @@ export default {
     return {
       picked: this.value,
       balance: 0,
+      loading: false,
     }
   },
   computed: {
