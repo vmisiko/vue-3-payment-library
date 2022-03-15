@@ -71,7 +71,7 @@ export default {
     ...mapGetters(['getBupayload']),
     topupAmount() {
       const amount = this.getBupayload.amount - this.balance
-      return amount;
+      return amount < 0 ? 0 : amount;
     }
   },
   watch: {
