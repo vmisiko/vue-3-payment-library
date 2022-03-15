@@ -157,6 +157,9 @@ const mixin = {
         case 'resolve-payment-checkout':
           this.$router.push({ name: 'ChoosePaymentCheckout' });
           break;
+        case 'bank-transfer':
+          this.$router.push({ name: 'PayByBank' });
+          break;
         default:
           break;
       }
