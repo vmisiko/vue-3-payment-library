@@ -56,7 +56,7 @@ export default {
   },
   data() {
     return {
-      account: 3343545454545,
+      account: this.getSelectedVirtualAccount ? this.getSelectedVirtualAccount : '',
     }
   },
   computed: {

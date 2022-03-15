@@ -99,7 +99,6 @@ const mixin = {
       }
 
       const response = await this.$paymentAxiosGet(fullPayload);
-      console.log(response);
       if (response.status) {
         this.setVirtualAccounts(response.accounts)
         const account = response.accounts.filter(el => el.is_primary === true);

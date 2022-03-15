@@ -83,17 +83,12 @@ export default {
       'setErrorText',
     ]),
     async getBalance() {
-      const payload = {
-        userId: this.getBupayload.user_id,
-      }
-
       const fullPayload = {
-        url: `/api/v3/onepipe/balance`,
-        params: payload
+        url: `/api/v3/onepipe/balance/?userId=${this.getBupayload.user_id}`,
       }
 
-      const response = await this.$paymentAxiosPost(fullPayload);
-      this.balance = response.balance;
+      const response = await this.$paymentAxiosGet(fullPayload);
+      this.balance = response.availableBalance;
     },
     confirm() {
       this.loading = true;

@@ -60,12 +60,12 @@ export default {
 
       const payload = {
         user_id: this.getBupayload.user_id,
-        first_name: this.getBupayload.first_name,
-        surname: this.getBupayload.last_name,
+        first_name: this.getBupayload.firstname,
+        surname: this.getBupayload.lastname,
         email: this.getBupayload.email,
         mobile_number: this.getBupayload.phonenumber,
         entity: this.getBupayload.entity_id,
-        country_code: this.getBupayload.currency,
+        country_code: this.getBupayload.country_code,
       }
 
       const fullPayload = {
@@ -74,7 +74,6 @@ export default {
       }
 
       const response = await this.$paymentAxiosPost(fullPayload);
-      console.log(response);
       this.loading = false;
       this.showProcessing = false;
       if (response.status) {

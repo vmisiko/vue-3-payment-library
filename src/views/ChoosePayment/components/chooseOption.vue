@@ -68,18 +68,13 @@ export default {
   methods: {
     async getBalance() {
       this.loading = true;
-      const payload = {
-        userId: this.getBupayload.user_id,
+       const fullPayload = {
+        url: `/api/v3/onepipe/balance/?userId=${this.getBupayload.user_id}`,
       }
 
-      const fullPayload = {
-        url: `/api/v3/onepipe/balance`,
-        params: payload
-      }
-
-      const response = await this.$paymentAxiosPost(fullPayload);
+      const response = await this.$paymentAxiosGet(fullPayload);
       this.loading = false;
-      this.balance = response.balance;
+      this.balance = response.availableBalance;
     },
   }
 }
