@@ -62,6 +62,9 @@ export default {
       count: false,
       account: '',
       balance: 0,
+      poll_count: 0,
+      poll_limit: 30,
+      errorText: '',
     }
   },
   computed: {
@@ -102,13 +105,56 @@ export default {
       this.loading = true;
       this.showProcessing = true;
       this.count = true;
-      setTimeout(() => {
-        this.loading = false;
-        this.showProcessing = false;
-        this.setErrorText("{Error message from OnePipe}");
-        this.$router.push({ name: 'FailedView'});
-      }, 2000);
-    }
+      this.pollbalance();
+    },
+    pollbalance() {
+      this.poll_count = 0;
+      for (let poll_count = 0; poll_count < this.poll_limit; poll_count++) {
+        const that = this;
+        (function (poll_count) {
+          setTimeout(() => {
+            if (that.poll_count === that.poll_limit) {
+              poll_count = that.poll_limit;
+              return;
+            }
+
+            that.getBalanceP(); 
+            if (poll_count === (that.poll_limit - 1)) {
+              that.showProcessing = false;
+              that.errorText = "bank Trnasfer Failed."
+              that.setErrorText(that.errorText);
+              that.$router.push({name: 'FailedView'});
+              return;
+            }
+          }, 10000 * poll_count);
+        }(poll_count));
+      }
+    },
+    async getBalanceP() {
+      const fullPayload = {
+        url: `/api/v3/onepipe/balance/?userId=${this.getBupayload.user_id}`,
+      }
+
+      const response = await this.$paymentAxiosGet(fullPayload);
+
+      if (this.getBupayload.amount <= response.availableBalance) {
+        this.poll_count = this.poll_limit;
+        this.$router.push({name: "SuccessView"});
+        return;
+      }
+
+      if (this.balance !== response.availableBalance ) {
+        this.poll_count = this.poll_limit;
+        this.$paymentNotification({
+          text: 'Amount toped up is not sufficient to fulfill this order. Please recharge the remaining balance.',
+          type:'warning'
+        });
+      }
+
+      this.balance = response.availableBalance;
+
+    },
+    
   }
 }
 </script>
