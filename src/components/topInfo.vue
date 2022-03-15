@@ -2,12 +2,14 @@
   <div class="">
       <IconView :icon="icon" />
       <div class="mgt-4">
-        <span class="title-payment" v-if="title"> {{ title }} </span>
+        <span class="title-payment" v-if="title"> {{ $route.name === 'SuccessView' && $route.params.title ? $route.params.title : title }} </span>
       </div>
 
-      <div class="mgt-4">
-        <span class="subtitle-warning" :class="{'subtitle-normal': $route.params.name = 'ResolvePayment'}" > {{ subtitle }} </span>
-      </div>
+      <slot name="subtitle">
+        <div class="mgt-4">
+          <span class="subtitle-warning" :class="{'subtitle-normal': $route.params.name = 'ResolvePayment'}" > {{ subtitle }} </span>
+        </div>
+      </slot>
       <div class="mgt-1 text-caption-1 text-gray80" v-if="mpesaCode">
         <span>{{ $t('mpesa_code') }}: {{ mpesaCode }} </span>
       </div>

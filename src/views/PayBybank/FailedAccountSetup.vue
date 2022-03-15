@@ -1,0 +1,92 @@
+<template>
+  <div class="flex-center">
+    <Processing @close="showProcessing=false" :count="count" title="Pay by Bank Setup" text="Assinging your unique account details..." v-if="showProcessing" />
+    <div class="card" v-else>
+      <AvatarListView
+        icon="warning"
+        title="Unable to setup Pay by Bank"
+      >
+        <template v-slot:list-subtitle>
+          <span class="text-error"> {{ getErrorText }}</span>
+        </template>
+      </AvatarListView>
+
+      <div class="mgt-8 flex-center">
+        <sendy-btn
+          :outline="true"
+          text="Retry"
+          class="retry-btn"
+          :loading="loading"
+          @click="openAccount"
+        />
+      </div>
+
+      <div class="text-center mgt-5">
+        <span @click="$router.push({name: 'ChoosePayment'})" class="link">Return to Payment Options</span>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import { mapGetters, mapMutations } from 'vuex';
+import AvatarListView from './components/AvatarListView';
+import Processing from '../../components/processing'
+ 
+export default {
+  name: 'FailedAccountSetup',
+  components: {
+    AvatarListView,
+    Processing,
+  },
+  data() {
+    return {
+      loading: false,
+      showProcessing: false,
+      count: true,
+    }
+  },
+  computed: {
+    ...mapGetters(['getErrorText']),
+  },
+  methods: {
+    ...mapMutations('setErrorText'),
+    async openAccount() {
+      this.loading = true;
+      this.count = true;
+
+      const payload = {
+        user_id: this.getBupayload.user_id,
+        first_name: this.getBupayload.first_name,
+        surname: this.getBupayload.last_name,
+        email: this.getBupayload.email,
+        mobile_number: this.getBupayload.phonenumber,
+        entity: this.getBupayload.entity_id,
+        country_code: this.getBupayload.currency,
+      }
+
+      const fullPayload = {
+        url: '/api/v3/onepipe/open_account',
+        params: payload ,
+      }
+      
+      this.showProcessing = true;
+      const response = await this.$paymentAxiosPost(fullPayload);
+      this.loading = false;
+      this.showProcessing = false;
+      if (response.status) {
+        this.$router.push({ name: 'AccountReadyView'});
+        return;
+      }
+      this.$router.push({ name: 'FailedAccountSetup'});
+      this.setErrorText(response.message);
+    },
+  }
+}
+</script>
+
+<style scoped>
+.retry-btn {
+  width: 240px !important;
+}
+</style>

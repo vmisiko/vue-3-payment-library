@@ -17,37 +17,29 @@
 
           <span v-if="creditCards.length !== 0" class="mgt-2 text-overline">{{ $t('credit_card_payment') }}</span>
           <div class="" v-if="creditCards.length !== 0" >
-            <div v-for="(card, index) in creditCards" :key="index" class="mgt-4 text-caption-1 direction-flex pda-3" :class="{'selected-border': (picked === card.pay_detail_id)}" >
-                <IconView :icon="$cardIconValidator(card.psp.toLowerCase()) ? card.psp.toLowerCase() : 'card' " />
-                <span class="mgl-2">{{ card.psp }}</span>
-                <span class="gray80-text mgl-2"> {{$formatLastFour(card.pay_method_details) }}</span>   
-                <span class="spacer"></span>   
-                <div class="">
-                  <input name="paymentoption" type="radio" :value="card.pay_detail_id"  v-model="picked" @change="update" >
-                </div>
+            <div v-for="(card, index) in creditCards" :key="index" class="mgt-4 option-border text-caption-1 pda-3" :class="{'selected-border': (picked === card.pay_detail_id)}" >
+              <ChooseOption :paymentOption="card" v-model="picked" @change="update" />
             </div>
           </div>
 
-          <span v-if="savedMobile.length !== 0" class="mgt-8 text-overline">{{ $t('mobile_money') }}</span>
+          <span v-if="savedMobile.length !== 0" class="mgt-8 text-overline">{{ $t('mobile_money')}}</span>
           <div v-if="savedMobile.length !== 0">
             <div v-for="(mobile, index) in savedMobile" :key="index" class="mgt-4 option-border text-caption-1 pda-3 " :class="{'selected-border': picked === mobile.pay_detail_id, 'disabled': mobile.daily_limit && getBupayload.amount > mobile.daily_limit }">
-              <div class="direction-flex">
-                <IconView icon="mpesa" />
-                <span class="mgl-2">M-PESA</span>
-                <span class="spacer"></span>   
-                <div class="">
-                  <input name="paymentoption" type="radio" :value="mobile.pay_detail_id" :disabled="mobile.daily_limit && getBupayload.amount > mobile.daily_limit" v-model="picked" @change="update">
-                </div>
-              </div> 
-              <div class="text-caption-2 text-sendy-red-30 mgt-3" v-if="mobile.daily_limit && getBupayload.amount > mobile.daily_limit" >
-                <span class="">{{ $t('unavailable') }}</span>
-              </div>
+              <ChooseOption :paymentOption="mobile" v-model="picked" @change="update" />
             </div>
           </div> 
 
-          <span class="link mgt-5" @click="addPaymentOption"> + {{ $t('add_payment_option') }}</span>
+          <div class="mgt-8" v-if="virtualAccounts.length !== 0">
+            <span class="text-overline"> BANK TRANSFER</span>
+            <div>
+              <div v-for="(vaccount, index) in virtualAccounts" :key="index" class="mgt-4 option-border text-caption-1 pda-3 " :class="{'selected-border': picked === vaccount.pay_detail_id, 'disabled': vaccount.daily_limit && getBupayload.amount > vaccount.daily_limit }">
+                <ChooseOption :paymentOption="vaccount" v-model="picked" @change="update" />
+              </div>
+            </div> 
+          </div>
 
           <hr class="mgt-5" />
+
 
           <div class="mgt-4 direction-flex pda-3">
             <div class="">
@@ -80,13 +72,15 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex';
-import TopInfo from '../components/topInfo';
-import Processing from '../components/processing';
-import paymentGenMxn from '../mixins/paymentGenMxn';
-import TransactionLimitModal from '../components/modals/transactionalLimitModal';
-import NoOptionsModal from '../components/modals/noOptionsModal';
-import AdditionalCardFields from './AdditionalCardFields';
-import ErrorModal from '../components/modals/ErrorModal';
+import TopInfo from '../../components/topInfo.vue';
+import Processing from '../../components/processing';
+import paymentGenMxn from '../../mixins/paymentGenMxn';
+import TransactionLimitModal from '../../components/modals/transactionalLimitModal';
+import NoOptionsModal from '../../components/modals/noOptionsModal';
+import AdditionalCardFields from './../AdditionalCardFields';
+import ErrorModal from '../../components/modals/ErrorModal';
+import ChooseOption from './components/chooseOption';
+
 
 export default {
   name: 'ChoosePaymentCheckout',
@@ -98,6 +92,7 @@ export default {
     NoOptionsModal,
     AdditionalCardFields,
     ErrorModal,
+    ChooseOption,
   },
   data() {
     return {
@@ -116,7 +111,7 @@ export default {
       showAdditionalCardFields: false,
       additionalData: null,
       showErrorModal: false,
-      loadingText: 'Loading'
+      loadingText: 'Loading',
     }
   },
   computed: {
@@ -127,6 +122,10 @@ export default {
     },
     savedMobile() {
       const result = this.getSavedPayMethods ? this.getSavedPayMethods.filter(element => element.pay_method_id === 1) : [];
+      return result;
+    },
+    virtualAccounts() {
+      const result = this.getSavedPayMethods ? this.getSavedPayMethods.filter(element => element.pay_method_id === 20) : [];
       return result;
     }
   },

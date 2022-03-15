@@ -88,6 +88,8 @@
   "unavailable": "Indisponible. Le montant dépasse la limite quotidienne de transaction",
   "what_is_cvv": "Qu'est-ce que le CVC ?",
   "whenever_choose_mpesa": "Lorsque vous choisissez de payer avec Mobile Money, vous serez invité à fournir un numéro de téléphone lors du paiement.",
-  "error_occurred": "Une erreur s’est produite. Veuillez réessayer!"
+  "error_occurred": "Une erreur s’est produite. Veuillez réessayer!",
+  "paymentOption": "FR_Payment Option",
+  "amount_paid": "FR_Amount paid"
 
 }

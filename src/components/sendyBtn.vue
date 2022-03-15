@@ -9,10 +9,12 @@
       'primary-btn-block': block && color === 'primary',
       'midnightblue-btn-block': color === 'info',
       'error-btn-block': color === 'error',
+      'btn-outline primary': outline,
+      'large': large,
       }"
     >
       <IconView icon="loading" v-if="loading" />
-      <slot v-if="!loading"> {{ $t('submit') }} </slot>
+      <slot v-if="!loading"> {{ text ? text : $t('submit') }} </slot>
     </button>
   </div>
 </template>
@@ -20,7 +22,7 @@
 <script>
 export default {
   name: 'sendy-btn',
-  props: ['block', 'color', 'loading', 'type', 'disabled'],
+  props: ['block', 'color', 'loading', 'type', 'disabled', 'text', 'outline', 'large', 'medium', 'small' ],
 }
 </script>
 

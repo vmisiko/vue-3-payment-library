@@ -3,7 +3,6 @@ import payment from '../views/payment';
 import successView from '../views/successView';
 import FailedView from '../views/FailedView';
 import processing from '../views/processing';
-import choosePayment from '../views/choosePayment';
 import AddPayment from '../views/AddPayment';
 import AddCard from '../views/AddCard';
 import AddMpesa from '../views/AddMpesa';
@@ -13,8 +12,14 @@ import NoPaymentOption from '../views/NoPaymentOption';
 import PaymentOptionsPage from '../views/PaymentOptionsPage';
 import CardDetailsPage from '../views/CardDetailsPage';
 import MpesaDetail from '../views/MpesaDetail';
-import ChoosePaymentCheckout from '../views/ChoosePaymentCheckout';
+import choosePayment from '../views/ChoosePayment';
+import ChoosePaymentCheckout from '../views/ChoosePayment/ChoosePaymentCheckout';
 import ResolvePayment from '../views/ResolvePayment';
+import HowitWorks from '../views/PayBybank/howitworks';
+import TermsOfService from '../views/PayBybank/TermsOfService';
+import AccountReadyView from '../views/PayBybank/AccountReadyView';
+import FailedAccountSetup from '../views/PayBybank/FailedAccountSetup';
+import PayByBank from '../views/PayBybank';
 
 const routes = [
   {
@@ -27,7 +32,7 @@ const routes = [
         component: payment,
       },
       {
-        path: '/success-view/:mpesaCode?:duration?',
+        path: '/success-view/:mpesaCode?:duration?/:transferredAmount?/:title?',
         name: 'SuccessView',
         component: successView,
       },
@@ -102,9 +107,34 @@ const routes = [
         component: CardDetailsPage,
       },
       {
-        path: '/mobile-details/:id',
+        path: '/mobile-details/:id/:title?/:icon?/:paymentOption?',
         name: 'MpesaDetails',
         component: MpesaDetail,
+      },
+      {
+        path: '/bank/how-it-works',
+        name: 'HowitWorks',
+        component: HowitWorks,
+      },
+      {
+        path: '/bank/terms-of-service',
+        name: 'TermsOfService',
+        component: TermsOfService,
+      },
+      {
+        path: '/bank/account-ready',
+        name: 'AccountReadyView',
+        component: AccountReadyView,
+      },
+      {
+        path: '/bank/failed-setup',
+        name: 'FailedAccountSetup',
+        component: FailedAccountSetup,
+      },
+      {
+        path: '/bank/pay',
+        name: 'PayByBank',
+        component: PayByBank,
       },
     ]
   },
