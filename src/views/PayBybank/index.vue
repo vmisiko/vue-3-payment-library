@@ -36,7 +36,8 @@
           @click="confirm()"
         />
       </div>
-    
+      <FailedTransferModal :show="showFailedTransfer" @close="showFailedTransfer = false"/>
+
   </div> 
 </template>
 
@@ -45,6 +46,7 @@ import { mapGetters, mapMutations } from 'vuex';
 import AccountsDisplay from './components/AccountDisplay';
 import Processing from '../../components/processing'
 import paymentGenMxn from '../../mixins/paymentGenMxn';
+import FailedTransferModal from './components/modals/FailedTransferModal';
 
 export default {
   name: 'PayByBank',
@@ -52,6 +54,7 @@ export default {
   components: {
     AccountsDisplay,
     Processing,
+    FailedTransferModal,
   },
   data() {
     return {
@@ -65,6 +68,7 @@ export default {
       poll_count: 0,
       poll_limit: 30,
       errorText: '',
+      showFailedTransfer: true,
     }
   },
   computed: {
@@ -121,9 +125,8 @@ export default {
             that.getBalanceP(); 
             if (poll_count === (that.poll_limit - 1)) {
               that.showProcessing = false;
-              that.errorText = "bank Trnasfer Failed."
-              that.setErrorText(that.errorText);
-              that.$router.push({name: 'FailedView'});
+              that.showFailedTransfer = true;
+              that.getBalance();
               return;
             }
           }, 10000 * poll_count);
