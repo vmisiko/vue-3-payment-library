@@ -11,6 +11,7 @@ const store = {
     twoFACompleted: false,
     virtualAccounts: [],
     selectedAccount: null,
+    loading: false,
   },
   mutations: {
     setPaymentMethods(state, val) {
@@ -33,8 +34,10 @@ const store = {
     } ,
     setSelectedVirtualAccount(state, val) {
       state.selectedAccount = val
+    },
+    setLoading(state, val) {
+      state.loading = val;
     }
-    
   },
   getters: {
     getPaymentMethods: ( state) => state.paymentMethods,
@@ -44,6 +47,7 @@ const store = {
     getTwoFACompleted: (state) => state.twoFACompleted,
     getVirtualAccounts: (state) => state.virtualAccounts,
     getSelectedVirtualAccount: (state) => state.selectedAccount,
+    getLoading: (state) => state.loading,
   },
   actions: {
   },

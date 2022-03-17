@@ -3,7 +3,7 @@
     <!-- <NoOptionsModal v-if="!defaultPaymentMethod" /> -->
 
     <div>
-      <Processing v-if="loading" :text="loadingText" />
+      <Processing v-if="getLoading" :text="loadingText" />
       <div v-else>
         <AdditionalCardFields 
           :additionalData="additionalData" 
@@ -99,10 +99,10 @@ export default {
     }
   },
   async mounted() {
-    this.loading = true;
+    this.setLoading(true);
     this.loadingText = 'Loading...';
     await this.retrievePaymentMethods();
-    this.loading = false;
+    this.setLoading(false);
     this.loadingText = this.$t('please_wait');
     this.getDefaultpayMethod();
   },
@@ -136,11 +136,11 @@ export default {
       }
 
       if (this.defaultPaymentMethod.pay_method_id === 20) {
-        this.$router.push({name: 'PayByBank'});
+        this.payBybankCollect();
         return;
       }
 
-      this.loading = true;
+      this.setLoading(true);
       const payload = {
         country: this.getBupayload.country_code,
         amount: this.getBupayload.amount,
@@ -165,7 +165,7 @@ export default {
         if(response.additional_data) {
           this.additionalData = response.additional_data;
           this.showAdditionalCardFields = true;
-          this.loading = false;
+          this.setLoading(false);
           return;
         }
 
@@ -173,7 +173,7 @@ export default {
           case 'pending':
             const duration = Date.now() - this.startResponseTime;
             if (this.getBupayload.bulk) {
-              this.loading = false;
+              this.setLoading(false);
               this.$router.push({
                 name: 'SuccessView',
                 duration: duration,
@@ -183,12 +183,12 @@ export default {
             this.pollCard();
             break;
           case 'success':
-            this.loading = false;
+            this.setLoading(false);
             this.$paymentNotification({
               text: this.$t('card_details_added'),
             });
             this.$router.push('/choose-payment');
-            this.loading = false;
+            this.setLoading(false);
             break;
           default:
             break;
@@ -196,11 +196,11 @@ export default {
         return;
       }
       this.setErrorText(response.message);
-      this.loading = false;
+      this.setLoading(false)
       this.$router.push({ name: 'FailedView' });
     },
     pollCard() {
-      this.loading = true;
+      this.setLoading(true);
       this.poll_count = 0;
       for (let poll_count = 0; poll_count < this.poll_limit; poll_count++) {
         const that = this;
@@ -213,7 +213,7 @@ export default {
 
             that.TransactionIdStatus(); 
             if (poll_count === (that.poll_limit - 1)) {
-              that.loading = false;
+              that.setLoading(false);
               that.errorText =  this.$t('failed_to_charge_card');
               that.setErrorText(that.errorText);
               that.$router.push({name: 'FailedView'});
@@ -236,7 +236,7 @@ export default {
               this.$paymentNotification({
                 text: res.message,
               });
-              this.loading = false;
+              this.setLoading(false);
               const duration = Date.now() - this.startResponseTime;
               this.$router.push({
                 name: 'SuccessView',
@@ -245,7 +245,7 @@ export default {
               break;
             case 'failed':
               this.poll_count = this.poll_limit;
-              this.loading = false;
+              this.setLoading(false);
               this.errorText = res.message;
               this.setErrorText(res.message);
               this.$router.push({name: 'FailedView'});
@@ -259,19 +259,19 @@ export default {
           return res;
         }
         this.poll_count = this.poll_limit;
-        this.loading = false;
+        tthis.setLoading(false);
         this.errorText = res.message;
         this.showErrorModal= true;
       })
     },
 
     handleContinue(val) {
-      this.loading = true;
+      this.setLoading(true);
       if (val) {
         this.pollCard();
         return;
       }
-      this.loading = false,
+      this.setLoading(false);
       this.errorText = this.$t('failed_to_collect_card_details');
       this.showErrorModal= true;
     },
@@ -297,7 +297,7 @@ export default {
     },
 
     async init3dsPoll() {
-      this.loading = true;
+      this.setLoading(true);
       const payload = {
         transaction_id: this.transaction_id,
         tds: true,
@@ -309,7 +309,7 @@ export default {
       }
 
       const response = await this.$paymentAxiosPost(fullPayload);
-      this.loading = false;
+      this.setLoading(false);
       if (response.status) {
         switch (response.transaction_status) {
             case 'pending':
@@ -321,7 +321,7 @@ export default {
                 text: this.$t('card_details_added')
               });
               this.$router.push('/choose-payment');
-              this.loading = false;
+              this.setLoading(false);
               break;
             default:
               break;
@@ -335,7 +335,7 @@ export default {
     handleErrorModalClose() {
       this.showErrorModal = false;
       this.showAdditionalCardFields = false;
-    }
+    },
   }
 }
 
