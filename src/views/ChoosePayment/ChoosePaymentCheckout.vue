@@ -204,6 +204,11 @@ export default {
         return;
       }
 
+      if (this.defaultPaymentMethod.pay_method_id === 20) {
+        this.payBybankCollect();
+        return;
+      }
+
       this.setLoading(true);
       const payload = {
         country: this.getBupayload.country_code,
