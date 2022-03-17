@@ -1,7 +1,5 @@
 <template>
   <div class="flex-center">
-    <!-- <NoOptionsModal v-if="!defaultPaymentMethod" /> -->
-
     <div>
       <Processing v-if="getLoading" :text="loadingText" />
       <div v-else>
