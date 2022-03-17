@@ -311,7 +311,7 @@ export default {
               this.count = true;
               break;
             case 'success':
-              this.showProcessing = false;
+              this.setLoading(false);
               this.$paymentNotification({
                 text: this.$t('card_details_added')
               });
@@ -323,7 +323,7 @@ export default {
         };
         return;
       }
-      this.showProcessing = false,
+      this.setLoading(false);
       this.errorText = this.$t('failed_to_collect_card_details');
       this.showErrorModal= true;
     },
