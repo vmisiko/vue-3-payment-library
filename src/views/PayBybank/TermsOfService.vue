@@ -8,7 +8,7 @@
         </div>
       </div>
       <div class="mgt-4 iframe-div">
-        <iframe frameBorder="0" width="100%" height="450" src="https://www.sendyit.com/nigeria/fulfillment-terms-conditions"></iframe>
+        <iframe frameBorder="0" width="100%" height="450" src="https://docs.google.com/document/d/e/2PACX-1vRPx-4L-5lSb1QZ0L3Amph5mtRGR3wxiVgfmahbZIOZZIhty2b6tdEqWJqHNoFSfg/pub?embedded=true"></iframe>
       </div>
 
        <div class="direction-flex mgt-13">
