@@ -1,7 +1,7 @@
 <template>
   <div class="flex-center">
     <div>
-      <Processing v-if="loading1" :text="loadingText" />
+      <Processing v-if="getLoading" :text="loadingText" />
       <div class="card" v-else>
         <TopInfo :icon="icon" :title="title"/>
 
@@ -23,7 +23,7 @@
           <span class="text-overline"> BANK TRANSFER</span>
           <div>
             <div v-for="(vaccount, index) in virtualAccounts" :key="index">
-              <PaymentOption :payMethod="vaccount" v-model="picked" @change="update" />
+              <PaymentOption :payMethod="vaccount" />
             </div>
           </div> 
         </div>        
@@ -47,6 +47,7 @@ import TopInfo from '../components/topInfo';
 import PaymentOption from '../components/paymentOptionPage/paymentOption';
 import paymentGenMxn from '../mixins/paymentGenMxn';
 import NoOptionsModal from '../components/modals/noOptionsModal';
+import Processing from '../components/processing';
 
 export default {
   name: 'PaymentOptionsPage',
@@ -54,6 +55,7 @@ export default {
     TopInfo,
     PaymentOption,
     NoOptionsModal,
+    Processing,
   },
   mixins: [paymentGenMxn],
   data() {
@@ -61,13 +63,12 @@ export default {
       icon: 'back',
       title: this.$t('payment_options'),
       picked: '',
-      loading: false,
       loading1: false,
       loadingText: '',
     }
   },
   computed: {
-    ...mapGetters(['getSavedPayMethods', 'getBupayload']),
+    ...mapGetters(['getSavedPayMethods', 'getBupayload',]),
     creditCards() {
       const result = this.getSavedPayMethods ? this.getSavedPayMethods.filter(element => element.pay_method_id === 2) : [];
       return result;
@@ -82,10 +83,10 @@ export default {
     }
   },
   async mounted() {
-    this.loading1 = false;
+    this.setLoading(true);
     this.loadingText = "Loading ..."
     await this.retrievePaymentMethods();
-    this.loading1 = false;
+    this.setLoading(false);
     this.getDefaultpayMethod();
     window.analytics.track('Tap Payment Options Menu', {
       ...this.commonTrackPayload(), 
