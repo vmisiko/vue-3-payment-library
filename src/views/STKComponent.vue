@@ -22,13 +22,6 @@
           </div>
           
           <div class="mgt-1">
-            <!-- <input 
-              type="text" 
-              v-model="phone" 
-              class="phone-input"
-              placeholder="254 700 00000"
-              required
-             > -->
             <vue-tel-input 
               v-model="phone" 
               autoFormat 
