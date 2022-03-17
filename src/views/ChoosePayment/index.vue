@@ -1,7 +1,8 @@
 <template>
   <div class="flex-center">
+    <Processing v-if="getLoading" :text="loadingText" />
 
-    <div class="card">
+    <div class="card" v-else>
       <TopInfo :icon="icon" :title="title"/>
 
       <span v-if="creditCards.length !== 0" class="mgt-2 text-overline">{{ $t('credit_card_payment') }}</span>
@@ -52,6 +53,7 @@ import TopInfo from '../../components/topInfo';
 import paymentGenMxn from '../../mixins/paymentGenMxn';
 import NoOptionsModal from '../../components/modals/noOptionsModal';
 import ChooseOption from './components/chooseOption';
+import Processing from '../../components/processing';
 
 export default {
   name: 'ChoosePayment',
@@ -60,11 +62,13 @@ export default {
     TopInfo,
     NoOptionsModal,
     ChooseOption,
+    Processing,
   },
   data() {
     return {
       icon: 'back',
       title: this.$t('choose_payment_option'),
+      loadingText: 'Loading..',
       picked: '',
       loading: false,
       startTime: null,
@@ -92,8 +96,10 @@ export default {
       }
     },
   },
-  mounted() {
-    this.retrievePaymentMethods();
+  async mounted() {
+    this.setLoading(true);
+    await this.retrievePaymentMethods();
+    this.setLoading(false);
     this.getDefaultpayMethod();
     this.startTime = Date.now();
   },

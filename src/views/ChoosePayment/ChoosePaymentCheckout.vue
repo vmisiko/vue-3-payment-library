@@ -2,8 +2,8 @@
   <div class="flex-center">
     
     <div>
-      <Processing v-if="loading" :text="loadingText" />
-      <div v-if="!loading">
+      <Processing v-if="getLoading" :text="loadingText" :count="count" />
+      <div v-if="!getLoading">
         <AdditionalCardFields 
           :additionalData="additionalData" 
           :transaction_id="transaction_id" 
@@ -100,6 +100,7 @@ export default {
       title: this.$t('choose_payment_option'),
       picked: '',
       loading: false,
+      count: false,
       defaultPaymentMethod: null,
       transaction_id: null,
       poll_count: 0,
