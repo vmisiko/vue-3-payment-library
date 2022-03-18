@@ -37,6 +37,13 @@
         />
       </div>
       <FailedTransferModal :show="showFailedTransfer" @close="showFailedTransfer = false"/>
+      <InsufficientTransferModal  
+      :show="showInsufficientTransfer" 
+      @close="showInsufficientTransfer = false"
+      :amountDue='amountDue'
+      :lastTransferAmount='lastTransferAmount'
+      :pendingAmount='pendingAmount'
+      />
 
   </div> 
 </template>
@@ -47,6 +54,8 @@ import AccountsDisplay from './components/AccountDisplay';
 import Processing from '../../components/processing'
 import paymentGenMxn from '../../mixins/paymentGenMxn';
 import FailedTransferModal from './components/modals/FailedTransferModal';
+import InsufficientTransferModal from './components/modals/InsufficientTransferModal';
+
 
 export default {
   name: 'PayByBank',
@@ -55,6 +64,7 @@ export default {
     AccountsDisplay,
     Processing,
     FailedTransferModal,
+    InsufficientTransferModal,
   },
   data() {
     return {
@@ -68,7 +78,11 @@ export default {
       poll_count: 0,
       poll_limit: 30,
       errorText: '',
-      showFailedTransfer: true,
+      showFailedTransfer: false,
+      showInsufficientTransfer: true,
+      amountDue: 3000,
+      lastTransferAmount: 2000,
+      pendingAmount: 1000,
     }
   },
   computed: {
@@ -151,14 +165,11 @@ export default {
 
       if (this.balance !== response.availableBalance ) {
         this.poll_count = this.poll_limit;
-        this.$paymentNotification({
-          text: 'Amount toped up is not sufficient to fulfill this order. Please recharge the remaining balance.',
-          type:'warning'
-        });
+        this.amountDue = this.topupAmount;
+        this.lastTransferAmount = parseFloat(response.availableBalance) - parseFloat(this.balance);
+        this.pendingAmount = parseFloat(this.topupAmount) - parseFloat(this.lastTransferAmount);
       }
-
       this.balance = response.availableBalance;
-
     },
     
   }
