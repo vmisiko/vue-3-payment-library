@@ -6,31 +6,31 @@
         </div>
 
         <div class="mgt-4">
-          <span class="subtitle-2-bold text-gray90"> Transfer was insufficient </span>
+          <span class="subtitle-2-bold text-gray90"> {{ $t('insufficient_transfer') }} </span>
         </div>
 
         <div class="mgt-4">
           <span class="body-2-regular text-gray90">
-            The amount we received wasn’t enough to cover the amount required;
+            {{ $t('amount_received') }};
           </span>
         </div>
 
         <div class="mgt-6">
           <p class="caption-1-regular text-gray90">
-            Total amount due: <strong class="text-success"> {{ getBupayload.currency }} {{ amountDue }} </strong>
+            {{ $t('total_amount_due') }}: <strong class="text-success"> {{ getBupayload.currency }} {{ amountDue }} </strong>
           </p>
           <p class="caption-1-regular text-gray90">
-            Your last transfer: <strong class="text-green30"> {{ getBupayload.currency }} {{ lastTransferAmount }} </strong>
+            {{ $t('last_transfer') }}: <strong class="text-green30"> {{ getBupayload.currency }} {{ lastTransferAmount }} </strong>
           </p>
 
            <p class="mgt-7 caption-1-regular text-gray90">
-            Amount pending: <strong class="text-orange90"> {{ getBupayload.currency }} {{ pendingAmount }} </strong>
+            {{ $t('amount_pending') }}: <strong class="text-orange90"> {{ getBupayload.currency }} {{ pendingAmount }} </strong>
           </p>
         </div>
 
         <div class="mgt-6">
           <p class="caption-2-regular">
-            To complete your payment, close this window and transfer {{ getBupayload.currency }} 1,000 to the bank account details shown.
+            {{ $t('complete_payment_close_window') }} {{ getBupayload.currency }} {{ pendingAmount }} {{ $t('bank_acccount_details_shown') }}
           </p>
         </div>
 

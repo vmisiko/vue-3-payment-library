@@ -5,11 +5,11 @@
       <div class="">
         <IconView icon="back" />
         <div class="mgt-4">
-          <span class="subtitle-2-semibold"> Bank transfer details</span>
+          <span class="subtitle-2-semibold"> {{ $t('bank_transfer_details') }}</span>
         </div>
 
         <div class="direction-flex mgt-2">
-          <span class="body-2-regular text-gray70">Amount to transfer</span>
+          <span class="body-2-regular text-gray70">{{ $t('amount_to_transfer') }}</span>
           <span class="spacer"></span>
           <span class="body-1-semibold text-gray90"> {{ getBupayload.currency }} {{ $formatCurrency(topupAmount) }}</span>
         </div>
@@ -18,7 +18,7 @@
       <hr class="mgt-7">
 
       <div class="mgt-6">
-        <span class="body-2-regular">To complete your payment, transfer  <span class="body-1-semibold text-gray90">{{ getBupayload.currency }} {{getBupayload.amount }} </span> the account details shown, then click <span class="body-1-semibold text-gray90">“Confirm transfer”</span> once you’re done.</span>
+        <span class="body-2-regular">{{ $t('complete_your_payment_transfer') }}  <span class="body-1-semibold text-gray90">{{ getBupayload.currency }} {{getBupayload.amount }} </span> {{ $t('account_details_shown')}} <span class="body-1-semibold text-gray90">“{{ $t('confirm_transfer') }}”</span> {{ $t('once_done') }}</span>
       </div>
    
       <AccountsDisplay
@@ -31,7 +31,7 @@
         <sendy-btn
           :block="true"
           color="primary"
-          text="Confirm Transfer"
+          :text="$t('confirm_transfer')"
           :loading="loading"
           @click="confirm()"
         />
@@ -70,7 +70,7 @@ export default {
     return {
       loading: false,
       showProcessing: false,
-      title: 'Confirming your transfer',
+      title: this.$t('confirming_transfer'),
       processingText: '',
       count: false,
       account: '',
@@ -100,11 +100,11 @@ export default {
   async mounted() {
     this.showProcessing = true;
     this.title = "";
-    this.processingText = "Laoding ..."
+    this.processingText = "Loading ..."
     await this.getAccounts();
     await this.getBalance();
     this.showProcessing = false;
-    this.title = "Confirming your transfer";
+    this.title = this.$t('confirming_transfer');
     this.processingText = ""
   },
   methods: {
@@ -158,7 +158,7 @@ export default {
         this.poll_count = this.poll_limit;
         this.$router.push({name: "SuccessView", params: {
           transferredAmount: this.topupAmount,
-          title: "Transfer Successful",
+          title: this.$t('transfer_successful'),
         }});
         return;
       }

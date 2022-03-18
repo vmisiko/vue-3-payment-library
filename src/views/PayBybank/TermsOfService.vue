@@ -4,7 +4,7 @@
     <div class="card" v-else>
       <div class="">
         <div class="">
-          <span class="title text-gray90">Terms of Service</span>
+          <span class="title text-gray90">{{ $t('terms_of_service') }}</span>
         </div>
       </div>
       <div class="mgt-4 iframe-div">
@@ -13,7 +13,7 @@
 
        <div class="direction-flex mgt-13">
         <div class="mgy-auto">
-          <span @click="$router.go(-1)" class="link"> cancel</span>
+          <span @click="$router.go(-1)" class="link"> {{ $t('cancel') }}</span>
         </div>
 
         <div class="spacer"></div>

@@ -6,12 +6,12 @@
         </div>
 
         <div class="mgt-4">
-          <span class="subtitle-2-bold text-gray90"> Your transfer wasn’t detected </span>
+          <span class="subtitle-2-bold text-gray90"> {{ $t('transfer_wasnt_detected') }} </span>
         </div>
 
         <div class="mgt-4">
           <span class="caption-1-regular text-gray90">
-            To check again for your bank transfer, close this window and click <strong class="">Confirm transfer</strong>
+            {{ $t('check_again') }} <strong class=""> {{ $t('confirm_transfer') }}</strong>
           </span>
         </div>
 
@@ -24,7 +24,7 @@
         </sendy-btn>
 
         <div class="mgt-8">
-          <span class="caption-2-bold">If you’re still having issues with this transfer, please contact your bank or Sendy Support</span>
+          <span class="caption-2-bold">{{ $t('still_have_issues_with_bank_transfer') }}</span>
         </div>
       </div>
   </div>

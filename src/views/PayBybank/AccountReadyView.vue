@@ -7,8 +7,8 @@
 
         <AvatarListView 
           icon="success"
-          title="Pay by Bank is ready!"
-          subtitle= "During checkout, we will show you the account details below to make payments."
+          :title="$t('ready_pay_by_bank')"
+          :subtitle="$t('during_checkout')"
           class=""
         />
 
@@ -16,7 +16,7 @@
       </div>
 
       <div class="mgt-8 pdl-6">
-        <span class="text-subtitle-1">Your account details</span>
+        <span class="text-subtitle-1">{{ $t('account_details') }}</span>
 
         <AccountsDisplay
           v-model="account"
@@ -32,7 +32,7 @@
       <div class="mgt-14"> 
         <sendy-btn
         color="primary"
-        text="Finish Setup"
+        :text="$t('finish_setup')"
         @click="finish"
         ></sendy-btn>
       </div>
