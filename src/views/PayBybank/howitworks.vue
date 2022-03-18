@@ -9,17 +9,17 @@
         </svg>
 
         <div class="mgx-4 mgt-2">
-          <span class="title1"> Pay by Bank </span>
+          <span class="title1"> {{$t('pay_by_bank')}} </span>
           <div class="text-body-2">
             <span>
-              Transfer funds from your bank to Sendy 
+              {{ $t('transfer_funds')}}
             </span>
           </div>
         </div>
       </div>
 
       <div class="mgt-12">
-        <span class="text-subtitle-1 text-gray90"> How it Works</span>
+        <span class="text-subtitle-1 text-gray90"> {{ $t('how_it_works') }}</span>
       </div>
       
       <div>
@@ -30,14 +30,14 @@
 
       <div class="direction-flex mgt-13">
         <div class="mgy-auto">
-          <span @click="$router.go(-1)" class="link"> Maybe Later</span>
+          <span @click="$router.go(-1)" class="link"> {{ $t('maybe_later') }}</span>
         </div>
 
         <div class="spacer"></div>
         <sendy-btn
           :loading="loading"
           color='primary'
-          text = 'Setup Pay by Bank'
+          :text="$t('setup_pay_by_bank')"
           @click="$router.push('/bank/terms-of-service')"
         />
       </div>
