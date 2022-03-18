@@ -19,7 +19,7 @@
       </div>
 
       <div class="mgt-12">
-        <span class="text-subtitle-1 text-gray90"> {{ $t('howt_it_works') }}</span>
+        <span class="text-subtitle-1 text-gray90"> {{ $t('how_it_works') }}</span>
       </div>
       
       <div>
