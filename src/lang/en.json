@@ -144,5 +144,6 @@
   "last_transfer":  "Your last transfer",
   "amount_pending":  "Amount pending",
   "complete_payment_close_window":  "To complete your payment, close this window and transfer",
-  "bank_acccount_details_shown":  "to the bank account details shown."
+  "bank_acccount_details_shown":  "to the bank account details shown.",
+  "agree_and_continue": "Agree and Continue"
 }

@@ -20,7 +20,7 @@
         <sendy-btn
           :loading="loading"
           color='primary'
-          text = 'Agree and Continue'
+          :text="$t('agree_and_continue')"
           @click="openAccount"
         />
       </div>

@@ -125,6 +125,6 @@
   "last_transfer":  "FR_Your last transfer",
   "amount_pending":  "FR_Amount pending",
   "complete_payment_close_window":  "FR_To complete your payment, close this window and transfer",
-  "bank_acccount_details_shown":  "FR_to the bank account details shown."
-
+  "bank_acccount_details_shown":  "FR_to the bank account details shown.",
+  "agree_and_continue": "FR_Agree and Continue"
 }
