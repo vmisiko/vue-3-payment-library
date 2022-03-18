@@ -79,10 +79,10 @@ export default {
       poll_limit: 30,
       errorText: '',
       showFailedTransfer: false,
-      showInsufficientTransfer: true,
-      amountDue: 3000,
-      lastTransferAmount: 2000,
-      pendingAmount: 1000,
+      showInsufficientTransfer: false,
+      amountDue: 0,
+      lastTransferAmount: 0,
+      pendingAmount: 0,
     }
   },
   computed: {
