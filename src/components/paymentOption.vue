@@ -89,7 +89,7 @@ export default {
       const response = await this.$paymentAxiosPost(fullPayload);
       this.$emit('loading', false); 
       response.status
-        ? this.$paymentNotification( {text: this.$('mpesa_added')})
+        ? this.$paymentNotification( {text: this.$t('mpesa_added')})
         : this.$paymentNotification( {text: this.$t('mpesa_already_added'),  type: "error"});
       const entry = localStorage.getItem('entry')
       entry === "resolve-payment-checkout" ? this.$router.push({ name: 'ChoosePaymentCheckout' }) : this.$router.push({ name: 'ChoosePayment' });
