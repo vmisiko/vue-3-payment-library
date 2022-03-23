@@ -1,47 +1,51 @@
 <template>
   <div class="flex-center">
-    <AdditionalCardFields 
-      :additionalData="additionalData" 
-      :transaction_id="transaction_id" 
-      v-if="showAdditionalCardFields" 
-      @continue="handleContinue"
-      @continue3DS="handleContinue3DS"
-    />
+    <Processing v-if="getLoading" :text="loadingText" />
 
-    <div class="card" :class="{'card-min': paymentStatus }" v-else>
-      <IconView icon='back'/>
+    <div v-else>
+        <AdditionalCardFields 
+        :additionalData="additionalData" 
+        :transaction_id="transaction_id" 
+        v-if="showAdditionalCardFields" 
+        @continue="handleContinue"
+        @continue3DS="handleContinue3DS"
+      />
 
-      <TopInfo class="mgt-9" :icon="icon" :title="title" :subtitle="getErrorText" />
+      <div class="card" :class="{'card-min': paymentStatus }" v-else>
+        <IconView icon='back'/>
 
-      <PaymentDetail v-if="defaultPaymentMethod" :currency="currency" :amount="amount" :paymentMethod="defaultPaymentMethod"  :paymentStatus="paymentStatus" />
+        <TopInfo class="mgt-9" :icon="icon" :title="title" :subtitle="getErrorText" />
 
-      <div class="mgt-8 text-right">
-        <sendy-btn 
-          :block="true"
-          :loading="loading"
-          color='primary'
-          @click="submitRetry"
-        >
-          {{ $route.params.mpesa ? 'Retry' : 'Try Again' }}
-        </sendy-btn>
+        <PaymentDetail v-if="defaultPaymentMethod" :currency="currency" :amount="amount" :paymentMethod="defaultPaymentMethod"  :paymentStatus="paymentStatus" />
+
+        <div class="mgt-8 text-right">
+          <sendy-btn 
+            :block="true"
+            :loading="loading"
+            color='primary'
+            @click="submitRetry"
+          >
+            {{ $route.params.mpesa ? 'Retry' : 'Try Again' }}
+          </sendy-btn>
+        </div>
+
+        <div class="mgt-8 text-right" v-if="paymentStatus === 'retry'">
+          <sendy-btn 
+            :block="true"
+            :loading="loading"
+            color='primary'
+            class=""
+          >
+            {{ $t('retry_in') }}
+          </sendy-btn>
+        </div>
+
+        <div class="mgt-8 direction-flex flex-center link" @click="$route.name === 'ResolvePayment' ? $router.push('/choose-payment-checkout') : $router.push('/choose-payment')"  >
+          <span> {{ $t('change_payment_option') }}</span>
+          <IconView class="mgl-2" icon="greator"/>
+        </div>
+
       </div>
-
-      <div class="mgt-8 text-right" v-if="paymentStatus === 'retry'">
-        <sendy-btn 
-          :block="true"
-          :loading="loading"
-          color='primary'
-          class=""
-        >
-          {{ $t('retry_in') }}
-        </sendy-btn>
-      </div>
-
-      <div class="mgt-8 direction-flex flex-center link" @click="$route.name === 'ResolvePayment' ? $router.push('/choose-payment-checkout') : $router.push('/choose-payment')"  >
-        <span> {{ $t('change_payment_option') }}</span>
-        <IconView class="mgl-2" icon="greator"/>
-      </div>
-
     </div>
     <ErrorModal :show="showErrorModal" :text="errorText" @close="handleErrorModalClose" />
   </div>
