@@ -9,7 +9,7 @@ import i18n from './plugins/i18n'
 
 
 export default {
-  install (Vue, options) {
+  install (app, options) {
     if (!options || !options.store) {
       throw new Error('Please initialise plugin with a Vuex store.')
     }
@@ -22,15 +22,15 @@ export default {
 
     options.router.addRoute(router[0]);
     
-    Vue.prototype.$sendyOptions = options;
-    Vue.prototype.$t = (key) => i18n.t(key)
+    app.config.globalProperties$sendyOptions = options;
+    app.config.globalProperties.$t = (key) => i18n.t(key)
 
-    Vue.component('IconView', iconView);
+    app.component('IconView', iconView);
 
-    Vue.component('Snackbar', notification);
+    app.component('Snackbar', notification);
 
-    Vue.component('sendy-btn', sendyBtn);
+    app.component('sendy-btn', sendyBtn);
 
-    Vue.mixin(paymentLibraryMxn);
+    app.mixin(paymentLibraryMxn);
   }
 }
