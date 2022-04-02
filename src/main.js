@@ -22,10 +22,8 @@ export default {
     options.router.addRoute(router[0]);
 
     app.config.globalProperties$sendyOptions = options;
-    app.config.globalProperties.$t = (key) => i18n.t(key);
+    app.config.globalProperties.$t = (key) => i18n.global.t(key);
     // app.use(store);
-    // app.use(i18n);
-
     app.component("IconView", iconView);
 
     app.component("Snackbar", notification);
