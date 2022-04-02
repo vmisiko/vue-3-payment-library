@@ -8,7 +8,7 @@ import "vue-tel-input/dist/vue-tel-input.css";
 import i18n from "./plugins/i18n";
 
 export default {
-  install(app, options) {
+  install: (app, options) => {
     if (!options || !options.store) {
       throw new Error("Please initialise plugin with a Vuex store.");
     }
@@ -23,6 +23,8 @@ export default {
 
     app.config.globalProperties$sendyOptions = options;
     app.config.globalProperties.$t = (key) => i18n.t(key);
+    // app.use(store);
+    // app.use(i18n);
 
     app.component("IconView", iconView);
 
