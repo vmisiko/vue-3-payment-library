@@ -86,8 +86,7 @@ export default {
     ...mapGetters(["getBupayload"]),
     inputListeners() {
       var vm = this;
-      /*eslint-disable */
-      return Object.assign({}, this.$listeners, {
+      return Object.assign({}, this.$attrs, {
         input: function (event) {
           vm.$emit("input", event.target.value);
         },
