@@ -1,78 +1,82 @@
 <template>
   <div class="flex-center">
-
     <div class="card">
-      <TopInfo :icon="icon" :title="title"/>
+      <TopInfo :icon="icon" :title="title" />
 
       <div class="">
-        <span class="text-caption-1"> {{ $t('amount_to_pay') }}</span>
+        <span class="text-caption-1"> {{ $t("amount_to_pay") }}</span>
 
         <div class="float-right">
           <span class="text-caption-1">
-            {{ getBupayload.currency }} {{ $formatCurrency(getBupayload.amount) }}
+            {{ getBupayload.currency }}
+            {{ $formatCurrency(getBupayload.amount) }}
           </span>
         </div>
 
         <hr />
-        
+
         <IconView icon="mpesa" width="68px" height="48px" />
 
         <div class="mgt-3">
-          <span class="text-list-title"> {{ $t('payment_instruction') }}</span>
+          <span class="text-list-title"> {{ $t("payment_instruction") }}</span>
           <div class="mgt-4 pdl-4">
-            <ol style="padding-left: 0px;">
-              <li class="text-body-2">{{ $t('open_mpesa') }}</li>
+            <ol style="padding-left: 0px">
+              <li class="text-body-2">{{ $t("open_mpesa") }}</li>
               <li class="text-body-2 mgt-2">
-                {{ $t('select_lipa_na_mpesa') }}
+                {{ $t("select_lipa_na_mpesa") }}
               </li>
               <li class="text-body-2 mgt-2">
-                {{ $t('enter_business_no') }} <span class="text-bold"> {{ getBupayload.paybill_no }} </span>
+                {{ $t("enter_business_no") }}
+                <span class="text-bold"> {{ getBupayload.paybill_no }} </span>
               </li>
               <li class="text-body-2 mgt-2">
-                {{ $t('enter_account_no') }} <span class="text-bold"> {{ getBupayload.txref }} </span>
-              </li> 
+                {{ $t("enter_account_no") }}
+                <span class="text-bold"> {{ getBupayload.txref }} </span>
+              </li>
               <li class="text-body-2 mgt-2">
-                {{ $t('enter_amount_no') }} <span class="text-bold"> {{ getBupayload.currency }} {{ $formatCurrency(getBupayload.amount) }} </span>
-              </li>   
+                {{ $t("enter_amount_no") }}
+                <span class="text-bold">
+                  {{ getBupayload.currency }}
+                  {{ $formatCurrency(getBupayload.amount) }}
+                </span>
+              </li>
               <li class="text-body-2 mgt-2">
-                {{ $t('enter_mpesa_pin') }}
-              </li>   
+                {{ $t("enter_mpesa_pin") }}
+              </li>
               <li class="text-body-2 mgt-2">
-                {{ $t('confirmation_from_mpesa') }}
-              </li>    
+                {{ $t("confirmation_from_mpesa") }}
+              </li>
               <li class="text-body-2 mgt-2">
-               {{ $t('click_complete_payment')}}
-              </li>  
+                {{ $t("click_complete_payment") }}
+              </li>
             </ol>
-            
           </div>
         </div>
 
         <div class="mgt-8">
-          <sendy-btn 
-          :loading="loading"
-          color='primary'
-          class="float-right"
-          @click="pollC2B"
+          <sendy-btn
+            :loading="loading"
+            color="primary"
+            class="float-right"
+            @click="pollC2B"
           >
-            {{ $t('complete_payment') }}
+            {{ $t("complete_payment") }}
           </sendy-btn>
         </div>
-
+      </div>
+      <TimerModal :show="showTimer" />
     </div>
-    <TimerModal :show="showTimer" />
-    </div>  
   </div>
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex';
-import TopInfo from '../components/topInfo';
-import TimerModal from '../components/modals/timerModal';
-import paymentGenMxn from '../mixins/paymentGenMxn';
+import { mapGetters, mapMutations } from "vuex";
+import TopInfo from "../components/topInfo";
+import TimerModal from "../components/modals/timerModal";
+import paymentGenMxn from "../mixins/paymentGenMxn";
 
 export default {
-  name: 'MpesaC2B',
+  name: "MpesaC2B",
   components: {
     TopInfo,
     TimerModal,
@@ -80,25 +84,24 @@ export default {
   mixins: [paymentGenMxn],
   data() {
     return {
-      icon: 'back',
-      title: this.$t('pay_with_mpesa'),
+      icon: "back",
+      title: this.$t("pay_with_mpesa"),
       loading: false,
       poll_count: 0,
       poll_limit: 30,
       showTimer: false,
-    }
+    };
   },
   computed: {
-    ...mapGetters(['getBupayload']),
+    ...mapGetters(["getBupayload"]),
   },
   methods: {
-    ...mapMutations(['setErrorText']),
+    ...mapMutations(["setErrorText"]),
     pollC2B() {
       this.poll_count = 0;
       this.showTimer = true;
-      const poll_limit = 6;
 
-      window.analytics.track('Complete Payment', {
+      window.analytics.track("Complete Payment", {
         ...this.commonTrackPayload(),
       });
 
@@ -111,47 +114,55 @@ export default {
               return;
             }
 
-            that.TransactionIdStatus(); 
-            if (poll_count === (that.poll_limit - 1)) {
+            that.TransactionIdStatus();
+            if (poll_count === that.poll_limit - 1) {
               that.loading = false;
               that.showTimer = false;
-              that.promptInfo = false,
-              that.setErrorText( this.$t('failed_to_charge_using_mpesa'));
-              that.$router.push({name: 'FailedView', params: { mpesa: 'mpesa'} });
+              (that.promptInfo = false),
+                that.setErrorText(this.$t("failed_to_charge_using_mpesa"));
+              that.$router.push({
+                name: "FailedView",
+                params: { mpesa: "mpesa" },
+              });
               return;
             }
           }, 10000 * poll_count);
-        }(poll_count));
+        })(poll_count);
       }
     },
 
     async TransactionIdStatus() {
       const payload = {
         url: `/api/v1/process/refstatus/${this.getBupayload.txref}`,
-      }
+      };
       this.$paymentAxiosGet(payload).then((res) => {
-        
-        if (res.status) { 
+        if (res.status) {
           switch (res.transaction_status) {
-            case 'success':
+            case "success":
               this.poll_count = this.poll_limit;
               this.$paymentNotification({
                 text: res.message,
               });
               this.loading = false;
               this.showTimer = false;
-              this.promptInfo = false,
-              this.$router.push({name: 'SuccessView', params: { mpesaCode: res.receipt_no } } );
+              (this.promptInfo = false),
+                this.$router.push({
+                  name: "SuccessView",
+                  params: { mpesaCode: res.receipt_no },
+                });
               break;
-            case 'failed':
+            case "failed":
               this.poll_count = this.poll_limit;
               this.loading = false;
               this.setErrorText(res.message);
               this.showTimer = false;
-              this.promptInfo = false,
-              this.$router.push({name: 'FailedView', params: { mpesa: 'mpesa'}  });
+              (this.promptInfo = false),
+                this.$router.push({
+                  name: "FailedView",
+                  params: { mpesa: "mpesa" },
+                });
               break;
-            case 'pending':
+            case "pending":
               break;
             default:
               break;
@@ -162,13 +173,12 @@ export default {
         this.poll_count = this.poll_limit;
         this.loading = false;
         this.showTimer = false;
-        this.promptInfo = false,
-        this.setErrorText(res.message);
-        this.$router.push({name: 'FailedView', params: { mpesa: 'mpesa'} });
-      })
-    }
-  }
-}
+        (this.promptInfo = false), this.setErrorText(res.message);
+        this.$router.push({ name: "FailedView", params: { mpesa: "mpesa" } });
+      });
+    },
+  },
+};
 </script>
 
 <style lang="scss">

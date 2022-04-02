@@ -2,11 +2,11 @@
   <div class="direction-flex mgt-6">
     <div class="list-icon">
       <slot name="icon">
-         <IconView :icon="icon || 'warning'" width="72" height="72" >
-      <slot>
+        <IconView :icon="icon || 'warning'" width="72" height="72" />
+      </slot>
     </div>
 
-    <div class="mgl-6" >
+    <div class="mgl-6">
       <slot name="list-title">
         <span class="subtitle-2-semibold text-gray90"> {{ title }} </span>
       </slot>
@@ -16,12 +16,12 @@
         </slot>
       </div>
     </div>
-  </div>  
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'AvatarListView',
-  props: [ 'title', 'subtitle', 'icon' ]
-}
+  name: "AvatarListView",
+  props: ["title", "subtitle", "icon"],
+};
 </script>
