@@ -64,7 +64,6 @@ const mixin = {
     },
     async $paymentAxiosPost(payload) {
       const headers = this.paymentCustomHeaders();
-      console.log(payload);
       try {
         const { url, params } = payload;
         const { data } = await axios.post(
