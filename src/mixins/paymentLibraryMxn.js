@@ -43,10 +43,10 @@ const mixin = {
       }
     },
     $paymentNotification(payload) {
-      this.$root.$emit("payment-notification", payload);
+      this.emitter.emit("payment-notification", payload);
     },
     $initAxiosErrorNotif(payload) {
-      this.$root.$emit("axios-notification", payload);
+      this.emitter.emit("axios-notification", payload);
     },
     paymentCustomHeaders() {
       const authToken = this.getBupayload.authToken;
@@ -64,6 +64,7 @@ const mixin = {
     },
     async $paymentAxiosPost(payload) {
       const headers = this.paymentCustomHeaders();
+      console.log(payload);
       try {
         const { url, params } = payload;
         const { data } = await axios.post(

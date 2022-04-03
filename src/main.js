@@ -6,6 +6,9 @@ import sendyBtn from "./components/sendyBtn";
 import paymentLibraryMxn from "./mixins/paymentLibraryMxn";
 import "vue-tel-input/dist/vue-tel-input.css";
 import i18n from "./plugins/i18n";
+import mitt from "mitt";
+
+const emitter = mitt();
 
 export default {
   install: (app, options) => {
@@ -21,8 +24,10 @@ export default {
 
     options.router.addRoute(router[0]);
 
-    app.config.globalProperties$sendyOptions = options;
+    app.config.globalProperties.emitter = emitter;
+    app.config.globalProperties.$sendyOptions = options;
     app.config.globalProperties.$t = (key) => i18n.global.t(key);
+
     // app.use(store);
     app.component("IconView", iconView);
 

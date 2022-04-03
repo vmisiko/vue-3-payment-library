@@ -13,7 +13,7 @@ function loadLocaleMessages() {
   return messages;
 }
 
-console.log(loadLocaleMessages())
+console.log(loadLocaleMessages());
 
 const i18n = createI18n({
   locale: "en",

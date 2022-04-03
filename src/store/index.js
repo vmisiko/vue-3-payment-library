@@ -1,4 +1,3 @@
-
 const store = {
   state: {
     paymentMethods: null,
