@@ -52,7 +52,6 @@
             getBupayload.amount > paymentOption.daily_limit
           "
           v-model="picked"
-          v-on="inputListeners"
         />
       </div>
     </div>
@@ -73,25 +72,16 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "PaymentOptionItem",
-  inheritAttrs: false,
-  props: ["value", "paymentOption"],
+  props: ["modelValue", "paymentOption"],
   data() {
     return {
-      picked: this.value,
+      picked: this.modelValue,
       balance: 0,
       loading: false,
     };
   },
   computed: {
     ...mapGetters(["getBupayload"]),
-    inputListeners() {
-      var vm = this;
-      return Object.assign({}, this.$attrs, {
-        input: function (event) {
-          vm.$emit("input", event.target.value);
-        },
-      });
-    },
   },
   mounted() {
     if (this.paymentOption.pay_method_id === 20) {
