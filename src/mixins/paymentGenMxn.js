@@ -72,7 +72,17 @@ const mixin = {
           paymentOptions.includes(item.pay_method_id)
         ): response.saved_payment_methods;
         this.setPaymentMethods(paymentMethods);
-        this.setSavedPayMethods(savedMethods);
+        switch (this.getBupayload.country_code) {
+          case "CI":
+            this.setSavedPayMethods(savedMethodsCI);
+            break;
+          case "UG":
+            this.setSavedPayMethods(savedMethodsUG);
+            break;
+          default:
+            this.setSavedPayMethods(savedMethods);
+            break;
+        }
       }
     },
     checkAvailableOptions(defaultPaymentMethod) {
