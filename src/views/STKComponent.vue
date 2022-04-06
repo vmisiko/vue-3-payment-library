@@ -134,7 +134,6 @@ export default {
       this.defaultPaymentMethod = this.getSavedPayMethods
         ? this.getSavedPayMethods.filter((method) => method.default === 1)[0]
         : [];
-      console.log(this.defaultPaymentMethod.pay_method_id);
     },
     async submit() {
       const entrypoint = localStorage.getItem("entry");
