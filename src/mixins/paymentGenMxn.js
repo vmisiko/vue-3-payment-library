@@ -70,8 +70,83 @@ const mixin = {
         const savedMethods = response.saved_payment_methods.filter((item) =>
           paymentOptions.includes(item.pay_method_id)
         );
+        const savedMethodsCI = [
+          {
+            id: 748,
+            user_id: "88888",
+            pay_method_id: 22,
+            pay_method_details: "4211-21XX-XXXX-8995",
+            pay_detail_id: "4ba12ce2-ee58-43cf-b119-e04b31ff3d9dMTN",
+            pay_method_name: "MTN",
+            default: 0,
+            psp: "FLW",
+            category: "Mobile Money",
+            status: 1,
+            stk_limit: null,
+            daily_limit: null,
+            transaction_limit: 30,
+          },
+          {
+            id: 748,
+            user_id: "88888",
+            pay_method_id: 24,
+            pay_method_details: "4211-21XX-XXXX-8995",
+            pay_detail_id: "4ba12ce2-ee58-43cf-b119-e04b31ff3d9dFLW",
+            pay_method_name: "Orange",
+            default: 0,
+            psp: "FLW",
+            category: "Mobile Money",
+            status: 1,
+            stk_limit: null,
+            daily_limit: null,
+            transaction_limit: 30,
+          },
+        ];
+
+        const savedMethodsUG = [
+          {
+            id: 748,
+            user_id: "88888",
+            pay_method_id: 22,
+            pay_method_details: "4211-21XX-XXXX-8995",
+            pay_detail_id: "4ba12ce2-ee58-43cf-b119-e04b31ff3d9dMTN",
+            pay_method_name: "MTN",
+            default: 1,
+            psp: "FLW",
+            category: "Mobile Money",
+            status: 1,
+            stk_limit: null,
+            daily_limit: null,
+            transaction_limit: 30,
+          },
+          {
+            id: 748,
+            user_id: "88888",
+            pay_method_id: 23,
+            pay_method_details: "4211-21XX-XXXX-8995",
+            pay_detail_id: "4ba12ce2-ee58-43cf-b119-e04b31ff3d9dAIRTEL",
+            pay_method_name: "Airtel",
+            default: 0,
+            psp: "FLW",
+            category: "Mobile Money",
+            status: 1,
+            stk_limit: null,
+            daily_limit: null,
+            transaction_limit: 30,
+          },
+        ];
         this.setPaymentMethods(paymentMethods);
-        this.setSavedPayMethods(savedMethods);
+        switch (this.getBupayload.country_code) {
+          case "CI":
+            this.setSavedPayMethods(savedMethodsCI);
+            break;
+          case "UG":
+            this.setSavedPayMethods(savedMethodsUG);
+            break;
+          default:
+            this.setSavedPayMethods(savedMethods);
+            break;
+        }
       }
     },
     checkAvailableOptions(defaultPaymentMethod) {

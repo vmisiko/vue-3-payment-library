@@ -5,6 +5,18 @@
         <IconView icon="mpesa" />
         <span class="mgl-2">{{ paymentOption.pay_method_name }}</span>
       </div>
+      <div v-if="paymentOption.pay_method_id === 22" class="direction-flex">
+        <IconView icon="mpesa" />
+        <span class="mgl-2">{{ paymentOption.pay_method_name }}</span>
+      </div>
+       <div v-if="paymentOption.pay_method_id === 23" class="direction-flex">
+        <IconView icon="mpesa" />
+        <span class="mgl-2">{{ paymentOption.pay_method_name }}</span>
+      </div>
+       <div v-if="paymentOption.pay_method_id === 24" class="direction-flex">
+        <IconView icon="mpesa" />
+        <span class="mgl-2">{{ paymentOption.pay_method_name }}</span>
+      </div>
       <div v-if="paymentOption.pay_method_id === 2" class="direction-flex">
         <IconView
           :icon="

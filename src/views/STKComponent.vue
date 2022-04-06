@@ -15,44 +15,56 @@
 
         <hr />
 
-        <div class="mgt-8">
-          <div class="direction-flex">
-            <span class="text-caption-2">Country Code</span>
-            <label class="mgl-11 text-caption-2">M-PESA payment number</label>
+        <div v-if="!redirect">
+          <div class="mgt-8">
+            <div class="direction-flex">
+              <span class="text-caption-2">Country Code</span>
+              <label class="mgl-11 text-caption-2">{{ defaultPaymentMethod.pay_method_id === 1 ? "M-PESA payment number" : "Phone Number" }}</label>
+            </div>
+
+            <div class="mgt-1">
+              <vue-tel-input
+                v-model="phone"
+                autoFormat
+                :defaultCountry="getBupayload.country_code"
+                :dropdownOptions="dropdownOptions"
+                mode="national"
+                :invalidMsg="$t('phone_number_invalid')"
+                @validate="validatePhone"
+              >
+              </vue-tel-input>
+              <span class="text-caption-2 text-error" v-if="error">
+                {{ error }}</span
+              >
+            </div>
           </div>
 
-          <div class="mgt-1">
-            <vue-tel-input
-              v-model="phone"
-              autoFormat
-              :defaultCountry="getBupayload.country_code"
-              :dropdownOptions="dropdownOptions"
-              mode="national"
-              :invalidMsg="$t('phone_number_invalid')"
-              @validate="validatePhone"
+          <div class="alert mgt-10">
+            <span class="text-caption-2 pdt-2 text-midnightBlue20">{{
+              defaultPaymentMethod.pay_method_id === 1 ? $t("mpesa_prompt") : $t("mobile_prompt")
+            }}</span>
+          </div>
+
+          <div class="mgt-8">
+            <sendy-btn
+              color="primary"
+              class="float-right"
+              @click="submit"
+              :loading="loading"
+              :disabled="!disable"
             >
-            </vue-tel-input>
-            <span class="text-caption-2 text-error" v-if="error">
-              {{ error }}</span
-            >
+              {{ $t("continue") }}
+            </sendy-btn>
           </div>
         </div>
 
-        <div class="alert mgt-10">
-          <span class="text-caption-2 pdt-2 text-midnightBlue20">{{
-            $t("mpesa_prompt")
-          }}</span>
-        </div>
-
-        <div class="mgt-8">
+        <div class="mgt-8" v-else>
           <sendy-btn
             color="primary"
-            class="float-right"
-            @click="submit"
-            :loading="loading"
-            :disabled="!disable"
+            :block="true"
+            @click="init3DS"
           >
-            {{ $t("continue") }}
+            Click here to continue
           </sendy-btn>
         </div>
       </div>
@@ -98,6 +110,9 @@ export default {
       disable: false,
       showErrorModal: false,
       errorText: this.$t("unable_to_send_mpesa_request"),
+      defaultPaymentMethod: 1,
+      additional_data: null,
+      redirect: false,
     };
   },
   computed: {
@@ -110,8 +125,17 @@ export default {
       }
     },
   },
+  mounted() {
+    this.getDefaultpayMethod();
+  },
   methods: {
     ...mapMutations(["setErrorText"]),
+    getDefaultpayMethod() {
+      this.defaultPaymentMethod = this.getSavedPayMethods
+        ? this.getSavedPayMethods.filter((method) => method.default === 1)[0]
+        : [];
+      console.log(this.defaultPaymentMethod.pay_method_id);
+    },
     async submit() {
       const entrypoint = localStorage.getItem("entry");
       if (entrypoint === "resolve-payment-checkout") {
@@ -120,7 +144,6 @@ export default {
       }
 
       this.loading = true;
-      this.showTimer = true;
       this.promptInfo = true;
       const payload = {
         country: this.getBupayload.country_code,
@@ -130,16 +153,17 @@ export default {
         currency: this.getBupayload.currency,
         bulk: this.getBupayload.bulk,
         entity: this.getBupayload.entity_id,
-        firstname: "",
-        lastname: "",
-        paymethod: 1,
+        firstname: this.getBupayload.firstname,
+        lastname: this.getBupayload.lastname,
+        paymethod: this.defaultPaymentMethod.pay_method_id,
         phonenumber: this.formattedPhone,
         company_code: this.getBupayload.company_code,
         bulkrefno: this.getBupayload.bulk_reference_number,
+        email: this.getBupayload.email,
       };
 
       const fullPayload = {
-        url: "/api/v1/process",
+        url: "/api/v3/process",
         params: payload,
       };
 
@@ -154,10 +178,17 @@ export default {
           });
           return;
         }
+
+        if (response.redirect) {
+          this.additionalData = response.additional_data;
+          this.init3DS();
+          return;
+        }
         this.pollMpesa();
         return;
       }
-      (this.promptInfo = false), (this.showTimer = false);
+      this.promptInfo = false;
+      this.showTimer = false;
       this.loading = false;
       this.showErrorModal = true;
     },
@@ -175,7 +206,7 @@ export default {
         company_code: this.getBupayload.company_code,
         entity: this.getBupayload.entity_id,
         pay_detail_id: this.formattedPhone,
-        payment_method: 1,
+        payment_method: this.defaultPaymentMethod.pay_method_id,
         references: this.getBupayload.references,
       };
 
@@ -231,7 +262,6 @@ export default {
     },
     pollMpesa() {
       this.poll_count = 0;
-
       for (let poll_count = 0; poll_count < this.poll_limit; poll_count++) {
         const that = this;
         (function (poll_count) {
@@ -259,6 +289,8 @@ export default {
     },
 
     async TransactionIdStatus() {
+      this.showTimer = true;
+
       const payload = {
         url: `/api/v1/process/status/${this.transaction_id}`,
       };
@@ -309,6 +341,29 @@ export default {
       this.promptInfo = false;
       this.setErrorText(this.$t("unable_to_confirm_mpesa"));
       this.$router.push({ name: "FailedView", params: { mpesa: "mpesa" } });
+    },
+    init3DS() {
+      this.redirect = false;
+      const res = !this.additionalData
+        ? this.additionalData
+        : this.additionalData[0];
+      const url = res.field;
+      const urlWindow = window.open(url, "");
+
+      if (typeof urlWindow == 'undefined') {
+        this.redirect = true;
+        return;
+      }
+      const timer = setInterval(() => {
+        if (urlWindow.closed) {
+          this.pollMpesa();
+          clearInterval(timer);
+        }
+      }, 500);
+
+      setTimeout(() => {
+        urlWindow.close();
+      }, 30000);
     },
   },
 };
