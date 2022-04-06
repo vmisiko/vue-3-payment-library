@@ -26,12 +26,7 @@
       >
 
       <div class="direction-flex float-right">
-        <IconView
-          v-if="paymentMethod.pay_method_id === 1"
-          icon="mpesa"
-          width="34"
-          height="24"
-        />
+        <img v-if="paymentMethod.category === 'Mobile Money'" :src="`${iconUrl}/${paymentMethod.pay_method_name.toLowerCase()}.svg`" alt="">
         <IconView
           v-if="paymentMethod.pay_method_id === 2"
           :icon="
@@ -51,7 +46,7 @@
         />
         <span
           class="mgl-2 text-caption-1"
-          v-if="paymentMethod.pay_method_id === 1"
+          v-if="paymentMethod.category === 'Mobile Money'"
         >
           {{ paymentMethod.pay_method_name }}</span
         >
@@ -105,7 +100,9 @@ export default {
   name: "PaymentDetail",
   props: ["currency", "amount", "paymentMethod", "paymentStatus"],
   data() {
-    return {};
+    return {
+      iconUrl: 'https://sendy-web-apps-assets.s3.eu-west-1.amazonaws.com/payment-method-icons',
+    };
   },
   computed: {
     ...mapGetters(["getBupayload"]),

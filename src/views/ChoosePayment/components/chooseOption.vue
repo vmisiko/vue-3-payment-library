@@ -1,20 +1,8 @@
 <template>
   <div>
     <div class="direction-flex">
-      <div v-if="paymentOption.pay_method_id === 1" class="direction-flex">
-        <IconView icon="mpesa" />
-        <span class="mgl-2">{{ paymentOption.pay_method_name }}</span>
-      </div>
-      <div v-if="paymentOption.pay_method_id === 22" class="direction-flex">
-        <IconView icon="mpesa" />
-        <span class="mgl-2">{{ paymentOption.pay_method_name }}</span>
-      </div>
-       <div v-if="paymentOption.pay_method_id === 23" class="direction-flex">
-        <IconView icon="mpesa" />
-        <span class="mgl-2">{{ paymentOption.pay_method_name }}</span>
-      </div>
-       <div v-if="paymentOption.pay_method_id === 24" class="direction-flex">
-        <IconView icon="mpesa" />
+      <div v-if="paymentOption.category === 'Mobile Money'" class="direction-flex">
+        <img :src="`${iconUrl}/${paymentOption.pay_method_name.toLowerCase()}.svg`" alt="">
         <span class="mgl-2">{{ paymentOption.pay_method_name }}</span>
       </div>
       <div v-if="paymentOption.pay_method_id === 2" class="direction-flex">
@@ -90,6 +78,7 @@ export default {
       picked: this.modelValue,
       balance: 0,
       loading: false,
+      iconUrl: 'https://sendy-web-apps-assets.s3.eu-west-1.amazonaws.com/payment-method-icons',
     };
   },
   computed: {
