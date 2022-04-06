@@ -1,54 +1,53 @@
 <template>
   <div id="no-option" class="modal" ref="noOptionsModal">
-      <div class="modal-content-option ">
-        <div class="flex-center">
+    <div class="modal-content-option">
+      <div class="flex-center">
         <div class="text-center mgt-11">
           <IconView icon="add-payment" />
         </div>
       </div>
       <div class="text-center mgt-10">
-        <div><span class="text-subtitle-1">{{ $t('payment_option_missing') }}</span></div>
+        <div>
+          <span class="text-subtitle-1">{{
+            $t("payment_option_missing")
+          }}</span>
+        </div>
         <span class="text-body-2 mgt-3">
-          {{ $t('add_new_payment_method_proceed') }}
+          {{ $t("add_new_payment_method_proceed") }}
         </span>
       </div>
 
       <div class="text-center mgt-8">
-        <sendy-btn 
-          color='primary'
-          class=""
-         @click="addPaymentOption"
-        >
-          {{ $t('add_payment_option') }}
+        <sendy-btn color="primary" class="" @click="addPaymentOption">
+          {{ $t("add_payment_option") }}
         </sendy-btn>
       </div>
 
       <div class="text-center mgt-8">
-        <span class="link" @click="handleBack">{{ $t('back') }}</span>
+        <span class="link" @click="handleBack">{{ $t("back") }}</span>
       </div>
-      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import paymentGenMxn from '../../mixins/paymentGenMxn';
+import { mapGetters } from "vuex";
+import paymentGenMxn from "../../mixins/paymentGenMxn";
 
 export default {
-  name: 'cvvModule',
+  name: "cvvModule",
   mixins: [paymentGenMxn],
-  props: ['show'],
+  props: ["show"],
   data() {
-    return {
-    }
+    return {};
   },
   computed: {
-    ...mapGetters(['getBupayload']),
+    ...mapGetters(["getBupayload"]),
   },
   watch: {
     show(val) {
-      val ? this.handleOpen(): this.handleClose();
-    }
+      val ? this.handleOpen() : this.handleClose();
+    },
   },
   mounted() {
     this.handleOpen();
@@ -56,30 +55,29 @@ export default {
   methods: {
     handleOpen() {
       let el = this.$refs.noOptionsModal;
-      el.style.display = 'block';
+      el.style.display = "block";
     },
     handleClose() {
       let el = this.$refs.noOptionsModal;
-      el.style.display = 'none';
+      el.style.display = "none";
     },
     addPaymentOption() {
-      window.analytics.track('Add Payment Option', {
+      window.analytics.track("Add Payment Option", {
         ...this.commonTrackPayload(),
         timestamp_zone: this.paymentTimezone,
         country_code: this.getBupayload.country_code,
-      })
-      this.$router.push('/add-payment');
+      });
+      this.$router.push("/add-payment");
     },
     handleBack() {
       const entryRoute = localStorage.entry_route;
-      this.$router.push({name: entryRoute});
-    }
-  }
-}
+      this.$router.push({ name: entryRoute });
+    },
+  },
+};
 </script>
 
-
-<style lang="scss">     
+<style lang="scss">
 .modal {
   display: none;
   position: fixed;
@@ -88,10 +86,10 @@ export default {
   left: 0;
   top: 0;
   width: 100%;
-  height: 100%; 
+  height: 100%;
   overflow: auto;
-  background-color: rgb(0,0,0);
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 /* Modal Content */
@@ -104,22 +102,34 @@ export default {
   border-radius: 4px;
   width: 348px;
   height: 496px;
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   -webkit-animation-name: animatetop;
   -webkit-animation-duration: 0.4s;
   animation-name: animatetop;
-  animation-duration: 0.4s
+  animation-duration: 0.4s;
 }
 
 /* Add Animation */
 @-webkit-keyframes animatetop {
-  from {top:-300px; opacity:0} 
-  to {top:0; opacity:1}
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
 }
 
 @keyframes animatetop {
-  from {top:-300px; opacity:0}
-  to {top:0; opacity:1}
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
 }
 
 /* The Close Button */
@@ -136,6 +146,4 @@ export default {
   text-decoration: none;
   cursor: pointer;
 }
-
-
 </style>

@@ -3,95 +3,147 @@
     <Processing v-if="getLoading" :text="loadingText" />
 
     <div class="card" v-else>
-      <TopInfo :icon="icon" :title="title"/>
+      <TopInfo :icon="icon" :title="title" />
 
-      <span v-if="creditCards.length !== 0" class="mgt-2 text-overline">{{ $t('credit_card_payment') }}</span>
-      <div class="" v-if="creditCards.length !== 0" >
-        <div v-for="(card, index) in creditCards" :key="index" class="mgt-4 option-border text-caption-1 pda-3" :class="{'selected-border': (picked === card.pay_detail_id)}" >
-          <ChooseOption :paymentOption="card" v-model="picked" @change="update" />
+      <span v-if="creditCards.length !== 0" class="mgt-2 text-overline">{{
+        $t("credit_card_payment")
+      }}</span>
+      <div class="" v-if="creditCards.length !== 0">
+        <div
+          v-for="(card, index) in creditCards"
+          :key="index"
+          class="mgt-4 option-border text-caption-1 pda-3"
+          :class="{ 'selected-border': picked === card.pay_detail_id }"
+        >
+          <ChooseOption
+            :paymentOption="card"
+            v-model="picked"
+            @change="update"
+          />
         </div>
       </div>
 
-      <span v-if="savedMobile.length !== 0" class="mgt-8 text-overline">{{ $t('mobile_money')}}</span>
+      <span v-if="savedMobile.length !== 0" class="mgt-8 text-overline">{{
+        $t("mobile_money")
+      }}</span>
       <div v-if="savedMobile.length !== 0">
-        <div v-for="(mobile, index) in savedMobile" :key="index" class="mgt-4 option-border text-caption-1 pda-3 " :class="{'selected-border': picked === mobile.pay_detail_id, 'disabled': mobile.daily_limit && getBupayload.amount > mobile.daily_limit }">
-          <ChooseOption :paymentOption="mobile" v-model="picked" @change="update" />
+        <div
+          v-for="(mobile, index) in savedMobile"
+          :key="index"
+          class="mgt-4 option-border text-caption-1 pda-3"
+          :class="{
+            'selected-border': picked === mobile.pay_detail_id,
+            disabled:
+              mobile.daily_limit && getBupayload.amount > mobile.daily_limit,
+          }"
+        >
+          <ChooseOption
+            :paymentOption="mobile"
+            v-model="picked"
+            @change="update"
+          />
         </div>
-      </div> 
+      </div>
 
       <div class="mgt-8" v-if="virtualAccounts.length !== 0">
         <span class="text-overline"> BANK TRANSFER</span>
         <div>
-          <div v-for="(vaccount, index) in virtualAccounts" :key="index" class="mgt-4 option-border text-caption-1 pda-3 " :class="{'selected-border': picked === vaccount.pay_detail_id, 'disabled': vaccount.daily_limit && getBupayload.amount > vaccount.daily_limit }">
-            <ChooseOption :paymentOption="vaccount" v-model="picked" @change="update" />
+          <div
+            v-for="(vaccount, index) in virtualAccounts"
+            :key="index"
+            class="mgt-4 option-border text-caption-1 pda-3"
+            :class="{
+              'selected-border': picked === vaccount.pay_detail_id,
+              disabled:
+                vaccount.daily_limit &&
+                getBupayload.amount > vaccount.daily_limit,
+            }"
+          >
+            <ChooseOption
+              :paymentOption="vaccount"
+              v-model="picked"
+              @change="update"
+            />
           </div>
-        </div> 
+        </div>
       </div>
 
       <hr class="mgt-5" />
 
-      <span class="link mgt-5" @click="addPaymentOption"> + {{ $t('add_payment_option') }}</span>
+      <span class="link mgt-5" @click="addPaymentOption">
+        + {{ $t("add_payment_option") }}</span
+      >
 
       <div class="mgt-4 text-right">
-         <sendy-btn 
-          color='primary'
+        <sendy-btn
+          color="primary"
           class="mgt-10"
           :disabled="!picked"
           @click="handleRouting"
           :loading="loading"
-          >
-            {{ $t('continue') }}
-          </sendy-btn>
+        >
+          {{ $t("continue") }}
+        </sendy-btn>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex';
-import TopInfo from '../../components/topInfo';
-import paymentGenMxn from '../../mixins/paymentGenMxn';
-import NoOptionsModal from '../../components/modals/noOptionsModal';
-import ChooseOption from './components/chooseOption';
-import Processing from '../../components/processing';
+import { mapGetters, mapMutations } from "vuex";
+import TopInfo from "../../components/topInfo";
+import paymentGenMxn from "../../mixins/paymentGenMxn";
+import ChooseOption from "./components/chooseOption";
+import Processing from "../../components/processing";
 
 export default {
-  name: 'ChoosePayment',
+  name: "ChoosePayment",
   mixins: [paymentGenMxn],
   components: {
     TopInfo,
-    NoOptionsModal,
     ChooseOption,
     Processing,
   },
   data() {
     return {
-      icon: 'back',
-      title: this.$t('choose_payment_option'),
-      loadingText: 'Loading..',
-      picked: '',
+      icon: "back",
+      title: this.$t("choose_payment_option"),
+      loadingText: "Loading..",
+      picked: "",
       loading: false,
       startTime: null,
-    }
+    };
   },
   computed: {
-    ...mapGetters(['getSavedPayMethods', 'getBupayload']),
+    ...mapGetters(["getSavedPayMethods", "getBupayload"]),
     creditCards() {
-      const result = this.getSavedPayMethods ? this.getSavedPayMethods.filter(element => element.pay_method_id === 2) : [];
+      const result = this.getSavedPayMethods
+        ? this.getSavedPayMethods.filter(
+            (element) => element.pay_method_id === 2
+          )
+        : [];
       return result;
     },
     savedMobile() {
-      const result = this.getSavedPayMethods ? this.getSavedPayMethods.filter(element => element.pay_method_id === 1) : [];
+      const result = this.getSavedPayMethods
+        ? this.getSavedPayMethods.filter(
+            (element) => element.pay_method_id === 1
+          )
+        : [];
       return result;
     },
     virtualAccounts() {
-      const result = this.getSavedPayMethods ? this.getSavedPayMethods.filter(element => element.pay_method_id === 20) : [];
+      const result = this.getSavedPayMethods
+        ? this.getSavedPayMethods.filter(
+            (element) => element.pay_method_id === 20
+          )
+        : [];
       return result;
-    }
+    },
   },
   watch: {
     getSavedPayMethods(newVal, oldVal) {
-      if (newVal !== oldVal ) {
+      if (newVal !== oldVal) {
         this.getDefaultpayMethod();
       }
     },
@@ -104,66 +156,78 @@ export default {
     this.startTime = Date.now();
   },
   methods: {
-    ...mapMutations(['setPaymentMethods', 'setSavedPayMethods']),
+    ...mapMutations(["setPaymentMethods", "setSavedPayMethods"]),
     getDefaultpayMethod() {
-      const method = this.getSavedPayMethods ? this.getSavedPayMethods.filter(method => method.default === 1)[0] : [];
-      this.picked = method ? method.pay_detail_id : '';
+      const method = this.getSavedPayMethods
+        ? this.getSavedPayMethods.filter((method) => method.default === 1)[0]
+        : [];
+      this.picked = method ? method.pay_detail_id : "";
     },
 
     async update() {
       const payload = {
         user_id: this.getBupayload.user_id,
         pay_detail_id: this.picked,
-      }
+      };
 
       const fullPayload = {
         url: `/set_default`,
         params: payload,
-      }
+      };
 
-      const payment_method = this.getSavedPayMethods.filter(elements => elements.pay_detail_id === this.picked)[0].pay_method_name;
-      window.analytics.track('Choose Payment Option', {
+      const payment_method = this.getSavedPayMethods.filter(
+        (elements) => elements.pay_detail_id === this.picked
+      )[0].pay_method_name;
+      window.analytics.track("Choose Payment Option", {
         ...this.commonTrackPayload(),
         payment_method: payment_method,
       });
 
-      this.loading = true
+      this.loading = true;
       const response = await this.$paymentAxiosPut(fullPayload);
       this.loading = false;
       if (response) {
-        this.$paymentNotification({ text: `${this.setSelectedName()} selected for payment.`})
+        this.$paymentNotification({
+          text: `${this.setSelectedName()} selected for payment.`,
+        });
       }
     },
 
     setSelectedName() {
-      const result = this.getSavedPayMethods.filter(element => element.pay_detail_id === this.picked)[0];
-      return result ? result.pay_method_name : '';
+      const result = this.getSavedPayMethods.filter(
+        (element) => element.pay_detail_id === this.picked
+      )[0];
+      return result ? result.pay_method_name : "";
     },
     handleRouting() {
       const entryRoute = localStorage.entry_route;
       const entryPoint = localStorage.entry;
-      const payment_method = this.getSavedPayMethods.filter(elements => elements.pay_detail_id === this.picked)[0];
-      const countSavedCards = this.getSavedPayMethods.filter(element => element.pay_method_id === 2);
-      
+      const payment_method = this.getSavedPayMethods.filter(
+        (elements) => elements.pay_detail_id === this.picked
+      )[0];
+      const countSavedCards = this.getSavedPayMethods.filter(
+        (element) => element.pay_method_id === 2
+      );
+
       switch (payment_method.pay_method_id) {
         case 1:
-          window.analytics.track('Continue after selecting  M-Pesa', {
-            ...this.commonTrackPayload(), 
-          }); 
+          window.analytics.track("Continue after selecting  M-Pesa", {
+            ...this.commonTrackPayload(),
+          });
           break;
-        case 2: 
-          window.analytics.track('Continue after selecting Card', {
-            ...this.commonTrackPayload(), 
+        case 2:
+          window.analytics.track("Continue after selecting Card", {
+            ...this.commonTrackPayload(),
             number_of_cards: countSavedCards.length,
-            selected_cards_network: payment_method.psp
-          }); 
+            selected_cards_network: payment_method.psp,
+          });
           break;
-        case 20: 
-          window.analytics.track('Continue after Pay by bank', {
-            ...this.commonTrackPayload(), 
+        case 20:
+          window.analytics.track("Continue after Pay by bank", {
+            ...this.commonTrackPayload(),
             number_of_cards: countSavedCards.length,
-            selected_cards_network: payment_method.psp
-          }); 
+            selected_cards_network: payment_method.psp,
+          });
           break;
         default:
           break;
@@ -174,34 +238,32 @@ export default {
         return;
       }
 
-      switch(entryPoint) {
-        case 'checkout':
-          this.$router.push({name: 'Entry'});
+      switch (entryPoint) {
+        case "checkout":
+          this.$router.push({ name: "Entry" });
           break;
-        case 'choose-payment':
+        case "choose-payment":
           this.$router.push({ name: entryRoute });
           break;
-        case 'choose-payment-checkout':
-          this.$router.push({ name: 'ChoosePaymentCheckout'});
+        case "choose-payment-checkout":
+          this.$router.push({ name: "ChoosePaymentCheckout" });
           break;
-        case 'payment-option':
-          this.$router.push({ name: 'PaymentOptionsPage'});
+        case "payment-option":
+          this.$router.push({ name: "PaymentOptionsPage" });
           break;
         default:
-          this.$router.push({name: 'Entry'});
+          this.$router.push({ name: "Entry" });
           break;
       }
-    }, 
+    },
     addPaymentOption() {
-      const finishTime = Date.now - this.startTime;
-      window.analytics.track('Add Payment Option', {
+      window.analytics.track("Add Payment Option", {
         ...this.commonTrackPayload(),
         timezone: this.paymentTimezone,
         country_code: this.getBupayload.country_code,
-      })
-      this.$router.push('/add-payment');
-    }
-  }
-}
+      });
+      this.$router.push("/add-payment");
+    },
+  },
+};
 </script>
-

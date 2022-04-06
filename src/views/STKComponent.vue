@@ -1,15 +1,15 @@
 <template>
   <div class="flex-center">
-
     <div class="card-min">
-      <TopInfo :icon="icon" :title="title"/>
+      <TopInfo :icon="icon" :title="title" />
 
       <div class="mgt-8">
         <span class="text-caption-1"> Amount to pay</span>
 
         <div class="float-right">
-           <span class="text-caption-1">
-            {{ getBupayload.currency }} {{ $formatCurrency(getBupayload.amount) }}
+          <span class="text-caption-1">
+            {{ getBupayload.currency }}
+            {{ $formatCurrency(getBupayload.amount) }}
           </span>
         </div>
 
@@ -20,11 +20,11 @@
             <span class="text-caption-2">Country Code</span>
             <label class="mgl-11 text-caption-2">M-PESA payment number</label>
           </div>
-          
+
           <div class="mgt-1">
-            <vue-tel-input 
-              v-model="phone" 
-              autoFormat 
+            <vue-tel-input
+              v-model="phone"
+              autoFormat
               :defaultCountry="getBupayload.country_code"
               :dropdownOptions="dropdownOptions"
               mode="national"
@@ -32,43 +32,45 @@
               @validate="validatePhone"
             >
             </vue-tel-input>
-             <span class="text-caption-2 text-error" v-if="error"> {{ error }}</span>
+            <span class="text-caption-2 text-error" v-if="error">
+              {{ error }}</span
+            >
           </div>
-          
         </div>
 
         <div class="alert mgt-10">
-          <span class="text-caption-2 pdt-2 text-midnightBlue20">{{ $t('mpesa_prompt') }}</span>
+          <span class="text-caption-2 pdt-2 text-midnightBlue20">{{
+            $t("mpesa_prompt")
+          }}</span>
         </div>
 
         <div class="mgt-8">
-          <sendy-btn 
-            color='primary'
+          <sendy-btn
+            color="primary"
             class="float-right"
             @click="submit"
             :loading="loading"
             :disabled="!disable"
           >
-            {{ $t('continue')}}
+            {{ $t("continue") }}
           </sendy-btn>
         </div>
-
+      </div>
+      <TimerModal :show="showTimer" @close="closeTimer" />
+      <MpesaErrorModal :show="showErrorModal" :text="errorText" />
     </div>
-    <TimerModal :show="showTimer" @close="closeTimer" />
-    <MpesaErrorModal :show="showErrorModal" :text="errorText" />
-    </div>  
   </div>
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex';
-import { VueTelInput } from 'vue-tel-input';
-import TopInfo from '../components/topInfo';
-import TimerModal from '../components/modals/timerModal';
-import MpesaErrorModal from '../components/modals/MpesaErrorModal';
+import { mapGetters, mapMutations } from "vuex";
+import { VueTelInput } from "vue-tel-input";
+import TopInfo from "../components/topInfo";
+import TimerModal from "../components/modals/timerModal";
+import MpesaErrorModal from "../components/modals/MpesaErrorModal";
 
 export default {
-  name: 'STKComponent',
+  name: "STKComponent",
   components: {
     TopInfo,
     TimerModal,
@@ -77,11 +79,11 @@ export default {
   },
   data() {
     return {
-      icon: 'back',
-      title: this.$t('pay_with_mpesa'),
+      icon: "back",
+      title: this.$t("pay_with_mpesa"),
       phone: null,
       promptInfo: false,
-      error: '',
+      error: "",
       loading: false,
       transaction_id: null,
       poll_count: 0,
@@ -90,30 +92,30 @@ export default {
       dropdownOptions: {
         disabled: true,
         showFlags: true,
-        showDialCodeInSelection: true
+        showDialCodeInSelection: true,
       },
       formattedPhone: null,
       disable: false,
       showErrorModal: false,
-      errorText: this.$t('unable_to_send_mpesa_request'),
-    }
+      errorText: this.$t("unable_to_send_mpesa_request"),
+    };
   },
   computed: {
-    ...mapGetters(['getBupayload']),
+    ...mapGetters(["getBupayload"]),
   },
   watch: {
     phone(val) {
       if (val && val.length > 8) {
-        this.error = '';
+        this.error = "";
       }
-    }
+    },
   },
   methods: {
-    ...mapMutations(['setErrorText']),
-     async submit() {
-      const entrypoint = localStorage.getItem('entry')
-      if (entrypoint === 'resolve-payment-checkout') {
-        this.submitRetry()
+    ...mapMutations(["setErrorText"]),
+    async submit() {
+      const entrypoint = localStorage.getItem("entry");
+      if (entrypoint === "resolve-payment-checkout") {
+        this.submitRetry();
         return;
       }
 
@@ -134,12 +136,12 @@ export default {
         phonenumber: this.formattedPhone,
         company_code: this.getBupayload.company_code,
         bulkrefno: this.getBupayload.bulk_reference_number,
-      }
+      };
 
       const fullPayload = {
-        url: '/api/v1/process',
+        url: "/api/v1/process",
         params: payload,
-      }
+      };
 
       const response = await this.$paymentAxiosPost(fullPayload);
       this.transaction_id = response.transaction_id;
@@ -147,16 +149,15 @@ export default {
         if (this.getBupayload.bulk) {
           this.loading = false;
           this.$router.push({
-            name: 'SuccessView',
-            duration: duration,
+            name: "SuccessView",
+            duration: "",
           });
           return;
         }
         this.pollMpesa();
         return;
       }
-      this.promptInfo = false,
-      this.showTimer = false;
+      (this.promptInfo = false), (this.showTimer = false);
       this.loading = false;
       this.showErrorModal = true;
     },
@@ -166,7 +167,7 @@ export default {
         return;
       }
 
-      this.startResponseTime = new Date(); 
+      this.startResponseTime = new Date();
 
       this.loading = true;
       const payload = {
@@ -175,13 +176,13 @@ export default {
         entity: this.getBupayload.entity_id,
         pay_detail_id: this.formattedPhone,
         payment_method: 1,
-        references: this.getBupayload.references
-      }
+        references: this.getBupayload.references,
+      };
 
       const fullPayload = {
-        url: '/api/v3/process/retry',
+        url: "/api/v3/process/retry",
         params: payload,
-      }
+      };
 
       const response = await this.$paymentAxiosPost(fullPayload);
 
@@ -196,7 +197,7 @@ export default {
       this.showErrorModal = true;
     },
     async bulkretry() {
-      this.startResponseTime = new Date(); 
+      this.startResponseTime = new Date();
       this.loading = true;
       const payload = {
         user_id: this.getBupayload.user_id,
@@ -204,34 +205,33 @@ export default {
         entity: this.getBupayload.entity_id,
         pay_detail_id: this.formattedPhone,
         payment_method: 1,
-        references: this.getBupayload.references
-      }
+        references: this.getBupayload.references,
+      };
 
       const fullPayload = {
-        url: '/api/v3/bulk/retry',
+        url: "/api/v3/bulk/retry",
         params: payload,
-      }
+      };
 
-      const response = await this.$paymentAxiosPost(fullPayload);    
+      const response = await this.$paymentAxiosPost(fullPayload);
 
       this.transaction_id = response.transaction_id;
       if (response.status) {
         this.pollMpesa();
         return;
       }
-      this.promptInfo = false,
-      this.showTimer = false;
+      (this.promptInfo = false), (this.showTimer = false);
       this.loading = false;
       this.showErrorModal = true;
     },
     validatePhone(val) {
-     this.formattedPhone = val.valid ? val.number.split('+')[1] : null;
-     this.disable = val.valid;
-    return;
+      this.formattedPhone = val.valid ? val.number.split("+")[1] : null;
+      this.disable = val.valid;
+      return;
     },
     pollMpesa() {
       this.poll_count = 0;
-      
+
       for (let poll_count = 0; poll_count < this.poll_limit; poll_count++) {
         const that = this;
         (function (poll_count) {
@@ -241,29 +241,31 @@ export default {
               return;
             }
 
-            that.TransactionIdStatus(); 
-            if (poll_count === (that.poll_limit - 1) ) {
+            that.TransactionIdStatus();
+            if (poll_count === that.poll_limit - 1) {
               that.loading = false;
               that.showTimer = false;
               that.promptInfo = false;
-              that.setErrorText(this.$t('failed_to_charge_using_mpesa'));
-              that.$router.push({name: 'FailedView', params: { mpesa: 'mpesa'}  });
+              that.setErrorText(this.$t("failed_to_charge_using_mpesa"));
+              that.$router.push({
+                name: "FailedView",
+                params: { mpesa: "mpesa" },
+              });
               return;
             }
           }, 10000 * poll_count);
-        }(poll_count));
+        })(poll_count);
       }
     },
 
     async TransactionIdStatus() {
-
       const payload = {
         url: `/api/v1/process/status/${this.transaction_id}`,
-      }
+      };
       this.$paymentAxiosGet(payload).then((res) => {
-        if (res.status) { 
+        if (res.status) {
           switch (res.transaction_status) {
-            case 'success':
+            case "success":
               this.poll_count = this.poll_limit;
               this.$paymentNotification({
                 text: res.message,
@@ -271,17 +273,23 @@ export default {
               this.loading = false;
               this.showTimer = false;
               this.promptInfo = false;
-              this.$router.push({name: 'SuccessView', params: { mpesaCode: res.receipt_no }});
+              this.$router.push({
+                name: "SuccessView",
+                params: { mpesaCode: res.receipt_no },
+              });
               break;
-            case 'failed':
+            case "failed":
               this.poll_count = this.poll_limit;
               this.loading = false;
               this.setErrorText(res.message);
               this.showTimer = false;
               this.promptInfo = false;
-              this.$router.push({name: 'FailedView', params: { mpesa: 'mpesa'}  });
+              this.$router.push({
+                name: "FailedView",
+                params: { mpesa: "mpesa" },
+              });
               break;
-            case 'pending':
+            case "pending":
               break;
             default:
               break;
@@ -291,28 +299,27 @@ export default {
         this.loading = false;
         this.poll_count = this.poll_limit;
         this.showTimer = false;
-        this.promptInfo = false,
-        this.setErrorText(res.message);
-        this.$router.push({name: 'FailedView', params: { mpesa: 'M-Pesa' }});
-      })
+        (this.promptInfo = false), this.setErrorText(res.message);
+        this.$router.push({ name: "FailedView", params: { mpesa: "M-Pesa" } });
+      });
     },
     closeTimer() {
       this.loading = false;
-      this.showTimer = false;              
+      this.showTimer = false;
       this.promptInfo = false;
-      this.setErrorText(this.$t('unable_to_confirm_mpesa'));
-      this.$router.push({name: 'FailedView', params: { mpesa: 'mpesa' }});
-    }
-  }
-}
+      this.setErrorText(this.$t("unable_to_confirm_mpesa"));
+      this.$router.push({ name: "FailedView", params: { mpesa: "mpesa" } });
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
 .phone-input {
   padding: 8px;
   height: 40px;
-  background: #FFFFFF;
-  border: 0.5px solid #C0C4CC;
+  background: #ffffff;
+  border: 0.5px solid #c0c4cc;
   width: 100%;
   box-sizing: border-box;
   border-radius: 4px;
@@ -332,13 +339,13 @@ export default {
   border-radius: 4px;
 }
 .vti__input {
-    width: 100%;
-    outline: none;
-    padding-left: 7px;
-    margin-left: 24px !important;
-    border: 0.5px solid #C0C4CC !important;
-    box-sizing: border-box;
-    border-radius: 4px !important;
+  width: 100%;
+  outline: none;
+  padding-left: 7px;
+  margin-left: 24px !important;
+  border: 0.5px solid #c0c4cc !important;
+  box-sizing: border-box;
+  border-radius: 4px !important;
 }
 .vti__dropdown {
   display: flex;
@@ -349,7 +356,7 @@ export default {
   padding: 7px;
   cursor: pointer;
   border: 1px solid #bbb;
-  border: 0.5px solid #DCDFE6;
+  border: 0.5px solid #dcdfe6;
   box-sizing: border-box;
   border-radius: 4px;
   width: 100px;

@@ -1,11 +1,14 @@
 <template>
   <div class="flex-center">
-    <Processing @close="showProcessing=false" :count="count" :title="$t('pay_by_bank_setup')" :text="$t('assign_account_details')" v-if="showProcessing" />
+    <Processing
+      @close="showProcessing = false"
+      :count="count"
+      :title="$t('pay_by_bank_setup')"
+      :text="$t('assign_account_details')"
+      v-if="showProcessing"
+    />
     <div class="card" v-else>
-      <AvatarListView
-        icon="warning"
-        :title="$t('unable_to_setup')"
-      >
+      <AvatarListView icon="warning" :title="$t('unable_to_setup')">
         <template v-slot:list-subtitle>
           <span class="text-error"> {{ getErrorText }}</span>
         </template>
@@ -22,19 +25,21 @@
       </div>
 
       <div class="text-center mgt-5">
-        <span @click="$router.push({name: 'ChoosePayment'})" class="link">{{$t('return_to_payment_options')}}</span>
+        <span @click="$router.push({ name: 'ChoosePayment' })" class="link">{{
+          $t("return_to_payment_options")
+        }}</span>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex';
-import AvatarListView from './components/AvatarListView';
-import Processing from '../../components/processing'
- 
+import { mapGetters, mapMutations } from "vuex";
+import AvatarListView from "./components/AvatarListView";
+import Processing from "../../components/processing";
+
 export default {
-  name: 'FailedAccountSetup',
+  name: "FailedAccountSetup",
   components: {
     AvatarListView,
     Processing,
@@ -44,13 +49,13 @@ export default {
       loading: false,
       showProcessing: false,
       count: true,
-    }
+    };
   },
   computed: {
-    ...mapGetters(['getErrorText']),
+    ...mapGetters(["getErrorText"]),
   },
   methods: {
-    ...mapMutations('setErrorText'),
+    ...mapMutations("setErrorText"),
     async openAccount() {
       this.loading = true;
       this.count = true;
@@ -63,26 +68,26 @@ export default {
         mobile_number: this.getBupayload.phonenumber,
         entity: this.getBupayload.entity_id,
         country_code: this.getBupayload.currency,
-      }
+      };
 
       const fullPayload = {
-        url: '/api/v3/onepipe/open_account',
-        params: payload ,
-      }
-      
+        url: "/api/v3/onepipe/open_account",
+        params: payload,
+      };
+
       this.showProcessing = true;
       const response = await this.$paymentAxiosPost(fullPayload);
       this.loading = false;
       this.showProcessing = false;
       if (response.status) {
-        this.$router.push({ name: 'AccountReadyView'});
+        this.$router.push({ name: "AccountReadyView" });
         return;
       }
-      this.$router.push({ name: 'FailedAccountSetup'});
+      this.$router.push({ name: "FailedAccountSetup" });
       this.setErrorText(response.message);
     },
-  }
-}
+  },
+};
 </script>
 
 <style scoped>
