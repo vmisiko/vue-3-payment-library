@@ -11,7 +11,7 @@
         </span>
         <div>
           <span class="text-caption">
-            {{ $t("amount_exceeds_limit_text") }}
+            {{ $t("amount_exceeds_limit_text", {mobile: getDefaultpayMethod()}) }}
           </span>
         </div>
       </div>
@@ -35,21 +35,34 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "TransactionLimitModal",
-  props: ["show", "text"],
+  props: ["show", "text",],
   data() {
-    return {};
+    return {
+      defaultpayMethod: null,
+    };
   },
   watch: {
     show(val) {
       val ? this.handleOpen() : this.handleClose();
     },
   },
+  computed: {
+    ...mapGetters('getSavedPayMethods')
+  },
   mounted() {
     this.show ? this.handleOpen() : this.handleClose();
   },
   methods: {
+    getDefaultpayMethod() {
+      this.defaultpayMethod = this.getSavedPayMethods
+        ? this.getSavedPayMethods.filter((method) => method.default === 1)[0]
+        : null;
+      return this.defaultpayMethod && this.defaultpayMethod.pay_method_id === 1 ? "M-Pesa" : `${this.defaultPaymentMethod ? this.defaultPaymentMethod.pay_method_name : 'Mobile' } Money`;
+    },
     handleOpen() {
       let el = this.$refs.transactionLimitModal;
       el.style.display = "block";

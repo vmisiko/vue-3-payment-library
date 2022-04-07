@@ -134,6 +134,7 @@ export default {
       this.defaultPaymentMethod = this.getSavedPayMethods
         ? this.getSavedPayMethods.filter((method) => method.default === 1)[0]
         : [];
+      this.title = this.defaultPaymentMethod.pay_detail_id === 1 ? this.$t('pay_with_mpesa') : `Pay with ${this.defaultPaymentMethod.pay_method_name} Money`;
     },
     async submit() {
       const entrypoint = localStorage.getItem("entry");
@@ -362,7 +363,7 @@ export default {
 
       setTimeout(() => {
         urlWindow.close();
-      }, 30000);
+      }, 180000);
     },
   },
 };
