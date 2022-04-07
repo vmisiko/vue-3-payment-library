@@ -21,7 +21,7 @@
 
   "please_wait": "Please wait while we confirm payment",
   "amount_exceeds_limit_title": "Amount exceeds transaction limit",
-  "amount_exceeds_limit_text":" The amount to pay exceeds the daily transaction limit for M-PESA. You can choose another payment option to continue.",
+  "amount_exceeds_limit_text":" The amount to pay exceeds the daily transaction limit for {mobile}. You can choose another payment option to continue.",
   "change_payment_option": "Change payment option",
   "cancel_payment": "Cancel Payment",
 

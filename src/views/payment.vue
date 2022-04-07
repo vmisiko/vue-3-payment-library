@@ -148,9 +148,16 @@ export default {
       }
 
       if (this.defaultPaymentMethod.category === 'Mobile Money') {
-        this.amount > this.defaultPaymentMethod.transaction_limit
+        if (this.defaultPaymentMethod.pay_method_id === 1 ) {
+          this.amount > this.defaultPaymentMethod.transaction_limit
           ? this.$router.push("/mpesa-c2b")
           : this.$router.push("/mpesa-stk");
+          return;
+        }
+
+        this.amount > this.defaultPaymentMethod.transaction_limit
+        ? this.showTransactionLimit = true
+        : this.$router.push("/mpesa-stk");
         return;
       }
 

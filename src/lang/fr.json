@@ -5,7 +5,7 @@
   "add_mpesa": "Ajouter MTN Mobile Money",
   "add_new_payment_method_proceed": "Ajouter un nouveau mode de paiement pour procéder à la transaction",
   "add_payment_option": "Ajouter une option de paiement",
-  "amount_exceeds_limit_text": "Le montant à payer dépasse la limite de transaction quotidienne pour le Mobile Money. Vous pouvez choisir une autre option de paiement pour continuer.",
+  "amount_exceeds_limit_text": "Le montant à payer dépasse la limite de transaction quotidienne pour le {mobile} Mobile Money. Vous pouvez choisir une autre option de paiement pour continuer.",
   "amount_exceeds_limit_title": "Le montant dépasse la limite de transaction",
   "amount_to_pay": "Montant à payer",
   "back": "Retour",

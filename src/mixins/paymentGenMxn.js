@@ -93,7 +93,7 @@ const mixin = {
             pay_method_details: "4211-21XX-XXXX-8995",
             pay_detail_id: "4ba12ce2-ee58-43cf-b119-e04b31ff3d9dFLW",
             pay_method_name: "Orange",
-            default: 0,
+            default: 1,
             psp: "FLW",
             category: "Mobile Money",
             status: 1,
