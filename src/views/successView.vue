@@ -1,7 +1,12 @@
 <template>
   <div class="flex-center">
     <div class="card-min">
-      <TopInfo :icon="icon" :title="title" :mpesaCode="mpesaCode" :isMpesa="isMpesa" />
+      <TopInfo
+        :icon="icon"
+        :title="title"
+        :mpesaCode="mpesaCode"
+        :isMpesa="isMpesa"
+      />
 
       <PaymentDetail
         v-if="defaultPaymentMethod"

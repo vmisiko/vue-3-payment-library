@@ -24,7 +24,10 @@
       </div>
     </slot>
     <div class="mgt-1 text-caption-1 text-gray80" v-if="mpesaCode">
-      <span>{{ isMpesa ? $t("mpesa_code") : $t("transaction_id") }}: {{ mpesaCode }} </span>
+      <span
+        >{{ isMpesa ? $t("mpesa_code") : $t("transaction_id") }}:
+        {{ mpesaCode }}
+      </span>
     </div>
   </div>
 </template>
@@ -32,7 +35,7 @@
 <script>
 export default {
   name: "TopInfo",
-  props: ["icon", "title", "subtitle", "mpesaCode", 'isMpesa'],
+  props: ["icon", "title", "subtitle", "mpesaCode", "isMpesa"],
   data() {
     return {
       text: "",

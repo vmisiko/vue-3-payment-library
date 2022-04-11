@@ -26,7 +26,11 @@
       >
 
       <div class="direction-flex float-right">
-        <img v-if="paymentMethod.category === 'Mobile Money'" :src="`${iconUrl}/${paymentMethod.pay_method_name.toLowerCase()}.svg`" alt="">
+        <img
+          v-if="paymentMethod.category === 'Mobile Money'"
+          :src="`${iconUrl}/${paymentMethod.pay_method_name.toLowerCase()}.svg`"
+          alt=""
+        />
         <IconView
           v-if="paymentMethod.pay_method_id === 2"
           :icon="
@@ -101,7 +105,8 @@ export default {
   props: ["currency", "amount", "paymentMethod", "paymentStatus"],
   data() {
     return {
-      iconUrl: 'https://sendy-web-apps-assets.s3.eu-west-1.amazonaws.com/payment-method-icons',
+      iconUrl:
+        "https://sendy-web-apps-assets.s3.eu-west-1.amazonaws.com/payment-method-icons",
     };
   },
   computed: {
