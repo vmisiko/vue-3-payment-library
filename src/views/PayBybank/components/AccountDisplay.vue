@@ -10,8 +10,8 @@
           class="select-input"
           :placeholder="$t('select_payment_methods')"
         >
-          <template v-for="(obj, index) in accounts" :key="index">
-            <option :value="obj.account_number">
+          <template>
+            <option v-for="(obj, index) in accounts" :key="index" :value="obj.account_number">
               {{ obj.bank_name }}
             </option>
           </template>
