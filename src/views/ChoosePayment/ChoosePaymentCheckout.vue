@@ -172,7 +172,7 @@ export default {
     savedMobile() {
       const result = this.getSavedPayMethods
         ? this.getSavedPayMethods.filter(
-            (element) => element.category === 'Mobile Money'
+            (element) => element.category === "Mobile Money"
           )
         : [];
       return result;
@@ -271,17 +271,17 @@ export default {
         return;
       }
 
-      if (this.defaultPaymentMethod.category === 'Mobile Money') {
-        if (this.defaultPaymentMethod.pay_method_id === 1 ) {
+      if (this.defaultPaymentMethod.category === "Mobile Money") {
+        if (this.defaultPaymentMethod.pay_method_id === 1) {
           this.amount > this.defaultPaymentMethod.transaction_limit
-          ? this.$router.push("/mpesa-c2b")
-          : this.$router.push("/mpesa-stk");
+            ? this.$router.push("/mpesa-c2b")
+            : this.$router.push("/mpesa-stk");
           return;
         }
-        
+
         this.amount > this.defaultPaymentMethod.transaction_limit
-        ? this.showTransactionLimit = true
-        : this.$router.push("/mpesa-stk");
+          ? (this.showTransactionLimit = true)
+          : this.$router.push("/mpesa-stk");
         return;
       }
 

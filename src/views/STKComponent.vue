@@ -19,7 +19,11 @@
           <div class="mgt-8">
             <div class="direction-flex">
               <span class="text-caption-2">Country Code</span>
-              <label class="mgl-11 text-caption-2">{{ defaultPaymentMethod.pay_method_id === 1 ? "M-PESA payment number" : "Phone Number" }}</label>
+              <label class="mgl-11 text-caption-2">{{
+                defaultPaymentMethod.pay_method_id === 1
+                  ? "M-PESA payment number"
+                  : "Phone Number"
+              }}</label>
             </div>
 
             <div class="mgt-1">
@@ -41,7 +45,9 @@
 
           <div class="alert mgt-10">
             <span class="text-caption-2 pdt-2 text-midnightBlue20">{{
-              defaultPaymentMethod.pay_method_id === 1 ? $t("mpesa_prompt") : $t("mobile_prompt")
+              defaultPaymentMethod.pay_method_id === 1
+                ? $t("mpesa_prompt")
+                : $t("mobile_prompt")
             }}</span>
           </div>
 
@@ -59,11 +65,7 @@
         </div>
 
         <div class="mgt-8" v-else>
-          <sendy-btn
-            color="primary"
-            :block="true"
-            @click="init3DS"
-          >
+          <sendy-btn color="primary" :block="true" @click="init3DS">
             Click here to continue
           </sendy-btn>
         </div>
@@ -134,7 +136,10 @@ export default {
       this.defaultPaymentMethod = this.getSavedPayMethods
         ? this.getSavedPayMethods.filter((method) => method.default === 1)[0]
         : [];
-      this.title = this.defaultPaymentMethod.pay_detail_id === 1 ? this.$t('pay_with_mpesa') : `Pay with ${this.defaultPaymentMethod.pay_method_name} Money`;
+      this.title =
+        this.defaultPaymentMethod.pay_detail_id === 1
+          ? this.$t("pay_with_mpesa")
+          : `Pay with ${this.defaultPaymentMethod.pay_method_name} Money`;
     },
     async submit() {
       const entrypoint = localStorage.getItem("entry");
@@ -350,7 +355,7 @@ export default {
       const url = res.field;
       const urlWindow = window.open(url, "");
 
-      if (typeof urlWindow == 'undefined') {
+      if (typeof urlWindow == "undefined") {
         this.redirect = true;
         return;
       }

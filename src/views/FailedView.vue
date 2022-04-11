@@ -147,7 +147,7 @@ export default {
         ...this.commonTrackPayload(),
       });
 
-      if (this.defaultPaymentMethod.category === 'Mobile Money') {
+      if (this.defaultPaymentMethod.category === "Mobile Money") {
         this.amount > this.defaultPaymentMethod.transaction_limit
           ? this.$router.push("/mpesa-c2b")
           : this.$router.push("/mpesa-stk");
