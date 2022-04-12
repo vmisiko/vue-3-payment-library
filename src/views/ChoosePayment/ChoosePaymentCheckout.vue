@@ -186,13 +186,6 @@ export default {
       return result;
     },
   },
-  watch: {
-    getSavedPayMethods(newVal, oldVal) {
-      if (newVal !== oldVal) {
-        this.getDefaultpayMethod();
-      }
-    },
-  },
   async mounted() {
     this.setLoading(true);
     this.loadingText = "Loading...";
