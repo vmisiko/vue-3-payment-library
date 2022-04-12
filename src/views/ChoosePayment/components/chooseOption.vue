@@ -52,7 +52,7 @@
           class="float-right"
           name="paymentoption"
           type="radio"
-          :value="paymentOption.pay_detail_id"
+          :value="paymentOption.category === 'Mobile Money' ? paymentOption.pay_method_id : paymentOption.pay_detail_id"
           :disabled="
             paymentOption.daily_limit &&
             getBupayload.amount > paymentOption.daily_limit

@@ -32,7 +32,7 @@
           :key="index"
           class="mgt-4 option-border text-caption-1 pda-3"
           :class="{
-            'selected-border': picked === mobile.pay_detail_id,
+            'selected-border': parseInt(picked) === mobile.pay_method_id,
             disabled:
               mobile.daily_limit && getBupayload.amount > mobile.daily_limit,
           }"
@@ -40,7 +40,7 @@
           <ChooseOption
             :paymentOption="mobile"
             v-model="picked"
-            @change="update"
+            @change="update(mobile)"
           />
         </div>
       </div>
@@ -164,10 +164,11 @@ export default {
       this.picked = method ? method.pay_detail_id : "";
     },
 
-    async update() {
+    async update(mobile) {
       const payload = {
         user_id: this.getBupayload.user_id,
-        pay_detail_id: this.picked,
+        pay_detail_id: mobile.pay_method_id ? "" : this.picked,
+        pay_method_id: mobile.pay_method_id,
       };
 
       const fullPayload = {
@@ -175,7 +176,7 @@ export default {
         params: payload,
       };
 
-      const payment_method = this.getSavedPayMethods.filter(
+      const payment_method =  mobile.pay_method_name ? mobile.pay_method_name : this.getSavedPayMethods.filter(
         (elements) => elements.pay_detail_id === this.picked
       )[0].pay_method_name;
       window.analytics.track("Choose Payment Option", {
@@ -188,13 +189,13 @@ export default {
       this.loading = false;
       if (response) {
         this.$paymentNotification({
-          text: `${this.setSelectedName()} selected for payment.`,
+          text: `${this.setSelectedName(mobile)} selected for payment.`,
         });
       }
     },
 
-    setSelectedName() {
-      const result = this.getSavedPayMethods.filter(
+    setSelectedName(mobile) {
+      const result = mobile.pay_method_name ? mobile : this.getSavedPayMethods.filter(
         (element) => element.pay_detail_id === this.picked
       )[0];
       return result ? result.pay_method_name : "";
@@ -202,9 +203,14 @@ export default {
     handleRouting() {
       const entryRoute = localStorage.entry_route;
       const entryPoint = localStorage.entry;
-      const payment_method = this.getSavedPayMethods.filter(
+      const method = this.getSavedPayMethods.filter(
         (elements) => elements.pay_detail_id === this.picked
       )[0];
+
+      const payment_method = method ? method : this.getSavedPayMethods.filter(
+        (elements) => elements.pay_method_id === parseInt(this.picked)
+      )[0];
+
       const countSavedCards = this.getSavedPayMethods.filter(
         (element) => element.pay_method_id === 2
       );
