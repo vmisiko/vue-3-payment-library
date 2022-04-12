@@ -165,10 +165,14 @@ export default {
     },
 
     async update(mobile) {
+
+      const methods = this.getSavedPayMethods.filter((element) => element.pay_detail_id === this.picked)[0];
       const payload = {
         user_id: this.getBupayload.user_id,
-        pay_detail_id: mobile.pay_method_id ? "" : this.picked,
-        pay_method_id: mobile.pay_method_id,
+        pay_detail_id: mobile.pay_method_id ? null : this.picked,
+        pay_method_id: mobile.pay_method_id ? mobile.pay_method_id : methods.pay_method_id,
+        country_code: this.getBupayload.country_code,
+        entity_id: parseInt(this.getBupayload.entity_id),
       };
 
       const fullPayload = {
@@ -185,13 +189,12 @@ export default {
       });
 
       this.loading = true;
-      const response = await this.$paymentAxiosPut(fullPayload);
+      const response = await this.$paymentAxiosPost(fullPayload);
       this.loading = false;
-      if (response) {
-        this.$paymentNotification({
-          text: `${this.setSelectedName(mobile)} selected for payment.`,
-        });
-      }
+      this.$paymentNotification({
+          type: response.status ? '' : 'error',
+          text: response.status ? `${this.setSelectedName(mobile)} selected for payment.` : 'Request failed, Please try again!',
+      });
     },
 
     setSelectedName(mobile) {
