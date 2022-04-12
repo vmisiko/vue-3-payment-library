@@ -96,7 +96,6 @@ export default {
       if (this.paymentOption.pay_method_id === 1) {
         result = this.paymentOption.daily_limit && this.getBupayload.amount > this.paymentOption.daily_limit
       }
-      console.log(result);
       return result;
     }
   },
