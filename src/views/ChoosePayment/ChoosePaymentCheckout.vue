@@ -206,6 +206,9 @@ export default {
         : null;
       this.picked = method ? method.pay_detail_id : "";
       this.defaultPaymentMethod = method;
+      if (this.getSavedPayMethods.length) {
+        return;
+      }
       if (!this.defaultPaymentMethod) {
         this.$router.push({ name: "AddPayment", params: { entry: "entry" } });
         return;
