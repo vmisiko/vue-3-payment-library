@@ -14,9 +14,15 @@
           {{ $formatLastFour(payMethod.pay_method_details) }}</span
         >
       </div>
-      <div class="direction-flex" v-if="payMethod.pay_method_id === 1">
-        <IconView icon="mpesa" />
-        <span class="mgl-2">M-PESA</span>
+      <div
+        v-if="payMethod.category === 'Mobile Money'"
+        class="direction-flex"
+      >
+        <img
+          :src="`${iconUrl}/${payMethod.pay_method_name.toLowerCase()}.svg`"
+          alt=""
+        />
+        <span class="mgl-2">{{ payMethod.pay_method_name }}</span>
       </div>
       <div class="direction-flex" v-if="payMethod.pay_method_id === 20">
         <IconView icon="pay-bank" />
@@ -38,7 +44,9 @@ export default {
   mixins: [paymentGenMxn],
   props: ["payMethod"],
   data() {
-    return {};
+    return {
+      iconUrl: "https://sendy-web-apps-assets.s3.eu-west-1.amazonaws.com/payment-method-icons",
+    };
   },
   methods: {
     handleSelect() {
