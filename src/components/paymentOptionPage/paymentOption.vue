@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
 import paymentGenMxn from "../../mixins/paymentGenMxn";
 
 export default {
@@ -49,12 +50,14 @@ export default {
     };
   },
   methods: {
+    ...mapMutations(['setSelectedPayOption']),
     handleSelect() {
       window.analytics.track("Tap Payment Option", {
         ...this.commonTrackPayload(),
       });
       switch (this.payMethod.pay_method_id) {
         case 1:
+          this.setSelectedPayOption(this.payMethod);
           this.$router.push({
             name: "MpesaDetails",
             params: {
@@ -63,6 +66,7 @@ export default {
           });
           break;
         case 2:
+          this.setSelectedPayOption(this.payMethod);
           this.$router.push({
             name: "CardDetails",
             params: {
@@ -72,6 +76,7 @@ export default {
           });
           break;
         default:
+          this.setSelectedPayOption(this.payMethod);
           this.$router.push({
             name: "MpesaDetails",
             params: {
