@@ -14,6 +14,7 @@ const store = {
     virtualAccounts: [],
     selectedAccount: null,
     loading: false,
+    selectedPayOption: null,
   },
   mutations: {
     setPaymentMethods(state, val) {
@@ -40,6 +41,9 @@ const store = {
     setLoading(state, val) {
       state.loading = val;
     },
+    setSelectedPayOption(state, val) {
+      state.selectedPayOption = val;
+    }
   },
   getters: {
     getPaymentMethods: (state) => state.paymentMethods,
@@ -50,6 +54,7 @@ const store = {
     getVirtualAccounts: (state) => state.virtualAccounts,
     getSelectedVirtualAccount: (state) => state.selectedAccount,
     getLoading: (state) => state.loading,
+    getSelectedPayOption: (state) => state.selectedPayOption,
   },
   actions: {},
   modules: {},
