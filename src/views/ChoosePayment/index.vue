@@ -169,7 +169,7 @@ export default {
       const methods = this.getSavedPayMethods.filter((element) => element.pay_detail_id === this.picked)[0];
       const payload = {
         user_id: this.getBupayload.user_id,
-        pay_detail_id: mobile.pay_method_id ? null : this.picked,
+        pay_detail_id: mobile.pay_method_id ? mobile.pay_detail_id : this.picked,
         pay_method_id: mobile.pay_method_id ? mobile.pay_method_id : methods.pay_method_id,
         country_code: this.getBupayload.country_code,
         entity_id: parseInt(this.getBupayload.entity_id),
