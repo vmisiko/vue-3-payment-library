@@ -4,7 +4,7 @@
       @close="showProcessing = false"
       :count="count"
       title="Pay by Bank Setup"
-      text="Assinging your unique account details..."
+      text="Assigning your unique account details..."
       v-if="showProcessing"
     />
     <div class="card" v-else>
