@@ -57,7 +57,7 @@ const mixin = {
         user_id: this.getBupayload.user_id,
       };
 
-      // const paymentOptions = this.getBupayload.payment_options;
+      const paymentOptions = this.getBupayload.payment_options;
       const fullPayload = {
         url: "/payment_methods",
         params: payload,
@@ -65,8 +65,8 @@ const mixin = {
 
       const response = await this.paymentAxiosPost(fullPayload);
       if (response.status) {
-        const paymentMethods = response.payment_methods;
-        const savedMethods = response.saved_payment_methods;
+        const paymentMethods = paymentOptions ? response.payment_methods.filter(option => paymentOptions.includes(option.payment_method_id)) : response.payment_methods;
+        const savedMethods = paymentOptions ? response.saved_payment_methods.filter(option => paymentOptions.includes(option.pay_method_id)) : response.saved_payment_methods;
         this.setPaymentMethods(paymentMethods);
         this.setSavedPayMethods(savedMethods);
       }
