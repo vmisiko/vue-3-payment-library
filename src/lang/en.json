@@ -21,7 +21,7 @@
 
   "please_wait": "Please wait while we confirm payment",
   "amount_exceeds_limit_title": "Amount exceeds transaction limit",
-  "amount_exceeds_limit_text":" The amount to pay exceeds the daily transaction limit for M-PESA. You can choose another payment option to continue.",
+  "amount_exceeds_limit_text":" The amount to pay exceeds the daily transaction limit for {mobile}. You can choose another payment option to continue.",
   "change_payment_option": "Change payment option",
   "cancel_payment": "Cancel Payment",
 
@@ -29,6 +29,7 @@
   "pay_with": "Pay with",
   "submit": "Submit",
   "mpesa_code": "M-PESA code",
+  "transaction_id": "Transaction Id",
 
   "credit_card_payment_small": "Credit or Debit Card",
 
@@ -96,6 +97,7 @@
   "mpesa_payment_number": "M-PESA payment number",
   "phone_number_invalid": "Phone number is Invalid",
   "mpesa_prompt": "You'll receive a prompt to enter your M-PESA PIN",
+  "mobile_prompt": "You'll receive a prompt to enter your mobile money PIN",
   "unable_to_send_mpesa_request": "We are unable to send an M-PESA payment request to your phone. You can still complete your payment with M-PESA Pay Bill",
   "failed_to_charge_using_mpesa": "Failed to charge using Mpesa. Please try again.",
   "unable_to_confirm_mpesa": "We are unable to confirm your M-PESA payment. Please retry again after a couple of minutes.",

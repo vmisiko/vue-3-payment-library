@@ -1,142 +1,142 @@
-import paymentEntry from '../views/paymentEntry';
-import payment from '../views/payment';
-import successView from '../views/successView';
-import FailedView from '../views/FailedView';
-import processing from '../views/processing';
-import AddPayment from '../views/AddPayment';
-import AddCard from '../views/AddCard';
-import AddMpesa from '../views/AddMpesa';
-import STKComponent from '../views/STKComponent';
-import MpesaC2B from '../views/MpesaC2B';
-import NoPaymentOption from '../views/NoPaymentOption';
-import PaymentOptionsPage from '../views/PaymentOptionsPage';
-import CardDetailsPage from '../views/CardDetailsPage';
-import MpesaDetail from '../views/MpesaDetail';
-import choosePayment from '../views/ChoosePayment';
-import ChoosePaymentCheckout from '../views/ChoosePayment/ChoosePaymentCheckout';
-import ResolvePayment from '../views/ResolvePayment';
-import HowitWorks from '../views/PayBybank/howitworks';
-import TermsOfService from '../views/PayBybank/TermsOfService';
-import AccountReadyView from '../views/PayBybank/AccountReadyView';
-import FailedAccountSetup from '../views/PayBybank/FailedAccountSetup';
-import PayByBank from '../views/PayBybank';
+import paymentEntry from "../views/paymentEntry";
+import payment from "../views/payment";
+import successView from "../views/successView";
+import FailedView from "../views/FailedView";
+import processing from "../views/processing";
+import AddPayment from "../views/AddPayment";
+import AddCard from "../views/AddCard";
+import AddMpesa from "../views/AddMpesa";
+import STKComponent from "../views/STKComponent";
+import MpesaC2B from "../views/MpesaC2B";
+import NoPaymentOption from "../views/NoPaymentOption";
+import PaymentOptionsPage from "../views/PaymentOptionsPage";
+import CardDetailsPage from "../views/CardDetailsPage";
+import MpesaDetail from "../views/MpesaDetail";
+import choosePayment from "../views/ChoosePayment";
+import ChoosePaymentCheckout from "../views/ChoosePayment/ChoosePaymentCheckout";
+import ResolvePayment from "../views/ResolvePayment";
+import HowitWorks from "../views/PayBybank/howitworks";
+import TermsOfService from "../views/PayBybank/TermsOfService";
+import AccountReadyView from "../views/PayBybank/AccountReadyView";
+import FailedAccountSetup from "../views/PayBybank/FailedAccountSetup";
+import PayByBank from "../views/PayBybank";
 
 const routes = [
   {
-    path: '/paymentlib',
+    path: "/paymentlib",
     component: paymentEntry,
     children: [
       {
-        path: '/',
-        name: 'Entry',
+        path: "/",
+        name: "Entry",
         component: payment,
       },
       {
-        path: '/success-view/:mpesaCode?:duration?/:transferredAmount?/:title?',
-        name: 'SuccessView',
+        path: "/success-view/:mpesaCode?:duration?/:transferredAmount?/:title?",
+        name: "SuccessView",
         component: successView,
       },
       {
-        path: '/failed-view/:mpesa?',
-        name: 'FailedView',
+        path: "/failed-view/:mpesa?",
+        name: "FailedView",
         component: FailedView,
       },
       {
-        path: '/resolve-payment/',
-        name: 'ResolvePayment',
+        path: "/resolve-payment/",
+        name: "ResolvePayment",
         component: ResolvePayment,
       },
       {
-        path: '/retry-view',
-        name: 'RetryView',
+        path: "/retry-view",
+        name: "RetryView",
         component: FailedView,
       },
       {
-        path: '/processing',
-        name: 'Processing',
+        path: "/processing",
+        name: "Processing",
         component: processing,
       },
       {
-        path: '/choose-payment/:entry?',
-        name: 'ChoosePayment',
+        path: "/choose-payment/:entry?",
+        name: "ChoosePayment",
         component: choosePayment,
       },
       {
-        path: '/choose-payment-checkout',
-        name: 'ChoosePaymentCheckout',
+        path: "/choose-payment-checkout",
+        name: "ChoosePaymentCheckout",
         component: ChoosePaymentCheckout,
       },
       {
-        path: '/add-payment/:entry?',
-        name: 'AddPayment',
+        path: "/add-payment/:entry?",
+        name: "AddPayment",
         component: AddPayment,
       },
       {
-        path: '/add-card',
-        name: 'AddCard',
+        path: "/add-card",
+        name: "AddCard",
         component: AddCard,
       },
       {
-        path: '/add-mpesa',
-        name: 'AddMpesa',
+        path: "/add-mpesa",
+        name: "AddMpesa",
         component: AddMpesa,
       },
       {
-        path: '/mpesa-stk',
-        name: 'STKComponent',
+        path: "/mpesa-stk",
+        name: "STKComponent",
         component: STKComponent,
       },
       {
-        path: '/mpesa-c2b',
-        name: 'MpesaC2B',
+        path: "/mpesa-c2b",
+        name: "MpesaC2B",
         component: MpesaC2B,
       },
       {
-        path: '/no-payment-option',
-        name: 'NoPaymentOption',
+        path: "/no-payment-option",
+        name: "NoPaymentOption",
         component: NoPaymentOption,
       },
       {
-        path: '/payment-option-page',
-        name: 'PaymentOptionsPage',
+        path: "/payment-option-page",
+        name: "PaymentOptionsPage",
         component: PaymentOptionsPage,
       },
       {
-        path: '/card-details/:cardno/:cardTitle?',
-        name: 'CardDetails',
+        path: "/card-details/:cardno/:cardTitle?",
+        name: "CardDetails",
         component: CardDetailsPage,
       },
       {
-        path: '/mobile-details/:id/:title?/:icon?/:paymentOption?',
-        name: 'MpesaDetails',
+        path: "/mobile-details/:id/:title?/:icon?/:paymentOption?",
+        name: "MpesaDetails",
         component: MpesaDetail,
       },
       {
-        path: '/bank/how-it-works',
-        name: 'HowitWorks',
+        path: "/bank/how-it-works",
+        name: "HowitWorks",
         component: HowitWorks,
       },
       {
-        path: '/bank/terms-of-service',
-        name: 'TermsOfService',
+        path: "/bank/terms-of-service",
+        name: "TermsOfService",
         component: TermsOfService,
       },
       {
-        path: '/bank/account-ready',
-        name: 'AccountReadyView',
+        path: "/bank/account-ready",
+        name: "AccountReadyView",
         component: AccountReadyView,
       },
       {
-        path: '/bank/failed-setup',
-        name: 'FailedAccountSetup',
+        path: "/bank/failed-setup",
+        name: "FailedAccountSetup",
         component: FailedAccountSetup,
       },
       {
-        path: '/bank/pay',
-        name: 'PayByBank',
+        path: "/bank/pay",
+        name: "PayByBank",
         component: PayByBank,
       },
-    ]
+    ],
   },
 ];
 

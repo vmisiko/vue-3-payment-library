@@ -1,39 +1,41 @@
 import moment from "moment-timezone";
-import { mapGetters, mapMutations } from 'vuex';
+import { mapGetters, mapMutations } from "vuex";
 
 const mixin = {
   data() {
     return {
       startTime: null,
-    }
+    };
   },
   computed: {
     ...mapGetters([
-      'getPaymentMethods', 
-      'getBupayload', 
-      'getSavedPayMethods',
-      'getVirtualAccounts',
-      'getSelectedVirtualAccount',
-      'getLoading',
+      "getPaymentMethods",
+      "getBupayload",
+      "getSavedPayMethods",
+      "getVirtualAccounts",
+      "getSelectedVirtualAccount",
+      "getLoading",
     ]),
     paymentTimezone() {
       const localtz = moment.tz.guess();
       return localtz;
     },
     isMobile() {
-      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      );
     },
   },
   mounted() {
-    this.startTime = new Date()
+    this.startTime = new Date();
   },
   methods: {
     ...mapMutations([
-      'setPaymentMethods',
-      'setSavedPayMethods', 
-      'setVirtualAccounts',
-      'setSelectedVirtualAccount',
-      'setLoading',
+      "setPaymentMethods",
+      "setSavedPayMethods",
+      "setVirtualAccounts",
+      "setSelectedVirtualAccount",
+      "setLoading",
     ]),
     commonTrackPayload() {
       const date = new Date();
@@ -42,45 +44,52 @@ const mixin = {
         user_id: this.getBupayload.user_id,
         product: this.getBupayload.entity_id,
         timestamp: Date.now(),
-        platform_name: this.isMobile ? this.getMobileOs() : 'web',
+        platform_name: this.isMobile ? this.getMobileOs() : "web",
         duration_on_page: finishTime,
-      }
+      };
       return payload;
     },
     async retrievePaymentMethods() {
       const payload = {
-        country_code : this.getBupayload.country_code,
-        entity_id : this.getBupayload.entity_id,
-        user_id : this.getBupayload.user_id,
+        country_code: this.getBupayload.country_code,
+        entity_id: this.getBupayload.entity_id,
+        user_id: this.getBupayload.user_id,
       };
 
       const paymentOptions = this.getBupayload.payment_options;
       const fullPayload = {
-        url: '/payment_methods',
+        url: "/payment_methods",
         params: payload,
-      }
-      
+      };
+
       const response = await this.$paymentAxiosPost(fullPayload);
       if (response.status) {
-        const paymentMethods = response.payment_methods.filter(item => paymentOptions.includes(item.payment_method_id));
-        const savedMethods = response.saved_payment_methods.filter(item => paymentOptions.includes(item.pay_method_id));
+        const paymentMethods = paymentOptions ? response.payment_methods.filter(option => paymentOptions.includes(option.payment_method_id)) : response.payment_methods;
+        const savedMethods = paymentOptions ? response.saved_payment_methods.filter(option => paymentOptions.includes(option.pay_method_id)) : response.saved_payment_methods;
         this.setPaymentMethods(paymentMethods);
         this.setSavedPayMethods(savedMethods);
       }
     },
     checkAvailableOptions(defaultPaymentMethod) {
-      if (this.getSavedPayMethods && this.getSavedPayMethods.length > 0 && !defaultPaymentMethod) {
-        this.$router.push({ name: 'ChoosePayment', params: { entry: 'entry'}});
+      if (
+        this.getSavedPayMethods &&
+        this.getSavedPayMethods.length > 0 &&
+        !defaultPaymentMethod
+      ) {
+        this.$router.push({
+          name: "ChoosePayment",
+          params: { entry: "entry" },
+        });
         return;
-      };
+      }
       if (!defaultPaymentMethod) {
-        this.$router.push({name: "AddPayment", params: { entry: 'entry'}});
+        this.$router.push({ name: "AddPayment", params: { entry: "entry" } });
         return;
       }
     },
     getMobileOs() {
-      let name = 'web'
-      if (navigator.userAgent.indexOf("Android") != -1)  {
+      let name = "web";
+      if (navigator.userAgent.indexOf("Android") != -1) {
         name = "Android";
       }
       if (navigator.userAgent.indexOf("like Mac") != -1) {
@@ -89,41 +98,42 @@ const mixin = {
       return name;
     },
     async getAccounts() {
-
       const payload = {
         entityId: this.getBupayload.entity_id,
         userId: this.getBupayload.user_id,
-      }
+      };
 
       const fullPayload = {
         url: `/api/v3/onepipe/accounts/`,
-        params: payload
-      }
+        params: payload,
+      };
 
       const response = await this.$paymentAxiosGet(fullPayload);
       if (response.status) {
-        this.setVirtualAccounts(response.accounts)
-        const account = response.accounts.filter(el => el.is_primary === true);
+        this.setVirtualAccounts(response.accounts);
+        const account = response.accounts.filter(
+          (el) => el.is_primary === true
+        );
         this.setSelectedVirtualAccount(account[0].account_number);
       }
     },
     async payBybankCollect() {
       const payload = {
-        "country": this.getBupayload.country_code,
-        "amount": this.getBupayload.amount,
-        "txref": this.getBupayload.txref,
-        "userid": this.getBupayload.user_id,
-        "currency": this.getBupayload.currency,
-        "bulk": this.getBupayload.bulk,
-        "entity": this.getBupayload.entity_id,
-        "paymethod": this.defaultPaymentMethod.pay_method_id,
-        "company_code":this.getBupayload.company_code,
-      }
+        country: this.getBupayload.country_code,
+        amount: this.getBupayload.amount,
+        txref: this.getBupayload.txref,
+        userid: this.getBupayload.user_id,
+        currency: this.getBupayload.currency,
+        bulk: this.getBupayload.bulk,
+        entity: this.getBupayload.entity_id,
+        paymethod: this.defaultPaymentMethod.pay_method_id,
+        company_code: this.getBupayload.company_code,
+      };
 
       const fullPayload = {
-        url: '/api/v3/onepipe/collect',
+        url: "/api/v3/onepipe/collect",
         params: payload,
-      }
+      };
 
       this.setLoading(true);
       const response = await this.$paymentAxiosPost(fullPayload);
@@ -133,17 +143,16 @@ const mixin = {
         });
         this.setLoading(false);
         this.$router.push({
-          name: 'SuccessView',
+          name: "SuccessView",
         });
         return;
       }
       this.setErrorText(response.message);
-      this.$router.push({name: 'FailedView'});
+      this.$router.push({ name: "FailedView" });
       return;
-    }
-
-  }
-
-}
+    },
+    
+  },
+};
 
 export default mixin;

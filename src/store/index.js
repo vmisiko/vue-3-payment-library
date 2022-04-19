@@ -5,13 +5,16 @@
 const store = {
   state: {
     paymentMethods: null,
-    savedPayMethods: null, 
-    bupayload: localStorage.buPayload ? JSON.parse(localStorage.buPayload) : null,
+    savedPayMethods: null,
+    bupayload: localStorage.buPayload
+      ? JSON.parse(localStorage.buPayload)
+      : null,
     errorText: null,
     twoFACompleted: false,
     virtualAccounts: [],
     selectedAccount: null,
     loading: false,
+    selectedPayOption: null,
   },
   mutations: {
     setPaymentMethods(state, val) {
@@ -30,29 +33,31 @@ const store = {
       state.twoFACompleted = val;
     },
     setVirtualAccounts(state, val) {
-      state.virtualAccounts = val
-    } ,
+      state.virtualAccounts = val;
+    },
     setSelectedVirtualAccount(state, val) {
-      state.selectedAccount = val
+      state.selectedAccount = val;
     },
     setLoading(state, val) {
       state.loading = val;
+    },
+    setSelectedPayOption(state, val) {
+      state.selectedPayOption = val;
     }
   },
   getters: {
-    getPaymentMethods: ( state) => state.paymentMethods,
-    getSavedPayMethods: ( state) => state.savedPayMethods,
+    getPaymentMethods: (state) => state.paymentMethods,
+    getSavedPayMethods: (state) => state.savedPayMethods,
     getBupayload: (state) => state.bupayload,
     getErrorText: (state) => state.errorText,
     getTwoFACompleted: (state) => state.twoFACompleted,
     getVirtualAccounts: (state) => state.virtualAccounts,
     getSelectedVirtualAccount: (state) => state.selectedAccount,
     getLoading: (state) => state.loading,
+    getSelectedPayOption: (state) => state.selectedPayOption,
   },
-  actions: {
-  },
-  modules: {
-  }
-}
+  actions: {},
+  modules: {},
+};
 
-export default store 
+export default store;

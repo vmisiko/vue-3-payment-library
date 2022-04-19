@@ -1,81 +1,82 @@
 <template>
   <div class="flex-center">
-
     <div class="card">
-      <TopInfo :icon="icon" :title="title"/>
+      <TopInfo :icon="icon" :title="title" />
 
       <IconView icon="mpesa" width="68" height="48" />
-    <div class="mgt-8">
-      <span class="text-list-title">
-        {{ $t('how_it_works') }}
-      </span>
+      <div class="mgt-8">
+        <span class="text-list-title">
+          {{ $t("how_it_works") }}
+        </span>
 
-      <div>
-        <p class="text-caption-1 text-gray80">
-          {{ $t('whenever_choose_mpesa') }}
-        </p>
-      </div>
+        <div>
+          <p class="text-caption-1 text-gray80">
+            {{ $t("whenever_choose_mpesa") }}
+          </p>
+        </div>
 
-      <div class="mgt-15 float-right">
-        <sendy-btn 
-          :loading="loading"
-          color='primary'
-          class="mgt-10"
-          @click="submit"
-        >
-         {{ $t('add_mpesa') }}
-        </sendy-btn>
+        <div class="mgt-15 float-right">
+          <sendy-btn
+            :loading="loading"
+            color="primary"
+            class="mgt-10"
+            @click="submit"
+          >
+            {{ $t("add_mpesa") }}
+          </sendy-btn>
+        </div>
       </div>
     </div>
-
-    </div>  
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import TopInfo from '../components/topInfo';
+import { mapGetters } from "vuex";
+import TopInfo from "../components/topInfo";
 
 export default {
-  name: 'AddMpesa',
+  name: "AddMpesa",
   components: {
     TopInfo,
   },
   data() {
     return {
-      icon: 'back',
-      title: this.$t('add_a_mpesa'),
+      icon: "back",
+      title: this.$t("add_a_mpesa"),
       loading: false,
-    }
+    };
   },
   computed: {
-    ...mapGetters(['getPaymentMethods', 'getBupayload']),
+    ...mapGetters(["getPaymentMethods", "getBupayload"]),
   },
-  mounted() {
-  },
+  mounted() {},
   methods: {
     async submit() {
       this.loading = true;
-      const payMethod = this.getPaymentMethods.find(element => element.name === 'M-Pesa');
-      
+      const payMethod = this.getPaymentMethods.find(
+        (element) => element.name === "M-Pesa"
+      );
+
       const payload = {
-        user_id : this.getBupayload.user_id,
-        pay_method_id : payMethod ? payMethod.payment_method_id : 1,
+        user_id: this.getBupayload.user_id,
+        pay_method_id: payMethod ? payMethod.payment_method_id : 1,
       };
 
       const fullPayload = {
-        url: '/save_payment_method',
+        url: "/save_payment_method",
         params: payload,
       };
 
       const response = await this.$paymentAxiosPost(fullPayload);
-      this.loading = false;      
+      this.loading = false;
       response.status
-        ? this.$paymentNotification( {text: this.$t('mpesa_added') })
-        : this.$paymentNotification( {text: this.$t('mpesa_already_added'),  type: "error"});
-      this.$router.push({ name: 'ChoosePayment' });
-    }
-  }
-}
+        ? this.$paymentNotification({ text: this.$t("mpesa_added") })
+        : this.$paymentNotification({
+            text: this.$t("mpesa_already_added"),
+            type: "error",
+          });
+      this.$router.push({ name: "ChoosePayment" });
+    },
+  },
+};
 </script>
-
