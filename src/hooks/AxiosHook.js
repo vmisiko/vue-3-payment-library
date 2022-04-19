@@ -1,14 +1,12 @@
-import { ref, onMounted, onUnmounted } from 'vue';
-import { useStore } from 'vuex';
-import { getCurrentInstance } from 'vue'
-
-const currentInstance = getCurrentInstance()
+import axios from "axios";
+import { useStore } from "vuex";
+import { getCurrentInstance } from "vue";
 
 const store = useStore();
 
 export function useAxios(root) {
-
-  const config = currentInstance.appContext.config.globalProperties.$sendyOptions
+  const currentInstance = getCurrentInstance();
+  const config = currentInstance.appContext.config.globalProperties.$sendyOptions;
 
   function paymentCustomHeaders() {
     const authToken = store.getters.getBupayload.authToken;
@@ -36,7 +34,7 @@ export function useAxios(root) {
       );
       return data;
     } catch (err) {
-        handlePaymentAxiosErrors(err.response.status);
+      handlePaymentAxiosErrors(err.response.status);
       return err;
     }
   }
@@ -51,19 +49,15 @@ export function useAxios(root) {
         headers: headers.headers,
       };
 
-      const { data } = await axios.get(
-        `${config.BASE_URL}${url}`,
-        values
-      );
+      const { data } = await axios.get(`${config.BASE_URL}${url}`, values);
       return data;
     } catch (err) {
-        handlePaymentAxiosErrors(err.response.status);
+      handlePaymentAxiosErrors(err.response.status);
       return err;
     }
   }
 
   async function paymentAxiosPut(payload) {
-
     try {
       const { url, params } = payload;
       const headers = paymentCustomHeaders();
@@ -74,7 +68,7 @@ export function useAxios(root) {
       );
       return data;
     } catch (err) {
-        handlePaymentAxiosErrors(err.response.status);
+      handlePaymentAxiosErrors(err.response.status);
       return err;
     }
   }
@@ -105,6 +99,5 @@ export function useAxios(root) {
     handlePaymentAxiosErrors,
     paymentAxiosGet,
     paymentAxiosPut,
-  }
+  };
 }
-
