@@ -1,5 +1,5 @@
 import moment from "moment-timezone";
-import { mapGetters, mapMutations } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 
 const mixin = {
   data() {
@@ -37,6 +37,7 @@ const mixin = {
       "setSelectedVirtualAccount",
       "setLoading",
     ]),
+    ...mapActions(["paymentAxiosGet", "paymentAxiosPost"]),
     commonTrackPayload() {
       const date = new Date();
       const finishTime = date - this.startTime;
@@ -62,14 +63,14 @@ const mixin = {
         params: payload,
       };
 
-      const response = await this.$paymentAxiosPost(fullPayload);
+      const response = await this.paymentAxiosPost(fullPayload);
       if (response.status) {
-        const paymentMethods = response.payment_methods.filter((item) =>
+        const paymentMethods = paymentOptions ? response.payment_methods.filter((item) =>
           paymentOptions.includes(item.payment_method_id)
-        );
-        const savedMethods = response.saved_payment_methods.filter((item) =>
+        ): response.payment_methods;
+        const savedMethods = paymentOptions ? response.saved_payment_methods.filter((item) =>
           paymentOptions.includes(item.pay_method_id)
-        );
+        ): response.saved_payment_methods;
         this.setPaymentMethods(paymentMethods);
         this.setSavedPayMethods(savedMethods);
       }

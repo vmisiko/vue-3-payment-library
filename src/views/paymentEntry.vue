@@ -23,7 +23,6 @@
 import { mapGetters, mapMutations } from "vuex";
 import NotificationComponent from "../components/notificationComponent";
 import AxiosErrorModal from "../components/modals/AxiosErrorModal";
-import { useAxios } from "../hooks/AxiosHook";
 
 export default {
   name: "PaymentEntry",
@@ -40,17 +39,10 @@ export default {
       errorText: this.$t("failed_network_error"),
     };
   },
-  setup(props, context) {
-    const { config } = useAxios(context);
-    return {
-      config,
-    };
-  },
   computed: {
     ...mapGetters(["getBupayload"]),
   },
   mounted() {
-    console.log("main update", this.config);
     this.emitter.on("payment-notification", this.notificationInit);
     this.emitter.on("axios-notification", this.axiosNotif);
   },

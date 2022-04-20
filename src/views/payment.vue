@@ -98,14 +98,6 @@ export default {
   computed: {
     ...mapGetters(["getSavedPayMethods", "getBupayload", "getErrorText"]),
   },
-  watch: {
-    getSavedPayMethods(val) {
-      this.defaultPaymentMethod = val
-        ? val.filter((method) => method.default === 1)[0]
-        : null;
-      this.checkAvailableOptions(this.defaultPaymentMethod);
-    },
-  },
   async mounted() {
     this.setLoading(true);
     this.loadingText = "Loading...";

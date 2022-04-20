@@ -1,3 +1,5 @@
+import actions from "./actions";
+
 const store = {
   state: {
     paymentMethods: null,
@@ -47,7 +49,7 @@ const store = {
     getSelectedVirtualAccount: (state) => state.selectedAccount,
     getLoading: (state) => state.loading,
   },
-  actions: {},
+  actions,
   modules: {},
 };
 

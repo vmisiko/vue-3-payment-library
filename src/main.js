@@ -23,7 +23,8 @@ export default {
     options.store.registerModule("PaymentLib", store);
 
     options.router.addRoute(router[0]);
-
+    options.store.emitter = emitter;
+    options.store.$sendyOptions = options;
     app.config.globalProperties.emitter = emitter;
     app.config.globalProperties.$sendyOptions = options;
     app.config.globalProperties.$t = (key) => i18n.global.t(key);
