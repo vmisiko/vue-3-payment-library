@@ -66,8 +66,8 @@ export default {
       return this.defaultpayMethod && this.defaultpayMethod.pay_method_id === 1
         ? "M-Pesa"
         : `${
-            this.defaultPaymentMethod
-              ? this.defaultPaymentMethod.pay_method_name
+            this.defaultpayMethod
+              ? this.defaultpayMethod.pay_method_name
               : "Mobile"
           } Money`;
     },
