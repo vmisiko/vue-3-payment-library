@@ -13,7 +13,6 @@ function loadLocaleMessages() {
   return messages;
 }
 
-console.log(loadLocaleMessages());
 
 const i18n = createI18n({
   locale: "en",
@@ -22,7 +21,5 @@ const i18n = createI18n({
   fallbackLocale: "en",
   messages: loadLocaleMessages(),
 });
-
-console.log(i18n);
 
 export default i18n;
