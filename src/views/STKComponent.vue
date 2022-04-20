@@ -78,7 +78,7 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
-import { VueTelInput } from "vue-tel-input";
+import { VueTelInput } from 'vue3-tel-input'
 import TopInfo from "../components/topInfo";
 import TimerModal from "../components/modals/timerModal";
 import MpesaErrorModal from "../components/modals/MpesaErrorModal";
@@ -118,7 +118,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["getBupayload"]),
+    ...mapGetters(["getBupayload",]),
   },
   watch: {
     phone(val) {

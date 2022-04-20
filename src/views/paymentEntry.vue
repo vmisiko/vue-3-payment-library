@@ -40,7 +40,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["getBupayload"]),
+    ...mapGetters(["getBupayload",]),
   },
   mounted() {
     this.emitter.on("payment-notification", this.notificationInit);
