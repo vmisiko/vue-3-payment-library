@@ -2,22 +2,30 @@
   <div id="payment">
     <div class="container">
       <div @click="$router.push({ name: 'Entry' })" v-if="false">
-       <IconView icon="sendy-logo" />
-      </div> 
-      <router-view/>
+        <IconView icon="sendy-logo" />
+      </div>
+      <router-view />
     </div>
-    <NotificationComponent :show="showNotification" :text="notificationText"  :type="type" />
-    <AxiosErrorModal :show="showAxiosError" :text="errorText" @close="showAxiosError=!showAxiosError" />
+    <NotificationComponent
+      :show="showNotification"
+      :text="notificationText"
+      :type="type"
+    />
+    <AxiosErrorModal
+      :show="showAxiosError"
+      :text="errorText"
+      @close="showAxiosError = !showAxiosError"
+    />
   </div>
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex';
-import NotificationComponent from '../components/notificationComponent';
-import AxiosErrorModal from '../components/modals/AxiosErrorModal';
+import { mapGetters, mapMutations } from "vuex";
+import NotificationComponent from "../components/notificationComponent";
+import AxiosErrorModal from "../components/modals/AxiosErrorModal";
 
 export default {
-  name: 'PaymentEntry',
+  name: "PaymentEntry",
   components: {
     NotificationComponent,
     AxiosErrorModal,
@@ -26,20 +34,20 @@ export default {
     return {
       showNotification: false,
       showAxiosError: false,
-      notificationText: this.$t('mpesa_added'),
+      notificationText: this.$t("mpesa_added"),
       type: null,
-      errorText: this.$t('failed_network_error')
-    }
+      errorText: this.$t("failed_network_error"),
+    };
   },
   computed: {
-    ...mapGetters(['getBupayload']),
+    ...mapGetters(["getBupayload"]),
   },
   mounted() {
-    this.$root.$on('payment-notification', this.notificationInit);
-    this.$root.$on('axios-notification', this.axiosNotif);
+    this.$root.$on("payment-notification", this.notificationInit);
+    this.$root.$on("axios-notification", this.axiosNotif);
   },
   methods: {
-    ...mapMutations(['setPaymentMethods', 'setSavedPayMethods']),
+    ...mapMutations(["setPaymentMethods", "setSavedPayMethods"]),
     notificationInit(payload) {
       this.notificationText = payload.text;
       this.type = payload.type;
@@ -49,12 +57,11 @@ export default {
       this.showAxiosError = true;
       this.errorText = payload.text;
     },
-  }
- }
+  },
+};
 </script>
 
 <style lang="scss">
-@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
-@import '@/assets/styles/global.scss';
+@import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
+@import "@/assets/styles/global.scss";
 </style>
-

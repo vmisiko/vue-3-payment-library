@@ -1,21 +1,19 @@
 <template>
   <div id="app">
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
 <script>
 export default {
-  name: 'App',
+  name: "App",
   data() {
-    return {
-    }
+    return {};
   },
-}
+};
 </script>
 
 <style lang="scss">
-@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
-@import '@/assets/styles/global.scss';
+@import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
+@import "@/assets/styles/global.scss";
 </style>
-

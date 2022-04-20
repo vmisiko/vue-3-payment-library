@@ -1,59 +1,60 @@
 <template>
   <div id="cvv-modal" class="modal" ref="cvvModal">
-      <div class="modal-content">
-        <span class="close" @click="$emit('close')">&times;</span>
-        <div>
-          <IconView icon='magnify-cvv' />
-        </div>
-
-        <div class="mgt-4">
-          <span>{{ $t('what_is_cvv') }}</span>
-          <div>
-            <span class="text-caption">This is a 3 or 4 digit security code found on the back of you card.</span>
-          </div>
-        </div>
-
-        <sendy-btn 
-          :block="true" 
-          color='primary'
-          class="mgt-8"
-          type="submit"
-         @click="$emit('close')"
-        >
-          {{ $t('ok') }}
-        </sendy-btn>
+    <div class="modal-content">
+      <span class="close" @click="$emit('close')">&times;</span>
+      <div>
+        <IconView icon="magnify-cvv" />
       </div>
+
+      <div class="mgt-4">
+        <span>{{ $t("what_is_cvv") }}</span>
+        <div>
+          <span class="text-caption"
+            >This is a 3 or 4 digit security code found on the back of you
+            card.</span
+          >
+        </div>
+      </div>
+
+      <sendy-btn
+        :block="true"
+        color="primary"
+        class="mgt-8"
+        type="submit"
+        @click="$emit('close')"
+      >
+        {{ $t("ok") }}
+      </sendy-btn>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'cvvModule',
-  props: ['show'],
+  name: "cvvModule",
+  props: ["show"],
   data() {
-    return {
-
-    }
+    return {};
   },
   watch: {
     show(val) {
-      val ? this.handleCvv(): this.closeCvv();
-    }
+      val ? this.handleCvv() : this.closeCvv();
+    },
   },
   methods: {
     handleCvv() {
       let elCvv = this.$refs.cvvModal;
-      elCvv.style.display = 'block';
+      elCvv.style.display = "block";
     },
     closeCvv() {
       let elCvv = this.$refs.cvvModal;
-      elCvv.style.display = 'none';
+      elCvv.style.display = "none";
     },
-  }
-}
+  },
+};
 </script>
 
-<style lang="scss">     
+<style lang="scss">
 .modal {
   display: none;
   position: fixed;
@@ -62,11 +63,10 @@ export default {
   left: 0;
   top: 0;
   width: 100%;
-  height: 100%; 
+  height: 100%;
   overflow: auto;
-  background-color: rgb(0,0,0);
-  background-color: rgba(0,0,0,0.5);
-
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 /* Modal Content */
@@ -78,22 +78,34 @@ export default {
   border: 1px solid #888;
   border-radius: 4px;
   width: 300px;
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   -webkit-animation-name: animatetop;
   -webkit-animation-duration: 0.4s;
   animation-name: animatetop;
-  animation-duration: 0.4s
+  animation-duration: 0.4s;
 }
 
 /* Add Animation */
 @-webkit-keyframes animatetop {
-  from {top:-300px; opacity:0} 
-  to {top:0; opacity:1}
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
 }
 
 @keyframes animatetop {
-  from {top:-300px; opacity:0}
-  to {top:0; opacity:1}
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
 }
 
 /* The Close Button */
@@ -110,5 +122,4 @@ export default {
   text-decoration: none;
   cursor: pointer;
 }
-
 </style>

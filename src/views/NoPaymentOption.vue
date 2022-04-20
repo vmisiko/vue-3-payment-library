@@ -1,22 +1,22 @@
 <template>
   <div class="">
-    <NoOptionsModal :show="true"/>
+    <NoOptionsModal :show="true" />
   </div>
 </template>
 
 <script>
-import NoOptionsModal from '../components/modals/noOptionsModal';
+import NoOptionsModal from "../components/modals/noOptionsModal";
 
 export default {
-  name: 'AddPaymentOption',
+  name: "AddPaymentOption",
   components: {
     NoOptionsModal,
   },
   data() {
     return {
-      icon: 'back',
-      title: this.$t('add_payment_option'),
-    }
-  }
-}
+      icon: "back",
+      title: this.$t("add_payment_option"),
+    };
+  },
+};
 </script>

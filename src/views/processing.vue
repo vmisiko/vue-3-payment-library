@@ -5,7 +5,7 @@
         <div class="processing-box"></div>
       </div>
       <div class="text-center mgt-8">
-        <span class="normal-text">{{ $t('processing_card') }}</span>
+        <span class="normal-text">{{ $t("processing_card") }}</span>
       </div>
 
       <div class="text-center mgt-24">
@@ -16,17 +16,17 @@
 </template>
 
 <script>
-  export default {
-    name: 'processing',
-  }
+export default {
+  name: "processing",
+};
 </script>
 
 <style lang="scss">
-  .processing-box {
-    width: 240px;
-    height: 240px;
-    left: 60px;
-    top: 32px;
-    background: rgb(240, 237, 237);
-  }
+.processing-box {
+  width: 240px;
+  height: 240px;
+  left: 60px;
+  top: 32px;
+  background: rgb(240, 237, 237);
+}
 </style>

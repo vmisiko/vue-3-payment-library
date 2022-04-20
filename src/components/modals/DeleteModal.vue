@@ -1,162 +1,173 @@
 <template>
   <div id="delete-modal" class="modal" ref="deleteModal">
-      <div class="modal-content">
-
-        <div class="mgt-4">
-          <span class="text-body-1">
-            {{ $t('sure_delete') }}
-          </span>
-        </div>
-        
-        <sendy-btn 
-          :block="true" 
-          color='error'
-          class="mgt-8"
-          type="submit"
-          @click="handleDelete"
-          :loading="loading"
-        >
-          {{ $t('delete') }}
-        </sendy-btn>
-
-        <sendy-btn 
-          :block="true" 
-          color='info'
-          class="mgt-4"
-          type="submit"
-         @click="cancelRemove"
-        >
-          {{ $t('cancel') }}
-        </sendy-btn>
+    <div class="modal-content">
+      <div class="mgt-4">
+        <span class="text-body-1">
+          {{ $t("sure_delete") }}
+        </span>
       </div>
+
+      <sendy-btn
+        :block="true"
+        color="error"
+        class="mgt-8"
+        type="submit"
+        @click="handleDelete"
+        :loading="loading"
+      >
+        {{ $t("delete") }}
+      </sendy-btn>
+
+      <sendy-btn
+        :block="true"
+        color="info"
+        class="mgt-4"
+        type="submit"
+        @click="cancelRemove"
+      >
+        {{ $t("cancel") }}
+      </sendy-btn>
+    </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import paymentGenMxn from '../../mixins/paymentGenMxn';
+import { mapGetters } from "vuex";
+import paymentGenMxn from "../../mixins/paymentGenMxn";
 
 export default {
-  name: 'DeletModal',
+  name: "DeletModal",
   mixins: [paymentGenMxn],
-  props: ['show'],
+  props: ["show"],
   data() {
     return {
       loading: false,
-    }
+    };
   },
   computed: {
-    ...mapGetters(['getBupayload']),
+    ...mapGetters(["getBupayload"]),
   },
   watch: {
     show(val) {
-      val ? this.handleOpen(): this.handleClose();
-    }
+      val ? this.handleOpen() : this.handleClose();
+    },
   },
   methods: {
     handleOpen() {
       let el = this.$refs.deleteModal;
-      el.style.display = 'block';
+      el.style.display = "block";
     },
     handleClose() {
       let el = this.$refs.deleteModal;
-      el.style.display = 'none';
+      el.style.display = "none";
     },
     handleDelete() {
       switch (this.$route.name) {
-        case 'MpesaDetails':
+        case "MpesaDetails":
           this.deleteMpesa();
           break;
-        case 'CardDetails':
+        case "CardDetails":
           this.deleteCard();
           break;
         default:
           this.deleteCard();
           break;
-       }
+      }
     },
     async deleteCard() {
       this.loading = true;
       const startTime = new Date();
-      window.analytics.track('Delete card', {
+      window.analytics.track("Delete card", {
         ...this.commonTrackPayload(),
         card_network: this.$route.params.cardTitle,
       });
 
       const payload = {
-        cardno:  this.$route.params.cardno,
+        cardno: this.$route.params.cardno,
         userid: this.getBupayload.user_id,
       };
-      
+
       const fullPayload = {
-        url: '/api/v1/card/delete',
+        url: "/api/v1/card/delete",
         params: payload,
-      }
+      };
 
       const response = await this.$paymentAxiosPost(fullPayload);
       this.loading = false;
       const finishTime = Date.now() - startTime;
-      window.analytics.track( response.status ? 'Card Deleted Successfully': 'Card Not Deleted' ,  {
-        ...this.commonTrackPayload(),
-        duration_taken: finishTime,
-        card_network: this.$route.params.cardTitle,
-        ...(!response.status && {failure_reason: response.message}),
-      });
+      window.analytics.track(
+        response.status ? "Card Deleted Successfully" : "Card Not Deleted",
+        {
+          ...this.commonTrackPayload(),
+          duration_taken: finishTime,
+          card_network: this.$route.params.cardTitle,
+          ...(!response.status && { failure_reason: response.message }),
+        }
+      );
 
       if (response.status) {
         this.loading = false;
-        this.$paymentNotification({ text: this.$t('card_details_removed'), type: 'info' });
-        this.$router.push({name: 'PaymentOptionsPage'});
+        this.$paymentNotification({
+          text: this.$t("card_details_removed"),
+          type: "info",
+        });
+        this.$router.push({ name: "PaymentOptionsPage" });
         return;
       }
 
-      this.$paymentNotification({ text: response.message, type: 'error' });
+      this.$paymentNotification({ text: response.message, type: "error" });
     },
     async deleteMpesa() {
       this.loading = true;
       const startTime = new Date();
-      window.analytics.track('Delete Mobile Money', {
+      window.analytics.track("Delete Mobile Money", {
         ...this.commonTrackPayload(),
-        mobile_money_network: 'M-Pesa',
+        mobile_money_network: "M-Pesa",
       });
 
       const payload = {
-        pay_detail_id:  this.$route.params.id,
+        pay_detail_id: this.$route.params.id,
         user_id: this.getBupayload.user_id,
       };
 
       const fullPayload = {
-        url: '/delete_payment_method',
+        url: "/delete_payment_method",
         params: payload,
-      }
+      };
 
       const response = await this.$paymentAxiosPost(fullPayload);
-      
+
       const finishTime = Date.now() - startTime;
-      window.analytics.track( response.status ? 'Mobile Money Deleted Successfully': 'Mobile Money Not Deleted' ,  {
-        ...this.commonTrackPayload(),
-        duration_taken: finishTime,
-      });
+      window.analytics.track(
+        response.status
+          ? "Mobile Money Deleted Successfully"
+          : "Mobile Money Not Deleted",
+        {
+          ...this.commonTrackPayload(),
+          duration_taken: finishTime,
+        }
+      );
 
       this.loading = false;
       if (response.status) {
-        this.$paymentNotification({ text: 'M-PESA option removed', type: "info" })
-        this.$router.push({ name: 'PaymentOptionsPage' });
+        this.$paymentNotification({
+          text: "M-PESA option removed",
+          type: "info",
+        });
+        this.$router.push({ name: "PaymentOptionsPage" });
       }
-      this.$paymentNotification({ text: response.message, type: 'error' });
-
-
+      this.$paymentNotification({ text: response.message, type: "error" });
     },
     cancelRemove() {
       switch (this.$route.name) {
-        case 'MpesaDetails':
-          window.analytics.track('Cancel Remove M-Pesa', {
+        case "MpesaDetails":
+          window.analytics.track("Cancel Remove M-Pesa", {
             ...this.commonTrackPayload(),
-            mobile_money_network: 'M-Pesa',
+            mobile_money_network: "M-Pesa",
           });
           break;
-        case 'CardDetails':
-          window.analytics.track('Cancel Remove Card', {
+        case "CardDetails":
+          window.analytics.track("Cancel Remove Card", {
             ...this.commonTrackPayload(),
             card_network: this.$route.params.cardTitle,
           });
@@ -164,13 +175,13 @@ export default {
         default:
           break;
       }
-      this.$emit('close');
-    }
-  }
-}
+      this.$emit("close");
+    },
+  },
+};
 </script>
 
-<style lang="scss">     
+<style lang="scss">
 .modal {
   display: none;
   position: fixed;
@@ -179,11 +190,10 @@ export default {
   left: 0;
   top: 0;
   width: 100%;
-  height: 100%; 
+  height: 100%;
   overflow: auto;
-  background-color: rgb(0,0,0);
-  background-color: rgba(0,0,0,0.5);
-
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .modal-content {
@@ -194,21 +204,33 @@ export default {
   border: 1px solid #888;
   border-radius: 4px;
   width: 300px;
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   -webkit-animation-name: animatetop;
   -webkit-animation-duration: 0.4s;
   animation-name: animatetop;
-  animation-duration: 0.4s
+  animation-duration: 0.4s;
 }
 
 @-webkit-keyframes animatetop {
-  from {top:-300px; opacity:0} 
-  to {top:0; opacity:1}
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
 }
 
 @keyframes animatetop {
-  from {top:-300px; opacity:0}
-  to {top:0; opacity:1}
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
 }
 
 .close {
@@ -224,5 +246,4 @@ export default {
   text-decoration: none;
   cursor: pointer;
 }
-
 </style>
