@@ -83,14 +83,6 @@ export default {
   },
   computed: {
     ...mapGetters(["getBupayload"]),
-    inputListeners() {
-      var vm = this;
-      return Object.assign({}, this.$listeners, {
-        input: function (event) {
-          vm.$emit("input", event.target.value);
-        },
-      });
-    },
     disableLogic() {
       let result = false;
       if (this.paymentOption.pay_method_id === 1) {
