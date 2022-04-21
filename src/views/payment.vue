@@ -53,11 +53,9 @@
 
 <script>
 import { toRefs } from "vue";
-// import { mapGetters, mapMutations } from "vuex";
 import TopInfo from "../components/topInfo";
 import PaymentDetail from "../components/paymentDetail";
 import Processing from "../components/processing";
-// import paymentGenMxn from "../mixins/paymentGenMxn";
 import TransactionLimitModal from "../components/modals/transactionalLimitModal";
 import AdditionalCardFields from "./AdditionalCardFields";
 import ErrorModal from "../components/modals/ErrorModal";
@@ -73,28 +71,12 @@ export default {
     AdditionalCardFields,
     ErrorModal,
   },
-  // mixins: [paymentGenMxn],
   data() {
     return {
       icon: "back",
       title: this.$t("payment"),
       subtitle: "",
       paymentStatus: null,
-      // currency: "KES",
-      // amount: 0.0,
-      // loading: false,
-      // defaultPaymentMethod: null,
-      // transaction_id: null,
-      // poll_count: 0,
-      // poll_limit: 30,
-      // errorText: "",
-      // mpesaCode: "",
-      // startResponseTime: null,
-      // showTransactionLimit: false,
-      // showAdditionalCardFields: false,
-      // additionalData: null,
-      // showErrorModal: false,
-      // loadingText: this.$t("please_wait"),
     };
   },
   setup() {
@@ -103,52 +85,30 @@ export default {
       getBupayload,
       getErrorText,
       getLoading,
-      // setErrorText,
-      // setPaymentMethods,
-      // setSavedPayMethods,
-      // setLoading,
       state,
+      submit,
+      pollCard,
+      handleContinue3DS,
     } = usePayment();
+
+    function handleErrorModalClose() {
+      state.showErrorModal = false;
+      state.showAdditionalCardFields = false;
+    }
 
     return {
       getSavedPayMethods,
       getBupayload,
       getErrorText,
       getLoading,
-      // setErrorText,
-      // setPaymentMethods,
-      // setSavedPayMethods,
-      // setLoading,
       ...toRefs(state),
+      submit,
+      pollCard,
+      handleContinue3DS,
+      handleErrorModalClose,
     };
   },
-  // computed: {
-  //   ...mapGetters(["getSavedPayMethods", "getBupayload", "getErrorText"]),
-  // },
-  // async mounted() {
-  //   this.setLoading(true);
-  //   this.loadingText = "Loading...";
-  //   await this.retrievePaymentMethods();
-  //   this.setLoading(false);
-  //   this.loadingText = this.$t("please_wait");
-  //   this.getDefaultpayMethod();
-  // },
   // methods: {
-  //   ...mapMutations([
-  //     "setErrorText",
-  //     "setPaymentMethods",
-  //     "setSavedPayMethods",
-  //   ]),
-  //   getDefaultpayMethod() {
-  //     this.defaultPaymentMethod = this.getSavedPayMethods
-  //       ? this.getSavedPayMethods.filter((method) => method.default === 1)[0]
-  //       : [];
-  //     this.currency = this.getBupayload.currency;
-  //     this.amount = this.getBupayload.amount;
-  //     if (!this.defaultPaymentMethod) {
-  //       this.checkAvailableOptions(this.defaultPaymentMethod);
-  //     }
-  //   },
   //   async submit() {
   //     this.startResponseTime = new Date();
   //     window.analytics.track("Confirm and Pay", {

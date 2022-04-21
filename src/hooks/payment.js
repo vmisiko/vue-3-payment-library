@@ -1,11 +1,12 @@
-import { reactive, computed, onMounted } from "vue";
+import { reactive, computed, onMounted, getCurrentInstance } from "vue";
 import { useStore } from "vuex";
-import { useRouter, useRoute } from "vue-router";
 
 export function usePayment() {
   const store = useStore();
-  const router = useRouter();
-  const route = useRoute();
+  const instance = getCurrentInstance();
+
+  const router = instance.appContext.config.globalProperties.$router;
+  const route = instance.appContext.config.globalProperties.$route;
 
   const state = reactive({
     currency: "KES",
@@ -22,28 +23,21 @@ export function usePayment() {
     showAdditionalCardFields: false,
     additionalData: null,
     showErrorModal: false,
-    loadingText: "please_wait",
+    loadingText: "please wait",
   });
 
   const getSavedPayMethods = computed(() => store.getters.getSavedPayMethods);
   const getBupayload = computed(() => store.getters.getBupayload);
   const getErrorText = computed(() => store.getters.getErrorText);
   const getLoading = computed(() => store.getters.getLoading);
-  // const setErrorText = () => store.commit("setErrorText");
-  // const setPaymentMethods = () => store.commit("setPaymentMethods");
-  // const setSavedPayMethods = () => store.commit("setSavedPayMethods");
-  // const setLoading = () => store.commit("setLoading");
-  // const paymentAxiosPost = () => store.dispatch("paymentAxiosPost");
 
   onMounted(async () => {
-    store.commit('setLoading', true);
-    state.loadingText.value = "Loading...";
+    store.commit("setLoading", true);
+    state.loadingText = "Loading...";
     await retrievePaymentMethods();
-    store.commit('setLoading', false);
-    state.loadingText.value = "please_wait";
+    store.commit("setLoading", false);
+    state.loadingText = "Please wait";
     getDefaultpayMethod();
-    console.log(state.currency.value, "currency");
-    console.log(state.amount.value, "amount");
   });
 
   async function retrievePaymentMethods() {
@@ -59,7 +53,7 @@ export function usePayment() {
       params: payload,
     };
 
-    const response = await store.dispatch('paymentAxiosPost', fullPayload);
+    const response = await store.dispatch("paymentAxiosPost", fullPayload);
     if (response.status) {
       const paymentMethods = paymentOptions
         ? response.payment_methods.filter((option) =>
@@ -71,8 +65,8 @@ export function usePayment() {
             paymentOptions.includes(option.pay_method_id)
           )
         : response.saved_payment_methods;
-      store.commit('setPaymentMethods', paymentMethods);
-      store.commit('setSavedPayMethods',savedMethods);
+      store.commit("setPaymentMethods", paymentMethods);
+      store.commit("setSavedPayMethods", savedMethods);
     }
   }
 
@@ -98,14 +92,182 @@ export function usePayment() {
   }
 
   function getDefaultpayMethod() {
-    state.defaultPaymentMethod.value = getSavedPayMethods.value
+    state.defaultPaymentMethod = getSavedPayMethods.value
       ? getSavedPayMethods.value.filter((method) => method.default === 1)[0]
       : [];
-    state.currency.value = getBupayload.value.currency;
-    state.amount.value = getBupayload.value.amount;
+    state.currency = getBupayload.value.currency;
+    state.amount = getBupayload.value.amount;
     if (!state.defaultPaymentMethod) {
-      checkAvailableOptions(state.defaultPaymentMethod.value);
+      checkAvailableOptions(state.defaultPaymentMethod);
     }
+  }
+
+  async function submit() {
+    state.startResponseTime = new Date();
+    // window.analytics.track("Confirm and Pay", {
+    //   ...state.commonTrackPayload(),
+    //   payment_method: state.defaultPaymentMethod.pay_method_name,
+    //   amount: state.getBupayload.amount,
+    //   currency: state.getBupayload.currency,
+    // });
+
+    console.log(route.name, 'route.name');
+    if (
+      state.defaultPaymentMethod.daily_limit &&
+      state.amount > state.defaultPaymentMethod.daily_limit
+    ) {
+      state.showTransactionLimit = true;
+      return;
+    }
+
+    if (state.defaultPaymentMethod.category === "Mobile Money") {
+      if (state.defaultPaymentMethod.pay_method_id === 1) {
+        state.amount > state.defaultPaymentMethod.transaction_limit
+          ? router.push("/mpesa-c2b")
+          : router.push("/mpesa-stk");
+        return;
+      }
+
+      state.amount > state.defaultPaymentMethod.transaction_limit
+        ? (state.showTransactionLimit = true)
+        : router.push("/mpesa-stk");
+      return;
+    }
+
+    if (state.defaultPaymentMethod.pay_method_id === 20) {
+      payBybankCollect();
+      return;
+    }
+
+    store.commit("setLoading", true);
+    const payload = {
+      country: getBupayload.value.country_code,
+      amount: getBupayload.value.amount,
+      cardno: state.defaultPaymentMethod.pay_method_details,
+      txref: getBupayload.value.txref,
+      userid: getBupayload.value.user_id,
+      currency: getBupayload.value.currency,
+      bulk: getBupayload.value.bulk,
+      entity: getBupayload.value.entity_id,
+      company_code: getBupayload.value.company_code,
+      paymethod: state.defaultPaymentMethod.pay_method_id,
+    };
+
+    const fullPayload = {
+      url: "/api/v3/process",
+      params: payload,
+    };
+
+    const response = await store.dispatch("paymentAxiosPost", fullPayload);
+    state.transaction_id = response.transaction_id;
+    if (response.status) {
+      if (response.additional_data) {
+        state.additionalData = response.additional_data;
+        state.showAdditionalCardFields = true;
+        store.commit("setLoading", false);
+        return;
+      }
+
+      switch (response.transaction_status) {
+        case "pending": {
+          const duration = Date.now() - state.startResponseTime;
+          if (state.getBupayload.bulk) {
+            this.setLoading(false);
+            this.$router.push({
+              name: "SuccessView",
+              duration: duration,
+            });
+            return;
+          }
+          pollCard();
+          break;
+        }
+        case "success": {
+          store.commit("setLoading", false);
+          store.dispatch("paymentNotification", {
+            text: this.$t("card_details_added"),
+          });
+          router.push("/choose-payment");
+          store.setLoading(false);
+          break;
+        }
+        default:
+          break;
+      }
+      return;
+    }
+    store.commit("setErrorText", response.message);
+    store.commit("setLoading", false);
+    router.push({ name: "FailedView" });
+  }
+
+  async function pollCard() {}
+
+  function handleContinue3DS() {}
+
+  function getMobileOs() {
+    let name = "web";
+    if (navigator.userAgent.indexOf("Android") != -1) {
+      name = "Android";
+    }
+    if (navigator.userAgent.indexOf("like Mac") != -1) {
+      name = "iOS";
+    }
+    return name;
+  }
+
+  async function getAccounts() {
+    const payload = {
+      entityId: getBupayload.value.entity_id,
+      userId: getBupayload.value.user_id,
+    };
+
+    const fullPayload = {
+      url: `/api/v3/onepipe/accounts/`,
+      params: payload,
+    };
+
+    const response = await store.dispatch("paymentAxiosGet", fullPayload);
+    if (response.status) {
+      store.commit("setVirtualAccounts", response.accounts);
+      const account = response.accounts.filter((el) => el.is_primary === true);
+      store.commit("setSelectedVirtualAccount", account[0].account_number);
+    }
+  }
+
+  async function payBybankCollect() {
+    const payload = {
+      country: getBupayload.value.country_code,
+      amount: getBupayload.value.amount,
+      txref: getBupayload.value.txref,
+      userid: getBupayload.value.user_id,
+      currency: getBupayload.value.currency,
+      bulk: getBupayload.value.bulk,
+      entity: getBupayload.value.entity_id,
+      paymethod: state.defaultPaymentMethod.pay_method_id,
+      company_code: getBupayload.value.company_code,
+    };
+
+    const fullPayload = {
+      url: "/api/v3/onepipe/collect",
+      params: payload,
+    };
+
+    store.commit("setLoading", true);
+    const response = await store.dispatch("paymentAxiosPost", fullPayload);
+    if (response.status) {
+      store.dispatch("paymentNotification", {
+        text: response.message,
+      });
+      store.commit("setLoading", false);
+      router.push({
+        name: "SuccessView",
+      });
+      return;
+    }
+    store.commit("setErrorText", response.message);
+    router.push({ name: "FailedView" });
+    return;
   }
 
   return {
@@ -113,10 +275,12 @@ export function usePayment() {
     getBupayload,
     getErrorText,
     getLoading,
-    // setErrorText,
-    // setPaymentMethods,
-    // setSavedPayMethods,
-    // setLoading,
     state,
+    submit,
+    pollCard,
+    handleContinue3DS,
+    getAccounts,
+    getMobileOs,
+    payBybankCollect,
   };
 }

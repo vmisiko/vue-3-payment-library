@@ -87,4 +87,7 @@ export default {
       default:
     }
   },
+  paymentNotification({state}, payload) {
+    this.emitter.emit("payment-notification", payload);
+  }
 };
