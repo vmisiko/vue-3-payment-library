@@ -216,11 +216,17 @@ export default {
     },
 
     async update(mobile) {
-      const methods = this.getSavedPayMethods.filter((element) => element.pay_detail_id === this.picked)[0];
+      const methods = this.getSavedPayMethods.filter(
+        (element) => element.pay_detail_id === this.picked
+      )[0];
       const payload = {
         user_id: this.getBupayload.user_id,
-        pay_detail_id: mobile.pay_method_id ? mobile.pay_detail_id : this.picked,
-        pay_method_id: mobile.pay_method_id ? mobile.pay_method_id : methods.pay_method_id,
+        pay_detail_id: mobile.pay_method_id
+          ? mobile.pay_detail_id
+          : this.picked,
+        pay_method_id: mobile.pay_method_id
+          ? mobile.pay_method_id
+          : methods.pay_method_id,
         country_code: this.getBupayload.country_code,
         entity_id: parseInt(this.getBupayload.entity_id),
       };
@@ -230,9 +236,11 @@ export default {
         params: payload,
       };
 
-      const payment_method =  mobile.pay_method_name ? mobile.pay_method_name : this.getSavedPayMethods.filter(
-        (elements) => elements.pay_detail_id === this.picked
-      )[0].pay_method_name;
+      const payment_method = mobile.pay_method_name
+        ? mobile.pay_method_name
+        : this.getSavedPayMethods.filter(
+            (elements) => elements.pay_detail_id === this.picked
+          )[0].pay_method_name;
       window.analytics.track("Choose Payment Option", {
         ...this.commonTrackPayload(),
         payment_method: payment_method,
@@ -242,15 +250,19 @@ export default {
       const response = await this.$paymentAxiosPost(fullPayload);
       this.loading = false;
       this.$paymentNotification({
-          type: response.status ? '' : 'error',
-          text: response.status ? `${this.setSelectedName(mobile)} selected for payment.` : 'Request failed, Please try again!',
+        type: response.status ? "" : "error",
+        text: response.status
+          ? `${this.setSelectedName(mobile)} selected for payment.`
+          : "Request failed, Please try again!",
       });
     },
 
     setSelectedName(mobile) {
-      const result = mobile.pay_method_name ? mobile : this.getSavedPayMethods.filter(
-        (element) => element.pay_detail_id === this.picked
-      )[0];
+      const result = mobile.pay_method_name
+        ? mobile
+        : this.getSavedPayMethods.filter(
+            (element) => element.pay_detail_id === this.picked
+          )[0];
       return result ? result.pay_method_name : "";
     },
     async submit() {

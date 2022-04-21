@@ -14,10 +14,7 @@
           {{ $formatLastFour(payMethod.pay_method_details) }}</span
         >
       </div>
-      <div
-        v-if="payMethod.category === 'Mobile Money'"
-        class="direction-flex"
-      >
+      <div v-if="payMethod.category === 'Mobile Money'" class="direction-flex">
         <img
           :src="`${iconUrl}/${payMethod.pay_method_name.toLowerCase()}.svg`"
           alt=""
@@ -37,7 +34,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
+import { mapMutations } from "vuex";
 import paymentGenMxn from "../../mixins/paymentGenMxn";
 
 export default {
@@ -46,11 +43,12 @@ export default {
   props: ["payMethod"],
   data() {
     return {
-      iconUrl: "https://sendy-web-apps-assets.s3.eu-west-1.amazonaws.com/payment-method-icons",
+      iconUrl:
+        "https://sendy-web-apps-assets.s3.eu-west-1.amazonaws.com/payment-method-icons",
     };
   },
   methods: {
-    ...mapMutations(['setSelectedPayOption']),
+    ...mapMutations(["setSelectedPayOption"]),
     handleSelect() {
       window.analytics.track("Tap Payment Option", {
         ...this.commonTrackPayload(),

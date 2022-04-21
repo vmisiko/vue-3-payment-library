@@ -11,7 +11,11 @@
           :placeholder="$t('select_payment_methods')"
         >
           <template>
-            <option v-for="(obj, index) in accounts" :key="index" :value="obj.account_number">
+            <option
+              v-for="(obj, index) in accounts"
+              :key="index"
+              :value="obj.account_number"
+            >
               {{ obj.bank_name }}
             </option>
           </template>

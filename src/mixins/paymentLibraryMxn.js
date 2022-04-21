@@ -23,9 +23,9 @@ const mixin = {
   methods: {
     ...mapMutations(["setBupayload", "setErrorText"]),
     ...mapActions({
-      $paymentAxiosPost: 'paymentAxiosPost',
-      $paymentAxiosGet: 'paymentAxiosGet',
-      $paymentAxiosPut: 'paymentAxiosPut',
+      $paymentAxiosPost: "paymentAxiosPost",
+      $paymentAxiosGet: "paymentAxiosGet",
+      $paymentAxiosPut: "paymentAxiosPut",
     }),
     $handlePaymentMethod(paymentMethod) {
       const entry = localStorage.getItem("entry");

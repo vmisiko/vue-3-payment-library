@@ -52,16 +52,17 @@
           class="float-right"
           name="paymentoption"
           type="radio"
-          :value="paymentOption.category === 'Mobile Money' ? paymentOption.pay_method_id : paymentOption.pay_detail_id"
+          :value="
+            paymentOption.category === 'Mobile Money'
+              ? paymentOption.pay_method_id
+              : paymentOption.pay_detail_id
+          "
           :disabled="disableLogic"
           v-model="picked"
         />
       </div>
     </div>
-    <div
-      class="text-caption-2 text-sendy-red-30 mgt-3"
-      v-if="disableLogic"
-    >
+    <div class="text-caption-2 text-sendy-red-30 mgt-3" v-if="disableLogic">
       <span class="">{{ $t("unavailable") }}</span>
     </div>
   </div>
@@ -78,7 +79,8 @@ export default {
       picked: this.modelValue,
       balance: 0,
       loading: false,
-      iconUrl: "https://sendy-web-apps-assets.s3.eu-west-1.amazonaws.com/payment-method-icons",
+      iconUrl:
+        "https://sendy-web-apps-assets.s3.eu-west-1.amazonaws.com/payment-method-icons",
     };
   },
   computed: {
@@ -86,10 +88,12 @@ export default {
     disableLogic() {
       let result = false;
       if (this.paymentOption.pay_method_id === 1) {
-        result = this.paymentOption.daily_limit && this.getBupayload.amount > this.paymentOption.daily_limit
+        result =
+          this.paymentOption.daily_limit &&
+          this.getBupayload.amount > this.paymentOption.daily_limit;
       }
       return result;
-    }
+    },
   },
   mounted() {
     if (this.paymentOption.pay_method_id === 20) {

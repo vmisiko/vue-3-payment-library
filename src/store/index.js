@@ -41,7 +41,7 @@ const store = {
     },
     setSelectedPayOption(state, val) {
       state.selectedPayOption = val;
-    }
+    },
   },
   getters: {
     getPaymentMethods: (state) => state.paymentMethods,
