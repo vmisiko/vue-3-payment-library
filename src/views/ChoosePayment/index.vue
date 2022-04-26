@@ -165,7 +165,6 @@ export default {
     },
 
     async update(method) {
-      console.log(this.picked, 'cap', method.pay_detail_id);
       const payload = {
         user_id: this.getBupayload.user_id,
         pay_detail_id: method.pay_detail_id,
