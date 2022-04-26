@@ -174,18 +174,18 @@ export default {
     },
   },
   async mounted() {
-    this.loadVGS();
+    await this.loadVGS();
     setTimeout(() => {
       this.setForm();
     }, 500);
   },
   methods: {
     ...mapMutations(["setTwoFACompleted"]),
-    loadVGS() {
+    async loadVGS() {
       const script = document.createElement("script");
       script.async = true;
       script.src =
-        "https://js.verygoodvault.com/vgs-collect/2.0/vgs-collect.js";
+        "https://js.verygoodvault.com/vgs-collect/2.12.0/vgs-collect.js";
       document.head.appendChild(script);
     },
     initForm() {
@@ -202,7 +202,8 @@ export default {
         dirty: "field--dirty",
         touched: "field--touched",
       };
-      /*eslint-disable */
+
+      /* eslint-disable */
       this.form = VGSCollect.create(
         this.config.VGS_VAULT_ID,
         this.config.VGS_ENVIRONMENT,
@@ -284,10 +285,11 @@ export default {
           this.loading = false;
           if (response.status) {
             this.showProcessing = true;
-
+            const reponseData = response.data;
+            delete reponseData['language'];
             const payload = {
               url: "/api/v2/save",
-              params: response.data,
+              params: reponseData,
             };
 
             this.$paymentAxiosPost(payload)
