@@ -27,7 +27,7 @@
               <ChooseOption
                 :paymentOption="card"
                 v-model="picked"
-                @change="update"
+                @change="update(card)"
               />
             </div>
           </div>
@@ -41,7 +41,7 @@
               :key="index"
               class="mgt-4 option-border text-caption-1 pda-3"
               :class="{
-                'selected-border': parseInt(picked) === mobile.pay_method_id,
+                'selected-border': picked === mobile.pay_detail_id,
                 disabled:
                   mobile.daily_limit &&
                   getBupayload.amount > mobile.daily_limit,
@@ -72,7 +72,7 @@
                 <ChooseOption
                   :paymentOption="vaccount"
                   v-model="picked"
-                  @change="update"
+                  @change="update(vaccount)"
                 />
               </div>
             </div>
@@ -215,18 +215,11 @@ export default {
       }
     },
 
-    async update(mobile) {
-      const methods = this.getSavedPayMethods.filter(
-        (element) => element.pay_detail_id === this.picked
-      )[0];
+    async update(method) {
       const payload = {
         user_id: this.getBupayload.user_id,
-        pay_detail_id: mobile.pay_method_id
-          ? mobile.pay_detail_id
-          : this.picked,
-        pay_method_id: mobile.pay_method_id
-          ? mobile.pay_method_id
-          : methods.pay_method_id,
+        pay_detail_id: method.pay_detail_id,
+        pay_method_id: method.pay_method_id,
         country_code: this.getBupayload.country_code,
         entity_id: parseInt(this.getBupayload.entity_id),
       };
@@ -236,14 +229,9 @@ export default {
         params: payload,
       };
 
-      const payment_method = mobile.pay_method_name
-        ? mobile.pay_method_name
-        : this.getSavedPayMethods.filter(
-            (elements) => elements.pay_detail_id === this.picked
-          )[0].pay_method_name;
       window.analytics.track("Choose Payment Option", {
         ...this.commonTrackPayload(),
-        payment_method: payment_method,
+        payment_method: method.pay_method_name,
       });
 
       this.loading = true;
@@ -252,7 +240,7 @@ export default {
       this.$paymentNotification({
         type: response.status ? "" : "error",
         text: response.status
-          ? `${this.setSelectedName(mobile)} selected for payment.`
+          ? `${method.pay_method_name} selected for payment.`
           : "Request failed, Please try again!",
       });
     },
