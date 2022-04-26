@@ -2,11 +2,13 @@ import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useState } from "./useState";
 import { useGlobalProp } from "./globalProperties";
+import { useSegement } from "./useSegment";
 
 export function usePayment() {
   const store = useStore();
   const { t, route, router } = useGlobalProp();
   const state = useState();
+  const { commonTrackPayload } = useSegement();
 
   const getSavedPayMethods = computed(() => store.getters.getSavedPayMethods);
   const getBupayload = computed(() => store.getters.getBupayload);
@@ -86,12 +88,12 @@ export function usePayment() {
 
   async function submit() {
     state.startResponseTime = new Date();
-    // window.analytics.track("Confirm and Pay", {
-    //   ...state.commonTrackPayload(),
-    //   payment_method: state.defaultPaymentMethod.pay_method_name,
-    //   amount: state.getBupayload.amount,
-    //   currency: state.getBupayload.currency,
-    // });
+    window.analytics.track("Confirm and Pay", {
+      ...commonTrackPayload(),
+      payment_method: state.defaultPaymentMethod.pay_method_name,
+      amount: getBupayload.value.amount,
+      currency:getBupayload.value.currency,
+    });
 
     if (
       state.defaultPaymentMethod.daily_limit &&
