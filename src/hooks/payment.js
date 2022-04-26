@@ -111,7 +111,6 @@ export function usePayment() {
     //   currency: state.getBupayload.currency,
     // });
 
-    console.log(route.name, 'route.name');
     if (
       state.defaultPaymentMethod.daily_limit &&
       state.amount > state.defaultPaymentMethod.daily_limit
@@ -171,9 +170,9 @@ export function usePayment() {
       switch (response.transaction_status) {
         case "pending": {
           const duration = Date.now() - state.startResponseTime;
-          if (state.getBupayload.bulk) {
-            this.setLoading(false);
-            this.$router.push({
+          if (getBupayload.value.bulk) {
+            store.commit("setLoading", false);
+            router.push({
               name: "SuccessView",
               duration: duration,
             });
@@ -185,7 +184,7 @@ export function usePayment() {
         case "success": {
           store.commit("setLoading", false);
           store.dispatch("paymentNotification", {
-            text: this.$t("card_details_added"),
+            text: 'this.$t("card_details_added")',
           });
           router.push("/choose-payment");
           store.setLoading(false);
@@ -201,7 +200,73 @@ export function usePayment() {
     router.push({ name: "FailedView" });
   }
 
-  async function pollCard() {}
+  function pollCard() {
+    store.commit("setLoading", true);
+    state.poll_count = 0;
+    for (let poll_count = 0; poll_count < state.poll_limit; poll_count++) {
+      (function (poll_count) {
+        setTimeout(() => {
+          if (state.poll_count === state.poll_limit) {
+            poll_count = state.poll_limit;
+            return;
+          }
+
+          TransactionIdStatus();
+          if (poll_count === state.poll_limit - 1) {
+            store.commit("setLoading", false);
+            // state.errorText = 'this.$t("failed_to_charge_card")';
+            state.errorText = "Failed to charge Card";
+            store.commit("setErrorText", state.errorText);
+            router.push({ name: "FailedView" });
+            return;
+          }
+        }, 10000 * poll_count);
+      })(poll_count);
+    }
+  }
+
+  async function TransactionIdStatus() {
+    const payload = {
+      url: `/api/v1/process/status/${state.transaction_id}`,
+    };
+
+    const res = await store.dispatch("paymentAxiosGet", payload);
+
+    if (res.status) {
+      switch (res.transaction_status) {
+        case "success": {
+          state.poll_count = state.poll_limit;
+          store.dispatch("paymentNotification", {
+            text: res.message,
+          });
+          store.commit("setLoading", false);
+          const duration = Date.now() - state.startResponseTime;
+          router.push({
+            name: "SuccessView",
+            duration: duration,
+          });
+          break;
+        }
+        case "failed": {
+          state.poll_count = state.poll_limit;
+          store.commit("setLoading", false);
+          state.errorText = res.message;
+          store.commit("setErrorText", res.message);
+          router.push({ name: "FailedView" });
+          break;
+        }
+        case "pending":
+          break;
+        default:
+          break;
+      }
+      return res;
+    }
+    state.poll_count = state.poll_limit;
+    store.commit("setLoading", false);
+    state.errorText = res.message;
+    state.showErrorModal = true;
+  }
 
   function handleContinue3DS() {}
 
