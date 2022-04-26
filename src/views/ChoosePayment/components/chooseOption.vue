@@ -52,11 +52,7 @@
           class="float-right"
           name="paymentoption"
           type="radio"
-          :value="
-            paymentOption.category === 'Mobile Money'
-              ? paymentOption.pay_method_id
-              : paymentOption.pay_detail_id
-          "
+          :value="paymentOption.pay_detail_id"
           :disabled="disableLogic"
           v-model="picked"
         />
