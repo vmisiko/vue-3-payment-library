@@ -3,7 +3,6 @@
     <button
       :type="type || 'text'"
       class="primary-btn"
-      @click="$emit('click')"
       :disabled="disabled"
       :class="{
         'opacity-25': disabled || loading,
