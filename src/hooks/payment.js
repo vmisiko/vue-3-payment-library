@@ -1,14 +1,11 @@
-import { computed, onMounted, getCurrentInstance } from "vue";
+import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useState } from "./useState";
+import { useGlobalProp } from "./globalProperties";
 
 export function usePayment() {
   const store = useStore();
-  const instance = getCurrentInstance();
-
-  const router = instance.appContext.config.globalProperties.$router;
-  const route = instance.appContext.config.globalProperties.$route;
-
+  const { t, route, router } = useGlobalProp();
   const state = useState();
 
   const getSavedPayMethods = computed(() => store.getters.getSavedPayMethods);
@@ -169,7 +166,7 @@ export function usePayment() {
         case "success": {
           store.commit("setLoading", false);
           store.dispatch("paymentNotification", {
-            text: 'this.$t("card_details_added")',
+            text: t("card_details_added"),
           });
           router.push("/choose-payment");
           store.setLoading(false);
@@ -199,8 +196,7 @@ export function usePayment() {
           TransactionIdStatus();
           if (poll_count === state.poll_limit - 1) {
             store.commit("setLoading", false);
-            // state.errorText = 'this.$t("failed_to_charge_card")';
-            state.errorText = "Failed to charge Card";
+            state.errorText = t("failed_to_charge_card");
             store.commit("setErrorText", state.errorText);
             router.push({ name: "FailedView" });
             return;
@@ -298,7 +294,7 @@ export function usePayment() {
           break;
         case "success":
           store.dispatch("paymentNotification", {
-            text: 'this.$t("card_details_added")',
+            text: t("card_details_added"),
           });
           router.push("/choose-payment");
           store.commint("setLoading", false);
@@ -308,7 +304,7 @@ export function usePayment() {
       }
       return;
     }
-    state.errorText = 'this.$t("failed_to_collect_card_details")';
+    state.errorText = t("failed_to_collect_card_details");
     state.showErrorModal = true;
   }
 
