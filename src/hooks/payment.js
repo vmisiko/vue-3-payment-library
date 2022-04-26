@@ -1,5 +1,6 @@
-import { reactive, computed, onMounted, getCurrentInstance } from "vue";
+import { computed, onMounted, getCurrentInstance } from "vue";
 import { useStore } from "vuex";
+import { useState } from "./useState";
 
 export function usePayment() {
   const store = useStore();
@@ -8,23 +9,7 @@ export function usePayment() {
   const router = instance.appContext.config.globalProperties.$router;
   const route = instance.appContext.config.globalProperties.$route;
 
-  const state = reactive({
-    currency: "KES",
-    amount: 0.0,
-    loading: false,
-    defaultPaymentMethod: null,
-    transaction_id: null,
-    poll_count: 0,
-    poll_limit: 30,
-    errorText: "",
-    mpesaCode: "",
-    startResponseTime: null,
-    showTransactionLimit: false,
-    showAdditionalCardFields: false,
-    additionalData: null,
-    showErrorModal: false,
-    loadingText: "please wait",
-  });
+  const state = useState();
 
   const getSavedPayMethods = computed(() => store.getters.getSavedPayMethods);
   const getBupayload = computed(() => store.getters.getBupayload);
@@ -268,7 +253,64 @@ export function usePayment() {
     state.showErrorModal = true;
   }
 
-  function handleContinue3DS() {}
+  function handleContinue3DS(val) {
+    state.showAdditionalCardFields = false;
+    state.additionalData = val.additionalData.filter(
+      (element) => element.field_id === "url"
+    );
+    init3DS();
+  }
+
+  function init3DS() {
+    const res = !state.additionalData
+      ? state.additionalData
+      : state.additionalData[0];
+    const url = res.field;
+    const urlWindow = window.open(url, "");
+
+    const timer = setInterval(() => {
+      if (urlWindow.closed) {
+        init3dsPoll();
+        clearInterval(timer);
+      }
+    }, 500);
+  }
+
+  async function init3dsPoll() {
+    store.commit("setLoading", true);
+    const payload = {
+      transaction_id: state.transaction_id,
+      tds: true,
+    };
+
+    const fullPayload = {
+      params: payload,
+      url: "/api/v2/submit_info",
+    };
+
+    const response = await store.dispatch("paymentAxiosPost", fullPayload);
+    store.commit("setLoading", false);
+    if (response.status) {
+      switch (response.transaction_status) {
+        case "pending":
+          pollCard();
+          state.count = true;
+          break;
+        case "success":
+          store.dispatch("paymentNotification", {
+            text: 'this.$t("card_details_added")',
+          });
+          router.push("/choose-payment");
+          store.commint("setLoading", false);
+          break;
+        default:
+          break;
+      }
+      return;
+    }
+    state.errorText = 'this.$t("failed_to_collect_card_details")';
+    state.showErrorModal = true;
+  }
 
   function getMobileOs() {
     let name = "web";
