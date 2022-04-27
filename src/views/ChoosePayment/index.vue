@@ -90,15 +90,16 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import { onMounted, watch } from "vue";
+import { useStore } from "vuex";
 import TopInfo from "../../components/topInfo";
-import paymentGenMxn from "../../mixins/paymentGenMxn";
 import ChooseOption from "./components/chooseOption";
 import Processing from "../../components/processing";
+import { useChoosePayment } from "../../hooks/useChoosePayment";
+import { usePayment } from "../../hooks/payment";
 
 export default {
   name: "ChoosePayment",
-  mixins: [paymentGenMxn],
   components: {
     TopInfo,
     ChooseOption,
@@ -109,171 +110,222 @@ export default {
       icon: "back",
       title: this.$t("choose_payment_option"),
       loadingText: "Loading..",
-      picked: "",
-      loading: false,
-      startTime: null,
+      // picked: "",
+      // loading: false,
+      // startTime: null,
     };
   },
-  computed: {
-    ...mapGetters(["getSavedPayMethods", "getBupayload"]),
-    creditCards() {
-      const result = this.getSavedPayMethods
-        ? this.getSavedPayMethods.filter(
-            (element) => element.pay_method_id === 2
-          )
-        : [];
-      return result;
-    },
-    savedMobile() {
-      const result = this.getSavedPayMethods
-        ? this.getSavedPayMethods.filter(
-            (element) => element.category === "Mobile Money"
-          )
-        : [];
-      return result;
-    },
-    virtualAccounts() {
-      const result = this.getSavedPayMethods
-        ? this.getSavedPayMethods.filter(
-            (element) => element.pay_method_id === 20
-          )
-        : [];
-      return result;
-    },
-  },
-  watch: {
-    getSavedPayMethods(newVal, oldVal) {
+  setup() {
+    const { retrievePaymentMethods } = usePayment();
+    const store = useStore();
+
+    const {
+      picked,
+      creditCards,
+      savedMobile,
+      virtualAccounts,
+      getBupayload,
+      getLoading,
+      getSavedPayMethods,
+      loading,
+      update,
+      handleRouting,
+      addPaymentOption,
+    } = useChoosePayment();
+
+    watch(getSavedPayMethods, (newVal, oldVal) => {
       if (newVal !== oldVal) {
-        this.getDefaultpayMethod();
+        getDefaultpayMethod();
       }
-    },
-  },
-  async mounted() {
-    this.setLoading(true);
-    await this.retrievePaymentMethods();
-    this.setLoading(false);
-    this.getDefaultpayMethod();
-    this.startTime = Date.now();
-  },
-  methods: {
-    ...mapMutations(["setPaymentMethods", "setSavedPayMethods"]),
-    getDefaultpayMethod() {
-      const method = this.getSavedPayMethods
-        ? this.getSavedPayMethods.filter((method) => method.default === 1)[0]
+    });
+
+    onMounted(async () => {
+      store.commit("setLoading", true);
+      await retrievePaymentMethods();
+      store.commit("setLoading", false);
+      getDefaultpayMethod();
+    });
+
+    function getDefaultpayMethod() {
+      const method = getSavedPayMethods.value
+        ? getSavedPayMethods.value.filter((method) => method.default === 1)[0]
         : [];
-      this.picked = method ? method.pay_detail_id : "";
-    },
+      picked.value = method ? method.pay_detail_id : "";
+    }
 
-    async update(method) {
-      const payload = {
-        user_id: this.getBupayload.user_id,
-        pay_detail_id: method.pay_detail_id,
-        pay_method_id: method.pay_method_id,
-        country_code: this.getBupayload.country_code,
-        entity_id: parseInt(this.getBupayload.entity_id),
-      };
-
-      const fullPayload = {
-        url: `/set_default`,
-        params: payload,
-      };
-
-      window.analytics.track("Choose Payment Option", {
-        ...this.commonTrackPayload(),
-        payment_method: method.pay_method_name,
-      });
-
-      this.loading = true;
-      const response = await this.$paymentAxiosPost(fullPayload);
-      this.loading = false;
-      this.$paymentNotification({
-        type: response.status ? "" : "error",
-        text: response.status
-          ? `${method.pay_method_name} selected for payment.`
-          : "Request failed, Please try again!",
-      });
-    },
-
-    setSelectedName(mobile) {
-      const result = mobile.pay_method_name
-        ? mobile
-        : this.getSavedPayMethods.filter(
-            (element) => element.pay_detail_id === this.picked
-          )[0];
-      return result ? result.pay_method_name : "";
-    },
-    handleRouting() {
-      const entryRoute = localStorage.entry_route;
-      const entryPoint = localStorage.entry;
-      const method = this.getSavedPayMethods.filter(
-        (elements) => elements.pay_detail_id === this.picked
-      )[0];
-
-      const payment_method = method
-        ? method
-        : this.getSavedPayMethods.filter(
-            (elements) => elements.pay_method_id === parseInt(this.picked)
-          )[0];
-
-      const countSavedCards = this.getSavedPayMethods.filter(
-        (element) => element.pay_method_id === 2
-      );
-
-      switch (payment_method.pay_method_id) {
-        case 1:
-          window.analytics.track("Continue after selecting  M-Pesa", {
-            ...this.commonTrackPayload(),
-          });
-          break;
-        case 2:
-          window.analytics.track("Continue after selecting Card", {
-            ...this.commonTrackPayload(),
-            number_of_cards: countSavedCards.length,
-            selected_cards_network: payment_method.psp,
-          });
-          break;
-        case 20:
-          window.analytics.track("Continue after Pay by bank", {
-            ...this.commonTrackPayload(),
-            number_of_cards: countSavedCards.length,
-            selected_cards_network: payment_method.psp,
-          });
-          break;
-        default:
-          break;
-      }
-
-      if (payment_method.pay_method_id === 20) {
-        this.$router.push({ name: entryRoute });
-        return;
-      }
-
-      switch (entryPoint) {
-        case "checkout":
-          this.$router.push({ name: "Entry" });
-          break;
-        case "choose-payment":
-          this.$router.push({ name: entryRoute });
-          break;
-        case "choose-payment-checkout":
-          this.$router.push({ name: "ChoosePaymentCheckout" });
-          break;
-        case "payment-option":
-          this.$router.push({ name: "PaymentOptionsPage" });
-          break;
-        default:
-          this.$router.push({ name: "Entry" });
-          break;
-      }
-    },
-    addPaymentOption() {
-      window.analytics.track("Add Payment Option", {
-        ...this.commonTrackPayload(),
-        timezone: this.paymentTimezone,
-        country_code: this.getBupayload.country_code,
-      });
-      this.$router.push("/add-payment");
-    },
+    return {
+      picked,
+      creditCards,
+      savedMobile,
+      virtualAccounts,
+      getBupayload,
+      getLoading,
+      loading,
+      update,
+      handleRouting,
+      addPaymentOption,
+    };
   },
+  // computed: {
+  //   ...mapGetters(["getSavedPayMethods", "getBupayload"]),
+  //   creditCards() {
+  //     const result = this.getSavedPayMethods
+  //       ? this.getSavedPayMethods.filter(
+  //           (element) => element.pay_method_id === 2
+  //         )
+  //       : [];
+  //     return result;
+  //   },
+  //   savedMobile() {
+  //     const result = this.getSavedPayMethods
+  //       ? this.getSavedPayMethods.filter(
+  //           (element) => element.category === "Mobile Money"
+  //         )
+  //       : [];
+  //     return result;
+  //   },
+  //   virtualAccounts() {
+  //     const result = this.getSavedPayMethods
+  //       ? this.getSavedPayMethods.filter(
+  //           (element) => element.pay_method_id === 20
+  //         )
+  //       : [];
+  //     return result;
+  //   },
+  // },
+  // watch: {
+  //   getSavedPayMethods(newVal, oldVal) {
+  //     if (newVal !== oldVal) {
+  //       this.getDefaultpayMethod();
+  //     }
+  //   },
+  // },
+  // async mounted() {
+  //   this.setLoading(true);
+  //   await this.retrievePaymentMethods();
+  //   this.setLoading(false);
+  //   this.getDefaultpayMethod();
+  //   this.startTime = Date.now();
+  // },
+  // methods: {
+  //   ...mapMutations(["setPaymentMethods", "setSavedPayMethods"]),
+  //   getDefaultpayMethod() {
+  //     const method = this.getSavedPayMethods
+  //       ? this.getSavedPayMethods.filter((method) => method.default === 1)[0]
+  //       : [];
+  //     this.picked = method ? method.pay_detail_id : "";
+  //   },
+
+  //   async update(method) {
+  //     const payload = {
+  //       user_id: this.getBupayload.user_id,
+  //       pay_detail_id: method.pay_detail_id,
+  //       pay_method_id: method.pay_method_id,
+  //       country_code: this.getBupayload.country_code,
+  //       entity_id: parseInt(this.getBupayload.entity_id),
+  //     };
+
+  //     const fullPayload = {
+  //       url: `/set_default`,
+  //       params: payload,
+  //     };
+
+  //     window.analytics.track("Choose Payment Option", {
+  //       ...this.commonTrackPayload(),
+  //       payment_method: method.pay_method_name,
+  //     });
+
+  //     this.loading = true;
+  //     const response = await this.$paymentAxiosPost(fullPayload);
+  //     this.loading = false;
+  //     this.$paymentNotification({
+  //       type: response.status ? "" : "error",
+  //       text: response.status
+  //         ? `${method.pay_method_name} selected for payment.`
+  //         : "Request failed, Please try again!",
+  //     });
+  //   },
+
+  //   setSelectedName(mobile) {
+  //     const result = mobile.pay_method_name
+  //       ? mobile
+  //       : this.getSavedPayMethods.filter(
+  //           (element) => element.pay_detail_id === this.picked
+  //         )[0];
+  //     return result ? result.pay_method_name : "";
+  //   },
+  //   handleRouting() {
+  //     const entryRoute = localStorage.entry_route;
+  //     const entryPoint = localStorage.entry;
+  //     const method = this.getSavedPayMethods.filter(
+  //       (elements) => elements.pay_detail_id === this.picked
+  //     )[0];
+
+  //     const payment_method = method
+  //       ? method
+  //       : this.getSavedPayMethods.filter(
+  //           (elements) => elements.pay_method_id === parseInt(this.picked)
+  //         )[0];
+
+  //     const countSavedCards = this.getSavedPayMethods.filter(
+  //       (element) => element.pay_method_id === 2
+  //     );
+
+  //     switch (payment_method.pay_method_id) {
+  //       case 1:
+  //         window.analytics.track("Continue after selecting  M-Pesa", {
+  //           ...this.commonTrackPayload(),
+  //         });
+  //         break;
+  //       case 2:
+  //         window.analytics.track("Continue after selecting Card", {
+  //           ...this.commonTrackPayload(),
+  //           number_of_cards: countSavedCards.length,
+  //           selected_cards_network: payment_method.psp,
+  //         });
+  //         break;
+  //       case 20:
+  //         window.analytics.track("Continue after Pay by bank", {
+  //           ...this.commonTrackPayload(),
+  //           number_of_cards: countSavedCards.length,
+  //           selected_cards_network: payment_method.psp,
+  //         });
+  //         break;
+  //       default:
+  //         break;
+  //     }
+
+  //     if (payment_method.pay_method_id === 20) {
+  //       this.$router.push({ name: entryRoute });
+  //       return;
+  //     }
+
+  //     switch (entryPoint) {
+  //       case "checkout":
+  //         this.$router.push({ name: "Entry" });
+  //         break;
+  //       case "choose-payment":
+  //         this.$router.push({ name: entryRoute });
+  //         break;
+  //       case "choose-payment-checkout":
+  //         this.$router.push({ name: "ChoosePaymentCheckout" });
+  //         break;
+  //       case "payment-option":
+  //         this.$router.push({ name: "PaymentOptionsPage" });
+  //         break;
+  //       default:
+  //         this.$router.push({ name: "Entry" });
+  //         break;
+  //     }
+  //   },
+  //   addPaymentOption() {
+  //     window.analytics.track("Add Payment Option", {
+  //       ...this.commonTrackPayload(),
+  //       timezone: this.paymentTimezone,
+  //       country_code: this.getBupayload.country_code,
+  //     });
+  //     this.$router.push("/add-payment");
+  //   },
+  // },
 };
 </script>
