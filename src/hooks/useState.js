@@ -17,6 +17,7 @@ export function useState() {
     additionalData: null,
     showErrorModal: false,
     loadingText: "please wait",
+    count: false,
   });
 
   return state;
