@@ -52,7 +52,8 @@
 </template>
 
 <script>
-import { toRefs } from "vue";
+import { toRefs, onMounted } from "vue";
+import { useStore } from "vuex";
 import TopInfo from "../components/topInfo";
 import PaymentDetail from "../components/paymentDetail";
 import Processing from "../components/processing";
@@ -80,6 +81,7 @@ export default {
     };
   },
   setup() {
+    const store = userStore();
     const {
       getSavedPayMethods,
       getBupayload,
@@ -89,8 +91,19 @@ export default {
       submit,
       pollCard,
       handleContinue3DS,
+      getDefaultpayMethod,
+      retrievePaymentMethods,
     } = usePayment();
 
+    onMounted(async () => {
+      store.commit("setLoading", true);
+      state.loadingText = "Loading...";
+      await retrievePaymentMethods();
+      store.commit("setLoading", false);
+      state.loadingText = "Please wait";
+      getDefaultpayMethod();
+    });
+    
     function handleErrorModalClose() {
       state.showErrorModal = false;
       state.showAdditionalCardFields = false;
