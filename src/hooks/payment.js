@@ -15,14 +15,6 @@ export function usePayment() {
   const getErrorText = computed(() => store.getters.getErrorText);
   const getLoading = computed(() => store.getters.getLoading);
 
-  onMounted(async () => {
-    store.commit("setLoading", true);
-    state.loadingText = "Loading...";
-    await retrievePaymentMethods();
-    store.commit("setLoading", false);
-    state.loadingText = "Please wait";
-    getDefaultpayMethod();
-  });
 
   async function retrievePaymentMethods() {
     const payload = {
@@ -402,5 +394,7 @@ export function usePayment() {
     getAccounts,
     getMobileOs,
     payBybankCollect,
+    getDefaultpayMethod,
+    retrievePaymentMethods,
   };
 }
