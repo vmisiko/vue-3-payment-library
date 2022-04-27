@@ -37,11 +37,7 @@ export function useChoosePayment() {
     return result;
   });
 
-  // watch(getSavedPayMethods, (newVal, oldVal) => {
-  //   if (newVal !== oldVal) {
-  //     this.getDefaultpayMethod();
-  //   }
-  // });
+  
 
   async function update(method) {
     const payload = {
