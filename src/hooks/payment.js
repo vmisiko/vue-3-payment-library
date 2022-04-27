@@ -7,7 +7,7 @@ import { useSegement } from "./useSegment";
 export function usePayment() {
   const store = useStore();
   const { t, route, router } = useGlobalProp();
-  const state = useState();
+  const { state } = useState();
   const { commonTrackPayload } = useSegement();
 
   const getSavedPayMethods = computed(() => store.getters.getSavedPayMethods);

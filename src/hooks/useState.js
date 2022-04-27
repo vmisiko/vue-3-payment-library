@@ -1,4 +1,4 @@
-import { reactive } from "vue";
+import { reactive, computed } from "vue";
 
 export function useState() {
   const state = reactive({
@@ -20,5 +20,17 @@ export function useState() {
     count: false,
   });
 
-  return state;
+  const getSavedPayMethods = computed(() => store.getters.getSavedPayMethods);
+  const getBupayload = computed(() => store.getters.getBupayload);
+  const getErrorText = computed(() => store.getters.getErrorText);
+  const getLoading = computed(() => store.getters.getLoading);
+
+
+  return {
+    state,
+    getSavedPayMethods,
+    getBupayload,
+    getErrorText,
+    getLoading,
+  };
 }
