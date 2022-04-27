@@ -88,12 +88,20 @@ export function usePayment() {
 
   async function submit() {
     state.startResponseTime = new Date();
-    window.analytics.track("Confirm and Pay", {
-      ...commonTrackPayload(),
-      payment_method: state.defaultPaymentMethod.pay_method_name,
-      amount: getBupayload.value.amount,
-      currency:getBupayload.value.currency,
-    });
+    if (route.name !== "FailedView") {
+      window.analytics.track("Confirm and Pay", {
+        ...commonTrackPayload(),
+        payment_method: state.defaultPaymentMethod.pay_method_name,
+        amount: getBupayload.value.amount,
+        currency: getBupayload.value.currency,
+      });
+    }
+
+    if (route.name === "FailedView") {
+      window.analytics.track("Try again after Failed Payment", {
+        ...commonTrackPayload(),
+      });
+    }
 
     if (
       state.defaultPaymentMethod.daily_limit &&
@@ -167,11 +175,12 @@ export function usePayment() {
         }
         case "success": {
           store.commit("setLoading", false);
-          store.dispatch("paymentNotification", {
-            text: t("card_details_added"),
-          });
-          router.push("/choose-payment");
           store.setLoading(false);
+          const duration = Date.now() - state.startResponseTime;
+          router.push({
+            name: "SuccessView",
+            duration: duration,
+          });
           break;
         }
         default:
@@ -235,7 +244,9 @@ export function usePayment() {
           store.commit("setLoading", false);
           state.errorText = res.message;
           store.commit("setErrorText", res.message);
-          router.push({ name: "FailedView" });
+          if (route.name !== "FailedView") {
+            router.push({ name: "FailedView" });
+          }
           break;
         }
         case "pending":
@@ -294,13 +305,15 @@ export function usePayment() {
           pollCard();
           state.count = true;
           break;
-        case "success":
-          store.dispatch("paymentNotification", {
-            text: t("card_details_added"),
+        case "success": {
+          store.commit("setLoading", false);
+          const duration = Date.now() - state.startResponseTime;
+          router.push({
+            name: "SuccessView",
+            duration: duration,
           });
-          router.push("/choose-payment");
-          store.commint("setLoading", false);
           break;
+        }
         default:
           break;
       }
@@ -371,7 +384,9 @@ export function usePayment() {
       return;
     }
     store.commit("setErrorText", response.message);
-    router.push({ name: "FailedView" });
+    if (route.name === "FailedView") {
+      router.push({ name: "FailedView" });
+    }
     return;
   }
 
