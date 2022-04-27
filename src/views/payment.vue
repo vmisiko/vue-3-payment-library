@@ -81,7 +81,7 @@ export default {
     };
   },
   setup() {
-    const store = userStore();
+    const store = useStore();
     const {
       getSavedPayMethods,
       getBupayload,
