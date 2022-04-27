@@ -1,6 +1,8 @@
 import { reactive, computed } from "vue";
+import { useStore } from "vuex";
 
 export function useState() {
+  const store = useStore();
   const state = reactive({
     currency: "KES",
     amount: 0.0,
@@ -24,7 +26,6 @@ export function useState() {
   const getBupayload = computed(() => store.getters.getBupayload);
   const getErrorText = computed(() => store.getters.getErrorText);
   const getLoading = computed(() => store.getters.getLoading);
-
 
   return {
     state,

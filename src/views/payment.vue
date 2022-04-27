@@ -103,7 +103,7 @@ export default {
       state.loadingText = "Please wait";
       getDefaultpayMethod();
     });
-    
+
     function handleErrorModalClose() {
       state.showErrorModal = false;
       state.showAdditionalCardFields = false;
