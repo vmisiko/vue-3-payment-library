@@ -1,4 +1,4 @@
-import { computed, onMounted } from "vue";
+import { computed } from "vue";
 import { useStore } from "vuex";
 import { useState } from "./useState";
 import { useGlobalProp } from "./globalProperties";
@@ -14,7 +14,6 @@ export function usePayment() {
   const getBupayload = computed(() => store.getters.getBupayload);
   const getErrorText = computed(() => store.getters.getErrorText);
   const getLoading = computed(() => store.getters.getLoading);
-
 
   async function retrievePaymentMethods() {
     const payload = {
