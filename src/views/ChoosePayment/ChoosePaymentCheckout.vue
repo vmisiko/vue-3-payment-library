@@ -95,7 +95,7 @@
               color="primary"
               class="mgt-2"
               @click="submit"
-              :loading="loading1"
+              :loading="getLoading"
               :disabled="!picked"
             >
               {{ $t("confirm_and_pay") }}
@@ -118,18 +118,23 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import { onMounted, watch, toRefs } from "vue";
+import { useStore } from "vuex";
+// import { mapGetters, mapMutations } from "vuex";
 import TopInfo from "../../components/topInfo.vue";
 import Processing from "../../components/processing";
-import paymentGenMxn from "../../mixins/paymentGenMxn";
+// import paymentGenMxn from "../../mixins/paymentGenMxn";
 import TransactionLimitModal from "../../components/modals/transactionalLimitModal";
 import AdditionalCardFields from "./../AdditionalCardFields";
 import ErrorModal from "../../components/modals/ErrorModal";
 import ChooseOption from "./components/chooseOption";
+import { useChoosePayment } from "../../hooks/useChoosePayment";
+import { usePayment } from "../../hooks/payment";
+import { useState } from "../../hooks/useState";
 
 export default {
   name: "ChoosePaymentCheckout",
-  mixins: [paymentGenMxn],
+  // mixins: [paymentGenMxn],
   components: {
     TopInfo,
     Processing,
@@ -142,476 +147,526 @@ export default {
     return {
       icon: "back",
       title: this.$t("choose_payment_option"),
-      picked: "",
-      loading: false,
-      count: false,
-      defaultPaymentMethod: null,
-      transaction_id: null,
-      poll_count: 0,
-      poll_limit: 6,
-      errorText: "",
-      mpesaCode: "",
-      loading1: false,
-      showTransactionLimit: false,
-      showAdditionalCardFields: false,
-      additionalData: null,
-      showErrorModal: false,
-      loadingText: "Loading",
+      // picked: "",
+      // loading: false,
+      // count: false,
+      // defaultPaymentMethod: null,
+      // transaction_id: null,
+      // poll_count: 0,
+      // poll_limit: 6,
+      // errorText: "",
+      // mpesaCode: "",
+      // loading1: false,
+      // showTransactionLimit: false,
+      // showAdditionalCardFields: false,
+      // additionalData: null,
+      // showErrorModal: false,
+      // loadingText: "Loading",
     };
   },
-  computed: {
-    ...mapGetters(["getSavedPayMethods", "getBupayload", "getErrorText"]),
-    creditCards() {
-      const result = this.getSavedPayMethods
-        ? this.getSavedPayMethods.filter(
-            (element) => element.pay_method_id === 2
-          )
-        : [];
-      return result;
-    },
-    savedMobile() {
-      const result = this.getSavedPayMethods
-        ? this.getSavedPayMethods.filter(
-            (element) => element.category === "Mobile Money"
-          )
-        : [];
-      return result;
-    },
-    virtualAccounts() {
-      const result = this.getSavedPayMethods
-        ? this.getSavedPayMethods.filter(
-            (element) => element.pay_method_id === 20
-          )
-        : [];
-      return result;
-    },
+  setup() {
+    const { state } = useState();
+    const { retrievePaymentMethods, getDefaultpayMethod, submit } =
+      usePayment();
+    const store = useStore();
+
+    const {
+      creditCards,
+      savedMobile,
+      virtualAccounts,
+      getBupayload,
+      getLoading,
+      getSavedPayMethods,
+      update,
+      handleRouting,
+      addPaymentOption,
+    } = useChoosePayment();
+
+    watch(getSavedPayMethods, (newVal, oldVal) => {
+      if (newVal !== oldVal) {
+        getDefaultpayMethod();
+      }
+    });
+
+    onMounted(async () => {
+      store.commit("setLoading", true);
+      await retrievePaymentMethods();
+      store.commit("setLoading", false);
+      getDefaultpayMethod();
+    });
+
+    function handleErrorModalClose() {
+      state.showErrorModal = false;
+      state.showAdditionalCardFields = false;
+    }
+
+    return {
+      ...toRefs(state),
+      creditCards,
+      savedMobile,
+      virtualAccounts,
+      getBupayload,
+      getLoading,
+      update,
+      handleRouting,
+      addPaymentOption,
+      handleErrorModalClose,
+      submit,
+    };
   },
-  async mounted() {
-    this.setLoading(true);
-    this.loadingText = "Loading...";
-    await this.retrievePaymentMethods();
-    this.setLoading(false);
-    this.loadingText = this.$t("please_wait");
-    this.getDefaultpayMethod();
-  },
-  methods: {
-    ...mapMutations([
-      "setErrorText",
-      "setPaymentMethods",
-      "setSavedPayMethods",
-    ]),
-    getDefaultpayMethod() {
-      const method = this.getSavedPayMethods
-        ? this.getSavedPayMethods.filter((method) => method.default === 1)[0]
-        : null;
-      this.picked = method ? method.pay_detail_id : "";
-      this.defaultPaymentMethod = method;
-      if (this.getSavedPayMethods.length) {
-        return;
-      }
-      if (!this.defaultPaymentMethod) {
-        this.$router.push({ name: "AddPayment", params: { entry: "entry" } });
-        return;
-      }
-    },
+  // computed: {
+  //   ...mapGetters(["getSavedPayMethods", "getBupayload", "getErrorText"]),
+  //   creditCards() {
+  //     const result = this.getSavedPayMethods
+  //       ? this.getSavedPayMethods.filter(
+  //           (element) => element.pay_method_id === 2
+  //         )
+  //       : [];
+  //     return result;
+  //   },
+  //   savedMobile() {
+  //     const result = this.getSavedPayMethods
+  //       ? this.getSavedPayMethods.filter(
+  //           (element) => element.category === "Mobile Money"
+  //         )
+  //       : [];
+  //     return result;
+  //   },
+  //   virtualAccounts() {
+  //     const result = this.getSavedPayMethods
+  //       ? this.getSavedPayMethods.filter(
+  //           (element) => element.pay_method_id === 20
+  //         )
+  //       : [];
+  //     return result;
+  //   },
+  // },
+  // async mounted() {
+  //   this.setLoading(true);
+  //   this.loadingText = "Loading...";
+  //   await this.retrievePaymentMethods();
+  //   this.setLoading(false);
+  //   this.loadingText = this.$t("please_wait");
+  //   this.getDefaultpayMethod();
+  // },
+  // methods: {
+  //   ...mapMutations([
+  //     "setErrorText",
+  //     "setPaymentMethods",
+  //     "setSavedPayMethods",
+  //   ]),
+  //   getDefaultpayMethod() {
+  //     const method = this.getSavedPayMethods
+  //       ? this.getSavedPayMethods.filter((method) => method.default === 1)[0]
+  //       : null;
+  //     this.picked = method ? method.pay_detail_id : "";
+  //     this.defaultPaymentMethod = method;
+  //     if (this.getSavedPayMethods.length) {
+  //       return;
+  //     }
+  //     if (!this.defaultPaymentMethod) {
+  //       this.$router.push({ name: "AddPayment", params: { entry: "entry" } });
+  //       return;
+  //     }
+  //   },
 
-    async update(method) {
-      const payload = {
-        user_id: this.getBupayload.user_id,
-        pay_detail_id: method.pay_detail_id,
-        pay_method_id: method.pay_method_id,
-        country_code: this.getBupayload.country_code,
-        entity_id: parseInt(this.getBupayload.entity_id),
-      };
+  //   async update(method) {
+  //     const payload = {
+  //       user_id: this.getBupayload.user_id,
+  //       pay_detail_id: method.pay_detail_id,
+  //       pay_method_id: method.pay_method_id,
+  //       country_code: this.getBupayload.country_code,
+  //       entity_id: parseInt(this.getBupayload.entity_id),
+  //     };
 
-      const fullPayload = {
-        url: `/set_default`,
-        params: payload,
-      };
+  //     const fullPayload = {
+  //       url: `/set_default`,
+  //       params: payload,
+  //     };
 
-      window.analytics.track("Choose Payment Option", {
-        ...this.commonTrackPayload(),
-        payment_method: method.pay_method_name,
-      });
+  //     window.analytics.track("Choose Payment Option", {
+  //       ...this.commonTrackPayload(),
+  //       payment_method: method.pay_method_name,
+  //     });
 
-      this.loading = true;
-      const response = await this.$paymentAxiosPost(fullPayload);
-      this.loading = false;
-      this.$paymentNotification({
-        type: response.status ? "" : "error",
-        text: response.status
-          ? `${method.pay_method_name} selected for payment.`
-          : "Request failed, Please try again!",
-      });
-    },
+  //     this.loading = true;
+  //     const response = await this.$paymentAxiosPost(fullPayload);
+  //     this.loading = false;
+  //     this.$paymentNotification({
+  //       type: response.status ? "" : "error",
+  //       text: response.status
+  //         ? `${method.pay_method_name} selected for payment.`
+  //         : "Request failed, Please try again!",
+  //     });
+  //   },
 
-    setSelectedName(mobile) {
-      const result = mobile.pay_method_name
-        ? mobile
-        : this.getSavedPayMethods.filter(
-            (element) => element.pay_detail_id === this.picked
-          )[0];
-      return result ? result.pay_method_name : "";
-    },
-    async submit() {
-      const entry = localStorage.getItem("entry");
+  //   setSelectedName(mobile) {
+  //     const result = mobile.pay_method_name
+  //       ? mobile
+  //       : this.getSavedPayMethods.filter(
+  //           (element) => element.pay_detail_id === this.picked
+  //         )[0];
+  //     return result ? result.pay_method_name : "";
+  //   },
+  //   async submit() {
+  //     const entry = localStorage.getItem("entry");
 
-      if (entry === "resolve-payment-checkout") {
-        this.submitRetry();
-        return;
-      }
+  //     if (entry === "resolve-payment-checkout") {
+  //       this.submitRetry();
+  //       return;
+  //     }
 
-      if (
-        this.defaultPaymentMethod.daily_limit &&
-        this.getBupayload.amount > this.defaultPaymentMethod.daily_limit
-      ) {
-        this.showTransactionLimit = true;
-        return;
-      }
+  //     if (
+  //       this.defaultPaymentMethod.daily_limit &&
+  //       this.getBupayload.amount > this.defaultPaymentMethod.daily_limit
+  //     ) {
+  //       this.showTransactionLimit = true;
+  //       return;
+  //     }
 
-      if (this.defaultPaymentMethod.category === "Mobile Money") {
-        if (this.defaultPaymentMethod.pay_method_id === 1) {
-          this.amount > this.defaultPaymentMethod.transaction_limit
-            ? this.$router.push("/mpesa-c2b")
-            : this.$router.push("/mpesa-stk");
-          return;
-        }
+  //     if (this.defaultPaymentMethod.category === "Mobile Money") {
+  //       if (this.defaultPaymentMethod.pay_method_id === 1) {
+  //         this.amount > this.defaultPaymentMethod.transaction_limit
+  //           ? this.$router.push("/mpesa-c2b")
+  //           : this.$router.push("/mpesa-stk");
+  //         return;
+  //       }
 
-        this.amount > this.defaultPaymentMethod.transaction_limit
-          ? (this.showTransactionLimit = true)
-          : this.$router.push("/mpesa-stk");
-        return;
-      }
+  //       this.amount > this.defaultPaymentMethod.transaction_limit
+  //         ? (this.showTransactionLimit = true)
+  //         : this.$router.push("/mpesa-stk");
+  //       return;
+  //     }
 
-      if (this.defaultPaymentMethod.pay_method_id === 20) {
-        this.payBybankCollect();
-        return;
-      }
+  //     if (this.defaultPaymentMethod.pay_method_id === 20) {
+  //       this.payBybankCollect();
+  //       return;
+  //     }
 
-      this.setLoading(true);
-      const payload = {
-        country: this.getBupayload.country_code,
-        amount: this.getBupayload.amount,
-        cardno: this.defaultPaymentMethod.pay_method_details,
-        txref: this.getBupayload.txref,
-        userid: this.getBupayload.user_id,
-        currency: this.getBupayload.currency,
-        bulk: this.getBupayload.bulk,
-        entity: this.getBupayload.entity_id,
-        company_code: this.getBupayload.company_code,
-        bulkrefno: this.getBupayload.bulk_reference_number,
-      };
+  //     this.setLoading(true);
+  //     const payload = {
+  //       country: this.getBupayload.country_code,
+  //       amount: this.getBupayload.amount,
+  //       cardno: this.defaultPaymentMethod.pay_method_details,
+  //       txref: this.getBupayload.txref,
+  //       userid: this.getBupayload.user_id,
+  //       currency: this.getBupayload.currency,
+  //       bulk: this.getBupayload.bulk,
+  //       entity: this.getBupayload.entity_id,
+  //       company_code: this.getBupayload.company_code,
+  //       bulkrefno: this.getBupayload.bulk_reference_number,
+  //     };
 
-      const fullPayload = {
-        url: "/api/v3/process",
-        params: payload,
-      };
+  //     const fullPayload = {
+  //       url: "/api/v3/process",
+  //       params: payload,
+  //     };
 
-      const response = await this.$paymentAxiosPost(fullPayload);
-      this.transaction_id = response.transaction_id;
-      if (response.status) {
-        if (response.additional_data) {
-          this.additionalData = response.additional_data;
-          this.showAdditionalCardFields = true;
-          this.setLoading(false);
-          return;
-        }
+  //     const response = await this.$paymentAxiosPost(fullPayload);
+  //     this.transaction_id = response.transaction_id;
+  //     if (response.status) {
+  //       if (response.additional_data) {
+  //         this.additionalData = response.additional_data;
+  //         this.showAdditionalCardFields = true;
+  //         this.setLoading(false);
+  //         return;
+  //       }
 
-        switch (response.transaction_status) {
-          case "pending":
-            if (this.getBupayload.bulk) {
-              this.setLoading(false);
-              this.$router.push({
-                name: "SuccessView",
-              });
-              return;
-            }
-            this.pollCard();
-            break;
-          case "success":
-            this.setLoading(false);
-            this.$paymentNotification({
-              text: this.$t("card_details_added"),
-            });
-            this.$router.push("/choose-payment");
-            this.setLoading(false);
-            break;
-          default:
-            break;
-        }
-        return;
-      }
-      this.setErrorText(response.message);
-      this.setLoading(false);
-      this.$router.push({ name: "FailedView" });
-    },
-    async bulkretry() {
-      this.startResponseTime = new Date();
+  //       switch (response.transaction_status) {
+  //         case "pending":
+  //           if (this.getBupayload.bulk) {
+  //             this.setLoading(false);
+  //             this.$router.push({
+  //               name: "SuccessView",
+  //             });
+  //             return;
+  //           }
+  //           this.pollCard();
+  //           break;
+  //         case "success":
+  //           this.setLoading(false);
+  //           this.$paymentNotification({
+  //             text: this.$t("card_details_added"),
+  //           });
+  //           this.$router.push("/choose-payment");
+  //           this.setLoading(false);
+  //           break;
+  //         default:
+  //           break;
+  //       }
+  //       return;
+  //     }
+  //     this.setErrorText(response.message);
+  //     this.setLoading(false);
+  //     this.$router.push({ name: "FailedView" });
+  //   },
+  //   async bulkretry() {
+  //     this.startResponseTime = new Date();
 
-      if (this.defaultPaymentMethod.pay_method_id === 1) {
-        this.amount > this.defaultPaymentMethod.stk_limit
-          ? this.$router.push("/mpesa-c2b")
-          : this.$router.push("/mpesa-stk");
-        return;
-      }
+  //     if (this.defaultPaymentMethod.pay_method_id === 1) {
+  //       this.amount > this.defaultPaymentMethod.stk_limit
+  //         ? this.$router.push("/mpesa-c2b")
+  //         : this.$router.push("/mpesa-stk");
+  //       return;
+  //     }
 
-      this.setLoading(true);
-      const payload = {
-        user_id: this.getBupayload.user_id,
-        company_code: this.getBupayload.company_code,
-        entity: this.getBupayload.entity_id,
-        pay_detail_id: this.defaultPaymentMethod.pay_method_details,
-        payment_method: this.defaultPaymentMethod.pay_method_id,
-        references: this.getBupayload.references,
-      };
+  //     this.setLoading(true);
+  //     const payload = {
+  //       user_id: this.getBupayload.user_id,
+  //       company_code: this.getBupayload.company_code,
+  //       entity: this.getBupayload.entity_id,
+  //       pay_detail_id: this.defaultPaymentMethod.pay_method_details,
+  //       payment_method: this.defaultPaymentMethod.pay_method_id,
+  //       references: this.getBupayload.references,
+  //     };
 
-      const fullPayload = {
-        url: "/api/v3/bulk/retry",
-        params: payload,
-      };
+  //     const fullPayload = {
+  //       url: "/api/v3/bulk/retry",
+  //       params: payload,
+  //     };
 
-      try {
-        const response = await this.$paymentAxiosPost(fullPayload);
-        this.transaction_id = response.transaction_id;
-        if (response.status) {
-          switch (response.transaction_status) {
-            case "pending":
-              this.pollCard();
-              break;
-            case "success":
-              this.setLoading(false);
-              this.$paymentNotification({
-                text: this.$t("card_details_added"),
-              });
-              this.$router.push("/choose-payment");
-              this.setLoading(false);
-              break;
-            default:
-              break;
-          }
-          return;
-        }
-        this.setErrorText(response.message);
-        this.setLoading(false);
-        this.subtitle = response.message;
-      } catch {
-        this.$paymentNotification({
-          text: this.$t("error_occurred"),
-          type: "error",
-        });
-        this.setErrorText(this.$t("error_occurred"));
-        this.setLoading(false);
-      }
-    },
+  //     try {
+  //       const response = await this.$paymentAxiosPost(fullPayload);
+  //       this.transaction_id = response.transaction_id;
+  //       if (response.status) {
+  //         switch (response.transaction_status) {
+  //           case "pending":
+  //             this.pollCard();
+  //             break;
+  //           case "success":
+  //             this.setLoading(false);
+  //             this.$paymentNotification({
+  //               text: this.$t("card_details_added"),
+  //             });
+  //             this.$router.push("/choose-payment");
+  //             this.setLoading(false);
+  //             break;
+  //           default:
+  //             break;
+  //         }
+  //         return;
+  //       }
+  //       this.setErrorText(response.message);
+  //       this.setLoading(false);
+  //       this.subtitle = response.message;
+  //     } catch {
+  //       this.$paymentNotification({
+  //         text: this.$t("error_occurred"),
+  //         type: "error",
+  //       });
+  //       this.setErrorText(this.$t("error_occurred"));
+  //       this.setLoading(false);
+  //     }
+  //   },
 
-    async submitRetry() {
-      if (this.getBupayload.bulk) {
-        this.bulkretry();
-        return;
-      }
+  //   async submitRetry() {
+  //     if (this.getBupayload.bulk) {
+  //       this.bulkretry();
+  //       return;
+  //     }
 
-      this.startResponseTime = new Date();
+  //     this.startResponseTime = new Date();
 
-      if (this.defaultPaymentMethod.pay_method_id === 1) {
-        this.getBupayload.amount > this.defaultPaymentMethod.stk_limit
-          ? this.$router.push("/mpesa-c2b")
-          : this.$router.push("/mpesa-stk");
-        return;
-      }
+  //     if (this.defaultPaymentMethod.pay_method_id === 1) {
+  //       this.getBupayload.amount > this.defaultPaymentMethod.stk_limit
+  //         ? this.$router.push("/mpesa-c2b")
+  //         : this.$router.push("/mpesa-stk");
+  //       return;
+  //     }
 
-      if (this.defaultPaymentMethod.pay_method_id === 20) {
-        this.payBybankCollect();
-        return;
-      }
+  //     if (this.defaultPaymentMethod.pay_method_id === 20) {
+  //       this.payBybankCollect();
+  //       return;
+  //     }
 
-      this.setLoading(true);
-      const payload = {
-        user_id: this.getBupayload.user_id,
-        company_code: this.getBupayload.company_code,
-        entity: this.getBupayload.entity_id,
-        pay_detail_id: this.defaultPaymentMethod.pay_method_details,
-        payment_method: this.defaultPaymentMethod.pay_method_id,
-        references: this.getBupayload.references,
-      };
+  //     this.setLoading(true);
+  //     const payload = {
+  //       user_id: this.getBupayload.user_id,
+  //       company_code: this.getBupayload.company_code,
+  //       entity: this.getBupayload.entity_id,
+  //       pay_detail_id: this.defaultPaymentMethod.pay_method_details,
+  //       payment_method: this.defaultPaymentMethod.pay_method_id,
+  //       references: this.getBupayload.references,
+  //     };
 
-      const fullPayload = {
-        url: "/api/v3/process/retry",
-        params: payload,
-      };
+  //     const fullPayload = {
+  //       url: "/api/v3/process/retry",
+  //       params: payload,
+  //     };
 
-      const response = await this.$paymentAxiosPost(fullPayload);
-      this.transaction_id = response.transaction_id;
-      if (response.status) {
-        if (response.additional_data) {
-          this.additionalData = response.additional_data;
-          this.showAdditionalCardFields = true;
-          this.setLoading(false);
-          return;
-        }
+  //     const response = await this.$paymentAxiosPost(fullPayload);
+  //     this.transaction_id = response.transaction_id;
+  //     if (response.status) {
+  //       if (response.additional_data) {
+  //         this.additionalData = response.additional_data;
+  //         this.showAdditionalCardFields = true;
+  //         this.setLoading(false);
+  //         return;
+  //       }
 
-        switch (response.transaction_status) {
-          case "pending":
-            this.pollCard();
-            break;
-          case "success":
-            this.setLoading(false);
-            this.$router.push({ name: "SuccessView" });
-            break;
-          default:
-            break;
-        }
-        return;
-      }
-      this.setErrorText(response.message);
-      this.setLoading(false);
-    },
-    pollCard() {
-      this.poll_count = 0;
-      for (let poll_count = 0; poll_count < this.poll_limit; poll_count++) {
-        const that = this;
-        (function (poll_count) {
-          setTimeout(() => {
-            if (that.poll_count === that.poll_limit) {
-              poll_count = that.poll_limit;
-              return;
-            }
+  //       switch (response.transaction_status) {
+  //         case "pending":
+  //           this.pollCard();
+  //           break;
+  //         case "success":
+  //           this.setLoading(false);
+  //           this.$router.push({ name: "SuccessView" });
+  //           break;
+  //         default:
+  //           break;
+  //       }
+  //       return;
+  //     }
+  //     this.setErrorText(response.message);
+  //     this.setLoading(false);
+  //   },
+  //   pollCard() {
+  //     this.poll_count = 0;
+  //     for (let poll_count = 0; poll_count < this.poll_limit; poll_count++) {
+  //       const that = this;
+  //       (function (poll_count) {
+  //         setTimeout(() => {
+  //           if (that.poll_count === that.poll_limit) {
+  //             poll_count = that.poll_limit;
+  //             return;
+  //           }
 
-            that.TransactionIdStatus();
-            if (poll_count === that.poll_limit - 1) {
-              that.setLoading(false);
-              that.errorText = this.$t("failed_to_charge_card");
-              that.setErrorText(that.errorText);
-              that.$router.push({ name: "FailedView" });
-              return;
-            }
-          }, 10000 * poll_count);
-        })(poll_count);
-      }
-    },
+  //           that.TransactionIdStatus();
+  //           if (poll_count === that.poll_limit - 1) {
+  //             that.setLoading(false);
+  //             that.errorText = this.$t("failed_to_charge_card");
+  //             that.setErrorText(that.errorText);
+  //             that.$router.push({ name: "FailedView" });
+  //             return;
+  //           }
+  //         }, 10000 * poll_count);
+  //       })(poll_count);
+  //     }
+  //   },
 
-    async TransactionIdStatus() {
-      const payload = {
-        url: `/api/v1/process/status/${this.transaction_id}`,
-      };
+  //   async TransactionIdStatus() {
+  //     const payload = {
+  //       url: `/api/v1/process/status/${this.transaction_id}`,
+  //     };
 
-      this.$paymentAxiosGet(payload).then((res) => {
-        if (res.status) {
-          switch (res.transaction_status) {
-            case "success":
-              this.poll_count = this.poll_limit;
-              this.$paymentNotification({
-                text: res.message,
-              });
-              this.setLoading(false);
-              this.$router.push({ name: "SuccessView" });
-              break;
-            case "failed":
-              this.poll_count = this.poll_limit;
-              this.setLoading(false);
-              this.errorText = res.message;
-              this.setErrorText(res.message);
-              this.$router.push({ name: "FailedView" });
-              this.failView();
-              break;
-            case "pending":
-              break;
-            default:
-              break;
-          }
-          return res;
-        }
-        this.poll_count = this.poll_limit;
-        this.showAdditionalCardFields = false;
-        this.setLoading(false);
-        this.errorText = res.message;
-        this.showErrorModal = true;
-      });
-    },
+  //     this.$paymentAxiosGet(payload).then((res) => {
+  //       if (res.status) {
+  //         switch (res.transaction_status) {
+  //           case "success":
+  //             this.poll_count = this.poll_limit;
+  //             this.$paymentNotification({
+  //               text: res.message,
+  //             });
+  //             this.setLoading(false);
+  //             this.$router.push({ name: "SuccessView" });
+  //             break;
+  //           case "failed":
+  //             this.poll_count = this.poll_limit;
+  //             this.setLoading(false);
+  //             this.errorText = res.message;
+  //             this.setErrorText(res.message);
+  //             this.$router.push({ name: "FailedView" });
+  //             this.failView();
+  //             break;
+  //           case "pending":
+  //             break;
+  //           default:
+  //             break;
+  //         }
+  //         return res;
+  //       }
+  //       this.poll_count = this.poll_limit;
+  //       this.showAdditionalCardFields = false;
+  //       this.setLoading(false);
+  //       this.errorText = res.message;
+  //       this.showErrorModal = true;
+  //     });
+  //   },
 
-    addPaymentOption() {
-      window.analytics.track("Add Payment Option", {
-        ...this.commonTrackPayload(),
-        timezone: this.paymentTimezone,
-        country_code: this.getBupayload.country_code,
-      });
-      this.$router.push("/add-payment");
-    },
+  //   addPaymentOption() {
+  //     window.analytics.track("Add Payment Option", {
+  //       ...this.commonTrackPayload(),
+  //       timezone: this.paymentTimezone,
+  //       country_code: this.getBupayload.country_code,
+  //     });
+  //     this.$router.push("/add-payment");
+  //   },
 
-    handleContinue(val) {
-      if (val) {
-        this.setLoading(true);
-        this.pollCard();
-        return;
-      }
-      this.setLoading(false);
-      this.errorText = this.$t("failed_to_collect_card_details");
-      this.showErrorModal = true;
-    },
+  //   handleContinue(val) {
+  //     if (val) {
+  //       this.setLoading(true);
+  //       this.pollCard();
+  //       return;
+  //     }
+  //     this.setLoading(false);
+  //     this.errorText = this.$t("failed_to_collect_card_details");
+  //     this.showErrorModal = true;
+  //   },
 
-    handleContinue3DS(val) {
-      this.showAdditionalCardFields = false;
-      this.additionalData = val.additionalData.filter(
-        (element) => element.field_id === "url"
-      );
-      this.init3DS();
-    },
+  //   handleContinue3DS(val) {
+  //     this.showAdditionalCardFields = false;
+  //     this.additionalData = val.additionalData.filter(
+  //       (element) => element.field_id === "url"
+  //     );
+  //     this.init3DS();
+  //   },
 
-    init3DS() {
-      const res = !this.additionalData
-        ? this.additionalData
-        : this.additionalData[0];
-      const url = res.field;
-      const urlWindow = window.open(url, "");
+  //   init3DS() {
+  //     const res = !this.additionalData
+  //       ? this.additionalData
+  //       : this.additionalData[0];
+  //     const url = res.field;
+  //     const urlWindow = window.open(url, "");
 
-      const timer = setInterval(() => {
-        if (urlWindow.closed) {
-          this.init3dsPoll();
-          clearInterval(timer);
-        }
-      }, 500);
-    },
+  //     const timer = setInterval(() => {
+  //       if (urlWindow.closed) {
+  //         this.init3dsPoll();
+  //         clearInterval(timer);
+  //       }
+  //     }, 500);
+  //   },
 
-    async init3dsPoll() {
-      this.setLoading(true);
-      const payload = {
-        transaction_id: this.transaction_id,
-        tds: true,
-      };
+  //   async init3dsPoll() {
+  //     this.setLoading(true);
+  //     const payload = {
+  //       transaction_id: this.transaction_id,
+  //       tds: true,
+  //     };
 
-      const fullPayload = {
-        params: payload,
-        url: "/api/v2/submit_info",
-      };
+  //     const fullPayload = {
+  //       params: payload,
+  //       url: "/api/v2/submit_info",
+  //     };
 
-      const response = await this.$paymentAxiosPost(fullPayload);
-      this.setLoading(false);
-      if (response.status) {
-        switch (response.transaction_status) {
-          case "pending":
-            this.pollCard();
-            this.count = true;
-            break;
-          case "success":
-            this.setLoading(false);
-            this.$paymentNotification({
-              text: this.$t("card_details_added"),
-            });
-            this.$router.push("/choose-payment");
-            this.setLoading(false);
-            break;
-          default:
-            break;
-        }
-        return;
-      }
-      this.setLoading(false);
-      this.errorText = this.$t("failed_to_collect_card_details");
-      this.showErrorModal = true;
-    },
-    handleErrorModalClose() {
-      this.showErrorModal = false;
-      this.showAdditionalCardFields = false;
-    },
-  },
+  //     const response = await this.$paymentAxiosPost(fullPayload);
+  //     this.setLoading(false);
+  //     if (response.status) {
+  //       switch (response.transaction_status) {
+  //         case "pending":
+  //           this.pollCard();
+  //           this.count = true;
+  //           break;
+  //         case "success":
+  //           this.setLoading(false);
+  //           this.$paymentNotification({
+  //             text: this.$t("card_details_added"),
+  //           });
+  //           this.$router.push("/choose-payment");
+  //           this.setLoading(false);
+  //           break;
+  //         default:
+  //           break;
+  //       }
+  //       return;
+  //     }
+  //     this.setLoading(false);
+  //     this.errorText = this.$t("failed_to_collect_card_details");
+  //     this.showErrorModal = true;
+  //   },
+  //   handleErrorModalClose() {
+  //     this.showErrorModal = false;
+  //     this.showAdditionalCardFields = false;
+  //   },
+  // },
 };
 </script>

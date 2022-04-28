@@ -1,4 +1,4 @@
-import { ref, computed } from "vue";
+import { computed } from "vue";
 import { useStore } from "vuex";
 import { useState } from "./useState";
 import { useGlobalProp } from "./globalProperties";
@@ -8,21 +8,23 @@ import moment from "moment-timezone";
 export function useChoosePayment() {
   const { router } = useGlobalProp();
   const store = useStore();
+  const { state } = useState();
   const { getSavedPayMethods, getBupayload, getLoading } = useState();
   const { commonTrackPayload } = useSegement();
 
-  const picked = ref("");
-  const loading = ref(false);
+  // const loading = ref(false);
 
   const creditCards = computed(() => {
-    const result = getSavedPayMethods
-      ? getSavedPayMethods.value.filter((element) => element.pay_method_id === 2)
+    const result = getSavedPayMethods.value
+      ? getSavedPayMethods.value.filter(
+          (element) => element.pay_method_id === 2
+        )
       : [];
     return result;
   });
 
   const savedMobile = computed(() => {
-    const result = getSavedPayMethods
+    const result = getSavedPayMethods.value
       ? getSavedPayMethods.value.filter(
           (element) => element.category === "Mobile Money"
         )
@@ -31,13 +33,13 @@ export function useChoosePayment() {
   });
 
   const virtualAccounts = computed(() => {
-    const result = getSavedPayMethods
-      ? getSavedPayMethods.value.filter((element) => element.pay_method_id === 20)
+    const result = getSavedPayMethods.value
+      ? getSavedPayMethods.value.filter(
+          (element) => element.pay_method_id === 20
+        )
       : [];
     return result;
   });
-
-  
 
   async function update(method) {
     const payload = {
@@ -58,9 +60,9 @@ export function useChoosePayment() {
       payment_method: method.pay_method_name,
     });
 
-    loading.value = true;
+    state.loading = true;
     const response = await store.dispatch("paymentAxiosPost", fullPayload);
-    loading.value = false;
+    state.loading = false;
     store.dispatch("paymentNotification", {
       type: response.status ? "" : "error",
       text: response.status
@@ -82,13 +84,13 @@ export function useChoosePayment() {
     const entryRoute = localStorage.entry_route;
     const entryPoint = localStorage.entry;
     const method = getSavedPayMethods.value.filter(
-      (elements) => elements.pay_detail_id === picked.value
+      (elements) => elements.pay_detail_id === state.picked
     )[0];
 
     const payment_method = method
       ? method
       : getSavedPayMethods.value.filter(
-          (elements) => elements.pay_method_id === parseInt(picked.value)
+          (elements) => elements.pay_method_id === parseInt(state.picked)
         )[0];
 
     const countSavedCards = getSavedPayMethods.value.filter(
@@ -158,14 +160,12 @@ export function useChoosePayment() {
   }
 
   return {
-    picked,
     creditCards,
     savedMobile,
     virtualAccounts,
     getBupayload,
     getLoading,
     getSavedPayMethods,
-    loading,
     update,
     handleRouting,
     addPaymentOption,

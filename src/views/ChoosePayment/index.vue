@@ -90,13 +90,14 @@
 </template>
 
 <script>
-import { onMounted, watch } from "vue";
+import { onMounted, toRefs, watch } from "vue";
 import { useStore } from "vuex";
 import TopInfo from "../../components/topInfo";
 import ChooseOption from "./components/chooseOption";
 import Processing from "../../components/processing";
 import { useChoosePayment } from "../../hooks/useChoosePayment";
 import { usePayment } from "../../hooks/payment";
+import { useState } from "../../hooks/useState";
 
 export default {
   name: "ChoosePayment",
@@ -115,16 +116,15 @@ export default {
   setup() {
     const { retrievePaymentMethods } = usePayment();
     const store = useStore();
+    const { state } = useState();
 
     const {
-      picked,
       creditCards,
       savedMobile,
       virtualAccounts,
       getBupayload,
       getLoading,
       getSavedPayMethods,
-      loading,
       update,
       handleRouting,
       addPaymentOption,
@@ -147,17 +147,16 @@ export default {
       const method = getSavedPayMethods.value
         ? getSavedPayMethods.value.filter((method) => method.default === 1)[0]
         : [];
-      picked.value = method ? method.pay_detail_id : "";
+      state.picked = method ? method.pay_detail_id : "";
     }
 
     return {
-      picked,
+      ...toRefs(state),
       creditCards,
       savedMobile,
       virtualAccounts,
       getBupayload,
       getLoading,
-      loading,
       update,
       handleRouting,
       addPaymentOption,

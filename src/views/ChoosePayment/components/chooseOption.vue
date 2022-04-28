@@ -54,7 +54,7 @@
           type="radio"
           :value="paymentOption.pay_detail_id"
           :disabled="disableLogic"
-          v-model="picked"
+          @input="$emit('update:modelValue', $event.target.value)"
         />
       </div>
     </div>
