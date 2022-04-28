@@ -256,7 +256,8 @@ export default {
         this.pollMpesa();
         return;
       }
-      (this.promptInfo = false), (this.showTimer = false);
+      this.promptInfo = false;
+      this.showTimer = false;
       this.loading = false;
       this.showErrorModal = true;
     },
