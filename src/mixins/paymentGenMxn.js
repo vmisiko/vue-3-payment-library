@@ -110,6 +110,7 @@ const mixin = {
       const payload = {
         entityId: this.getBupayload.entity_id,
         userId: this.getBupayload.user_id,
+        country_code: this.getBupayload.country_code,
       };
 
       const fullPayload = {
@@ -130,6 +131,7 @@ const mixin = {
       const payload = {
         country: this.getBupayload.country_code,
         amount: this.getBupayload.amount,
+        cardno: "",
         txref: this.getBupayload.txref,
         userid: this.getBupayload.user_id,
         currency: this.getBupayload.currency,
@@ -146,18 +148,21 @@ const mixin = {
 
       this.setLoading(true);
       const response = await this.$paymentAxiosPost(fullPayload);
+      this.setLoading(false);
+
       if (response.status) {
         this.$paymentNotification({
           text: response.message,
         });
-        this.setLoading(false);
         this.$router.push({
           name: "SuccessView",
         });
         return;
       }
       this.setErrorText(response.message);
-      this.$router.push({ name: "FailedView" });
+      if (this.$route.name !== 'FailedView') {
+        this.$router.push({ name: "FailedView" });
+      };
       return;
     },
   },
