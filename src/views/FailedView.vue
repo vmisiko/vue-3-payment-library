@@ -69,12 +69,13 @@
 
 <script>
 import { toRefs, onMounted } from "vue";
-import { useStore } from "vuex";
 import TopInfo from "../components/topInfo";
 import PaymentDetail from "../components/paymentDetail";
 import AdditionalCardFields from "./AdditionalCardFields";
 import ErrorModal from "../components/modals/ErrorModal";
+import Processing from "../components/processing";
 import { usePayment } from "../hooks/payment";
+
 
 export default {
   name: "FailedView",
@@ -83,6 +84,7 @@ export default {
     PaymentDetail,
     ErrorModal,
     AdditionalCardFields,
+    Processing,
   },
   data() {
     return {
@@ -91,22 +93,9 @@ export default {
         ? this.$t("unable_to_confirm")
         : this.$t("payment_failed"),
       paymentStatus: true,
-      currency: "KES",
-      amount: 0.0,
-      loading: false,
-      defaultPaymentMethod: null,
-      errorText: this.$t("could_not_process"),
-      transaction_id: null,
-      poll_count: 0,
-      poll_limit: 30,
-      showTransactionLimit: false,
-      showAdditionalCardFields: false,
-      additionalData: null,
-      showErrorModal: false,
     };
   },
   setup() {
-    const store = useStore();
     const {
       getSavedPayMethods,
       getBupayload,
@@ -117,15 +106,9 @@ export default {
       pollCard,
       handleContinue3DS,
       getDefaultpayMethod,
-      retrievePaymentMethods,
     } = usePayment();
 
     onMounted(async () => {
-      store.commit("setLoading", true);
-      state.loadingText = "Loading...";
-      await retrievePaymentMethods();
-      store.commit("setLoading", false);
-      state.loadingText = "Please wait";
       getDefaultpayMethod();
     });
 
