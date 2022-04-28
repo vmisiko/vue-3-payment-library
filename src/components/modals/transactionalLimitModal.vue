@@ -82,6 +82,7 @@ export default {
     handleRouting() {
       const entryRoute = localStorage.entry_route;
       this.$router.push({ name: entryRoute });
+      this.$emit('close');
     },
   },
 };
