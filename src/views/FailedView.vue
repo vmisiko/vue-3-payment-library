@@ -76,7 +76,6 @@ import ErrorModal from "../components/modals/ErrorModal";
 import Processing from "../components/processing";
 import { usePayment } from "../hooks/payment";
 
-
 export default {
   name: "FailedView",
   components: {

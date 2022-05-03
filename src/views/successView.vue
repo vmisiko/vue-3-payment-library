@@ -54,7 +54,7 @@ export default {
       loading: false,
       defaultPaymentMethod: null,
       isMpesa: false,
-      mpesaCode: '',
+      mpesaCode: "",
     };
   },
   computed: {
