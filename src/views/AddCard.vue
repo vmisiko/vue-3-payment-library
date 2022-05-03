@@ -175,18 +175,19 @@ export default {
   },
   async mounted() {
     await this.loadVGS();
-    setTimeout(() => {
-      this.setForm();
-    }, 500);
   },
   methods: {
     ...mapMutations(["setTwoFACompleted"]),
     async loadVGS() {
       const script = document.createElement("script");
+      script.src = 'https://js.verygoodvault.com/vgs-collect/2.12.0/vgs-collect.js';
       script.async = true;
-      script.src =
-        "https://js.verygoodvault.com/vgs-collect/2.12.0/vgs-collect.js";
-      document.head.appendChild(script);
+      script.onload = () => {
+        console.log('script loaded');
+      };
+      document.body.appendChild(script);
+      this.setForm();
+      return;
     },
     initForm() {
       setTimeout(() => {
@@ -204,18 +205,12 @@ export default {
       };
 
       /* eslint-disable */
-      this.form = VGSCollect.create(
+      this.form = window.VGSCollect.create(
         this.config.VGS_VAULT_ID,
         this.config.VGS_ENVIRONMENT,
         () => {}
       );
 
-      //  this.form.field('#cc-name', {
-      //   type: "text",
-      //   name: "card_name",
-      //   placeholder: 'Enter full name',
-      //   validations: ['required'],
-      // });
 
       this.form.field("#cc-number", {
         type: "card-number",
@@ -223,7 +218,7 @@ export default {
         successColor: "#4F8A10",
         errorColor: "#D8000C",
         showCardIcon: true,
-        fontSize: "13px",
+
         placeholder: "0000 0000 0000 0000",
         validations: ["required"],
         classes: classes,
@@ -232,7 +227,6 @@ export default {
       this.form.field("#cc-cvc", {
         type: "card-security-code",
         name: "cvv",
-        fontSize: "13px",
         placeholder: "***",
         validations: ["required", "validCardSecurityCode"],
         showCardIcon: false,
@@ -242,14 +236,13 @@ export default {
       this.form.field("#cc-expiration-date", {
         type: "card-expiration-date",
         name: "expirydate",
-        fontSize: "13px",
-        errorColor: "#D8000C",
-        successColor: "#4F8A10",
+        successColor: '#4F8A10',
+        errorColor: '#D8000C',
         placeholder: "MM/YY",
-        serializers: [{ name: "replace", options: { old: " ", new: "" } }],
         validations: ["required", "validCardExpirationDate"],
         classes: classes,
       });
+
     },
     setErrors() {
       const state = this.form.state;
