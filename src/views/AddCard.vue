@@ -3,78 +3,80 @@
     <Processing
       :count="count"
       text="Processing your card details"
-      v-if="showProcessing && !showAdditionalCardFields"
+      v-if="getLoading"
     />
-    <AdditionalCardFields
-      :additionalData="additionalData"
-      :transaction_id="transaction_id"
-      v-if="!showProcessing && showAdditionalCardFields"
-      @continue="handleContinue"
-    />
-    <div class="card-min" v-if="!showProcessing && !showAdditionalCardFields">
-      <TopInfo :icon="icon" :title="title" />
+    <div v-else>
+      <AdditionalCardFields
+        :additionalData="additionalData"
+        :transaction_id="transaction_id"
+        v-if="showAdditionalCardFields"
+        @continue="handleContinue"
+      />
+      <div class="card-min" v-if="!showAdditionalCardFields">
+        <TopInfo :icon="icon" :title="title" />
 
-      <form id="cc-form" @submit.prevent="onsubmit">
-        <div class="form-group">
-          <label class="text-caption-2">{{ $t("cardholder_name") }}</label>
-          <input
-            type="text"
-            v-model="card_name"
-            class="form-field"
-            placeholder="Enter full name"
-            required
-          />
-        </div>
-
-        <div class="form-group mgt-4">
-          <label for="cc-number" class="mgt-2 text-caption-2">{{
-            $t("card_number")
-          }}</label>
-          <span id="cc-number" class="form-field"> </span>
-          <span class="text-caption-2 text-error" v-if="cardno">
-            {{ cardno }}
-          </span>
-        </div>
-
-        <div class="direction-flex mgt-4">
+        <form id="cc-form" @submit.prevent="onsubmit">
           <div class="form-group">
-            <label for="cc-expiration-date" class="text-caption-2">{{
-              $t("expiry")
-            }}</label>
-            <span id="cc-expiration-date" class="form-field"> </span>
-            <span class="text-caption-2 text-error" v-if="expirydate">
-              {{ expirydate }}
-            </span>
-          </div>
-
-          <div class="form-group mgl-8">
-            <label for="cc-cvc" class="text-caption-2">{{ $t("cvv") }}</label>
-
-            <span id="cc-cvc" class="form-field"> </span>
-            <IconView
-              icon="cvv"
-              class="float-right mgr-2 mgt-n10"
-              @cvv="showModal = true"
+            <label class="text-caption-2">{{ $t("cardholder_name") }}</label>
+            <input
+              type="text"
+              v-model="card_name"
+              class="form-field"
+              placeholder="Enter full name"
+              required
             />
-            <span class="text-caption-2 text-error" v-if="cvv">
-              {{ cvv }}
+          </div>
+
+          <div class="form-group mgt-4">
+            <label for="cc-number" class="mgt-2 text-caption-2">{{
+              $t("card_number")
+            }}</label>
+            <span id="cc-number" class="form-field"> </span>
+            <span class="text-caption-2 text-error" v-if="cardno">
+              {{ cardno }}
             </span>
           </div>
-        </div>
 
-        <div class="mgt-10 text-center">
-          <span class="charge-text"> {{ $t("in_order_to_verify") }}</span>
-        </div>
-        <sendy-btn
-          :block="true"
-          :loading="loading"
-          color="primary"
-          class="mgt-3"
-          type="submit"
-        >
-          {{ $t("add_card") }}
-        </sendy-btn>
-      </form>
+          <div class="direction-flex mgt-4">
+            <div class="form-group">
+              <label for="cc-expiration-date" class="text-caption-2">{{
+                $t("expiry")
+              }}</label>
+              <span id="cc-expiration-date" class="form-field"> </span>
+              <span class="text-caption-2 text-error" v-if="expirydate">
+                {{ expirydate }}
+              </span>
+            </div>
+
+            <div class="form-group mgl-8">
+              <label for="cc-cvc" class="text-caption-2">{{ $t("cvv") }}</label>
+
+              <span id="cc-cvc" class="form-field"> </span>
+              <IconView
+                icon="cvv"
+                class="float-right mgr-2 mgt-n10"
+                @cvv="showModal = true"
+              />
+              <span class="text-caption-2 text-error" v-if="cvv">
+                {{ cvv }}
+              </span>
+            </div>
+          </div>
+
+          <div class="mgt-10 text-center">
+            <span class="charge-text"> {{ $t("in_order_to_verify") }}</span>
+          </div>
+          <sendy-btn
+            :block="true"
+            :loading="loading"
+            color="primary"
+            class="mgt-3"
+            type="submit"
+          >
+            {{ $t("add_card") }}
+          </sendy-btn>
+        </form>
+      </div>
     </div>
     <CvvModal :show="showModal" @close="showModal = !showModal" />
     <ErrorModal
@@ -86,12 +88,17 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import { onMounted, onBeforeMount, toRefs, ref, reactive, toRef} from "vue";
+// import { mapMutations } from "vuex";
 import TopInfo from "../components/topInfo";
 import CvvModal from "../components/modals/cvvModal";
 import ErrorModal from "../components/modals/ErrorModal";
 import Processing from "../components/processing";
 import AdditionalCardFields from "./AdditionalCardFields";
+import { useGlobalProp } from '../hooks/globalProperties';
+import { useState } from '../hooks/useState';
+import { usePayment } from '../hooks/payment';
+import { useStore } from 'vuex';
 
 export default {
   name: "AddCard",
@@ -104,97 +111,54 @@ export default {
   },
   data() {
     return {
-      loading: false,
-      showSnackbar: true,
-      showModal: false,
-      showErrorModal: false,
-      errorText: this.$t("card_declined"),
       icon: "back",
-      title: this.$t("add_a_card"),
-      form: {},
+      title: this.$t("add_a_card"), 
+      showModal: false,
+    };
+  },
+  setup() {
+    const { sendyOptions, router, t } = useGlobalProp();
+    const { getBupayload, getLoading, state } = useState();
+    const {      
+      pollCard,
+      init3DS,
+    } = usePayment();
+
+    const store = useStore();
+
+    const cardState = reactive({
       cardno: "",
       card_name: "",
       expirydate: "",
       cvv: "",
-      transaction_id: "",
-      poll_count: 0,
-      poll_limit: 30,
-      showProcessing: false,
-      vgs_valid_payment: false,
-      cardType: null,
-      showAdditionalCardFields: false,
-      additionalData: null,
-      is3DS: false,
-      twoFACompleted: false,
-      transactionStatus: null,
-      count: false,
-    };
-  },
-  computed: {
-    ...mapGetters(["getBupayload", "getTwoFACompleted"]),
-  },
-  watch: {
-    getTwoFACompleted(status) {
-      this.twoFACompleted = status;
+    })
+    
+    /* eslint-disable */
+    const vgsForm = window.VGSCollect.create(
+      sendyOptions.config.VGS_VAULT_ID,
+      sendyOptions.config.VGS_ENVIRONMENT,
+      () => {}
+    );
 
-      if (status) {
-        switch (this.transactionStatus) {
-          case "pending":
-            this.pollCard();
-            break;
-          case "success":
-            this.showProcessing = false;
-            this.$paymentNotification({
-              text: this.$t("card_details_added"),
-            });
-            this.$router.push("/choose-payment");
-            this.loading = false;
-            break;
-          default:
-            break;
-        }
-      }
-    },
-    form: {
-      handler(val) {
-        const state = val.state;
-        if (
-          Object.prototype.hasOwnProperty.call(state, "cardno") &&
-          state.cardno.isValid &&
-          state.cvv.isValid &&
-          state.expirydate.isValid
-        ) {
-          this.vgs_valid_payment = true;
-          this.cardType = state.cardno;
-        } else {
-          this.vgs_valid_payment = false;
-        }
-      },
-      deep: true,
-    },
-  },
-  async mounted() {
-    await this.loadVGS();
-  },
-  methods: {
-    ...mapMutations(["setTwoFACompleted"]),
-    async loadVGS() {
+    onBeforeMount(async () => {
+      await loadVGS();
+    })
+
+    onMounted(() => {
+      setForm();
+    })
+
+    async function loadVGS() {
       const script = document.createElement("script");
       script.src = 'https://js.verygoodvault.com/vgs-collect/2.12.0/vgs-collect.js';
       script.async = true;
-      script.onload = () => {
-        console.log('script loaded');
-      };
+      script.onload = () => {};
       document.body.appendChild(script);
-      this.setForm();
       return;
-    },
-    initForm() {
-      setTimeout(() => {
-        this.setForm();
-      }, 500);
-    },
-    setForm() {
+    }
+
+    function setForm() {
+
       const classes = {
         empty: "field--empty",
         valid: "field--valid",
@@ -204,15 +168,7 @@ export default {
         touched: "field--touched",
       };
 
-      /* eslint-disable */
-      this.form = window.VGSCollect.create(
-        this.config.VGS_VAULT_ID,
-        this.config.VGS_ENVIRONMENT,
-        () => {}
-      );
-
-
-      this.form.field("#cc-number", {
+      vgsForm.field("#cc-number", {
         type: "card-number",
         name: "cardno",
         successColor: "#4F8A10",
@@ -224,7 +180,7 @@ export default {
         classes: classes,
       });
 
-      this.form.field("#cc-cvc", {
+      vgsForm.field("#cc-cvc", {
         type: "card-security-code",
         name: "cvv",
         placeholder: "***",
@@ -233,7 +189,7 @@ export default {
         classes: classes,
       });
 
-      this.form.field("#cc-expiration-date", {
+      vgsForm.field("#cc-expiration-date", {
         type: "card-expiration-date",
         name: "expirydate",
         successColor: '#4F8A10',
@@ -243,237 +199,473 @@ export default {
         classes: classes,
       });
 
-    },
-    setErrors() {
-      const state = this.form.state;
+    }
+
+    function setErrors() {
+      const state = vgsForm.state;
+      const errors = [];
       for (const [key, value] of Object.entries(state)) {
-        this[`${key}`] = !value.isValid ? value.errorMessages[0] : "";
+        cardState[key] = !value.isValid ? value.errorMessages[0] : "";
+        if (!value.isValid) {
+          errors.push(key);
+        }
       }
-    },
-    onsubmit() {
-      if (!this.vgs_valid_payment) {
-        this.setErrors();
+
+      return errors.length ? false : true;
+    }
+
+    function onsubmit() {
+      const isValid = setErrors();
+      if (!isValid) {
         return;
       }
+
       const newCardPayload = {
-        country: this.getBupayload.country_code,
-        currency: this.getBupayload.currency,
-        email: this.getBupayload.email,
-        firstname: this.getBupayload.firstname,
-        lastname: this.getBupayload.lastname,
-        phonenumber: this.getBupayload.phonenumber,
-        userid: this.getBupayload.user_id,
-        company_code: this.getBupayload.company_code,
+        country: getBupayload.value.country_code,
+        currency: getBupayload.value.currency,
+        email: getBupayload.value.email,
+        firstname: getBupayload.value.firstname,
+        lastname: getBupayload.value.lastname,
+        phonenumber: getBupayload.value.phonenumber,
+        userid: getBupayload.value.user_id,
+        company_code: getBupayload.value.company_code,
       };
-      this.loading = true;
-      this.form.submit(
+
+      state.loading = true;
+      vgsForm.submit(
         "/customers/collect_card_details",
         {
           data: newCardPayload,
           headers: {
-            Authorization: this.getBupayload.authToken,
+            Authorization: getBupayload.authToken,
           },
         },
         (status, response) => {
-          this.loading = false;
-          if (response.status) {
-            this.showProcessing = true;
+          if (status === 200) {
             const reponseData = response.data;
             delete reponseData['language'];
-            const payload = {
-              url: "/api/v2/save",
-              params: reponseData,
-            };
-
-            this.$paymentAxiosPost(payload)
-              .then((res) => {
-                this.transaction_id = res.transaction_id;
-
-                if (res.status) {
-                  this.transactionStatus = res.transaction_status.toLowerCase();
-
-                  if (res.additional_data) {
-                    this.additionalData = res.additional_data;
-                    this.is3DS = res.tds;
-                    if (res.tds) {
-                      this.init3DS();
-                      return;
-                    }
-                    this.showAdditionalCardFields = true;
-                    this.showProcessing = false;
-                    return;
-                  }
-
-                  switch (res.transaction_status.toLowerCase()) {
-                    case "pending":
-                      this.pollCard();
-                      break;
-                    case "success":
-                      this.showProcessing = false;
-                      this.$paymentNotification({
-                        text: this.$t("card_details_added"),
-                      });
-                      this.$router.push("/choose-payment");
-                      this.loading = false;
-                      break;
-                    default:
-                      break;
-                  }
-                } else {
-                  this.loading = false;
-                  (this.showProcessing = false), this.initForm();
-
-                  this.errorText = res.message;
-                  this.showErrorModal = true;
-                }
-              })
-              .catch((err) => {
-                console.log(err);
-                this.showProcessing = false;
-                this.initForm();
-                this.errorText = this.$t("failed_to_collect_card_details");
-                this.showErrorModal = true;
-              });
-          } else {
-            (this.showProcessing = false), this.initForm();
-            this.errorText = this.$t("failed_to_collect_card_details");
-            this.showErrorModal = true;
+            saveNewCard(reponseData);
+            state.loading = false;
           }
+        },
+        (error) => {
+          console.log(error);
         }
       );
-    },
-    handleContinue(val) {
-      if (val) {
-        this.showProcessing = true;
-        this.pollCard();
-        return;
-      }
-      (this.showProcessing = false), this.initForm();
-      this.errorText = this.$t("failed_to_collect_card_details");
-      this.showErrorModal = true;
-    },
+    }
 
-    pollCard() {
-      this.poll_count = 0;
-      for (let poll_count = 0; poll_count < this.poll_limit; poll_count++) {
-        const that = this;
-        (function (poll_count) {
-          setTimeout(() => {
-            if (that.poll_count === that.poll_limit) {
-              poll_count = that.poll_limit;
-              return;
-            }
-
-            that.TransactionIdStatus();
-            if (poll_count === that.poll_limit - 1) {
-              that.loading = false;
-              (that.showProcessing = false), that.initForm();
-              that.errorText = this.$t("failed_to_collect_card_details");
-              that.showErrorModal = true;
-              return;
-            }
-          }, 10000 * poll_count);
-        })(poll_count);
-        this.setTwoFACompleted(false);
-      }
-      this.setTwoFACompleted(false);
-    },
-
-    async TransactionIdStatus() {
+    async function saveNewCard(reponseData) {
+      store.commit('setLoading', true);
       const payload = {
-        url: `/api/v2/process/status/${this.transaction_id}`,
+        url: "/api/v2/save",
+        params: reponseData,
       };
-      this.$paymentAxiosGet(payload).then((res) => {
-        if (res.status) {
-          switch (res.transaction_status.toLowerCase()) {
-            case "success":
-              this.poll_count = this.poll_limit;
-              this.showProcessing = false;
-              this.$paymentNotification({
-                text: this.$t("card_details_added"),
-              });
-              this.$router.push("/choose-payment");
-              this.loading = false;
-              break;
-            case "failed":
-              this.poll_count = this.poll_limit;
-              this.loading = false;
-              this.showProcessing = false;
-              this.initForm();
-              this.errorText = res.message;
-              this.showErrorModal = true;
-              break;
-            case "pending":
-              break;
-            default:
-              break;
+
+      const res = await store.dispatch('paymentAxiosPost', payload);
+      state.transaction_id = res.transaction_id;
+
+      if (res.status) {
+        state.transactionStatus = res.transaction_status.toLowerCase();
+
+        if (res.additional_data) {
+          state.additionalData = res.additional_data;
+          state.is3DS = res.tds;
+          if (res.tds) {
+            init3DS();
+            return;
           }
-          return res;
+          state.showAdditionalCardFields = true;
+          store.commit('setLoading', false);
+          return;
         }
 
-        this.poll_count = this.poll_limit;
-        this.showProcessing = false;
-        this.initForm();
-        this.errorText = res.message;
-        this.showErrorModal = true;
-      });
-    },
-    init3DS() {
-      const res = !this.additionalData
-        ? this.additionalData
-        : this.additionalData[0];
-      const url = res.field;
-      const urlWindow = window.open(url, "");
-
-      const timer = setInterval(() => {
-        if (urlWindow.closed) {
-          this.init3dsPoll();
-          clearInterval(timer);
-        }
-      }, 500);
-    },
-    handleErrorClose() {
-      this.showErrorModal = !this.showErrorModal;
-      this.$router.push({ name: "ChoosePayment" });
-    },
-    async init3dsPoll() {
-      this.loading = true;
-      const payload = {
-        transaction_id: this.transaction_id,
-        tds: true,
-      };
-
-      const fullPayload = {
-        params: payload,
-        url: "/api/v2/submit_info",
-      };
-
-      const response = await this.$paymentAxiosPost(fullPayload);
-      this.loading = false;
-      if (response.status) {
-        switch (response.transaction_status.toLowerCase()) {
+        switch (res.transaction_status.toLowerCase()) {
           case "pending":
-            this.pollCard();
-            this.count = true;
+            pollCard();
             break;
           case "success":
-            this.showProcessing = false;
-            this.$paymentNotification({
-              text: this.$t("card_details_added"),
+            store.commit('setLoading', false);
+            store.dispatch('paymentNotification', {
+              text: t("card_details_added"),
             });
-            this.$router.push("/choose-payment");
-            this.loading = false;
+            router.push("/choose-payment");
+            state.loading = false;
             break;
           default:
             break;
         }
-        return;
+      } else {
+        store.commit('setLoading', false);
+        // initForm();
+
+        state.errorText = res.message;
+        state.showErrorModal = true;
       }
-      (this.showProcessing = false), this.initForm();
-      this.errorText = this.$t("failed_to_collect_card_details");
-      this.showErrorModal = true;
-    },
+
+      state.showProcessing = false;
+      state.errorText = t("failed_to_collect_card_details");
+      state.showErrorModal = true;
+    }
+
+    function handleErrorClose() {
+      state.showErrorModal = false;
+      state.showAdditionalCardFields = false;
+      router.push({ name: "ChoosePayment" });
+    }
+
+    return {
+      ...toRefs(cardState),
+      ...toRefs(state),
+      getLoading,
+      onsubmit,
+      handleErrorClose,
+    }
   },
+  // computed: {
+  //   ...mapGetters(["getBupayload", "getTwoFACompleted"]),
+  // },
+  // watch: {
+  //   getTwoFACompleted(status) {
+  //     this.twoFACompleted = status;
+
+  //     if (status) {
+  //       switch (this.transactionStatus) {
+  //         case "pending":
+  //           this.pollCard();
+  //           break;
+  //         case "success":
+  //           this.showProcessing = false;
+  //           this.$paymentNotification({
+  //             text: this.$t("card_details_added"),
+  //           });
+  //           this.$router.push("/choose-payment");
+  //           this.loading = false;
+  //           break;
+  //         default:
+  //           break;
+  //       }
+  //     }
+  //   },
+  //   form: {
+  //     handler(val) {
+  //       const state = val.state;
+  //       if (
+  //         Object.prototype.hasOwnProperty.call(state, "cardno") &&
+  //         state.cardno.isValid &&
+  //         state.cvv.isValid &&
+  //         state.expirydate.isValid
+  //       ) {
+  //         this.vgs_valid_payment = true;
+  //         this.cardType = state.cardno;
+  //       } else {
+  //         this.vgs_valid_payment = false;
+  //       }
+  //     },
+  //     deep: true,
+  //   },
+  // },
+  // async mounted() {
+  //   await this.loadVGS();
+  // },
+  // methods: {
+  //   ...mapMutations(["setTwoFACompleted"]),
+  //   async loadVGS() {
+  //     const script = document.createElement("script");
+  //     script.src = 'https://js.verygoodvault.com/vgs-collect/2.12.0/vgs-collect.js';
+  //     script.async = true;
+  //     script.onload = () => {
+  //       console.log('script loaded');
+  //     };
+  //     document.body.appendChild(script);
+  //     this.setForm();
+  //     return;
+  //   },
+  //   initForm() {
+  //     setTimeout(() => {
+  //       this.setForm();
+  //     }, 500);
+  //   },
+  //   setForm() {
+  //     const classes = {
+  //       empty: "field--empty",
+  //       valid: "field--valid",
+  //       invalid: "field--invalid",
+  //       focused: "field--focused",
+  //       dirty: "field--dirty",
+  //       touched: "field--touched",
+  //     };
+
+  //     /* eslint-disable */
+  //     this.form = window.VGSCollect.create(
+  //       this.config.VGS_VAULT_ID,
+  //       this.config.VGS_ENVIRONMENT,
+  //       () => {}
+  //     );
+
+
+  //     this.form.field("#cc-number", {
+  //       type: "card-number",
+  //       name: "cardno",
+  //       successColor: "#4F8A10",
+  //       errorColor: "#D8000C",
+  //       showCardIcon: true,
+
+  //       placeholder: "0000 0000 0000 0000",
+  //       validations: ["required"],
+  //       classes: classes,
+  //     });
+
+  //     this.form.field("#cc-cvc", {
+  //       type: "card-security-code",
+  //       name: "cvv",
+  //       placeholder: "***",
+  //       validations: ["required", "validCardSecurityCode"],
+  //       showCardIcon: false,
+  //       classes: classes,
+  //     });
+
+  //     this.form.field("#cc-expiration-date", {
+  //       type: "card-expiration-date",
+  //       name: "expirydate",
+  //       successColor: '#4F8A10',
+  //       errorColor: '#D8000C',
+  //       placeholder: "MM/YY",
+  //       validations: ["required", "validCardExpirationDate"],
+  //       classes: classes,
+  //     });
+
+  //   },
+  //   setErrors() {
+  //     const state = this.form.state;
+  //     for (const [key, value] of Object.entries(state)) {
+  //       this[`${key}`] = !value.isValid ? value.errorMessages[0] : "";
+  //     }
+  //   },
+  //   onsubmit() {
+  //     if (!this.vgs_valid_payment) {
+  //       this.setErrors();
+  //       return;
+  //     }
+  //     const newCardPayload = {
+  //       country: this.getBupayload.country_code,
+  //       currency: this.getBupayload.currency,
+  //       email: this.getBupayload.email,
+  //       firstname: this.getBupayload.firstname,
+  //       lastname: this.getBupayload.lastname,
+  //       phonenumber: this.getBupayload.phonenumber,
+  //       userid: this.getBupayload.user_id,
+  //       company_code: this.getBupayload.company_code,
+  //     };
+  //     this.loading = true;
+  //     this.form.submit(
+  //       "/customers/collect_card_details",
+  //       {
+  //         data: newCardPayload,
+  //         headers: {
+  //           Authorization: this.getBupayload.authToken,
+  //         },
+  //       },
+  //       (status, response) => {
+  //         this.loading = false;
+  //         if (response.status) {
+  //           this.showProcessing = true;
+  //           const reponseData = response.data;
+  //           delete reponseData['language'];
+  //           const payload = {
+  //             url: "/api/v2/save",
+  //             params: reponseData,
+  //           };
+
+  //           this.$paymentAxiosPost(payload)
+  //             .then((res) => {
+  //               this.transaction_id = res.transaction_id;
+
+  //               if (res.status) {
+  //                 this.transactionStatus = res.transaction_status.toLowerCase();
+
+  //                 if (res.additional_data) {
+  //                   this.additionalData = res.additional_data;
+  //                   this.is3DS = res.tds;
+  //                   if (res.tds) {
+  //                     this.init3DS();
+  //                     return;
+  //                   }
+  //                   this.showAdditionalCardFields = true;
+  //                   this.showProcessing = false;
+  //                   return;
+  //                 }
+
+  //                 switch (res.transaction_status.toLowerCase()) {
+  //                   case "pending":
+  //                     this.pollCard();
+  //                     break;
+  //                   case "success":
+  //                     this.showProcessing = false;
+  //                     this.$paymentNotification({
+  //                       text: this.$t("card_details_added"),
+  //                     });
+  //                     this.$router.push("/choose-payment");
+  //                     this.loading = false;
+  //                     break;
+  //                   default:
+  //                     break;
+  //                 }
+  //               } else {
+  //                 this.loading = false;
+  //                 (this.showProcessing = false), this.initForm();
+
+  //                 this.errorText = res.message;
+  //                 this.showErrorModal = true;
+  //               }
+  //             })
+  //             .catch((err) => {
+  //               console.log(err);
+  //               this.showProcessing = false;
+  //               this.initForm();
+  //               this.errorText = this.$t("failed_to_collect_card_details");
+  //               this.showErrorModal = true;
+  //             });
+  //         } else {
+  //           (this.showProcessing = false), this.initForm();
+  //           this.errorText = this.$t("failed_to_collect_card_details");
+  //           this.showErrorModal = true;
+  //         }
+  //       }
+  //     );
+  //   },
+  //   handleContinue(val) {
+  //     if (val) {
+  //       this.showProcessing = true;
+  //       this.pollCard();
+  //       return;
+  //     }
+  //     (this.showProcessing = false), this.initForm();
+  //     this.errorText = this.$t("failed_to_collect_card_details");
+  //     this.showErrorModal = true;
+  //   },
+
+  //   pollCard() {
+  //     this.poll_count = 0;
+  //     for (let poll_count = 0; poll_count < this.poll_limit; poll_count++) {
+  //       const that = this;
+  //       (function (poll_count) {
+  //         setTimeout(() => {
+  //           if (that.poll_count === that.poll_limit) {
+  //             poll_count = that.poll_limit;
+  //             return;
+  //           }
+
+  //           that.TransactionIdStatus();
+  //           if (poll_count === that.poll_limit - 1) {
+  //             that.loading = false;
+  //             (that.showProcessing = false), that.initForm();
+  //             that.errorText = this.$t("failed_to_collect_card_details");
+  //             that.showErrorModal = true;
+  //             return;
+  //           }
+  //         }, 10000 * poll_count);
+  //       })(poll_count);
+  //       this.setTwoFACompleted(false);
+  //     }
+  //     this.setTwoFACompleted(false);
+  //   },
+
+  //   async TransactionIdStatus() {
+  //     const payload = {
+  //       url: `/api/v2/process/status/${this.transaction_id}`,
+  //     };
+  //     this.$paymentAxiosGet(payload).then((res) => {
+  //       if (res.status) {
+  //         switch (res.transaction_status.toLowerCase()) {
+  //           case "success":
+  //             this.poll_count = this.poll_limit;
+  //             this.showProcessing = false;
+  //             this.$paymentNotification({
+  //               text: this.$t("card_details_added"),
+  //             });
+  //             this.$router.push("/choose-payment");
+  //             this.loading = false;
+  //             break;
+  //           case "failed":
+  //             this.poll_count = this.poll_limit;
+  //             this.loading = false;
+  //             this.showProcessing = false;
+  //             this.initForm();
+  //             this.errorText = res.message;
+  //             this.showErrorModal = true;
+  //             break;
+  //           case "pending":
+  //             break;
+  //           default:
+  //             break;
+  //         }
+  //         return res;
+  //       }
+
+  //       this.poll_count = this.poll_limit;
+  //       this.showProcessing = false;
+  //       this.initForm();
+  //       this.errorText = res.message;
+  //       this.showErrorModal = true;
+  //     });
+  //   },
+  //   init3DS() {
+  //     const res = !this.additionalData
+  //       ? this.additionalData
+  //       : this.additionalData[0];
+  //     const url = res.field;
+  //     const urlWindow = window.open(url, "");
+
+  //     const timer = setInterval(() => {
+  //       if (urlWindow.closed) {
+  //         this.init3dsPoll();
+  //         clearInterval(timer);
+  //       }
+  //     }, 500);
+  //   },
+  //   handleErrorClose() {
+  //     this.showErrorModal = !this.showErrorModal;
+  //     this.$router.push({ name: "ChoosePayment" });
+  //   },
+  //   async init3dsPoll() {
+  //     this.loading = true;
+  //     const payload = {
+  //       transaction_id: this.transaction_id,
+  //       tds: true,
+  //     };
+
+  //     const fullPayload = {
+  //       params: payload,
+  //       url: "/api/v2/submit_info",
+  //     };
+
+  //     const response = await this.$paymentAxiosPost(fullPayload);
+  //     this.loading = false;
+  //     if (response.status) {
+  //       switch (response.transaction_status.toLowerCase()) {
+  //         case "pending":
+  //           this.pollCard();
+  //           this.count = true;
+  //           break;
+  //         case "success":
+  //           this.showProcessing = false;
+  //           this.$paymentNotification({
+  //             text: this.$t("card_details_added"),
+  //           });
+  //           this.$router.push("/choose-payment");
+  //           this.loading = false;
+  //           break;
+  //         default:
+  //           break;
+  //       }
+  //       return;
+  //     }
+  //     this.showProcessing = false;
+  //     this.initForm();
+  //     this.errorText = this.$t("failed_to_collect_card_details");
+  //     this.showErrorModal = true;
+  //   },
+  // },
 };
 </script>
 
