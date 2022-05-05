@@ -389,6 +389,7 @@ export function usePayment() {
     state,
     submit,
     pollCard,
+    init3DS,
     handleContinue3DS,
     getAccounts,
     getMobileOs,
