@@ -110,7 +110,7 @@ const mixin = {
       const payload = {
         entityId: this.getBupayload.entity_id,
         userId: this.getBupayload.user_id,
-        country_code: this.getBupayload.country_code,
+        countryCode: this.getBupayload.country_code,
       };
 
       const fullPayload = {
