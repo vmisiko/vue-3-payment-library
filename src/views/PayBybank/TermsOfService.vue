@@ -52,6 +52,7 @@ export default {
     return {
       showProcessing: false,
       count: true,
+      loading: false,
     };
   },
   computed: {
