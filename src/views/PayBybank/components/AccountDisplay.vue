@@ -4,7 +4,6 @@
       <span class="input-label">{{ $t("available_banks") }}</span>
       <div class="mgt-1">
         <select
-          type="text"
           v-model="account"
           @input="handleInput"
           class="select-input"
