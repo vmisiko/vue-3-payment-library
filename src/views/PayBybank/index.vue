@@ -161,6 +161,7 @@ export default {
             that.getBalanceP();
             if (poll_count === that.poll_limit - 1) {
               that.showProcessing = false;
+              that.loading = false;
               that.showFailedTransfer = true;
               that.getBalance();
               return;
