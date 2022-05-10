@@ -4,20 +4,18 @@
       <span class="input-label">{{ $t("available_banks") }}</span>
       <div class="mgt-1">
         <select
-          v-model="account"
+          :value="modelValue"
           @input="handleInput"
           class="select-input"
           :placeholder="$t('select_payment_methods')"
         >
-          <template>
-            <option
-              v-for="(obj, index) in accounts"
-              :key="index"
-              :value="obj.account_number"
-            >
-              {{ obj.bank_name }}
-            </option>
-          </template>
+          <option
+            v-for="(obj, index) in accounts"
+            :key="index"
+            :value="obj.account_number"
+          >
+            {{ obj.bank_name }}
+          </option>
         </select>
       </div>
     </div>
@@ -54,11 +52,11 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "AccountsDisplay",
-  props: ["value", "accounts"],
+  props: ["modelValue", "accounts"],
   data() {
     return {
       loading: false,
-      account: this.value,
+      account: this.modelValue,
     };
   },
   computed: {
@@ -70,14 +68,10 @@ export default {
       return bank[0];
     },
   },
-  watch: {
-    value(val) {
-      this.account = val;
-    },
-  },
   methods: {
     handleInput(e) {
-      this.$emit("input", e.target.value);
+      this.$emit("update:modelValue'", e.target.value);
+      this.account = e.target.value;
     },
     handleCopy() {
       const cb = navigator.clipboard;

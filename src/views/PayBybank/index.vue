@@ -170,8 +170,15 @@ export default {
       }
     },
     async getBalanceP() {
+      const payload = {
+        entityId: this.getBupayload.entity_id,
+        userId: this.getBupayload.user_id,
+        countryCode: this.getBupayload.country_code,
+      }
+
       const fullPayload = {
-        url: `/api/v3/onepipe/balance/?userId=${this.getBupayload.user_id}`,
+        params: payload,
+        url: `/api/v3/onepipe/balance`,
       };
 
       const response = await this.$paymentAxiosGet(fullPayload);
