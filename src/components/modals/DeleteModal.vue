@@ -45,7 +45,22 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["getBupayload"]),
+    ...mapGetters(["getBupayload", "getSelectedPayOption"]),
+    payMethodName() {
+      let result = '';
+      switch (this.getSelectedPayOption.category) {
+        case 'bank':
+          result = 'Pay by bank';
+          break;
+        case 'Mobile Money':
+          result = 'Mobile Money';
+          break;
+        default:
+          result = this.getSelectedPayOption.pay_method_name;
+          break;
+      }
+      return result;
+    }
   },
   watch: {
     show(val) {
@@ -62,28 +77,18 @@ export default {
       el.style.display = "none";
     },
     handleDelete() {
-      switch (this.$route.name) {
-        case "MpesaDetails":
-          this.deleteMpesa();
-          break;
-        case "CardDetails":
-          this.deleteCard();
-          break;
-        default:
-          this.deleteCard();
-          break;
-      }
+      this.getSelectedPayOption.category === 'Credit or Debit Card' ? this.deleteCard() : this.deleteMethod();
     },
     async deleteCard() {
       this.loading = true;
       const startTime = new Date();
       window.analytics.track("Delete card", {
         ...this.commonTrackPayload(),
-        card_network: this.$route.params.cardTitle,
+        card_network: this.getSelectedPayOption.psp,
       });
 
       const payload = {
-        cardno: this.$route.params.cardno,
+        cardno: this.getSelectedPayOption.pay_method_details,
         userid: this.getBupayload.user_id,
       };
 
@@ -117,16 +122,15 @@ export default {
 
       this.$paymentNotification({ text: response.message, type: "error" });
     },
-    async deleteMpesa() {
+    async deleteMethod() {
       this.loading = true;
       const startTime = new Date();
-      window.analytics.track("Delete Mobile Money", {
+      window.analytics.track(`Delete ${this.payMethodName}`, {
         ...this.commonTrackPayload(),
-        mobile_money_network: "M-Pesa",
       });
 
       const payload = {
-        pay_detail_id: this.$route.params.id,
+        pay_detail_id: this.getSelectedPayOption.pay_detail_id,
         user_id: this.getBupayload.user_id,
       };
 
@@ -140,8 +144,8 @@ export default {
       const finishTime = Date.now() - startTime;
       window.analytics.track(
         response.status
-          ? "Mobile Money Deleted Successfully"
-          : "Mobile Money Not Deleted",
+          ? `${this.payMethodName} Deleted Successfully`
+          : `${this.payMethodName} Not Deleted`,
         {
           ...this.commonTrackPayload(),
           duration_taken: finishTime,
@@ -151,7 +155,7 @@ export default {
       this.loading = false;
       if (response.status) {
         this.$paymentNotification({
-          text: "M-PESA option removed",
+          text: `${this.payMethodName} option removed`,
           type: "info",
         });
         this.$router.push({ name: "PaymentOptionsPage" });
@@ -159,22 +163,9 @@ export default {
       this.$paymentNotification({ text: response.message, type: "error" });
     },
     cancelRemove() {
-      switch (this.$route.name) {
-        case "MpesaDetails":
-          window.analytics.track("Cancel Remove M-Pesa", {
-            ...this.commonTrackPayload(),
-            mobile_money_network: "M-Pesa",
-          });
-          break;
-        case "CardDetails":
-          window.analytics.track("Cancel Remove Card", {
-            ...this.commonTrackPayload(),
-            card_network: this.$route.params.cardTitle,
-          });
-          break;
-        default:
-          break;
-      }
+      window.analytics.track(`Cancel Remove ${this.payMethodName}`, {
+        ...this.commonTrackPayload(),
+      });
       this.$emit("close");
     },
   },

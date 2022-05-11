@@ -53,39 +53,10 @@ export default {
       window.analytics.track("Tap Payment Option", {
         ...this.commonTrackPayload(),
       });
-      switch (this.payMethod.pay_method_id) {
-        case 1:
-          this.setSelectedPayOption(this.payMethod);
-          this.$router.push({
-            name: "MpesaDetails",
-            params: {
-              id: this.payMethod.pay_detail_id,
-            },
-          });
-          break;
-        case 2:
-          this.setSelectedPayOption(this.payMethod);
-          this.$router.push({
-            name: "CardDetails",
-            params: {
-              cardno: this.payMethod.pay_method_details,
-              cardTitle: this.payMethod.psp,
-            },
-          });
-          break;
-        default:
-          this.setSelectedPayOption(this.payMethod);
-          this.$router.push({
-            name: "MpesaDetails",
-            params: {
-              id: this.payMethod.pay_detail_id,
-              title: "Pay by bank",
-              paymentOption: "Pay by Bank",
-              icon: "virtual accounts",
-            },
-          });
-          break;
-      }
+      this.setSelectedPayOption(this.payMethod);
+      this.$router.push({
+        name: 'PaymentOptionDetail',
+      });
     },
   },
 };
