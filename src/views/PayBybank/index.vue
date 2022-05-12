@@ -145,6 +145,13 @@ export default {
       this.loading = true;
       this.showProcessing = true;
       this.count = true;
+
+      window.analytics.track("Confirm Pay By Bank Transfer",  {
+        ...this.commonTrackPayload,
+        amount: this.topupAmount,
+        currency: this.getBupayload.currency,
+      });
+      
       this.pollbalance();
     },
     pollbalance() {
@@ -163,6 +170,11 @@ export default {
               that.showProcessing = false;
               that.loading = false;
               that.showFailedTransfer = true;
+              window.analytics.track("Pay By Bank Transfer Failed",  {
+                ...that.commonTrackPayload,
+                amount: that.topupAmount,
+                currency: that.getBupayload.currency,
+              });
               that.getBalance();
               return;
             }
@@ -203,6 +215,13 @@ export default {
           parseFloat(response.availableBalance) - parseFloat(this.balance);
         this.pendingAmount =
           parseFloat(this.topupAmount) - parseFloat(this.lastTransferAmount);
+        this.showInsufficientTransfer = true;
+        window.analytics.track("Pay By Bank Transfer Insufficient",  {
+          ...this.commonTrackPayload,
+          amount: this.amountDue,
+          currency: this.getBupayload.currency,
+          transfer_amount: this.lastTransferAmount
+        });
       }
       this.balance = response.availableBalance;
     },

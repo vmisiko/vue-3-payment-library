@@ -123,7 +123,7 @@ export default {
   },
   methods: {
     removeCard() {
-      window.analytics.track("Remove Mobile Money", {
+      window.analytics.track(`Remove ${this.paymentOption}`, {
         ...this.commonTrackPayload(),
       });
       this.showDeleteModal = true;

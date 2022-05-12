@@ -42,12 +42,14 @@
 <script>
 import { mapGetters, mapMutations } from "vuex";
 import Processing from "../../components/processing";
+import paymentGenMxn from "../../mixins/paymentGenMxn";
 
 export default {
   name: "TermsOfService",
   components: {
     Processing,
   },
+  mixins: [paymentGenMxn],
   data() {
     return {
       showProcessing: false,
@@ -68,6 +70,9 @@ export default {
       this.loading = true;
       this.showProcessing = true;
       this.count = true;
+      window.analytics.track("Agree and Continue",  {
+        ...this.commonTrackPayload,
+      });
 
       const payload = {
         user_id: this.getBupayload.user_id,

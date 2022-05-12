@@ -118,6 +118,9 @@ export function useChoosePayment() {
         });
         break;
       default:
+        window.analytics.track(`Continue after selecting  ${payment_method.pay_method_name}`, {
+          ...commonTrackPayload(),
+        });
         break;
     }
 
