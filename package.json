@@ -10,7 +10,7 @@
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },
-  "main": "./dist/@sendyit/payments.common.js",
+  "main": "./dist/@sendyit/pay.common.js",
   "files": [
     "dist/*"
   ],
@@ -73,10 +73,6 @@
       }
     ]
   },
-  "main": "./dist/@sendyit/pay.common.js",
-  "files": [
-    "dist/*"
-  ],
   "keywords": [
     "Sendy Pay",
     "Sendy Payment",
