@@ -2,6 +2,7 @@
   "name": "@sendyit/pay",
   "version": "0.1.0",
   "private": false,
+  "description": "vue plugin library to facilitate payment",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -72,7 +73,6 @@
   "files": [
     "dist/*"
   ],
-  "description": "vue plugin library to facilitate payment",
   "keywords": [
     "Sendy Pay",
     "Sendy Payment",
