@@ -5,36 +5,43 @@ https://sendy.atlassian.net/wiki/spaces/PF/pages/edit-v2/1966440548
 
 ## How to use
 ```
-npm install @sendyit/payments
+npm install @sendyit/pay
 ```
 
-got to the src/main.js and add the following lines
+Go to the src/main.js and add the following lines
 
 ```
-import router from './router'
-import store from './store'
-import payments from '@sendyit/payments';
+import payments from "@sendyit/pay";
+import router from "./router";
+import store from "./store";
 
-Vue.use(payments, {
+const app = createApp(App);
+
+app.use(store);
+app.use(router);
+app.use(payments, {
   store,
   router,
   config: {
-    BASE_URL: '/payment-service-base-url', // add payment service base URl
-    VGS_VAULT_ID: 'txxxxxxxxxxx',
-    VGS_ENVIRONMENT: 'sandbox', // environment is 'sandbox' for staging and 'live' for prod environment.
+    BASE_URL: process.env.VUE_APP_BASE_URL,
+    VGS_VAULT_ID: process.env.VUE_APP_VGS_VAULT_ID,
+    VGS_ENVIRONMENT: process.env.VUE_APP_VGS_ENVIRONMENT,
   },
 });
+
+app.mount("#app");
 ```
 
 
 ### How to call the payment library.
 
-So there 4 entry points:
+So there 5 entry points:
  ```
  1. checkout
  2. payment-option
  3. choose-payment
  4. Choose-payment-checkout - Choose payment page with checkout.
+ 5. bank-transfer - Pay by Bank Deposit page.
  ```
 
  To go to checkout page call the following method as shown below by passing the Bu payload
@@ -55,12 +62,12 @@ So there 4 entry points:
     authToken: '', //Add Jwt token for authentication.
     firstname: 'John',
     lastname: 'doe',
-    payment_options: [1, 2],// This are the payment_methods_id you get from the paymeht methods available. They are used to filter the payment methods you want the user shown.
+    payment_options: [1, 2],// This are the payment_methods_id you get from the paymeht methods available. They are used to filter the payment methods you want the user shown. If you don't wnat to filter live it empty.
     company_code: 'SKML', // add compnay code to associate a transaction to it's repective company.
     locale: 'en', // add locale. 'en' & 'fr' are the supported languages now.
   };
 
-  this.$paymentInit(buPayload, 'checkout'); //the 2nd argument can be a 'checkout', 'payment-option', 'choose-payment' or 'choose-payment-checkout, in order to access the three entry points of the Bu.
+  this.$paymentInit(buPayload, 'checkout'); //the 2nd argument can be a 'checkout', 'payment-option', 'choose-payment' or 'choose-payment-checkout, in order to access the 5 entry points of the Bu as listed above.
  ```
 
  ### How test and collaborate
