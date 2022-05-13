@@ -6,13 +6,16 @@ import sendyBtn from "./components/sendyBtn";
 import paymentLibraryMxn from "./mixins/paymentLibraryMxn";
 import "vue-tel-input/dist/vue-tel-input.css";
 import i18n from "./plugins/i18n";
+import mitt from "mitt";
+
+const emitter = mitt();
 
 export default {
-  install(Vue, options) {
+  install: (app, options) => {
     if (!options || !options.store) {
       throw new Error("Please initialise plugin with a Vuex store.");
     }
-    /* eslint-disable */
+    /*eslint-disable no-prototype-builtins */
     if (!options.hasOwnProperty("router")) {
       throw new Error("Please Initialise plugin with vue router.");
     }
@@ -20,16 +23,19 @@ export default {
     options.store.registerModule("PaymentLib", store);
 
     options.router.addRoute(router[0]);
+    options.store.emitter = emitter;
+    options.store.$sendyOptions = options;
+    app.config.globalProperties.emitter = emitter;
+    app.config.globalProperties.$sendyOptions = options;
+    app.config.globalProperties.$t = (key) => i18n.global.t(key);
 
-    Vue.prototype.$sendyOptions = options;
-    Vue.prototype.$t = (key) => i18n.t(key);
+    // app.use(store);
+    app.component("IconView", iconView);
 
-    Vue.component("IconView", iconView);
+    app.component("Snackbar", notification);
 
-    Vue.component("Snackbar", notification);
+    app.component("sendy-btn", sendyBtn);
 
-    Vue.component("sendy-btn", sendyBtn);
-
-    Vue.mixin(paymentLibraryMxn);
+    app.mixin(paymentLibraryMxn);
   },
 };

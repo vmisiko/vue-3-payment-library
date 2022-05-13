@@ -52,17 +52,13 @@
           class="float-right"
           name="paymentoption"
           type="radio"
-          :value="paymentOption.category === 'Mobile Money' ? paymentOption.pay_method_id : paymentOption.pay_detail_id"
+          :value="paymentOption.pay_detail_id"
           :disabled="disableLogic"
-          v-model="picked"
-          v-on="inputListeners"
+          @input="$emit('update:modelValue', $event.target.value)"
         />
       </div>
     </div>
-    <div
-      class="text-caption-2 text-sendy-red-30 mgt-3"
-      v-if="disableLogic"
-    >
+    <div class="text-caption-2 text-sendy-red-30 mgt-3" v-if="disableLogic">
       <span class="">{{ $t("unavailable") }}</span>
     </div>
   </div>
@@ -73,25 +69,26 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "PaymentOptionItem",
-  inheritAttrs: false,
-  props: ["value", "paymentOption"],
+  props: ["modelValue", "paymentOption"],
   data() {
     return {
-      picked: this.value,
+      picked: this.modelValue,
       balance: 0,
       loading: false,
-      iconUrl: "https://sendy-web-apps-assets.s3.eu-west-1.amazonaws.com/payment-method-icons",
+      iconUrl:
+        "https://sendy-web-apps-assets.s3.eu-west-1.amazonaws.com/payment-method-icons",
     };
   },
   computed: {
     ...mapGetters(["getBupayload"]),
-    inputListeners() {
-      var vm = this;
-      return Object.assign({}, this.$listeners, {
-        input: function (event) {
-          vm.$emit("input", event.target.value);
-        },
-      });
+    disableLogic() {
+      let result = false;
+      if (this.paymentOption.pay_method_id === 1) {
+        result =
+          this.paymentOption.daily_limit &&
+          this.getBupayload.amount > this.paymentOption.daily_limit;
+      }
+      return result;
     },
     disableLogic() {
       let result = false;
@@ -110,7 +107,7 @@ export default {
     async getBalance() {
       this.loading = true;
       const fullPayload = {
-        url: `/api/v3/onepipe/balance/?userId=${this.getBupayload.user_id}`,
+        url: `/api/v3/onepipe/balance/?entityId=${this.getBupayload.entity_id}&userId=${this.getBupayload.user_id}&countryCode=${this.getBupayload.country_code}`,
       };
 
       const response = await this.$paymentAxiosGet(fullPayload);

@@ -43,8 +43,8 @@ export default {
     ...mapGetters(["getBupayload"]),
   },
   mounted() {
-    this.$root.$on("payment-notification", this.notificationInit);
-    this.$root.$on("axios-notification", this.axiosNotif);
+    this.emitter.on("payment-notification", this.notificationInit);
+    this.emitter.on("axios-notification", this.axiosNotif);
   },
   methods: {
     ...mapMutations(["setPaymentMethods", "setSavedPayMethods"]),

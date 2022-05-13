@@ -1,56 +1,84 @@
 {
-  "name": "@sendyit/payments",
-  "version": "0.1.40",
+  "name": "@sendyit/pay",
+  "version": "0.1.0",
   "private": false,
   "description": "vue plugin library to facilitate payment",
   "scripts": {
-    "serve": "vue-cli-service --preserve-symlinks serve",
-    "build": "vue-cli-service --preserve-symlinks build",
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "build-lib": "vue-cli-service build --target lib --name @sendyit/pay src/main.js",
     "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint",
-    "build-lib": "vue-cli-service build --target lib --name @sendyit/payments src/main.js"
+    "lint": "vue-cli-service lint"
   },
   "main": "./dist/@sendyit/payments.common.js",
   "files": [
     "dist/*"
   ],
   "dependencies": {
-    "axios": "^0.21.4",
-    "core-js": "^3.6.5",
+    "axios": "^0.27.2",
+    "core-js": "^3.22.4",
+    "mitt": "^3.0.0",
     "moment-duration-format": "^2.3.2",
-    "moment-timezone": "^0.5.33",
+    "moment-timezone": "^0.5.34",
     "moments": "0.0.2",
-    "vue": "^2.6.11",
-    "vue-birth-datepicker": "^0.2.8",
-    "vue-i18n": "^8.26.7",
-    "vue-router": "^3.2.0",
-    "vue-tel-input": "^5.6.2",
-    "vuex": "^3.4.0"
+    "register-service-worker": "^1.7.2",
+    "vue-i18n": "^9.1.10",
+    "vue-router": "^4.0.14",
+    "vue": "^3.2.33",
+    "vue3-tel-input": "^1.0.4",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-eslint": "^4.5.17",
-    "@vue/cli-plugin-router": "~4.5.0",
-    "@vue/cli-plugin-unit-mocha": "~4.5.0",
-    "@vue/cli-plugin-vuex": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
-    "@vue/eslint-config-prettier": "^6.0.0",
-    "@vue/test-utils": "^1.0.3",
-    "babel-eslint": "^10.1.0",
-    "chai": "^4.1.2",
-    "eslint": "^6.7.2",
-    "eslint-plugin-prettier": "^3.3.1",
-    "eslint-plugin-vue": "^6.2.2",
-    "node-sass": "^4.12.0",
-    "prettier": "^2.2.1",
-    "sass-loader": "^8.0.2",
-    "vue-template-compiler": "^2.6.11"
+    "@babel/core": "^7.12.16",
+    "@babel/eslint-parser": "^7.12.16",
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-eslint": "~5.0.0",
+    "@vue/cli-plugin-router": "~5.0.0",
+    "@vue/cli-plugin-vuex": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-vue": "^8.0.3",
+    "prettier": "^2.4.1",
+    "sass": "^1.32.7",
+    "sass-loader": "^12.0.0"
   },
-  "authors": [
-    "Victor Misiko <misiko@sendyit.com>",
-    "Joyce kemboi <joyce@sendyit.com>"
+  "peerDependencies": {
+    "vue-router": "^4.0.0-0"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/vue3-essential",
+      "eslint:recommended",
+      "@vue/prettier"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {},
+    "overrides": [
+      {
+        "files": [
+          "**/__tests__/*.{j,t}s?(x)",
+          "**/tests/unit/**/*.spec.{j,t}s?(x)"
+        ],
+        "env": {
+          "mocha": true
+        }
+      }
+    ]
+  },
+  "main": "./dist/@sendyit/pay.common.js",
+  "files": [
+    "dist/*"
   ],
   "keywords": [
+    "Sendy Pay",
     "Sendy Payment",
     "Vue plugins",
     "Vue components",

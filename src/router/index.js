@@ -12,6 +12,7 @@ import NoPaymentOption from "../views/NoPaymentOption";
 import PaymentOptionsPage from "../views/PaymentOptionsPage";
 import CardDetailsPage from "../views/CardDetailsPage";
 import MpesaDetail from "../views/MpesaDetail";
+import PaymentOptionDetail from "../views/PaymentOptionDetail"
 import choosePayment from "../views/ChoosePayment";
 import ChoosePaymentCheckout from "../views/ChoosePayment/ChoosePaymentCheckout";
 import ResolvePayment from "../views/ResolvePayment";
@@ -110,6 +111,11 @@ const routes = [
         path: "/mobile-details/:id/:title?/:icon?/:paymentOption?",
         name: "MpesaDetails",
         component: MpesaDetail,
+      },
+      {
+        path: "/payment-details",
+        name: "PaymentOptionDetail",
+        component: PaymentOptionDetail,
       },
       {
         path: "/bank/how-it-works",

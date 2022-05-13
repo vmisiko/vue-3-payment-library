@@ -305,14 +305,13 @@ export default {
               });
               break;
             }
-            case "failed": {
+            case "failed":
               this.poll_count = this.poll_limit;
               this.loading = false;
               this.collectLoad = false;
               this.errorText = res.message;
               this.setErrorText(res.message);
               break;
-            }
             case "pending":
               break;
             default:

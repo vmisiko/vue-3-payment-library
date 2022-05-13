@@ -1,7 +1,5 @@
-// import Vue from 'vue'
-// import Vuex from 'vuex'
+import actions from "./actions";
 
-// Vue.use(Vuex)
 const store = {
   state: {
     paymentMethods: null,
@@ -43,7 +41,7 @@ const store = {
     },
     setSelectedPayOption(state, val) {
       state.selectedPayOption = val;
-    }
+    },
   },
   getters: {
     getPaymentMethods: (state) => state.paymentMethods,
@@ -56,7 +54,7 @@ const store = {
     getLoading: (state) => state.loading,
     getSelectedPayOption: (state) => state.selectedPayOption,
   },
-  actions: {},
+  actions,
   modules: {},
 };
 

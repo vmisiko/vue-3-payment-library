@@ -1,5 +1,5 @@
 import moment from "moment-timezone";
-import { mapGetters, mapMutations } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 
 const mixin = {
   data() {
@@ -37,6 +37,7 @@ const mixin = {
       "setSelectedVirtualAccount",
       "setLoading",
     ]),
+    ...mapActions(["paymentAxiosGet", "paymentAxiosPost"]),
     commonTrackPayload() {
       const date = new Date();
       const finishTime = date - this.startTime;
@@ -62,10 +63,18 @@ const mixin = {
         params: payload,
       };
 
-      const response = await this.$paymentAxiosPost(fullPayload);
+      const response = await this.paymentAxiosPost(fullPayload);
       if (response.status) {
-        const paymentMethods = paymentOptions ? response.payment_methods.filter(option => paymentOptions.includes(option.payment_method_id)) : response.payment_methods;
-        const savedMethods = paymentOptions ? response.saved_payment_methods.filter(option => paymentOptions.includes(option.pay_method_id)) : response.saved_payment_methods;
+        const paymentMethods = paymentOptions
+          ? response.payment_methods.filter((option) =>
+              paymentOptions.includes(option.payment_method_id)
+            )
+          : response.payment_methods;
+        const savedMethods = paymentOptions
+          ? response.saved_payment_methods.filter((option) =>
+              paymentOptions.includes(option.pay_method_id)
+            )
+          : response.saved_payment_methods;
         this.setPaymentMethods(paymentMethods);
         this.setSavedPayMethods(savedMethods);
       }
@@ -101,6 +110,7 @@ const mixin = {
       const payload = {
         entityId: this.getBupayload.entity_id,
         userId: this.getBupayload.user_id,
+        countryCode: this.getBupayload.country_code,
       };
 
       const fullPayload = {
@@ -121,6 +131,7 @@ const mixin = {
       const payload = {
         country: this.getBupayload.country_code,
         amount: this.getBupayload.amount,
+        cardno: "",
         txref: this.getBupayload.txref,
         userid: this.getBupayload.user_id,
         currency: this.getBupayload.currency,
@@ -137,21 +148,23 @@ const mixin = {
 
       this.setLoading(true);
       const response = await this.$paymentAxiosPost(fullPayload);
+      this.setLoading(false);
+
       if (response.status) {
         this.$paymentNotification({
           text: response.message,
         });
-        this.setLoading(false);
         this.$router.push({
           name: "SuccessView",
         });
         return;
       }
       this.setErrorText(response.message);
-      this.$router.push({ name: "FailedView" });
+      if (this.$route.name !== 'FailedView') {
+        this.$router.push({ name: "FailedView" });
+      };
       return;
     },
-    
   },
 };
 

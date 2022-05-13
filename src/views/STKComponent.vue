@@ -78,7 +78,7 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
-import { VueTelInput } from "vue-tel-input";
+import { VueTelInput } from "vue3-tel-input";
 import TopInfo from "../components/topInfo";
 import TimerModal from "../components/modals/timerModal";
 import MpesaErrorModal from "../components/modals/MpesaErrorModal";
@@ -256,7 +256,8 @@ export default {
         this.pollMpesa();
         return;
       }
-      (this.promptInfo = false), (this.showTimer = false);
+      this.promptInfo = false;
+      this.showTimer = false;
       this.loading = false;
       this.showErrorModal = true;
     },

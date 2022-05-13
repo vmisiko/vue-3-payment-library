@@ -1,5 +1,4 @@
-import axios from "axios";
-import { mapGetters, mapMutations } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 import i18n from "../plugins/i18n";
 
 const mixin = {
@@ -17,10 +16,17 @@ const mixin = {
     },
   },
   mounted() {
-    this.LoadSegment();
+    if (!window.analytics) {
+      this.LoadSegment();
+    }
   },
   methods: {
     ...mapMutations(["setBupayload", "setErrorText"]),
+    ...mapActions({
+      $paymentAxiosPost: "paymentAxiosPost",
+      $paymentAxiosGet: "paymentAxiosGet",
+      $paymentAxiosPut: "paymentAxiosPut",
+    }),
     $handlePaymentMethod(paymentMethod) {
       const entry = localStorage.getItem("entry");
 
@@ -43,10 +49,10 @@ const mixin = {
       }
     },
     $paymentNotification(payload) {
-      this.$root.$emit("payment-notification", payload);
+      this.emitter.emit("payment-notification", payload);
     },
     $initAxiosErrorNotif(payload) {
-      this.$root.$emit("axios-notification", payload);
+      this.emitter.emit("axios-notification", payload);
     },
     paymentCustomHeaders() {
       const authToken = this.getBupayload.authToken;
@@ -61,56 +67,6 @@ const mixin = {
         },
       };
       return param;
-    },
-    async $paymentAxiosPost(payload) {
-      const headers = this.paymentCustomHeaders();
-      try {
-        const { url, params } = payload;
-        const { data } = await axios.post(
-          `${this.config.BASE_URL}${url}`,
-          params,
-          headers
-        );
-        return data;
-      } catch (err) {
-        this.handlePaymentAxiosErrors(err.response.status);
-        return err;
-      }
-    },
-    async $paymentAxiosGet(payload) {
-      try {
-        const { url, params } = payload;
-        const headers = this.paymentCustomHeaders();
-
-        const values = {
-          params,
-          headers: headers.headers,
-        };
-
-        const { data } = await axios.get(
-          `${this.config.BASE_URL}${url}`,
-          values
-        );
-        return data;
-      } catch (err) {
-        this.handlePaymentAxiosErrors(err.response.status);
-        return err;
-      }
-    },
-    async $paymentAxiosPut(payload) {
-      try {
-        const { url, params } = payload;
-        const headers = this.paymentCustomHeaders();
-        const { data } = await axios.put(
-          `${this.config.BASE_URL}${url}`,
-          params,
-          headers
-        );
-        return data;
-      } catch (err) {
-        this.handlePaymentAxiosErrors(err.response.status);
-        return err;
-      }
     },
 
     $formatCurrency(amount) {
@@ -183,25 +139,6 @@ const mixin = {
       }
     },
 
-    async handlePaymentAxiosErrors(error) {
-      switch (error) {
-        case 403:
-          this.$initAxiosErrorNotif({ text: "Please Login Again." });
-          break;
-        case 204:
-          this.$initAxiosErrorNotif({
-            text: "Your session has expired. Please login again",
-          });
-          console.clear();
-          break;
-        case 500:
-          this.$initAxiosErrorNotif({
-            text: "Oops an error has Occurred. Please try again",
-          });
-          break;
-        default:
-      }
-    },
     $handlePaymentRouting() {
       const entryRoute = localStorage.entry_route;
       const entryPoint = localStorage.entry;

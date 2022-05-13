@@ -81,7 +81,7 @@ export default {
     savedMobile() {
       const result = this.getSavedPayMethods
         ? this.getSavedPayMethods.filter(
-            (element) => element.category === 'Mobile Money'
+            (element) => element.category === "Mobile Money"
           )
         : [];
       return result;

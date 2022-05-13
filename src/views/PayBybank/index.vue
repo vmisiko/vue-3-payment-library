@@ -135,7 +135,7 @@ export default {
     ...mapMutations(["setErrorText"]),
     async getBalance() {
       const fullPayload = {
-        url: `/api/v3/onepipe/balance/?userId=${this.getBupayload.user_id}`,
+        url: `/api/v3/onepipe/balance/?entityId=${this.getBupayload.entity_id}&userId=${this.getBupayload.user_id}&countryCode=${this.getBupayload.country_code}`,
       };
 
       const response = await this.$paymentAxiosGet(fullPayload);
@@ -145,6 +145,13 @@ export default {
       this.loading = true;
       this.showProcessing = true;
       this.count = true;
+
+      window.analytics.track("Confirm Pay By Bank Transfer",  {
+        ...this.commonTrackPayload,
+        amount: this.topupAmount,
+        currency: this.getBupayload.currency,
+      });
+      
       this.pollbalance();
     },
     pollbalance() {
@@ -161,7 +168,13 @@ export default {
             that.getBalanceP();
             if (poll_count === that.poll_limit - 1) {
               that.showProcessing = false;
+              that.loading = false;
               that.showFailedTransfer = true;
+              window.analytics.track("Pay By Bank Transfer Failed",  {
+                ...that.commonTrackPayload,
+                amount: that.topupAmount,
+                currency: that.getBupayload.currency,
+              });
               that.getBalance();
               return;
             }
@@ -170,8 +183,15 @@ export default {
       }
     },
     async getBalanceP() {
+      const payload = {
+        entityId: this.getBupayload.entity_id,
+        userId: this.getBupayload.user_id,
+        countryCode: this.getBupayload.country_code,
+      }
+
       const fullPayload = {
-        url: `/api/v3/onepipe/balance/?userId=${this.getBupayload.user_id}`,
+        params: payload,
+        url: `/api/v3/onepipe/balance`,
       };
 
       const response = await this.$paymentAxiosGet(fullPayload);
@@ -195,6 +215,13 @@ export default {
           parseFloat(response.availableBalance) - parseFloat(this.balance);
         this.pendingAmount =
           parseFloat(this.topupAmount) - parseFloat(this.lastTransferAmount);
+        this.showInsufficientTransfer = true;
+        window.analytics.track("Pay By Bank Transfer Insufficient",  {
+          ...this.commonTrackPayload,
+          amount: this.amountDue,
+          currency: this.getBupayload.currency,
+          transfer_amount: this.lastTransferAmount
+        });
       }
       this.balance = response.availableBalance;
     },

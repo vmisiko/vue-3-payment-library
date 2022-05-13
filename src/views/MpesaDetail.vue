@@ -40,7 +40,7 @@
 import TopInfo from "../components/topInfo";
 import DeletModal from "../components/modals/DeleteModal";
 import paymentGenMxn from "../mixins/paymentGenMxn";
-import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 
 export default {
   name: "MpesaDetail",
@@ -57,7 +57,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['getSelectedPayOption']),
+    ...mapGetters(["getSelectedPayOption"]),
   },
   mounted() {},
   methods: {
