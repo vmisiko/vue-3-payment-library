@@ -2,7 +2,6 @@
   "name": "@sendyit/pay",
   "version": "0.1.0",
   "private": false,
-  "description": "vue plugin library to facilitate payment",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -10,10 +9,6 @@
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },
-  "main": "./dist/@sendyit/pay.common.js",
-  "files": [
-    "dist/*"
-  ],
   "dependencies": {
     "axios": "^0.27.2",
     "core-js": "^3.22.4",
@@ -73,11 +68,20 @@
       }
     ]
   },
+  "main": "./dist/@sendyit/pay.common.js",
+  "files": [
+    "dist/*"
+  ],
+  "description": "vue plugin library to facilitate payment",
   "keywords": [
     "Sendy Pay",
     "Sendy Payment",
     "Vue plugins",
     "Vue components",
     "Sendyit"
+  ],
+  "authors": [
+    "Victor Misiko <misiko@sendyit.com>",
+    "Joyce kemboi <joyce@sendyit.com>"
   ]
 }
