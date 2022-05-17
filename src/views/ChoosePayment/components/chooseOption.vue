@@ -90,6 +90,13 @@ export default {
       }
       return result;
     },
+    disableLogic() {
+      let result = false;
+      if (this.paymentOption.pay_method_id === 1) {
+        result = this.paymentOption.daily_limit && this.getBupayload.amount > this.paymentOption.daily_limit
+      }
+      return result;
+    }
   },
   mounted() {
     if (this.paymentOption.pay_method_id === 20) {
