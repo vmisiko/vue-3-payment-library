@@ -255,7 +255,7 @@ export default {
 
     async function saveNewCard(reponseData) {
       store.commit('setLoading', true);
-      reponseData.plartform = 'web';
+      reponseData.platform = 'web';
       const payload = {
         url: "/api/v2/save",
         params: reponseData,
