@@ -165,6 +165,7 @@ export default {
         company_code: this.getBupayload.company_code,
         bulkrefno: this.getBupayload.bulk_reference_number,
         email: this.getBupayload.email,
+        plartform: 'web',
       };
 
       const fullPayload = {
