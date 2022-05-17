@@ -173,7 +173,6 @@ export default {
         successColor: "#4F8A10",
         errorColor: "#D8000C",
         showCardIcon: true,
-
         placeholder: "0000 0000 0000 0000",
         validations: ["required"],
         classes: classes,
@@ -194,6 +193,7 @@ export default {
         successColor: '#4F8A10',
         errorColor: '#D8000C',
         placeholder: "MM/YY",
+        serializers: [{ name: "replace", options: { old: " ", new: "" } }],
         validations: ["required", "validCardExpirationDate"],
         classes: classes,
       });
@@ -255,6 +255,7 @@ export default {
 
     async function saveNewCard(reponseData) {
       store.commit('setLoading', true);
+      reponseData.plartform = 'web';
       const payload = {
         url: "/api/v2/save",
         params: reponseData,
