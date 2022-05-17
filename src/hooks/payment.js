@@ -133,6 +133,7 @@ export function usePayment() {
       entity: getBupayload.value.entity_id,
       company_code: getBupayload.value.company_code,
       paymethod: state.defaultPaymentMethod.pay_method_id,
+      platform: 'web'
     };
 
     const fullPayload = {
