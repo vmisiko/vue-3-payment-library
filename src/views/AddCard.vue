@@ -294,12 +294,12 @@ export default {
           default:
             break;
         }
+        return;
       } else {
         store.commit('setLoading', false);
-        // initForm();
-
         state.errorText = res.message;
         state.showErrorModal = true;
+        return;
       }
 
       state.showProcessing = false;

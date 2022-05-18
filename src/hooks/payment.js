@@ -199,6 +199,12 @@ export function usePayment() {
           TransactionIdStatus();
           if (poll_count === state.poll_limit - 1) {
             store.commit("setLoading", false);
+            if (route.name === "AddCard") {
+              state.errorText = t("failed_to_collect_card_details");
+              store.commit("setErrorText", state.errorText);
+              state.showErrorModal = true;
+              return;
+            }
             state.errorText = t("failed_to_charge_card");
             store.commit("setErrorText", state.errorText);
             router.push({ name: "FailedView" });
@@ -224,11 +230,20 @@ export function usePayment() {
             text: res.message,
           });
           store.commit("setLoading", false);
-          const duration = Date.now() - state.startResponseTime;
-          router.push({
-            name: "SuccessView",
-            duration: duration,
-          });
+          store.commit("setLoading", false);
+          if (route.name === "AddCard") {
+            state.loading = false;
+            router.push("/choose-payment");
+            return;
+          } else {
+            router.push("/choose-payment");
+            state.loading = false;
+            const duration = Date.now() - state.startResponseTime;
+            router.push({
+              name: "SuccessView",
+              duration: duration,
+            });
+          }
           break;
         }
         case "failed": {
@@ -236,7 +251,12 @@ export function usePayment() {
           store.commit("setLoading", false);
           state.errorText = res.message;
           store.commit("setErrorText", res.message);
-          if (route.name !== "FailedView") {
+          if (route.name === "AddCard") {
+            state.loading = false;
+            state.showErrorModal = true;
+            return;
+          }
+          if (route.name !== "FailedView" && route.name !== "AddCard") {
             router.push({ name: "FailedView" });
           }
           break;
@@ -251,6 +271,7 @@ export function usePayment() {
     state.poll_count = state.poll_limit;
     store.commit("setLoading", false);
     state.errorText = res.message;
+    state.loading = false;
     state.showErrorModal = true;
   }
 
@@ -300,6 +321,13 @@ export function usePayment() {
         case "success": {
           store.commit("setLoading", false);
           const duration = Date.now() - state.startResponseTime;
+
+          if (route.name === "AddCard") {
+            state.loading = false;
+            state.showErrorModal = true;
+            return;
+          }
+
           router.push({
             name: "SuccessView",
             duration: duration,
