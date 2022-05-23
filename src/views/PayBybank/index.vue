@@ -216,7 +216,9 @@ export default {
           parseFloat(response.availableBalance) - parseFloat(this.balance);
         this.pendingAmount =
           parseFloat(this.topupAmount) - parseFloat(this.lastTransferAmount);
+        this.showProcessing = false;
         this.showInsufficientTransfer = true;
+        this.loading = false;
         window.analytics.track("Pay By Bank Transfer Insufficient",  {
           ...this.commonTrackPayload,
           amount: this.amountDue,
