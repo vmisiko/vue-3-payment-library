@@ -18,6 +18,7 @@
             v-model="account"
             :accounts="getVirtualAccounts"
             class="mgy-6"
+            v-if="account"
           />
         </div>
       </div>
@@ -64,7 +65,8 @@ export default {
       this.account = val;
     },
   },
-  mounted() {
+  async mounted() {
+    await this.getAccounts();
     this.account = this.getSelectedVirtualAccount;
   },
   methods: {
