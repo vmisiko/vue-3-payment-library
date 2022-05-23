@@ -119,6 +119,8 @@ const mixin = {
       };
 
       const response = await this.$paymentAxiosGet(fullPayload);
+      this.setVirtualAccounts(null);
+      this.setSelectedVirtualAccount(null);
       if (response.status) {
         this.setVirtualAccounts(response.accounts);
         const account = response.accounts.filter(

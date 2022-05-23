@@ -74,12 +74,14 @@ export default {
         ...this.commonTrackPayload,
       });
 
+      const phone = this.getBupayload.phonenumber.includes("+") ? this.getBupayload.phonenumber.split("+")[1] : this.getBupayload.phonenumber;
+
       const payload = {
         user_id: this.getBupayload.user_id,
         first_name: this.getBupayload.firstname,
         surname: this.getBupayload.lastname,
         email: this.getBupayload.email,
-        mobile_number: this.getBupayload.phonenumber,
+        mobile_number: phone,
         entity: this.getBupayload.entity_id,
         country_code: this.getBupayload.country_code,
       };
