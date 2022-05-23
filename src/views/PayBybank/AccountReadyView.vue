@@ -66,7 +66,6 @@ export default {
   },
   mounted() {
     this.account = this.getSelectedVirtualAccount;
-    this.getAccounts();
   },
   methods: {
     finish() {

@@ -127,6 +127,7 @@ export default {
     this.processingText = "Loading ...";
     await this.getAccounts();
     await this.getBalance();
+    this.account = this.getSelectedVirtualAccount;
     this.showProcessing = false;
     this.title = this.$t("confirming_transfer");
     this.processingText = "";
