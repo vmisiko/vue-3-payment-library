@@ -71,15 +71,6 @@ export function useChoosePayment() {
     });
   }
 
-  // function setSelectedName(mobile) {
-  //   const result = mobile.pay_method_name
-  //     ? mobile
-  //     : getSavedPayMethods.value.filter(
-  //         (element) => element.pay_detail_id === picked.value
-  //       )[0];
-  //   return result ? result.pay_method_name : "";
-  // }
-
   function handleRouting() {
     const entryRoute = localStorage.entry_route;
     const entryPoint = localStorage.entry;
@@ -122,11 +113,6 @@ export function useChoosePayment() {
           ...commonTrackPayload(),
         });
         break;
-    }
-
-    if (payment_method.pay_method_id === 20) {
-      router.push({ name: entryRoute });
-      return;
     }
 
     switch (entryPoint) {
