@@ -17,6 +17,7 @@
         >
           <ChooseOption
             :paymentOption="card"
+            :value="card.pay_detail_id"
             v-model="picked"
             @change="update(card)"
           />
@@ -39,6 +40,7 @@
         >
           <ChooseOption
             :paymentOption="mobile"
+            :value="mobile.pay_detail_id"
             v-model="picked"
             @change="update(mobile)"
           />
@@ -61,6 +63,7 @@
           >
             <ChooseOption
               :paymentOption="vaccount"
+              :value="vaccount.pay_detail_id"
               v-model="picked"
               @change="update(vaccount)"
             />

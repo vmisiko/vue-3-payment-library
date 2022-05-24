@@ -52,7 +52,8 @@
           class="float-right"
           name="paymentoption"
           type="radio"
-          :value="paymentOption.pay_detail_id"
+          :value="value"
+          :checked="isChecked"
           :disabled="disableLogic"
           @input="$emit('update:modelValue', $event.target.value)"
         />
@@ -69,7 +70,7 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "PaymentOptionItem",
-  props: ["modelValue", "paymentOption"],
+  props: ["modelValue", "paymentOption", "value"],
   data() {
     return {
       picked: this.modelValue,
@@ -90,12 +91,8 @@ export default {
       }
       return result;
     },
-    disableLogic() {
-      let result = false;
-      if (this.paymentOption.pay_method_id === 1) {
-        result = this.paymentOption.daily_limit && this.getBupayload.amount > this.paymentOption.daily_limit
-      }
-      return result;
+    isChecked() {
+      return this.modelValue == this.value
     }
   },
   mounted() {
