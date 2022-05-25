@@ -100,7 +100,7 @@ export default {
       account: "",
       balance: 0,
       poll_count: 0,
-      poll_limit: 30,
+      poll_limit: 60,
       errorText: "",
       showFailedTransfer: false,
       showInsufficientTransfer: false,
@@ -179,7 +179,7 @@ export default {
               that.getBalance();
               return;
             }
-          }, 10000 * poll_count);
+          }, 30000 * poll_count);
         })(poll_count);
       }
     },
