@@ -340,6 +340,7 @@ export function usePayment() {
       return;
     }
     state.errorText = t("failed_to_collect_card_details");
+    store.dispatch('paymentNotification', response.message);
     state.showErrorModal = true;
   }
 

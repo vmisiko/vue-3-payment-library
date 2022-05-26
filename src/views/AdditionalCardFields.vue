@@ -133,7 +133,6 @@ export default {
   },
   mounted() {
     this.fields = this.additionalData ? this.additionalData : [];
-    this.loadVGS();
     const cvv = this.additionalData.filter(
       (element) => element.field_id === "cvv"
     );
@@ -142,14 +141,6 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(["setTwoFACompleted"]),
-    loadVGS() {
-      const script = document.createElement("script");
-      script.async = true;
-      script.src =
-        "https://js.verygoodvault.com/vgs-collect/2.0/vgs-collect.js";
-      document.head.appendChild(script);
-    },
     initCVV() {
       this.isCVV = true;
       setTimeout(() => {
@@ -196,11 +187,11 @@ export default {
           this.fields = response.additional_data;
           return;
         }
-
+        
         this.$emit("continue", true);
         return;
       }
-
+      this.$paymentNotification({ text: response.message, type: "error" })
       this.$emit("continue", false);
     },
     submitCvv() {

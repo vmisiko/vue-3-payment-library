@@ -132,20 +132,15 @@ export default {
       cvv: "",
     })
     
-    /* eslint-disable */
+    onMounted(() => {
+      setForm();
+    });
+
     const vgsForm = window.VGSCollect.create(
       sendyOptions.config.VGS_VAULT_ID,
       sendyOptions.config.VGS_ENVIRONMENT,
       () => {}
     );
-
-    onBeforeMount(async () => {
-      await loadVGS();
-    })
-
-    onMounted(() => {
-      setForm();
-    })
 
     async function loadVGS() {
       const script = document.createElement("script");
@@ -295,14 +290,31 @@ export default {
             break;
         }
         return;
-      } else {
-        store.commit('setLoading', false);
-        state.errorText = res.message;
-        state.showErrorModal = true;
-        return;
       }
 
       state.showProcessing = false;
+      store.commit('setLoading', false);
+      state.errorText = res.message;
+      state.showErrorModal = true;
+      return;
+    }
+
+    function initForm() {
+      setTimeout(() => {
+        setForm();
+      }, 500);
+    }
+
+    function handleContinue(val) {
+      if (val) {
+        store.commit('setLoading', false);
+        state.showProcessing = true;
+        pollCard();
+        return;
+      }
+      state.showProcessing = false;
+      store.commit('setLoading', false);
+      initForm();
       state.errorText = t("failed_to_collect_card_details");
       state.showErrorModal = true;
     }
@@ -319,6 +331,7 @@ export default {
       getLoading,
       onsubmit,
       handleErrorClose,
+      handleContinue,
     }
   },
 };
