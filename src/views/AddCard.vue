@@ -22,7 +22,7 @@
               type="text"
               v-model="card_name"
               class="form-field"
-              placeholder="Enter full name"
+              :placeholder="$translate('enter_full_name')"
               required
             />
           </div>

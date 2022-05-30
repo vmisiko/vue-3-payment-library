@@ -26,11 +26,7 @@ export default {
 
     options.router.addRoute(router[0]);
     options.store.registerModule("PaymentLib", store);
-    
-    // Object.keys(messages).forEach(key => {
-    //   options.i18n.global.setLocaleMessage(key, messages[key]);
-    // });
-
+   
     options.store.emitter = emitter;
     options.store.$sendyOptions = options;
     app.config.globalProperties.emitter = emitter;

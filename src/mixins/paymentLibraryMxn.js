@@ -91,7 +91,6 @@ const mixin = {
       this.setBupayload(payload);
       localStorage.setItem("entry", entry);
       localStorage.setItem("entry_route", this.$route.name);
-      console.log(payload.locale);
       this.loadLanguageAsync(payload.locale ? payload.locale : "en");
       window.analytics.identify(payload.user_id, {
         email: payload.email,
@@ -136,8 +135,7 @@ const mixin = {
       });
 
       if (localeKeys.includes(lang)) {
-        i18n.locale = lang;
-        this.$sendyOptions.i18n.global.locale = lang;
+        i18n.global.locale = lang;
       }
     },
 

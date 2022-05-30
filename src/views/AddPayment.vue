@@ -5,7 +5,7 @@
       <TopInfo :icon="icon" :title="title">
         <template v-slot:subtitle>
           <span class="body-2-regular text-gray70">
-            Click below to add a payment option
+            {{ $translate('click_here_to_add') }}
           </span>
         </template>
       </TopInfo>
