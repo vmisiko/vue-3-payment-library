@@ -1,5 +1,5 @@
 import { mapActions, mapGetters, mapMutations } from "vuex";
-import i18n from "../plugins/i18n";
+import { i18n } from "../plugins/i18n";
 
 const mixin = {
   data() {
@@ -135,9 +135,9 @@ const mixin = {
         }
       });
 
-      console.log(localeKeys);
       if (localeKeys.includes(lang)) {
         i18n.locale = lang;
+        this.$sendyOptions.i18n.global.locale = lang;
       }
     },
 

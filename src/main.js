@@ -5,7 +5,7 @@ import notification from "./components/notificationComponent";
 import sendyBtn from "./components/sendyBtn";
 import paymentLibraryMxn from "./mixins/paymentLibraryMxn";
 import "vue-tel-input/dist/vue-tel-input.css";
-import i18n from "./plugins/i18n";
+import { i18n, messages  } from "./plugins/i18n";
 import mitt from "mitt";
 
 const emitter = mitt();
@@ -20,16 +20,23 @@ export default {
       throw new Error("Please Initialise plugin with vue router.");
     }
 
-    options.store.registerModule("PaymentLib", store);
+    if (!options.hasOwnProperty("i18n")) {
+      throw new Error("Please Initialise plugin with i18n object.");
+    }
 
     options.router.addRoute(router[0]);
+    options.store.registerModule("PaymentLib", store);
+    
+    // Object.keys(messages).forEach(key => {
+    //   options.i18n.global.setLocaleMessage(key, messages[key]);
+    // });
+
     options.store.emitter = emitter;
     options.store.$sendyOptions = options;
     app.config.globalProperties.emitter = emitter;
     app.config.globalProperties.$sendyOptions = options;
-    app.config.globalProperties.$t = (key) => i18n.global.t(key);
+    app.config.globalProperties.$translate = (key) => i18n.global.t(key);
 
-    // app.use(store);
     app.component("IconView", iconView);
 
     app.component("Snackbar", notification);
@@ -38,4 +45,5 @@ export default {
 
     app.mixin(paymentLibraryMxn);
   },
+  i18nMessages: messages
 };

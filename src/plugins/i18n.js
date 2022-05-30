@@ -13,7 +13,7 @@ function loadLocaleMessages() {
   return messages;
 }
 
-const i18n = createI18n({
+export const i18n = createI18n({
   locale: "en",
   globalInjection: true,
   legacy: false,
@@ -21,4 +21,4 @@ const i18n = createI18n({
   messages: loadLocaleMessages(),
 });
 
-export default i18n;
+export const messages = loadLocaleMessages();
