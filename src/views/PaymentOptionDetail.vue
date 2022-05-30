@@ -40,7 +40,7 @@
       <div class="text-body-2 text-gray70" v-if="card_expiry">
         <span>{{ $formatCardno(getSelectedPayOption.pay_method_details) }}</span>
         <div>
-          <span>{{ $t("expiry_date") }} {{ card_expiry || "N/A" }}</span>
+          <span>{{ $translate("expiry_date") }} {{ card_expiry || "N/A" }}</span>
         </div>
       </div>
 

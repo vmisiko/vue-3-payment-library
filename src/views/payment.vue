@@ -33,7 +33,7 @@
               class="mgt-10"
               @click="submit"
             >
-              {{ $t("confirm_and_pay") }}
+              {{ $translate("confirm_and_pay") }}
             </sendy-btn>
           </div>
         </div>
@@ -75,7 +75,7 @@ export default {
   data() {
     return {
       icon: "back",
-      title: this.$t("payment"),
+      title: this.$translate("payment"),
       subtitle: "",
       paymentStatus: null,
     };

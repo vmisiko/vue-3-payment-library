@@ -12,13 +12,13 @@
         <IconView icon="back" />
         <div class="mgt-4">
           <span class="subtitle-2-semibold">
-            {{ $t("bank_transfer_details") }}</span
+            {{ $translate("bank_transfer_details") }}</span
           >
         </div>
 
         <div class="direction-flex mgt-2">
           <span class="body-2-regular text-gray70">{{
-            $t("amount_to_transfer")
+            $translate("amount_to_transfer")
           }}</span>
           <span class="spacer"></span>
           <span class="body-1-semibold text-gray90">
@@ -31,15 +31,15 @@
 
       <div class="mgt-6">
         <span class="body-2-regular"
-          >{{ $t("complete_your_payment_transfer") }}
+          >{{ $translate("complete_your_payment_transfer") }}
           <span class="body-1-semibold text-gray90"
             >{{ getBupayload.currency }} {{ getBupayload.amount }}
           </span>
-          {{ $t("account_details_shown") }}
+          {{ $translate("account_details_shown") }}
           <span class="body-1-semibold text-gray90"
-            >“{{ $t("confirm_transfer") }}”</span
+            >“{{ $translate("confirm_transfer") }}”</span
           >
-          {{ $t("once_done") }}</span
+          {{ $translate("once_done") }}</span
         >
       </div>
 
@@ -53,7 +53,7 @@
         <sendy-btn
           :block="true"
           color="primary"
-          :text="$t('confirm_transfer')"
+          :text="$translate('confirm_transfer')"
           :loading="loading"
           @click="confirm()"
         />
@@ -94,7 +94,7 @@ export default {
     return {
       loading: false,
       showProcessing: false,
-      title: this.$t("confirming_transfer"),
+      title: this.$translate("confirming_transfer"),
       processingText: "",
       count: false,
       account: "",
@@ -129,7 +129,7 @@ export default {
     await this.getBalance();
     this.account = this.getSelectedVirtualAccount;
     this.showProcessing = false;
-    this.title = this.$t("confirming_transfer");
+    this.title = this.$translate("confirming_transfer");
     this.processingText = "";
   },
   methods: {
@@ -203,7 +203,7 @@ export default {
           name: "SuccessView",
           params: {
             transferredAmount: this.topupAmount,
-            title: this.$t("transfer_successful"),
+            title: this.$translate("transfer_successful"),
           },
         });
         return;

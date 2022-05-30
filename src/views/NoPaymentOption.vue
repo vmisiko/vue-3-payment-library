@@ -15,7 +15,7 @@ export default {
   data() {
     return {
       icon: "back",
-      title: this.$t("add_payment_option"),
+      title: this.$translate("add_payment_option"),
     };
   },
 };

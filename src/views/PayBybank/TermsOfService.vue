@@ -3,14 +3,14 @@
     <Processing
       @close="showProcessing = false"
       :count="count"
-      :title="$t('pay_by_bank_setup')"
-      :text="$t('assign_your_unique_account')"
+      :title="$translate('pay_by_bank_setup')"
+      :text="$translate('assign_your_unique_account')"
       v-if="showProcessing"
     />
     <div class="card" v-else>
       <div class="">
         <div class="">
-          <span class="title text-gray90">{{ $t("terms_of_service") }}</span>
+          <span class="title text-gray90">{{ $translate("terms_of_service") }}</span>
         </div>
       </div>
       <div class="mgt-4 iframe-div">
@@ -24,14 +24,14 @@
 
       <div class="direction-flex mgt-13">
         <div class="mgy-auto">
-          <span @click="$router.go(-1)" class="link"> {{ $t("cancel") }}</span>
+          <span @click="$router.go(-1)" class="link"> {{ $translate("cancel") }}</span>
         </div>
 
         <div class="spacer"></div>
         <sendy-btn
           :loading="loading"
           color="primary"
-          :text="$t('agree_and_continue')"
+          :text="$translate('agree_and_continue')"
           @click="openAccount"
         />
       </div>

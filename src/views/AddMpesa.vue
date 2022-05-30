@@ -6,12 +6,12 @@
       <IconView icon="mpesa" width="68" height="48" />
       <div class="mgt-8">
         <span class="text-list-title">
-          {{ $t("how_it_works") }}
+          {{ $translate("how_it_works") }}
         </span>
 
         <div>
           <p class="text-caption-1 text-gray80">
-            {{ $t("whenever_choose_mpesa") }}
+            {{ $translate("whenever_choose_mpesa") }}
           </p>
         </div>
 
@@ -22,7 +22,7 @@
             class="mgt-10"
             @click="submit"
           >
-            {{ $t("add_mpesa") }}
+            {{ $translate("add_mpesa") }}
           </sendy-btn>
         </div>
       </div>
@@ -42,7 +42,7 @@ export default {
   data() {
     return {
       icon: "back",
-      title: this.$t("add_a_mpesa"),
+      title: this.$translate("add_a_mpesa"),
       loading: false,
     };
   },
@@ -70,9 +70,9 @@ export default {
       const response = await this.$paymentAxiosPost(fullPayload);
       this.loading = false;
       response.status
-        ? this.$paymentNotification({ text: this.$t("mpesa_added") })
+        ? this.$paymentNotification({ text: this.$translate("mpesa_added") })
         : this.$paymentNotification({
-            text: this.$t("mpesa_already_added"),
+            text: this.$translate("mpesa_already_added"),
             type: "error",
           });
       this.$router.push({ name: "ChoosePayment" });

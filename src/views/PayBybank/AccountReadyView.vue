@@ -5,14 +5,14 @@
         <div class="first-row pdr-4 pdt-22">
           <AvatarListView
             icon="success"
-            :title="$t('ready_pay_by_bank')"
-            :subtitle="$t('during_checkout')"
+            :title="$translate('ready_pay_by_bank')"
+            :subtitle="$translate('during_checkout')"
             class=""
           />
         </div>
 
         <div class="mgt-8 pdl-6">
-          <span class="text-subtitle-1">{{ $t("account_details") }}</span>
+          <span class="text-subtitle-1">{{ $translate("account_details") }}</span>
 
           <AccountsDisplay
             v-model="account"
@@ -28,7 +28,7 @@
         <div class="mgt-14">
           <sendy-btn
             color="primary"
-            :text="$t('finish_setup')"
+            :text="$translate('finish_setup')"
             @click="finish"
           ></sendy-btn>
         </div>
@@ -72,7 +72,7 @@ export default {
   methods: {
     finish() {
       this.$paymentNotification({
-        text: this.$t('pay_by_bank_added'),
+        text: this.$translate('pay_by_bank_added'),
       });
       this.$router.push({ name: "ChoosePayment" });
     },

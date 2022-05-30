@@ -6,7 +6,7 @@
       <TopInfo :icon="icon" :title="title" />
 
       <span v-if="creditCards.length !== 0" class="mgt-2 text-overline">{{
-        $t("credit_card_payment")
+        $translate("credit_card_payment")
       }}</span>
       <div class="" v-if="creditCards.length !== 0">
         <div
@@ -25,7 +25,7 @@
       </div>
 
       <span v-if="savedMobile.length !== 0" class="mgt-8 text-overline">{{
-        $t("mobile_money")
+        $translate("mobile_money")
       }}</span>
       <div v-if="savedMobile.length !== 0">
         <div
@@ -48,7 +48,7 @@
       </div>
 
       <div class="mgt-8" v-if="virtualAccounts.length !== 0">
-        <span class="text-overline"> {{ $t('bank_transfer') }}</span>
+        <span class="text-overline"> {{ $translate('bank_transfer') }}</span>
         <div>
           <div
             v-for="(vaccount, index) in virtualAccounts"
@@ -74,7 +74,7 @@
       <hr class="mgt-5" />
 
       <span class="link mgt-5" @click="addPaymentOption">
-        + {{ $t("add_payment_option") }}</span
+        + {{ $translate("add_payment_option") }}</span
       >
 
       <div class="mgt-4 text-right">
@@ -85,7 +85,7 @@
           @click="handleRouting"
           :loading="loading"
         >
-          {{ $t("continue") }}
+          {{ $translate("continue") }}
         </sendy-btn>
       </div>
     </div>
@@ -112,7 +112,7 @@ export default {
   data() {
     return {
       icon: "back",
-      title: this.$t("choose_payment_option"),
+      title: this.$translate("choose_payment_option"),
       loadingText: "Loading..",
     };
   },

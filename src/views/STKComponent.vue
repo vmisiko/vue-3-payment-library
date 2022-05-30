@@ -33,7 +33,7 @@
                 :defaultCountry="getBupayload.country_code"
                 :dropdownOptions="dropdownOptions"
                 mode="national"
-                :invalidMsg="$t('phone_number_invalid')"
+                :invalidMsg="$translate('phone_number_invalid')"
                 @validate="validatePhone"
               >
               </vue-tel-input>
@@ -46,8 +46,8 @@
           <div class="alert mgt-10">
             <span class="text-caption-2 pdt-2 text-midnightBlue20">{{
               defaultPaymentMethod.pay_method_id === 1
-                ? $t("mpesa_prompt")
-                : $t("mobile_prompt")
+                ? $translate("mpesa_prompt")
+                : $translate("mobile_prompt")
             }}</span>
           </div>
 
@@ -59,7 +59,7 @@
               :loading="loading"
               :disabled="!disable"
             >
-              {{ $t("continue") }}
+              {{ $translate("continue") }}
             </sendy-btn>
           </div>
         </div>
@@ -94,7 +94,7 @@ export default {
   data() {
     return {
       icon: "back",
-      title: this.$t("pay_with_mpesa"),
+      title: this.$translate("pay_with_mpesa"),
       phone: null,
       promptInfo: false,
       error: "",
@@ -111,7 +111,7 @@ export default {
       formattedPhone: null,
       disable: false,
       showErrorModal: false,
-      errorText: this.$t("unable_to_send_mpesa_request"),
+      errorText: this.$translate("unable_to_send_mpesa_request"),
       defaultPaymentMethod: 1,
       additional_data: null,
       redirect: false,
@@ -138,7 +138,7 @@ export default {
         : [];
       this.title =
         this.defaultPaymentMethod.pay_detail_id === 1
-          ? this.$t("pay_with_mpesa")
+          ? this.$translate("pay_with_mpesa")
           : `Pay with ${this.defaultPaymentMethod.pay_method_name} Money`;
     },
     async submit() {
@@ -283,7 +283,7 @@ export default {
               that.loading = false;
               that.showTimer = false;
               that.promptInfo = false;
-              that.setErrorText(this.$t("failed_to_charge_using_mpesa"));
+              that.setErrorText(this.$translate("failed_to_charge_using_mpesa"));
               that.$router.push({
                 name: "FailedView",
                 params: { mpesa: "mpesa" },
@@ -346,7 +346,7 @@ export default {
       this.loading = false;
       this.showTimer = false;
       this.promptInfo = false;
-      this.setErrorText(this.$t("unable_to_confirm_mpesa"));
+      this.setErrorText(this.$translate("unable_to_confirm_mpesa"));
       this.$router.push({ name: "FailedView", params: { mpesa: "mpesa" } });
     },
     init3DS() {

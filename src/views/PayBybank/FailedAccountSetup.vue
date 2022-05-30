@@ -3,12 +3,12 @@
     <Processing
       @close="showProcessing = false"
       :count="count"
-      :title="$t('pay_by_bank_setup')"
-      :text="$t('assign_account_details')"
+      :title="$translate('pay_by_bank_setup')"
+      :text="$translate('assign_account_details')"
       v-if="showProcessing"
     />
     <div class="card" v-else>
-      <AvatarListView icon="warning" :title="$t('unable_to_setup')">
+      <AvatarListView icon="warning" :title="$translate('unable_to_setup')">
         <template v-slot:list-subtitle>
           <span class="text-error"> {{ getErrorText }}</span>
         </template>
@@ -17,7 +17,7 @@
       <div class="mgt-8 flex-center">
         <sendy-btn
           :outline="true"
-          :text="$t('retry')"
+          :text="$translate('retry')"
           class="retry-btn"
           :loading="loading"
           @click="openAccount"
@@ -26,7 +26,7 @@
 
       <div class="text-center mgt-5">
         <span @click="$router.push({ name: 'ChoosePayment' })" class="link">{{
-          $t("return_to_payment_options")
+          $translate("return_to_payment_options")
         }}</span>
       </div>
     </div>

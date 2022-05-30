@@ -7,12 +7,12 @@
 
       <div class="mgt-4">
         <span class="text-list-title text-gray90">
-          {{ $t("amount_exceeds_limit_title") }}
+          {{ $translate("amount_exceeds_limit_title") }}
         </span>
         <div>
           <span class="text-caption">
             {{
-              $t("amount_exceeds_limit_text", { mobile: getDefaultpayMethod() })
+              $translate("amount_exceeds_limit_text", { mobile: getDefaultpayMethod() })
             }}
           </span>
         </div>
@@ -24,12 +24,12 @@
         class="mgt-8"
         @click="$router.push({ name: 'ChoosePayment' })"
       >
-        {{ $t("change_payment_option") }}
+        {{ $translate("change_payment_option") }}
       </sendy-btn>
 
       <div class="text-center mgt-7">
         <span class="link" @click="handleRouting">
-          {{ $t("cancel_payment") }}
+          {{ $translate("cancel_payment") }}
         </span>
       </div>
     </div>

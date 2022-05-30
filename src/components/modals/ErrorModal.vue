@@ -6,7 +6,7 @@
       </div>
 
       <div class="mgt-4">
-        <span> {{ $t("could_not_add_card") }} </span>
+        <span> {{ $translate("could_not_add_card") }} </span>
         <div>
           <span class="text-caption text-sendy-red-30">
             {{ text }}
@@ -20,7 +20,7 @@
         class="mgt-8"
         @click="$emit('close')"
       >
-        {{ $t("close") }}
+        {{ $translate("close") }}
       </sendy-btn>
     </div>
   </div>

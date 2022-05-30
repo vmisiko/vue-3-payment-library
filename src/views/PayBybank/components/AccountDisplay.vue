@@ -1,13 +1,13 @@
 <template>
   <div class="">
     <div class="mgt-4">
-      <span class="input-label">{{ $t("available_banks") }}</span>
+      <span class="input-label">{{ $translate("available_banks") }}</span>
       <div class="mgt-1">
         <select
           :value="modelValue"
           @input="handleInput"
           class="select-input"
-          :placeholder="$t('select_payment_methods')"
+          :placeholder="$translate('select_payment_methods')"
         >
           <option
             v-for="(obj, index) in accounts"
@@ -40,7 +40,7 @@
             />
           </svg>
 
-          <span class="mgl-1">{{ $t("copy") }}</span>
+          <span class="mgl-1">{{ $translate("copy") }}</span>
         </div>
       </div>
     </div>
@@ -77,7 +77,7 @@ export default {
       const cb = navigator.clipboard;
       const span = document.getElementById("account");
       cb.writeText(span.innerText).then(() => {
-        this.$paymentNotification({ text: this.$t("copied") });
+        this.$paymentNotification({ text: this.$translate("copied") });
       });
     },
   },

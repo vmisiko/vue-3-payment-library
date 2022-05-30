@@ -6,7 +6,7 @@
         <TopInfo :icon="icon" :title="title" />
 
         <span v-if="creditCards.length !== 0" class="mgt-2 text-overline">{{
-          $t("credit_card_payment")
+          $translate("credit_card_payment")
         }}</span>
         <div class="" v-if="creditCards.length !== 0">
           <div v-for="(card, index) in creditCards" :key="index">
@@ -15,7 +15,7 @@
         </div>
 
         <span v-if="savedMobile.length !== 0" class="mgt-8 text-overline">{{
-          $t("mobile_money")
+          $translate("mobile_money")
         }}</span>
         <div v-if="savedMobile.length !== 0">
           <div v-for="(mobile, index) in savedMobile" :key="index">
@@ -35,7 +35,7 @@
         <hr class="mgt-5" />
 
         <span class="link mgt-5" @click="$router.push('/add-payment')">
-          + {{ $t("add_payment_option") }}</span
+          + {{ $translate("add_payment_option") }}</span
         >
 
         <div class="mgt-10"></div>
@@ -62,7 +62,7 @@ export default {
   data() {
     return {
       icon: "back",
-      title: this.$t("payment_options"),
+      title: this.$translate("payment_options"),
       picked: "",
       loading1: false,
       loadingText: "",

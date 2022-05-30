@@ -17,7 +17,7 @@
 
         <form id="cc-form" @submit.prevent="onsubmit">
           <div class="form-group">
-            <label class="text-caption-2">{{ $t("cardholder_name") }}</label>
+            <label class="text-caption-2">{{ $translate("cardholder_name") }}</label>
             <input
               type="text"
               v-model="card_name"
@@ -29,7 +29,7 @@
 
           <div class="form-group mgt-4">
             <label for="cc-number" class="mgt-2 text-caption-2">{{
-              $t("card_number")
+              $translate("card_number")
             }}</label>
             <span id="cc-number" class="form-field"> </span>
             <span class="text-caption-2 text-error" v-if="cardno">
@@ -40,7 +40,7 @@
           <div class="direction-flex mgt-4">
             <div class="form-group">
               <label for="cc-expiration-date" class="text-caption-2">{{
-                $t("expiry")
+                $translate("expiry")
               }}</label>
               <span id="cc-expiration-date" class="form-field"> </span>
               <span class="text-caption-2 text-error" v-if="expirydate">
@@ -49,7 +49,7 @@
             </div>
 
             <div class="form-group mgl-8">
-              <label for="cc-cvc" class="text-caption-2">{{ $t("cvv") }}</label>
+              <label for="cc-cvc" class="text-caption-2">{{ $translate("cvv") }}</label>
 
               <span id="cc-cvc" class="form-field"> </span>
               <IconView
@@ -64,7 +64,7 @@
           </div>
 
           <div class="mgt-10 text-center">
-            <span class="charge-text"> {{ $t("in_order_to_verify") }}</span>
+            <span class="charge-text"> {{ $translate("in_order_to_verify") }}</span>
           </div>
           <sendy-btn
             :block="true"
@@ -73,7 +73,7 @@
             class="mgt-3"
             type="submit"
           >
-            {{ $t("add_card") }}
+            {{ $translate("add_card") }}
           </sendy-btn>
         </form>
       </div>
@@ -111,7 +111,7 @@ export default {
   data() {
     return {
       icon: "back",
-      title: this.$t("add_a_card"), 
+      title: this.$translate("add_a_card"), 
       showModal: false,
     };
   },

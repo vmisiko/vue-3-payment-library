@@ -15,7 +15,7 @@
           <TopInfo :icon="icon" :title="title" />
 
           <span v-if="creditCards.length !== 0" class="mgt-2 text-overline">{{
-            $t("credit_card_payment")
+            $translate("credit_card_payment")
           }}</span>
           <div class="" v-if="creditCards.length !== 0">
             <div
@@ -34,7 +34,7 @@
           </div>
 
           <span v-if="savedMobile.length !== 0" class="mgt-8 text-overline">{{
-            $t("mobile_money")
+            $translate("mobile_money")
           }}</span>
           <div v-if="savedMobile.length !== 0">
             <div
@@ -58,7 +58,7 @@
           </div>
 
           <div class="mgt-8" v-if="virtualAccounts.length !== 0">
-            <span class="text-overline"> {{ $t('bank_transfer') }}</span>
+            <span class="text-overline"> {{ $translate('bank_transfer') }}</span>
             <div>
               <div
                 v-for="(vaccount, index) in virtualAccounts"
@@ -86,7 +86,7 @@
           <div class="mgt-4 direction-flex pda-3">
             <div class="">
               <span class="text-caption text-gray70">{{
-                $t("amount_to_pay")
+                $translate("amount_to_pay")
               }}</span>
               <div class="text-secondary">
                 {{ getBupayload.currency }}
@@ -101,7 +101,7 @@
               :loading="getLoading"
               :disabled="!picked"
             >
-              {{ $t("confirm_and_pay") }}
+              {{ $translate("confirm_and_pay") }}
             </sendy-btn>
           </div>
         </div>
@@ -146,7 +146,7 @@ export default {
   data() {
     return {
       icon: "back",
-      title: this.$t("choose_payment_option"),
+      title: this.$translate("choose_payment_option"),
     };
   },
   setup() {

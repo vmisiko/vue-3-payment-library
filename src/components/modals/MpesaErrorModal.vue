@@ -7,7 +7,7 @@
 
       <div class="mgt-4">
         <span class="text-list-title text-gray90">
-          {{ $t("unable_pay_request") }}
+          {{ $translate("unable_pay_request") }}
         </span>
         <div>
           <span class="text-caption">
@@ -22,7 +22,7 @@
         class="mgt-8"
         @click="$router.push({ name: 'MpesaC2B' })"
       >
-        {{ $t("pay_with_mpesa_pay_bill") }}
+        {{ $translate("pay_with_mpesa_pay_bill") }}
       </sendy-btn>
     </div>
   </div>

@@ -9,22 +9,22 @@
       <div class="text-center mgt-10">
         <div>
           <span class="text-subtitle-1">{{
-            $t("payment_option_missing")
+            $translate("payment_option_missing")
           }}</span>
         </div>
         <span class="text-body-2 mgt-3">
-          {{ $t("add_new_payment_method_proceed") }}
+          {{ $translate("add_new_payment_method_proceed") }}
         </span>
       </div>
 
       <div class="text-center mgt-8">
         <sendy-btn color="primary" class="" @click="addPaymentOption">
-          {{ $t("add_payment_option") }}
+          {{ $translate("add_payment_option") }}
         </sendy-btn>
       </div>
 
       <div class="text-center mgt-8">
-        <span class="link" @click="handleBack">{{ $t("back") }}</span>
+        <span class="link" @click="handleBack">{{ $translate("back") }}</span>
       </div>
     </div>
   </div>

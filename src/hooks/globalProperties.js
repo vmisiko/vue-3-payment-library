@@ -5,7 +5,7 @@ export function useGlobalProp() {
 
   const router = instance.appContext.config.globalProperties.$router;
   const route = instance.appContext.config.globalProperties.$route;
-  const t = instance.appContext.config.globalProperties.$sendyOptions.i18n.global.t;
+  const t = instance.appContext.config.globalProperties.$translate;
   const sendyOptions = instance.appContext.config.globalProperties.$sendyOptions;
 
   return {

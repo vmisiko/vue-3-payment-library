@@ -30,13 +30,13 @@ export default {
   computed: {
     ...mapGetters(["getBupayload", "getPaymentMethods"]),
     optionName() {
-      let result = this.$t("credit_card_payment_small");
+      let result = this.$translate("credit_card_payment_small");
       switch (this.paymentMethod.payment_method_id) {
         case 1:
           result = this.paymentMethod.name;
           break;
         case 2:
-          result = this.$t("credit_card_payment_small");
+          result = this.$translate("credit_card_payment_small");
           break;
         case 20:
           result = "Pay by Bank";
@@ -93,9 +93,9 @@ export default {
       const response = await this.$paymentAxiosPost(fullPayload);
       this.$emit("loading", false);
       response.status
-        ? this.$paymentNotification({ text: this.$t("mpesa_added") })
+        ? this.$paymentNotification({ text: this.$translate("mpesa_added") })
         : this.$paymentNotification({
-            text: this.$t("mpesa_already_added"),
+            text: this.$translate("mpesa_already_added"),
             type: "error",
           });
       const entry = localStorage.getItem("entry");

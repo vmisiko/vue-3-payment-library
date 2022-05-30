@@ -7,24 +7,24 @@
 
       <div class="mgt-4">
         <span class="subtitle-2-bold text-gray90">
-          {{ $t("transfer_wasnt_detected") }}
+          {{ $translate("transfer_wasnt_detected") }}
         </span>
       </div>
 
       <div class="mgt-4">
         <span class="caption-1-regular text-gray90">
-          {{ $t("check_again") }}
-          <strong class=""> {{ $t("confirm_transfer") }}</strong>
+          {{ $translate("check_again") }}
+          <strong class=""> {{ $translate("confirm_transfer") }}</strong>
         </span>
       </div>
 
       <sendy-btn :outline="true" class="mgt-10" @click="$emit('close')">
-        {{ $t("close") }}
+        {{ $translate("close") }}
       </sendy-btn>
 
       <div class="mgt-8">
         <span class="caption-2-bold">{{
-          $t("still_have_issues_with_bank_transfer")
+          $translate("still_have_issues_with_bank_transfer")
         }}</span>
       </div>
     </div>

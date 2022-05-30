@@ -14,7 +14,7 @@
       }"
     >
       <IconView icon="loading" v-if="loading" />
-      <slot v-if="!loading"> {{ text ? text : $t("submit") }} </slot>
+      <slot v-if="!loading"> {{ text ? text : $translate("submit") }} </slot>
     </button>
   </div>
 </template>

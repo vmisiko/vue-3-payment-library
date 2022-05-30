@@ -20,10 +20,10 @@
         </svg>
 
         <div class="mgx-4 mgt-2">
-          <span class="title1"> {{ $t("pay_by_bank") }} </span>
+          <span class="title1"> {{ $translate("pay_by_bank") }} </span>
           <div class="text-body-2">
             <span>
-              {{ $t("transfer_funds") }}
+              {{ $translate("transfer_funds") }}
             </span>
           </div>
         </div>
@@ -31,28 +31,28 @@
 
       <div class="mgt-12">
         <span class="text-subtitle-1 text-gray90">
-          {{ $t("how_it_works") }}</span
+          {{ $translate("how_it_works") }}</span
         >
       </div>
 
       <div>
         <ListView
-          :text="$t('click_setup')"
+          :text="$translate('click_setup')"
         />
         <ListView
           class="mgt-3"
-          :text="$t('during_checkout_transfer_to_sendy')"
+          :text="$translate('during_checkout_transfer_to_sendy')"
         />
         <ListView
           class="mgt-3"
-          :text="$t('once_funds_hit_account')"
+          :text="$translate('once_funds_hit_account')"
         />
       </div>
 
       <div class="direction-flex mgt-13">
         <div class="mgy-auto">
           <span @click="$router.go(-1)" class="link">
-            {{ $t("maybe_later") }}</span
+            {{ $translate("maybe_later") }}</span
           >
         </div>
 
@@ -60,7 +60,7 @@
         <sendy-btn
           :loading="loading"
           color="primary"
-          :text="$t('setup_pay_by_bank')"
+          :text="$translate('setup_pay_by_bank')"
           @click="$router.push('/bank/terms-of-service')"
         />
       </div>

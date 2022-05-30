@@ -4,8 +4,8 @@
       <span class="normal-text">
         {{
           $route.name === "SuccessView"
-            ? $t("amount_paid")
-            : $t("amount_to_pay")
+            ? $translate("amount_paid")
+            : $translate("amount_to_pay")
         }}</span
       >
 
@@ -21,7 +21,7 @@
     <div class="mgt-8">
       <span class="normal-text">
         {{
-          $route.name === "SuccessView" ? $t("paymentOption") : $t("pay_with")
+          $route.name === "SuccessView" ? $translate("paymentOption") : $translate("pay_with")
         }}</span
       >
 
@@ -77,7 +77,7 @@
       class="direction-flex text-caption-2 text-sendy-red-30 mgt-6 mgl-8"
     >
       <IconView icon="warning-text" class="mgt-1" />
-      <span class="mgl-3">{{ $t("unavailable") }}</span>
+      <span class="mgl-3">{{ $translate("unavailable") }}</span>
     </div>
 
     <hr class="mgt-4" />
@@ -91,7 +91,7 @@
       class="mgt-4 direction-flex float-right link"
       @click="$router.push('/choose-payment')"
     >
-      <span> {{ $t("change_payment_option") }}</span>
+      <span> {{ $translate("change_payment_option") }}</span>
       <IconView class="mgl-2" icon="greator" />
     </div>
   </div>

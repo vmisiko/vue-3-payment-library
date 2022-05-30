@@ -36,7 +36,7 @@
               color="primary"
               @click="submitRetry"
             >
-              {{ $t("retry_payment") }}
+              {{ $translate("retry_payment") }}
             </sendy-btn>
           </div>
 
@@ -48,7 +48,7 @@
                 : $router.push('/choose-payment')
             "
           >
-            <span> {{ $t("change_payment_option") }}</span>
+            <span> {{ $translate("change_payment_option") }}</span>
             <IconView class="mgl-2" icon="greator" />
           </div>
         </div>
@@ -85,7 +85,7 @@ export default {
   data() {
     return {
       icon: "warning",
-      title: this.$t("payment_unsuccessful"),
+      title: this.$translate("payment_unsuccessful"),
       subtitle: "",
       paymentStatus: true,
       currency: "",
@@ -93,7 +93,7 @@ export default {
       loading: false,
       loading_text: "Confirming your payment. This may takes a moment.",
       defaultPaymentMethod: null,
-      errorText: this.$t("could_not_process"),
+      errorText: this.$translate("could_not_process"),
       transaction_id: null,
       poll_count: 0,
       poll_limit: 6,
@@ -172,7 +172,7 @@ export default {
             case "success":
               this.loading = false;
               this.$paymentNotification({
-                text: this.$t("card_details_added"),
+                text: this.$translate("card_details_added"),
               });
               this.$router.push("/choose-payment");
               this.loading = false;
@@ -187,10 +187,10 @@ export default {
         this.subtitle = response.message;
       } catch {
         this.$paymentNotification({
-          text: this.$t("error_occurred"),
+          text: this.$translate("error_occurred"),
           type: "error",
         });
-        this.setErrorText(this.$t("error_occurred"));
+        this.setErrorText(this.$translate("error_occurred"));
         this.loading = false;
       }
     },
@@ -246,7 +246,7 @@ export default {
           case "success":
             this.loading = false;
             this.$paymentNotification({
-              text: this.$t("card_details_added"),
+              text: this.$translate("card_details_added"),
             });
             this.$router.push("/choose-payment");
             this.loading = false;
@@ -275,7 +275,7 @@ export default {
             that.TransactionIdStatus();
             if (poll_count === that.poll_limit - 1) {
               that.loading = false;
-              that.errorText = this.$t("failed_to_collect_card_details");
+              that.errorText = this.$translate("failed_to_collect_card_details");
               that.setErrorText(that.errorText);
               return;
             }
@@ -336,7 +336,7 @@ export default {
         return;
       }
       this.loading = false;
-      this.errorText = this.$t("failed_to_collect_card_details");
+      this.errorText = this.$translate("failed_to_collect_card_details");
       this.showErrorModal = true;
     },
 
@@ -386,7 +386,7 @@ export default {
           case "success":
             this.showProcessing = false;
             this.$paymentNotification({
-              text: this.$t("card_details_added"),
+              text: this.$translate("card_details_added"),
             });
             this.$router.push("/choose-payment");
             this.loading = false;
@@ -395,7 +395,7 @@ export default {
             this.loading = false;
             this.poll_count = this.poll_limit;
             this.showProcessing = false;
-            this.errorText = this.$t("failed_to_collect_card_details");
+            this.errorText = this.$translate("failed_to_collect_card_details");
             this.showErrorModal = true;
             break;
           default:
@@ -406,7 +406,7 @@ export default {
       this.poll_count = this.poll_limit;
       this.loading = false;
       this.showProcessing = false;
-      this.errorText = this.$t("failed_to_collect_card_details");
+      this.errorText = this.$translate("failed_to_collect_card_details");
       this.showErrorModal = true;
     },
 

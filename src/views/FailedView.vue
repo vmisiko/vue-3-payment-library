@@ -42,7 +42,7 @@
 
         <div class="mgt-8 text-right" v-if="paymentStatus === 'retry'">
           <sendy-btn :block="true" :loading="loading" color="primary" class="">
-            {{ $t("retry_in") }}
+            {{ $translate("retry_in") }}
           </sendy-btn>
         </div>
 
@@ -54,7 +54,7 @@
               : $router.push('/choose-payment')
           "
         >
-          <span> {{ $t("change_payment_option") }}</span>
+          <span> {{ $translate("change_payment_option") }}</span>
           <IconView class="mgl-2" icon="greator" />
         </div>
       </div>
@@ -89,8 +89,8 @@ export default {
     return {
       icon: "warning",
       title: this.$route.params.mpesa
-        ? this.$t("unable_to_confirm")
-        : this.$t("payment_failed"),
+        ? this.$translate("unable_to_confirm")
+        : this.$translate("payment_failed"),
       paymentStatus: true,
     };
   },

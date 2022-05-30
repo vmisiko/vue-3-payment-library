@@ -23,7 +23,7 @@
           color="primary"
           @click="routing"
         >
-          {{ this.$t("done") }}
+          {{ this.$translate("done") }}
         </sendy-btn>
       </div>
     </div>
@@ -46,7 +46,7 @@ export default {
   data() {
     return {
       icon: "success",
-      title: this.$t("payment_successful"),
+      title: this.$translate("payment_successful"),
       subtitle: "",
       paymentStatus: null,
       currency: "KES",

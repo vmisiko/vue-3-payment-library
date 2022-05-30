@@ -3,7 +3,7 @@
     <div class="modal-content">
       <div class="mgt-4">
         <span class="text-body-1">
-          {{ $t("sure_delete") }}
+          {{ $translate("sure_delete") }}
         </span>
       </div>
 
@@ -15,7 +15,7 @@
         @click="handleDelete"
         :loading="loading"
       >
-        {{ $t("delete") }}
+        {{ $translate("delete") }}
       </sendy-btn>
 
       <sendy-btn
@@ -25,7 +25,7 @@
         type="submit"
         @click="cancelRemove"
       >
-        {{ $t("cancel") }}
+        {{ $translate("cancel") }}
       </sendy-btn>
     </div>
   </div>
@@ -113,7 +113,7 @@ export default {
       if (response.status) {
         this.loading = false;
         this.$paymentNotification({
-          text: this.$t("card_details_removed"),
+          text: this.$translate("card_details_removed"),
           type: "info",
         });
         this.$router.push({ name: "PaymentOptionsPage" });
@@ -155,7 +155,7 @@ export default {
       this.loading = false;
       if (response.status) {
         this.$paymentNotification({
-          text: this.$t('payment_option_removed', {payment_method: this.payMethodName}),
+          text: this.$translate('payment_option_removed', {payment_method: this.payMethodName}),
           type: "info",
         });
         this.$router.push({ name: "PaymentOptionsPage" });

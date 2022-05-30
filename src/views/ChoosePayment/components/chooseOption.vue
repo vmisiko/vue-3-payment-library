@@ -28,9 +28,9 @@
       <div v-if="paymentOption.pay_method_id === 20" class="direction-flex">
         <IconView icon="pay-bank" class="mgt-1" />
         <div class="mgl-2 mgy-auto">
-          <span> {{ $t('pay_by_bank') }}</span>
+          <span> {{ $translate('pay_by_bank') }}</span>
           <div class="caption-2-semibold text-gray70 direction-flex">
-            <span> {{  $t('available_balance') }}</span>
+            <span> {{  $translate('available_balance') }}</span>
 
             <IconView
               class="mgl-2"
@@ -60,7 +60,7 @@
       </div>
     </div>
     <div class="text-caption-2 text-sendy-red-30 mgt-3" v-if="disableLogic">
-      <span class="">{{ $t("unavailable") }}</span>
+      <span class="">{{ $translate("unavailable") }}</span>
     </div>
   </div>
 </template>

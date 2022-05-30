@@ -7,10 +7,10 @@
       </div>
 
       <div class="mgt-4">
-        <span>{{ $t("what_is_cvv") }}</span>
+        <span>{{ $translate("what_is_cvv") }}</span>
         <div>
           <span class="text-caption"
-            >{{ $t('security_code_found') }}</span
+            >{{ $translate('security_code_found') }}</span
           >
         </div>
       </div>
@@ -22,7 +22,7 @@
         type="submit"
         @click="$emit('close')"
       >
-        {{ $t("ok") }}
+        {{ $translate("ok") }}
       </sendy-btn>
     </div>
   </div>

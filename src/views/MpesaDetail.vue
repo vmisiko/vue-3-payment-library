@@ -25,7 +25,7 @@
         <span class="text-btn">{{
           $route.params.paymentOption
             ? `Remove ${$route.params.paymentOption}`
-            : $t("remove_mpesa")
+            : $translate("remove_mpesa")
         }}</span>
       </div>
     </div>

@@ -34,9 +34,9 @@ export default {
     return {
       showNotification: false,
       showAxiosError: false,
-      notificationText: this.$t("mpesa_added"),
+      notificationText: this.$translate("mpesa_added"),
       type: null,
-      errorText: this.$t("failed_network_error"),
+      errorText: this.$translate("failed_network_error"),
     };
   },
   computed: {

@@ -4,7 +4,7 @@
       <TopInfo :icon="icon" :title="title" />
 
       <div class="">
-        <span class="text-caption-1"> {{ $t("amount_to_pay") }}</span>
+        <span class="text-caption-1"> {{ $translate("amount_to_pay") }}</span>
 
         <div class="float-right">
           <span class="text-caption-1">
@@ -18,36 +18,36 @@
         <IconView icon="mpesa" width="68px" height="48px" />
 
         <div class="mgt-3">
-          <span class="text-list-title"> {{ $t("payment_instruction") }}</span>
+          <span class="text-list-title"> {{ $translate("payment_instruction") }}</span>
           <div class="mgt-4 pdl-4">
             <ol style="padding-left: 0px">
-              <li class="text-body-2">{{ $t("open_mpesa") }}</li>
+              <li class="text-body-2">{{ $translate("open_mpesa") }}</li>
               <li class="text-body-2 mgt-2">
-                {{ $t("select_lipa_na_mpesa") }}
+                {{ $translate("select_lipa_na_mpesa") }}
               </li>
               <li class="text-body-2 mgt-2">
-                {{ $t("enter_business_no") }}
+                {{ $translate("enter_business_no") }}
                 <span class="text-bold"> {{ getBupayload.paybill_no }} </span>
               </li>
               <li class="text-body-2 mgt-2">
-                {{ $t("enter_account_no") }}
+                {{ $translate("enter_account_no") }}
                 <span class="text-bold"> {{ getBupayload.txref }} </span>
               </li>
               <li class="text-body-2 mgt-2">
-                {{ $t("enter_amount_no") }}
+                {{ $translate("enter_amount_no") }}
                 <span class="text-bold">
                   {{ getBupayload.currency }}
                   {{ $formatCurrency(getBupayload.amount) }}
                 </span>
               </li>
               <li class="text-body-2 mgt-2">
-                {{ $t("enter_mpesa_pin") }}
+                {{ $translate("enter_mpesa_pin") }}
               </li>
               <li class="text-body-2 mgt-2">
-                {{ $t("confirmation_from_mpesa") }}
+                {{ $translate("confirmation_from_mpesa") }}
               </li>
               <li class="text-body-2 mgt-2">
-                {{ $t("click_complete_payment") }}
+                {{ $translate("click_complete_payment") }}
               </li>
             </ol>
           </div>
@@ -60,7 +60,7 @@
             class="float-right"
             @click="pollC2B"
           >
-            {{ $t("complete_payment") }}
+            {{ $translate("complete_payment") }}
           </sendy-btn>
         </div>
       </div>
@@ -85,7 +85,7 @@ export default {
   data() {
     return {
       icon: "back",
-      title: this.$t("pay_with_mpesa"),
+      title: this.$translate("pay_with_mpesa"),
       loading: false,
       poll_count: 0,
       poll_limit: 30,
@@ -119,7 +119,7 @@ export default {
               that.loading = false;
               that.showTimer = false;
               (that.promptInfo = false),
-                that.setErrorText(this.$t("failed_to_charge_using_mpesa"));
+                that.setErrorText(this.$translate("failed_to_charge_using_mpesa"));
               that.$router.push({
                 name: "FailedView",
                 params: { mpesa: "mpesa" },

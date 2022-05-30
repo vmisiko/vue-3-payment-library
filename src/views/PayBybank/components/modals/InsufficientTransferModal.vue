@@ -7,32 +7,32 @@
 
       <div class="mgt-4">
         <span class="subtitle-2-bold text-gray90">
-          {{ $t("insufficient_transfer") }}
+          {{ $translate("insufficient_transfer") }}
         </span>
       </div>
 
       <div class="mgt-4">
         <span class="body-2-regular text-gray90">
-          {{ $t("amount_received") }};
+          {{ $translate("amount_received") }};
         </span>
       </div>
 
       <div class="mgt-6">
         <p class="caption-1-regular text-gray90">
-          {{ $t("total_amount_due") }}:
+          {{ $translate("total_amount_due") }}:
           <strong class="text-success">
             {{ getBupayload.currency }} {{ amountDue }}
           </strong>
         </p>
         <p class="caption-1-regular text-gray90">
-          {{ $t("last_transfer") }}:
+          {{ $translate("last_transfer") }}:
           <strong class="text-green30">
             {{ getBupayload.currency }} {{ lastTransferAmount }}
           </strong>
         </p>
 
         <p class="mgt-7 caption-1-regular text-gray90">
-          {{ $t("amount_pending") }}:
+          {{ $translate("amount_pending") }}:
           <strong class="text-orange90">
             {{ getBupayload.currency }} {{ pendingAmount }}
           </strong>
@@ -41,13 +41,13 @@
 
       <div class="mgt-6">
         <p class="caption-2-regular">
-          {{ $t("complete_payment_close_window") }} {{ getBupayload.currency }}
-          {{ pendingAmount }} {{ $t("bank_acccount_details_shown") }}
+          {{ $translate("complete_payment_close_window") }} {{ getBupayload.currency }}
+          {{ pendingAmount }} {{ $translate("bank_acccount_details_shown") }}
         </p>
       </div>
 
       <sendy-btn :outline="true" class="mgt-10" @click="$emit('close')">
-        {{ $t("close") }}
+        {{ $translate("close") }}
       </sendy-btn>
     </div>
   </div>
