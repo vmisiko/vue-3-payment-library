@@ -3,8 +3,8 @@
     <Processing
       @close="showProcessing = false"
       :count="count"
-      title="Pay by Bank Setup"
-      text="Assigning your unique account details..."
+      :title="$t('pay_by_bank_setup')"
+      :text="$t('assign_your_unique_account')"
       v-if="showProcessing"
     />
     <div class="card" v-else>

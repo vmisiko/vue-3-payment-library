@@ -37,15 +37,15 @@
 
       <div>
         <ListView
-          text="Click “Setup Pay by Bank” and we assign you a unique bank account number"
+          :text="$t('click_setup')"
         />
         <ListView
           class="mgt-3"
-          text="During checkout, you can transfer funds to Sendy using your unique bank details"
+          :text="$t('during_checkout_transfer_to_sendy')"
         />
         <ListView
           class="mgt-3"
-          text="Once your funds hit the account, we confirm that you have paid within seconds. "
+          :text="$t('once_funds_hit_account')"
         />
       </div>
 

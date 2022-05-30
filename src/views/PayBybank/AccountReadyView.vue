@@ -72,7 +72,7 @@ export default {
   methods: {
     finish() {
       this.$paymentNotification({
-        text: "Pay by bank added and selected for payment.",
+        text: this.$t('pay_by_bank_added'),
       });
       this.$router.push({ name: "ChoosePayment" });
     },

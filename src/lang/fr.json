@@ -128,5 +128,11 @@
   "amount_pending":  "FR_Amount pending",
   "complete_payment_close_window":  "FR_To complete your payment, close this window and transfer",
   "bank_acccount_details_shown":  "FR_to the bank account details shown.",
-  "agree_and_continue": "FR_Agree and Continue"
+  "agree_and_continue": "FR_Agree and Continue",
+
+  "pay_by_bank_added": "Pay by bank added and selected for payment.",
+  "click_setup":"Click “Setup Pay by Bank” and we assign you a unique bank account number",
+  "during_checkout_transfer_to_sendy": "During checkout, you can transfer funds to Sendy using your unique bank details",
+  "once_funds_hit_account": "Once your funds hit the account, we confirm that you have paid within seconds.",
+  "assign_your_unique_account":"Assigning your unique account details..."
 }

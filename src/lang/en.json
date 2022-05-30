@@ -10,8 +10,6 @@
   "cancel": "Cancel",
   "card_details_removed": "Card details removed",
   "could_not_add_card": "Could not add card",
-
-
   "unable_pay_request": "Unable to send payment request",
   "pay_with_mpesa_pay_bill": "Pay with M-PESA Pay Bill",
   "payment_option_missing": "Payment option missing",
@@ -124,8 +122,6 @@
   "pay_by_bank": "Pay by Bank",
   "transfer_funds": "Transfer funds from your bank to Sendy",
   "maybe_later": "Maybe Later",
-  "setup_pay_by_bank": "Setup Pay by Bank",
-  "pay_by_bank_setup": "Pay by Bank Setup",
   "assign_account_details": "Assinging your unique account details...",
   "unable_to_setup": "Unable to setup Pay by Bank",
   "return_to_payment_options": "Return to Payment Options",
@@ -147,5 +143,15 @@
   "amount_pending":  "Amount pending",
   "complete_payment_close_window":  "To complete your payment, close this window and transfer",
   "bank_acccount_details_shown":  "to the bank account details shown.",
-  "agree_and_continue": "Agree and Continue"
+  "agree_and_continue": "Agree and Continue",
+
+  "pay_by_bank_added": "Pay by bank added and selected for payment.",
+  "click_setup":"Click “Setup Pay by Bank” and we assign you a unique bank account number",
+  "during_checkout_transfer_to_sendy": "During checkout, you can transfer funds to Sendy using your unique bank details",
+  "once_funds_hit_account": "Once your funds hit the account, we confirm that you have paid within seconds.",
+  "setup_pay_by_bank": "Setup Pay by Bank",
+  "pay_by_bank_setup": "Pay by Bank Setup",
+  "assign_your_unique_account":"Assigning your unique account details..."
+
 }
+
