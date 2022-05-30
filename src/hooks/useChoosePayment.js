@@ -64,7 +64,7 @@ export function useChoosePayment() {
     store.dispatch("paymentNotification", {
       type: response.status ? "" : "error",
       text: response.status
-        ? t('selected_payment_name', { selected_name: method.pay_method_name })
+        ? `${method.pay_method_name} ${t('selected_payment_name')}`
         : t('request_failed'),
     });
   }
