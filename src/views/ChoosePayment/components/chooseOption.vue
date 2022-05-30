@@ -28,9 +28,9 @@
       <div v-if="paymentOption.pay_method_id === 20" class="direction-flex">
         <IconView icon="pay-bank" class="mgt-1" />
         <div class="mgl-2 mgy-auto">
-          <span> Pay by Bank</span>
+          <span> {{ $t('pay_by_bank') }}</span>
           <div class="caption-2-semibold text-gray70 direction-flex">
-            <span> Available Balance</span>
+            <span> {{  $t('available_balance') }}</span>
 
             <IconView
               class="mgl-2"

@@ -155,7 +155,7 @@ export default {
       this.loading = false;
       if (response.status) {
         this.$paymentNotification({
-          text: `${this.payMethodName} option removed`,
+          text: this.$t('payment_option_removed', {payment_method: this.payMethodName}),
           type: "info",
         });
         this.$router.push({ name: "PaymentOptionsPage" });

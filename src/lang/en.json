@@ -151,7 +151,11 @@
   "once_funds_hit_account": "Once your funds hit the account, we confirm that you have paid within seconds.",
   "setup_pay_by_bank": "Setup Pay by Bank",
   "pay_by_bank_setup": "Pay by Bank Setup",
-  "assign_your_unique_account":"Assigning your unique account details..."
-
+  "assign_your_unique_account":"Assigning your unique account details...",
+  "available_balance": "Available Balance",
+  "bank_transfer":"BANK TRANSFER",
+  "request_failed": "Request failed, Please try again!",
+  "security_code_found": "This is a 3 or 4 digit security code found on the back of you card",
+  "payment_option_removed": "{payment_method} option removed"
 }
 

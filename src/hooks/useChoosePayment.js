@@ -6,13 +6,11 @@ import { useSegement } from "./useSegment";
 import moment from "moment-timezone";
 
 export function useChoosePayment() {
-  const { router } = useGlobalProp();
+  const { router, t } = useGlobalProp();
   const store = useStore();
   const { state } = useState();
   const { getSavedPayMethods, getBupayload, getLoading } = useState();
   const { commonTrackPayload } = useSegement();
-
-  // const loading = ref(false);
 
   const creditCards = computed(() => {
     const result = getSavedPayMethods.value
@@ -66,8 +64,8 @@ export function useChoosePayment() {
     store.dispatch("paymentNotification", {
       type: response.status ? "" : "error",
       text: response.status
-        ? `${method.pay_method_name} selected for payment.`
-        : "Request failed, Please try again!",
+        ? t('selected_payment_name', { selected_name: method.pay_method_name })
+        : t('request_failed'),
     });
   }
 

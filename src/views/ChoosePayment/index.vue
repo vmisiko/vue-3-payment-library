@@ -48,7 +48,7 @@
       </div>
 
       <div class="mgt-8" v-if="virtualAccounts.length !== 0">
-        <span class="text-overline"> BANK TRANSFER</span>
+        <span class="text-overline"> {{ $t('bank_transfer') }}</span>
         <div>
           <div
             v-for="(vaccount, index) in virtualAccounts"

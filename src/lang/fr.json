@@ -130,9 +130,15 @@
   "bank_acccount_details_shown":  "FR_to the bank account details shown.",
   "agree_and_continue": "FR_Agree and Continue",
 
-  "pay_by_bank_added": "Pay by bank added and selected for payment.",
-  "click_setup":"Click “Setup Pay by Bank” and we assign you a unique bank account number",
-  "during_checkout_transfer_to_sendy": "During checkout, you can transfer funds to Sendy using your unique bank details",
-  "once_funds_hit_account": "Once your funds hit the account, we confirm that you have paid within seconds.",
-  "assign_your_unique_account":"Assigning your unique account details..."
+  "pay_by_bank_added": "FR_Pay by bank added and selected for payment.",
+  "click_setup":"FR_Click “Setup Pay by Bank” and we assign you a unique bank account number",
+  "during_checkout_transfer_to_sendy": "FR_During checkout, you can transfer funds to Sendy using your unique bank details",
+  "once_funds_hit_account": "FR_Once your funds hit the account, we confirm that you have paid within seconds.",
+  "assign_your_unique_account":"FR_Assigning your unique account details...",
+  "available_balance": "FR_Available Balance",
+  "bank_transfer":"FR_BANK TRANSFER",
+  "request_failed": "FR_Request failed, Please try again!",
+  "security_code_found": "FR_This is a 3 or 4 digit security code found on the back of you card",
+  "payment_option_removed": "{payment_method} option removed"
+
 }

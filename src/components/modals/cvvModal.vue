@@ -10,8 +10,7 @@
         <span>{{ $t("what_is_cvv") }}</span>
         <div>
           <span class="text-caption"
-            >This is a 3 or 4 digit security code found on the back of you
-            card.</span
+            >{{ $t('security_code_found') }}</span
           >
         </div>
       </div>
