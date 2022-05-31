@@ -3,7 +3,7 @@
     <div class="text-center">
       <span class="title-body1-bold"> {{ title }} </span>
     </div>
-    <div class="flex-center">
+    <div class="text-center">
       <div class="">
         <IconView icon="loading1" class="flex-center mgt-10" />
       </div>

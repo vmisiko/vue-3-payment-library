@@ -1,6 +1,6 @@
 <template>
   <div id="payment">
-    <div class="container">
+    <div class="">
       <div @click="$router.push({ name: 'Entry' })" v-if="false">
         <IconView icon="sendy-logo" />
       </div>

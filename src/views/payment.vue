@@ -1,8 +1,10 @@
 <template>
-  <div class="flex-center">
+  <div>
     <div>
-      <Processing v-if="getLoading" :text="loadingText" />
-      <div v-else>
+      <div v-if="getLoading"  class="flex-center">
+        <Processing :text="loadingText" />
+      </div>
+      <div v-else class="flex-center">
         <AdditionalCardFields
           :additionalData="additionalData"
           :transaction_id="transaction_id"
@@ -13,7 +15,6 @@
 
         <div
           class="card"
-          :class="{ 'card-min': paymentStatus }"
           v-if="!showAdditionalCardFields"
         >
           <TopInfo :icon="icon" :title="title" />

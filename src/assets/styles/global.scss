@@ -141,6 +141,16 @@
    float: right;
   }
 
+  @media only screen and (max-width: 768px) {
+    .card {
+      width: 100%;
+    }
+
+    .card-min {
+      width: -webkit-fill-available;
+    }
+  }
+
   @each $direction in $directions {
 
     .text-#{$direction} {
