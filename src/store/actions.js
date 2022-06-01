@@ -16,7 +16,7 @@ export default {
     return param;
   },
   async paymentAxiosPost({ dispatch }, payload) {
-    const headers = dispatch("paymentCustomHeaders");
+    const headers = await dispatch("paymentCustomHeaders");
     try {
       const { url, params } = payload;
       const { data } = await axios.post(
@@ -33,7 +33,7 @@ export default {
   async paymentAxiosGet({ dispatch }, payload) {
     try {
       const { url, params } = payload;
-      const headers = dispatch("paymentCustomHeaders");
+      const headers = await dispatch("paymentCustomHeaders");
 
       const values = {
         params,
@@ -53,7 +53,7 @@ export default {
   async paymentAxiosPut({ dispatch }, payload) {
     try {
       const { url, params } = payload;
-      const headers = dispatch("paymentCustomHeaders");
+      const headers = await dispatch("paymentCustomHeaders");
       const { data } = await axios.put(
         `${this.$sendyOptions.config.BASE_URL}${url}`,
         params,
