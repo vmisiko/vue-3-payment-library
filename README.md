@@ -1,12 +1,25 @@
 # @sendyit/pay
 
-## In-depth documentation can be found using the link below
-https://sendy.atlassian.net/wiki/spaces/PF/pages/edit-v2/1966440548
+### In-depth documentation can be found using the link below
+[in-depth documentation](https://sendy.atlassian.net/wiki/spaces/PF/pages/edit-v2/1966440548)
 
-## How to use
+## Introduction
+This is a payment experience that integrates into all Sendy products and accept payments from our customers flexibly and securely 
+
+## Key objectives
+* To have a consistent payment experience for all users across all sendy platforms
+* To abstract payments and payment flows from all the other business units which allows them to concentrate on their core business
+* To ensure all apps in Sendy comply to the global  security measures i.e the PCI DSS ( Payment Card Industry Data Security Standard )
+* Unifying the code base that affects payments to ensure changes needed can  be made in one central place
+
+## How to install
+You can npm install using below command.
+
 ```
 npm install @sendyit/pay
 ```
+
+## How to use
 
 Go to the src/main.js and add the following lines
 
@@ -32,17 +45,23 @@ app.use(payments, {
 app.mount("#app");
 ```
 
+>### Business unit parameter definitions
+>>[See more](docs/BUPARAMETERS.MD)
 
 ### How to call the payment library.
 
-So there 5 entry points:
+So there 6 entry points:
  ```
  1. checkout
  2. payment-option
  3. choose-payment
  4. Choose-payment-checkout - Choose payment page with checkout.
  5. bank-transfer - Pay by Bank Deposit page.
+ 6. resolve-payment-checkout - For resolving payments
  ```
+
+![Checkouts sample Checkout](docs/images/checkouts.svg)
+![Resolve payment checkout](docs/images/paybybank.svg)
 
  To go to checkout page call the following method as shown below by passing the Bu payload
 
@@ -70,28 +89,32 @@ So there 5 entry points:
   this.$paymentInit(buPayload, 'checkout'); //the 2nd argument can be a 'checkout', 'payment-option', 'choose-payment' or 'choose-payment-checkout, in order to access the 5 entry points of the Bu as listed above.
  ```
 
- ### How test and collaborate
+## How test and collaborate
  In order to help and collaborate, clone this repo, then add what you can improve, and build the npm version of the repo locally in the dist file in the root of the folder, using the below command
 
  ```
  npm run build-lib
  ```
+To create your own changes, you'll have to create your own branch from master, then create a merge request to master.
 
- ### To version the App
- Use the below command for versioning of the app.
+## To version the App
+  This project uses [Semantic Versioning 2.0.0](https://docs.npmjs.com/about-semantic-versioning) starting with `v1.0.0`.
 
- ```
- npm version patch -m "Add a comment for the versioning"
- ```
+  Use the below command for versioning of the app.
 
- ### publish 
+  ```
+  npm version patch -m "Add a comment for the versioning"
+  ```
 
- in  order to publish the app, use the below command
+## Releasing / Publishing
+In  order to publish the app, use the below command
 
  ```
  npm publish
  ```
 
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Credits:
+* Telephone Number parsing, validation by vue-tel-input
+* VGS support 
+
