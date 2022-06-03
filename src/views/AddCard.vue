@@ -231,7 +231,7 @@ export default {
         {
           data: newCardPayload,
           headers: {
-            Authorization: getBupayload.authToken,
+            Authorization: getBupayload.value.authToken,
           },
         },
         (status, response) => {
