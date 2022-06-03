@@ -68,9 +68,14 @@ export default {
   /*eslint-disable */
   async handlePaymentAxiosErrors({ state }, error) {
     switch (error) {
+      case 401:
+        this.emitter.emit("axios-notification", {
+          text: "Unauthorized! Please Login Again.",
+        });
+        break;
       case 403:
         this.emitter.emit("axios-notification", {
-          text: "Please Login Again.",
+          text: "Unauthorized! Please Login Again.",
         });
         break;
       case 204:
