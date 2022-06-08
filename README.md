@@ -99,7 +99,7 @@ So there 6 entry points:
 To create your own changes, you'll have to create your own branch from master, then create a merge request to master.
 
 ## Contribution
-[Follow this link to contribute](https://sendy.atlassian.net/wiki/spaces/PF/pages/2241724417/How+to+contribute.) \
+[Follow this link to contribute](https://sendy.atlassian.net/wiki/spaces/PF/pages/2241724417/How+to+contribute.)
 
 ## Service Mantainance
 To mantain the service first read the Contribution section above to comprehend how to setupt before you contribute. Then, create your own branch from the master, do your mantainance and make a merge request to the master to be reviewed before your changes and can be intergrated plugin.
