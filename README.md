@@ -3,7 +3,7 @@
 ### In-depth documentation can be found using the link below
 [in-depth documentation](https://sendy.atlassian.net/wiki/spaces/PF/pages/edit-v2/1966440548)
 
-## Introduction
+## Description
 This is a payment experience that integrates into all Sendy products and accept payments from our customers flexibly and securely 
 
 ## Key objectives
@@ -12,6 +12,7 @@ This is a payment experience that integrates into all Sendy products and accept 
 * To ensure all apps in Sendy comply to the global  security measures i.e the PCI DSS ( Payment Card Industry Data Security Standard )
 * Unifying the code base that affects payments to ensure changes needed can  be made in one central place
 
+## Structure
 ## How to install
 You can npm install using below command.
 
@@ -88,14 +89,16 @@ So there 6 entry points:
 
   this.$paymentInit(buPayload, 'checkout'); //the 2nd argument can be a 'checkout', 'payment-option', 'choose-payment' or 'choose-payment-checkout, in order to access the 5 entry points of the Bu as listed above.
  ```
-
-## How test and collaborate
+## How to build and test
  In order to help and collaborate, clone this repo, then add what you can improve, and build the npm version of the repo locally in the dist file in the root of the folder, using the below command
 
  ```
  npm run build-lib
  ```
 To create your own changes, you'll have to create your own branch from master, then create a merge request to master.
+
+## Contribution
+[Follow this link to contribute](https://sendy.atlassian.net/wiki/spaces/PF/pages/2241724417/How+to+contribute.) 
 
 ## To version the App
   This project uses [Semantic Versioning 2.0.0](https://docs.npmjs.com/about-semantic-versioning) starting with `v1.0.0`.
