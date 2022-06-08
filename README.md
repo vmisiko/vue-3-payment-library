@@ -109,7 +109,10 @@ To create your own changes, you'll have to create your own branch from master, t
   npm version patch -m "Add a comment for the versioning"
   ```
 
-## Releasing / Publishing
+## Release
+In order to release we merge the test branch to master, then npm commit the changes for the patch or major error then publish using the packaging and deployment channel below.
+
+## Packaging and deploying
 In  order to publish the app, use the below command
 
  ```
