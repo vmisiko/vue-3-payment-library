@@ -128,3 +128,4 @@ In  order to publish the app, use the below command
 * Telephone Number parsing, validation by vue-tel-input
 * VGS support 
 
+
