@@ -149,9 +149,18 @@
   font-size: 15px;
   line-height: 20px;
   letter-spacing: 0.25px;
-  color: #303133;
+  color: #303133 !important;
 }
 
+.payment-text-secondary {
+  font-family: 'Nunito' !important;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 20px;
+  letter-spacing: 0.25px;
+  color: #303133 !important;
+}
 
 /* Desktop fonts
 Link - https://www.figma.com/file/7JRqeukuiodCx4ims2MR3O/?node-id=1%3A2

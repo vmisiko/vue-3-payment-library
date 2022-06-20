@@ -88,7 +88,7 @@
               <span class="text-caption text-gray70">{{
                 $translate("amount_to_pay")
               }}</span>
-              <div class="text-secondary">
+              <div class="payment-text-secondary">
                 {{ getBupayload.currency }}
                 {{ $formatCurrency(getBupayload.amount) }}
               </div>
