@@ -183,6 +183,7 @@
     text-align: center;
     border-radius: 8px;
     cursor: pointer;
+    height: 52px;
   }
 
   .primary-btn-block {
@@ -192,7 +193,8 @@
     color:white !important;
     text-align: center;
     border-radius: 4px;
-    width: 100%
+    width: 100%;
+    height: 52px;
   }
 
   .midnightblue-btn-block {
@@ -203,6 +205,7 @@
     text-align: center;
     border-radius: 4px;
     width: 100%;
+    height: 52px;
   }
 
   .error-btn-block {
@@ -213,6 +216,7 @@
     text-align: center;
     border-radius: 4px;
     width: 100%;
+    height: 52px;
   }
 
   .btn-outline {
@@ -224,6 +228,8 @@
     cursor: pointer;
     width: 100%;
     border-radius: 8px;
+    height: 52px;
+
 
     .success {
       border-color: #04AA6D;
@@ -316,6 +322,6 @@
     background: white;
   }
 
-  input {
+  .payment-input {
     border: 0.5px solid #C0C4CC !important;
   }

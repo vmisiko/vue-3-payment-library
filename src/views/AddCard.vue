@@ -21,7 +21,7 @@
             <input
               type="text"
               v-model="card_name"
-              class="form-field"
+              class="form-field payment-input"
               :placeholder="$translate('enter_full_name')"
               required
             />

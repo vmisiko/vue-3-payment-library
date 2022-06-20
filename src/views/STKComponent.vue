@@ -43,8 +43,8 @@
             </div>
           </div>
 
-          <div class="alert mgt-10">
-            <span class="text-caption-2 pdt-2 text-midnightBlue20">{{
+          <div class="alert pda-2 mgt-10">
+            <span class="text-caption-2 text-midnightBlue20">{{
               defaultPaymentMethod.pay_method_id === 1
                 ? $translate("mpesa_prompt")
                 : $translate("mobile_prompt")
@@ -395,7 +395,6 @@ export default {
   position: static;
   width: 296px;
   height: 32px;
-  left: 0px;
   top: 268px;
   background: rgba(211, 221, 246, 0.5);
   border-radius: 4px;

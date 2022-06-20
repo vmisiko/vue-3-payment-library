@@ -6,7 +6,7 @@
         <select
           :value="modelValue"
           @input="handleInput"
-          class="select-input"
+          class="select-input payment-input"
           :placeholder="$translate('select_payment_methods')"
         >
           <option

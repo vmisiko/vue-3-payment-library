@@ -49,7 +49,7 @@
       <span class="spacer"></span>
       <div :class="{ 'mgt-2': paymentOption.pay_method_id === 20 }">
         <input
-          class="float-right"
+          class="float-right payment-input"
           name="paymentoption"
           type="radio"
           :value="value"
