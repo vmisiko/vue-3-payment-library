@@ -12,7 +12,7 @@
         v-if="showAdditionalCardFields"
         @continue="handleContinue"
       />
-      <div class="card-min" v-if="!showAdditionalCardFields">
+      <div class="card" v-if="!showAdditionalCardFields">
         <TopInfo :icon="icon" :title="title" />
 
         <form id="cc-form" @submit.prevent="onsubmit">
@@ -338,6 +338,10 @@ export default {
 </script>
 
 <style lang="scss">
+form {
+  padding: 0px !important;
+}
+
 .form-name {
   display: flex;
   flex-direction: row;
