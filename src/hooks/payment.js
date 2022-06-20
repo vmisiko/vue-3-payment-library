@@ -394,18 +394,18 @@ export function usePayment() {
 
     store.commit("setLoading", true);
     const response = await store.dispatch("paymentAxiosPost", fullPayload);
+    store.commit("setLoading", false);
     if (response.status) {
       store.dispatch("paymentNotification", {
         text: response.message,
       });
-      store.commit("setLoading", false);
       router.push({
         name: "SuccessView",
       });
       return;
     }
     store.commit("setErrorText", response.message);
-    if (route.name === "FailedView") {
+    if (route.name !== "FailedView") {
       router.push({ name: "FailedView" });
     }
     return;
