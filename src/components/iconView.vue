@@ -630,7 +630,7 @@ export default {
         this.$route.params.entry ||
         (this.$route.name === "AddPayment" && this.$route.params.entry)
       ) {
-        this.$router.push({ name: entryRoute });
+        this.$router.push(entryRoute);
         return;
       }
       this.$router.go(-1);

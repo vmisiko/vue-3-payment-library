@@ -71,7 +71,7 @@ export default {
     },
     handleBack() {
       const entryRoute = localStorage.entry_route;
-      this.$router.push({ name: entryRoute });
+      this.$router.push(entryRoute);
     },
   },
 };

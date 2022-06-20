@@ -90,7 +90,7 @@ const mixin = {
       localStorage.setItem("buPayload", JSON.stringify(payload));
       this.setBupayload(payload);
       localStorage.setItem("entry", entry);
-      localStorage.setItem("entry_route", this.$route.name);
+      localStorage.setItem("entry_route", this.$route.path);
       this.loadLanguageAsync(payload.locale ? payload.locale : "en");
       window.analytics.identify(payload.user_id, {
         email: payload.email,
@@ -147,10 +147,10 @@ const mixin = {
           this.$router.push({ name: "Entry" });
           break;
         case "choose-payment":
-          this.$router.push({ name: entryRoute });
+          this.$router.push(entryRoute);
           break;
         case "choose-payment-checkout":
-          this.$router.push({ name: entryRoute });
+          this.$router.push(entryRoute);
           break;
         case "payment-option":
           this.$router.push({ name: "PaymentOptionsPage" });

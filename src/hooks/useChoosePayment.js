@@ -118,7 +118,7 @@ export function useChoosePayment() {
         router.push({ name: "Entry" });
         break;
       case "choose-payment":
-        router.push({ name: entryRoute });
+        router.push(entryRoute);
         break;
       case "choose-payment-checkout":
         router.push({ name: "ChoosePaymentCheckout" });

@@ -90,7 +90,7 @@ export default {
         ...this.commonTrackPayload(),
         duration_of_response: this.$route.params.duration,
       });
-      this.$router.push({ name: localStorage.entry_route });
+      this.$router.push(localStorage.entry_route);
     },
   },
 };
