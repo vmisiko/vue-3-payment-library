@@ -15,7 +15,7 @@
           <PaymentOption :paymentMethod="method" @loading="handleLoading" />
           <hr
             v-if="index !== getPaymentMethods.length - 1"
-            class="mgt-4 mgb-5"
+            class="margin-hr"
           />
         </div>
       </div>
@@ -58,3 +58,10 @@ export default {
   },
 };
 </script>
+
+<style>
+.margin-hr {
+  margin-top: 16px !important;
+  margin-bottom: 19px !important;
+}
+</style>

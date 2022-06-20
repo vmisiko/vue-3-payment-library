@@ -16,7 +16,7 @@
       </div>
     </div>
 
-    <hr class="mgt-4" />
+    <hr class="margin-hr" />
 
     <div class="mgt-8">
       <span class="normal-text">
@@ -80,7 +80,7 @@
       <span class="mgl-3">{{ $translate("unavailable") }}</span>
     </div>
 
-    <hr class="mgt-4" />
+    <hr class="margin-hr" />
 
     <div
       v-if="
@@ -129,5 +129,9 @@ export default {
   font-size: 13px;
   line-height: 20px;
   color: #303133;
+}
+
+.margin-hr {
+  margin-top:21px;
 }
 </style>
