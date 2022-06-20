@@ -20,10 +20,6 @@ export default {
       throw new Error("Please Initialise plugin with vue router.");
     }
 
-    if (!options.hasOwnProperty("i18n")) {
-      throw new Error("Please Initialise plugin with i18n object.");
-    }
-
     options.router.addRoute(router[0]);
     options.store.registerModule("PaymentLib", store);
    

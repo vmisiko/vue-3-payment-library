@@ -4,7 +4,7 @@
       <div @click="$router.push({ name: 'Entry' })" v-if="false">
         <IconView icon="sendy-logo" />
       </div>
-      <router-view />
+      <router-view class="mgt-5" />
     </div>
     <NotificationComponent
       :show="showNotification"
