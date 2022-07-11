@@ -20,7 +20,7 @@ export function usePayment() {
       country_code: getBupayload.value.country_code,
       entity_id: getBupayload.value.entity_id,
       user_id: getBupayload.value.user_id,
-      pay_direction: 'PAY_IN'
+      pay_direction: getBupayload.value.pay_direction ? getBupayload.value.pay_direction :'PAY_IN',
     };
 
     const paymentOptions = getBupayload.value.payment_options;
