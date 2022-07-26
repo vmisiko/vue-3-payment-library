@@ -87,6 +87,23 @@
     justify-content: center;
   }
 
+  .flex {
+    display: flex;
+
+    .justify-between {
+      display: flex;
+      justify-content: space-between;
+    }
+    .justify-center {
+      display: flex;
+      justify-content: center;
+    }
+    .jusistify-start {
+      display: flex;
+      justify-content: start;
+    }
+  }
+
   .direction-flex {
     display: flex;
     .flex-column {
