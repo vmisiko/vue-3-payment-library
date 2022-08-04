@@ -39,7 +39,8 @@
             class=""
             color="primary"
             :disabled="!disable"
-            @click="step=2"
+            @click="getOtp"
+            :loading="loading"
           >
             Get security code
           </sendy-btn>
@@ -59,11 +60,12 @@
               class="mgl-n9"
               input-classes="otp-input"
               separator="-"
-              :num-inputs="4"
+              :num-inputs="pinLength"
               :should-auto-focus="true"
               :is-input-num="true"
               @on-complete="handleOnComplete"
             />
+            <span class="mgt-n1" v-if="otpError">{{ otpError }}</span>
             <div class="mgt-3">
               <span @click="step=3" class="text-midnightBlue20 pointer">Didn’t receive a code?</span>
               <span class="text-body-2 text-gray70 float-right"> {{ otpCounter }} seconds </span>
@@ -75,8 +77,8 @@
             block="true"
             class=""
             color="primary"
-            :disabled="!disableotp"
-            @click="step=2;"
+            :disabled="disableotp"
+            @click="validateOtp"
           >
             Confirm
           </sendy-btn>
@@ -127,22 +129,29 @@ import { VueTelInput } from "vue3-tel-input";
 import VOtpInput from 'vue3-otp-input';
 import * as moment from "moment";
 import "moment-duration-format";
-
+import { useStore } from 'vuex';
+import { usePayBybankSetup } from "../../../../hooks/payBybankSetup";
+ 
   const { t } = useGlobalProp();
   const { getBupayload } = useState();
+  const store = useStore();
 
   const props = defineProps(["show"]);
   const emit = defineEmits(["close"]);
   const verifyPhone = ref(null);
-  const phone = ref('');
+  // const phone = ref('');
   const formattedPhone = ref('');
   const disable = ref(false);
   const disableotp = ref(false);
   const otp = ref('');
+  const pinLength = ref(4);
+  const requestId = ref("");
   const step = ref(1);
   const countDown = ref(30);
   var stopCountdown;
   const error = ref("");
+  const otpError = ref("");
+  const loading = ref("");
   const dropdownOptions = ref({
     disabled: true,
     showFlags: true,
@@ -153,6 +162,7 @@ import "moment-duration-format";
     return moment.duration(countDown.value, "seconds").format("mm:ss");
   });
 
+  const { openAccount, phone } = usePayBybankSetup();
 
   watch(() => props.show, (val) => {
       val ? handleOpen() : handleClose();
@@ -187,12 +197,60 @@ import "moment-duration-format";
     phone.value = val.valid ? val.number.split("+")[1] : null;
     formattedPhone.value = `+${val.countryCallingCode} ${val.nationalNumber}`;
     disable.value = val.valid;
+    if (val.valid) {
+      error.value = '';
+    }
+  };
+
+  const getOtp = async () => {
+    const payload = {
+      mobile_number: phone.value,
+      company_code: getBupayload.value.company_code,
+    }
+
+    const fullPayload = {
+      params: payload,
+      url: "/payment-gateway/api/v1/otp/get" 
+    }
+    loading.value = true;
+    const result = await store.dispatch('paymentAxiosPost', fullPayload);
+    loading.value = false;
+    if (result.statue) {
+      pinLength.value = result.config?.pinLength || 4;
+      requestId.value = result.request_id;
+      step.value = 2;
+    }
+    error.value = result?.message;
+    phone.value = '';
   };
 
   const handleOnComplete = (val) => {
     otp.value = val;
     disableotp.value = false;
   };
+
+  const validateOtp = async () => {
+    if (!otp.value) { return false};
+    const payload =  {
+      request_id: requestId.value,
+      code: otp.value,
+      company_code: getBupayload.company_code,
+    }
+
+    const fullPayload = {
+      url: "/payment-gateway/api/v1/otp/validate",
+      params: payload
+    }
+
+    const result = await store.dispatch('paymentAxiosPost', fullPayload);
+
+    if (result.status) {
+      openAccount();
+      emit('close');
+      return;
+    }
+    otpError.value =  result.message;
+  }
 
   const startCount = () => {
     stopCountdown = setInterval(() => {

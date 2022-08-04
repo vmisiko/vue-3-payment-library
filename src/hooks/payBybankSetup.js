@@ -1,36 +1,39 @@
 import { reactive, toRefs } from "vue";
 import { useStore } from "vuex";
-import { useSegement } from "./useSegment";
+import { useGlobalProp } from "./globalProperties";
+import { useState } from "./useState";
 
 const state = reactive({
   loading: false,
   showProcessing: false,
   count: true,
   showPhone: false,
+  phone: '',
 });
 
 export function usePayBybankSetup() {
   
-  const { getBupayload } = useSegement();
+  const { getBupayload } = useState();
   const store = useStore();
+  const { router } = useGlobalProp();
 
-  const openAccount =  async () =>{
+  const openAccount =  async () => {
     state.showProcessing = true;
     state.count = true;
     window.analytics.track("Agree and Continue",  {
       ...getBupayload,
     });
 
-    const phone = getBupayload.phonenumber.includes("+") ? getBupayload.phonenumber.split("+")[1] : getBupayload.phonenumber;
+    const phone = state.phone || getBupayload.phonenumber?.split("+")[1];
 
     const payload = {
-      user_id: getBupayload.user_id,
-      first_name: getBupayload.firstname,
-      surname: getBupayload.lastname,
-      email: getBupayload.email,
+      user_id: getBupayload.value.user_id,
+      first_name: getBupayload.value.firstname,
+      surname: getBupayload.value.lastname,
+      email: getBupayload.value.email,
       mobile_number: phone,
-      entity: getBupayload.entity_id,
-      country_code: getBupayload.country_code,
+      entity: getBupayload.value.entity_id,
+      country_code: getBupayload.value.country_code,
     };
 
     const fullPayload = {
