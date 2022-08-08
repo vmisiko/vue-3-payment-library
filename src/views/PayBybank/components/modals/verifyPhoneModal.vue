@@ -203,6 +203,7 @@ import { usePayBybankSetup } from "../../../../hooks/payBybankSetup";
   };
 
   const getOtp = async () => {
+    error.value = '';
     const payload = {
       mobile_number: phone.value,
       company_code: getBupayload.value.company_code,
