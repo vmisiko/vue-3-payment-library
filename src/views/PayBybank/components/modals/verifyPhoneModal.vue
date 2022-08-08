@@ -65,7 +65,7 @@
               :is-input-num="true"
               @on-complete="handleOnComplete"
             />
-            <span class="mgt-n1" v-if="otpError">{{ otpError }}</span>
+            <span class="mgl-2 text-caption-2 text-error" v-if="otpError">{{ otpError }}</span>
             <div class="mgt-3">
               <span @click="step=3" class="text-midnightBlue20 pointer">Didn’t receive a code?</span>
               <span class="text-body-2 text-gray70 float-right"> {{ otpCounter }} seconds </span>
@@ -102,7 +102,8 @@
           <sendy-btn
           :block="true"
           color="primary"
-          @click="step=2;"
+          @click="getOtp"
+          :loading="loading"
           >
             Resend code
           </sendy-btn>
@@ -147,7 +148,7 @@ import { usePayBybankSetup } from "../../../../hooks/payBybankSetup";
   const pinLength = ref(4);
   const requestId = ref("");
   const step = ref(1);
-  const countDown = ref(30);
+  const countDown = ref(300);
   var stopCountdown;
   const error = ref("");
   const otpError = ref("");
@@ -171,7 +172,7 @@ import { usePayBybankSetup } from "../../../../hooks/payBybankSetup";
 
   watch(step, (value) => {
     if (value === 2) {
-      countDown.value = 30;
+      countDown.value = 300;
       clearInterval(stopCountdown);
       startCount();
     }
@@ -211,15 +212,16 @@ import { usePayBybankSetup } from "../../../../hooks/payBybankSetup";
 
     const fullPayload = {
       params: payload,
-      url: "/payment-gateway/api/v1/otp/get" 
+      url: "/api/v1/otp/get" 
     }
     loading.value = true;
     const result = await store.dispatch('paymentAxiosPost', fullPayload);
     loading.value = false;
-    if (result.statue) {
+    if (result.status) {
       pinLength.value = result.config?.pinLength || 4;
-      requestId.value = result.request_id;
+      requestId.value = result.config.request_id;
       step.value = 2;
+      return;
     }
     error.value = result?.message;
     phone.value = '';
@@ -235,16 +237,16 @@ import { usePayBybankSetup } from "../../../../hooks/payBybankSetup";
     const payload =  {
       request_id: requestId.value,
       code: otp.value,
-      company_code: getBupayload.company_code,
+      company_code: getBupayload.value.company_code,
     }
 
     const fullPayload = {
-      url: "/payment-gateway/api/v1/otp/validate",
+      url: "/api/v1/otp/validate",
       params: payload
     }
 
     const result = await store.dispatch('paymentAxiosPost', fullPayload);
-
+    
     if (result.status) {
       openAccount();
       emit('close');
