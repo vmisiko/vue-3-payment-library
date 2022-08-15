@@ -140,6 +140,17 @@
   "request_failed": "FR_Request failed, Please try again!",
   "security_code_found": "FR_This is a 3 or 4 digit security code found on the back of you card",
   "payment_option_removed": "FR_{payment_method} option removed",
-  "click_here_to_add": "FR_Click below to add a payment option"
+  "click_here_to_add": "FR_Click below to add a payment option",
+
+  "verify_phone_number": "FR_Verify your phone number",
+  "your_phone_number":  "FR_Your Phone Number",
+  "get_security_code": "FR_Get security code",
+  "enter_verification_code": "FR_Enter the verification code sent to your phone to continue",
+  "mobile": "FR_Mobile",
+  "did_not_recieve_code": "FR_Didn’t receive a code?",
+  "confirm": "FR_Confirm",
+  "click_resend_code": "FR_Click “Resend code” to send a new code, or verify your account using another phone number",
+  "resend_code": "FR_Resend code",
+  "change_phone_number": "FR_Change phone number"
 
 }

@@ -13,10 +13,10 @@
       </div>
       <div class="mgt-9" v-if="step === 1">
         <div >
-          <span class="text-subtitle-2"> Verify your phone number</span>
+          <span class="text-subtitle-2"> {{ $translate('verify_phone_number') }}</span>
         </div>
         <div class="mgt-4">
-          <label for="" class="text-caption-1"> Your Phone Number</label>
+          <label for="" class="text-caption-1"> {{ $translate('your_phone_number') }}</label>
           <div class="mgt-1">
             <vue-tel-input
               v-model="phone"
@@ -42,18 +42,18 @@
             @click="getOtp"
             :loading="loading"
           >
-            Get security code
+            {{ $translate('get_security_code') }}
           </sendy-btn>
         </div>
       </div>
 
       <div class="mgt-9" v-if="step=== 2">
         <div>
-          <span class="text-subtitle-2"> Enter the verification code sent to your phone to continue </span>
+          <span class="text-subtitle-2"> {{ $translate('enter_verification_code') }} </span>
         </div>
 
          <div class="mgt-4">
-          <label for="" class="text-caption-1 text-gray-80"> Mobile: {{ formattedPhone }}</label>
+          <label for="" class="text-caption-1 text-gray-80"> {{ $translate('mobile') }}: {{ formattedPhone }}</label>
           <div class="mgt-1">
             <v-otp-input
               ref="otpInput"
@@ -67,8 +67,8 @@
             />
             <span class="mgl-2 text-caption-2 text-error" v-if="otpError">{{ otpError }}</span>
             <div class="mgt-3">
-              <span @click="step=3" class="text-midnightBlue20 pointer">Didn’t receive a code?</span>
-              <span class="text-body-2 text-gray70 float-right"> {{ otpCounter }} seconds </span>
+              <span @click="step=3" class="text-midnightBlue20 pointer">{{ $translate('did_not_recieve_code') }}</span>
+              <span class="text-body-2 text-gray70 float-right"> {{ otpCounter }} </span>
             </div>
           </div>
         </div>
@@ -80,22 +80,22 @@
             :disabled="disableotp"
             @click="validateOtp"
           >
-            Confirm
+            {{ $translate('confirm') }}
           </sendy-btn>
         </div>
       </div>
 
       <div class="mgt-9" v-if="step===3">
         <div>
-          <span class="text-subtitle-2"> Didn’t recieve a code? </span>
+          <span class="text-subtitle-2"> {{ $translate('did_not_recieve_code') }} </span>
         </div>
 
         <div class="text-gray70 mt-2">
-          Click “Resend code” to send a new code, or verify your account using another phone number
+          {{  $translate('click_resend_code') }}
         </div>
 
         <div class="mgt-8 text-body-2 text-gray80">
-          <span>Mobile: {{ formattedPhone }}</span>
+          <span>{{ $translate('mobile') }}: {{ formattedPhone }}</span>
         </div>
 
         <div class="mgt-8">
@@ -105,7 +105,7 @@
           @click="getOtp"
           :loading="loading"
           >
-            Resend code
+           {{ $translate('resend_code')}}
           </sendy-btn>
 
           <sendy-btn
@@ -114,7 +114,7 @@
           @click="step=1"
           :outline="true"
           >
-            Change phone number
+            {{ $translate('change_phone_number') }}
           </sendy-btn>
         </div>
       </div>
@@ -268,7 +268,7 @@ import { usePayBybankSetup } from "../../../../hooks/payBybankSetup";
 
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .modal {
   display: none;
   position: fixed;
