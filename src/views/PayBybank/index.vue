@@ -158,11 +158,10 @@ export default {
       this.pollbalance();
     },
     async finishProcessing() {
-      await this.getBalanceP();
       this.showProcessing = false;
       this.loading = false;
-      this.showInsufficientTransfer = true;
-      this.poll_count=poll_limit;
+      this.poll_count=this.poll_limit;
+      this.showFailedTransfer = true;
     },
     pollbalance() {
       this.poll_count = 0;
@@ -172,7 +171,6 @@ export default {
           setTimeout(() => {
             if (that.poll_count === that.poll_limit) {
               poll_count = that.poll_limit;
-              that.getBalanceP();
               that.showProcessing = false;
               that.loading = false;
               that.showFailedTransfer = true;
@@ -244,11 +242,7 @@ export default {
           transfer_amount: this.lastTransferAmount
         });
       }
-      this.balance = response.availableBalance;
-      this.lastTransferAmount =
-          parseFloat(response.availableBalance) - parseFloat(this.balance);
-      this.pendingAmount =
-          parseFloat(this.topupAmount) - parseFloat(this.lastTransferAmount); 
+      this.balance = response.availableBalance; 
     },
   },
 };
