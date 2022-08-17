@@ -386,6 +386,9 @@ export function usePayment() {
       entity: getBupayload.value.entity_id,
       paymethod: state.defaultPaymentMethod.pay_method_id,
       company_code: getBupayload.value.company_code,
+      firstname: getBupayload.value.firstname,
+      lastname: getBupayload.value.lastname,
+      platform: 'web'
     };
 
     const fullPayload = {
