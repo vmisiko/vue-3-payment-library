@@ -58,7 +58,7 @@
             <v-otp-input
               ref="otpInput"
               class="mgl-n9"
-              input-classes="otp-input"
+              input-classes="lib-otp-input"
               separator="-"
               :num-inputs="pinLength"
               :should-auto-focus="true"
@@ -342,9 +342,9 @@ import { usePayBybankSetup } from "../../../../hooks/payBybankSetup";
     padding: 16px 8px;
 }
 
-.otp-input {
-  width: 40px;
-  height: 40px;
+.lib-otp-input {
+  width: 40px !important;
+  height: 40px !important;
   padding: 5px;
   margin: 0 10px;
   font-size: 20px;
@@ -353,15 +353,15 @@ import { usePayBybankSetup } from "../../../../hooks/payBybankSetup";
   text-align: center;
 }
 /* Background colour of an input field with value */
-.otp-input.is-complete {
+.lib-otp-input.is-complete {
   background-color: #e4e4e4;
 }
-.otp-input::-webkit-inner-spin-button,
-.otp-input::-webkit-outer-spin-button {
+.lib-otp-input::-webkit-inner-spin-button,
+.lib-otp-input::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-.otp-input::placeholder {
+.lib-otp-input::placeholder {
   font-size: 15px;
   text-align: center;
   font-weight: 600;

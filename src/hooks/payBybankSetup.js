@@ -17,6 +17,14 @@ export function usePayBybankSetup() {
   const store = useStore();
   const { router } = useGlobalProp();
 
+   const getBalance = async () => {
+    const fullPayload = {
+      url: `/api/v3/onepipe/balance/?entityId=${getBupayload.value.entity_id}&userId=${getBupayload.value.user_id}&countryCode=${getBupayload.value.country_code}`,
+    };
+
+    const response = await store.dispatch('paymentAxiosGet', fullPayload);
+    return response.availableBalance;
+  }
   const openAccount =  async () => {
     state.showProcessing = true;
     state.count = true;
@@ -59,5 +67,6 @@ export function usePayBybankSetup() {
   return {
     ...toRefs(state),
     openAccount,
+    getBalance,
   }
 }

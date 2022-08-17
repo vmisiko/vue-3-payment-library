@@ -1,9 +1,10 @@
 <template>
   <div class="flex-center">
     <Processing
-      @close="showProcessing = false"
+      @close="finishProcessing"
       :count="count"
       :title="title"
+      :countDownStart="countDown"
       :text="processingText"
       v-if="showProcessing"
     />
@@ -33,7 +34,7 @@
         <span class="body-2-regular"
           >{{ $translate("complete_your_payment_transfer") }}
           <span class="body-1-semibold text-gray90"
-            >{{ getBupayload.currency }} {{ getBupayload.amount }}
+            >{{ getBupayload.currency }} {{ $formatCurrency(topupAmount) }}
           </span>
           {{ $translate("account_details_shown") }}
           <span class="body-1-semibold text-gray90"
@@ -65,7 +66,7 @@
       <InsufficientTransferModal
         :show="showInsufficientTransfer"
         @close="showInsufficientTransfer = false"
-        :amountDue="amountDue"
+        :amountDue="topupAmount"
         :lastTransferAmount="lastTransferAmount"
         :pendingAmount="pendingAmount"
       />
@@ -97,6 +98,7 @@ export default {
       title: this.$translate("confirming_transfer"),
       processingText: "",
       count: false,
+      countDown: 600,
       account: "",
       balance: 0,
       poll_count: 0,
@@ -155,6 +157,13 @@ export default {
       
       this.pollbalance();
     },
+    async finishProcessing() {
+      await this.getBalanceP();
+      this.showProcessing = false;
+      this.loading = false;
+      this.showInsufficientTransfer = true;
+      this.poll_count=poll_limit;
+    },
     pollbalance() {
       this.poll_count = 0;
       for (let poll_count = 0; poll_count < this.poll_limit; poll_count++) {
@@ -163,11 +172,7 @@ export default {
           setTimeout(() => {
             if (that.poll_count === that.poll_limit) {
               poll_count = that.poll_limit;
-              return;
-            }
-
-            that.getBalanceP();
-            if (poll_count === that.poll_limit - 1) {
+              that.getBalanceP();
               that.showProcessing = false;
               that.loading = false;
               that.showFailedTransfer = true;
@@ -176,7 +181,20 @@ export default {
                 amount: that.topupAmount,
                 currency: that.getBupayload.currency,
               });
-              that.getBalance();
+              return;
+            }
+
+            that.getBalanceP();
+            if (poll_count === that.poll_limit - 1) {
+              that.getBalanceP();
+              that.showProcessing = false;
+              that.loading = false;
+              that.showFailedTransfer = true;
+              window.analytics.track("Pay By Bank Transfer Failed",  {
+                ...that.commonTrackPayload,
+                amount: that.topupAmount,
+                currency: that.getBupayload.currency,
+              });
               return;
             }
           }, 30000 * poll_count);
@@ -227,6 +245,10 @@ export default {
         });
       }
       this.balance = response.availableBalance;
+      this.lastTransferAmount =
+          parseFloat(response.availableBalance) - parseFloat(this.balance);
+      this.pendingAmount =
+          parseFloat(this.topupAmount) - parseFloat(this.lastTransferAmount); 
     },
   },
 };

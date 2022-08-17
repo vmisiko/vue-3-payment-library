@@ -3,12 +3,14 @@ import { useStore } from "vuex";
 import { useState } from "./useState";
 import { useGlobalProp } from "./globalProperties";
 import { useSegement } from "./useSegment";
+import { usePayBybankSetup } from './payBybankSetup';
 
 export function usePayment() {
   const store = useStore();
   const { t, route, router } = useGlobalProp();
   const { state } = useState();
   const { commonTrackPayload } = useSegement();
+  const { getBalance } = usePayBybankSetup();
 
   const getSavedPayMethods = computed(() => store.getters.getSavedPayMethods);
   const getBupayload = computed(() => store.getters.getBupayload);
@@ -376,6 +378,16 @@ export function usePayment() {
   }
 
   async function payBybankCollect() {
+    store.commit('setLoading', true);
+    const balance = await getBalance();
+
+    if (parseFloat(balance) < parseFloat(getBupayload.value.amount)) {
+      store.commit('setLoading', false);
+      return router.push({
+        name: 'PayByBank'
+      });
+    }
+
     const payload = {
       country: getBupayload.value.country_code,
       amount: getBupayload.value.amount,
@@ -395,8 +407,7 @@ export function usePayment() {
       url: "/api/v3/onepipe/collect",
       params: payload,
     };
-
-    store.commit("setLoading", true);
+    store.commit('setLoading', true);
     const response = await store.dispatch("paymentAxiosPost", fullPayload);
     store.commit("setLoading", false);
     if (response.status) {
