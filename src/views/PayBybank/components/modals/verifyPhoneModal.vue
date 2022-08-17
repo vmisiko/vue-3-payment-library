@@ -268,7 +268,7 @@ import { usePayBybankSetup } from "../../../../hooks/payBybankSetup";
 
 </script>
 
-<style lang="scss" scoped>
+<style>
 .modal {
   display: none;
   position: fixed;
@@ -290,7 +290,6 @@ import { usePayBybankSetup } from "../../../../hooks/payBybankSetup";
   padding: 32px;
   border: 1px solid #888;
   border-radius: 4px;
-  width: 480px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   -webkit-animation-name: animatetop;
   -webkit-animation-duration: 0.4s;
@@ -342,6 +341,12 @@ import { usePayBybankSetup } from "../../../../hooks/payBybankSetup";
     padding: 16px 8px;
 }
 
+.lib-otp-input::-webkit-inner-spin-button,
+.lib-otp-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 .lib-otp-input {
   width: 40px !important;
   height: 40px !important;
@@ -352,18 +357,12 @@ import { usePayBybankSetup } from "../../../../hooks/payBybankSetup";
   border: 1px solid rgba(0, 0, 0, 0.3);
   text-align: center;
 }
-/* Background colour of an input field with value */
 .lib-otp-input.is-complete {
-  background-color: #e4e4e4;
-}
-.lib-otp-input::-webkit-inner-spin-button,
-.lib-otp-input::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+   background-color: #e4e4e4;
 }
 .lib-otp-input::placeholder {
-  font-size: 15px;
-  text-align: center;
-  font-weight: 600;
+   font-size: 15px;
+   text-align: center;
+   font-weight: 600;
 }
 </style>
