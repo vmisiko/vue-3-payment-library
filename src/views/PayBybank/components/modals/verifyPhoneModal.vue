@@ -98,6 +98,10 @@
           <span>{{ $translate('mobile') }}: {{ formattedPhone }}</span>
         </div>
 
+        <span class="text-caption-2 mgt-1 text-error" v-if="error">
+              {{ error }}</span
+            >
+
         <div class="mgt-8">
           <sendy-btn
           :block="true"
