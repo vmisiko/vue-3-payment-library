@@ -37,6 +37,7 @@
 import { mapGetters, mapMutations } from "vuex";
 import AvatarListView from "./components/AvatarListView";
 import Processing from "../../components/processing";
+import { usePayBybankSetup } from '../../hooks/payBybankSetup';
 
 export default {
   name: "FailedAccountSetup",
@@ -51,41 +52,17 @@ export default {
       count: true,
     };
   },
+  setup() {
+    const { openAccount } = usePayBybankSetup();
+    return {
+      openAccount
+    }
+  },
   computed: {
     ...mapGetters(["getErrorText"]),
   },
   methods: {
     ...mapMutations("setErrorText"),
-    async openAccount() {
-      this.loading = true;
-      this.count = true;
-
-      const payload = {
-        user_id: this.getBupayload.user_id,
-        first_name: this.getBupayload.firstname,
-        surname: this.getBupayload.lastname,
-        email: this.getBupayload.email,
-        mobile_number: this.getBupayload.phonenumber,
-        entity: this.getBupayload.entity_id,
-        country_code: this.getBupayload.country_code,
-      };
-
-      const fullPayload = {
-        url: "/api/v3/onepipe/open_account",
-        params: payload,
-      };
-
-      this.showProcessing = true;
-      const response = await this.$paymentAxiosPost(fullPayload);
-      this.loading = false;
-      this.showProcessing = false;
-      if (response.status) {
-        this.$router.push({ name: "AccountReadyView" });
-        return;
-      }
-      this.$router.push({ name: "FailedAccountSetup" });
-      this.setErrorText(response.message);
-    },
   },
 };
 </script>

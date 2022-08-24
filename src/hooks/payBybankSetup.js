@@ -15,7 +15,7 @@ export function usePayBybankSetup() {
   
   const { getBupayload } = useState();
   const store = useStore();
-  const { router } = useGlobalProp();
+  const { router, route } = useGlobalProp();
 
    const getBalance = async () => {
     const fullPayload = {
@@ -33,7 +33,6 @@ export function usePayBybankSetup() {
     });
 
     const phone = state.phone || getBupayload.phonenumber?.split("+")[1];
-
     const payload = {
       user_id: getBupayload.value.user_id,
       first_name: getBupayload.value.firstname,
@@ -60,13 +59,20 @@ export function usePayBybankSetup() {
       router.push({ name: "AccountReadyView" });
       return;
     }
-    router.push({ name: "FailedAccountSetup" });
+    if (route.name !== 'FailedAccountSetup') {
+      router.push({ name: "FailedAccountSetup" });
+    }
     store.commit('setErrorText', response.message);
   };
+
+  const setPhone = (phone) => {
+    state.phone =phone;
+  }
 
   return {
     ...toRefs(state),
     openAccount,
     getBalance,
+    setPhone,
   }
 }

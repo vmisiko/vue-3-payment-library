@@ -140,7 +140,6 @@ import { usePayBybankSetup } from "../../../../hooks/payBybankSetup";
   const props = defineProps(["show"]);
   const emit = defineEmits(["close"]);
   const verifyPhone = ref(null);
-  // const phone = ref('');
   const formattedPhone = ref('');
   const disable = ref(false);
   const disableotp = ref(false);
@@ -148,7 +147,7 @@ import { usePayBybankSetup } from "../../../../hooks/payBybankSetup";
   const pinLength = ref(4);
   const requestId = ref("");
   const step = ref(1);
-  const countDown = ref(300);
+  const countDown = ref(60);
   var stopCountdown;
   const error = ref("");
   const otpError = ref("");
@@ -172,7 +171,7 @@ import { usePayBybankSetup } from "../../../../hooks/payBybankSetup";
 
   watch(step, (value) => {
     if (value === 2) {
-      countDown.value = 300;
+      countDown.value = 60;
       clearInterval(stopCountdown);
       startCount();
     }
@@ -224,7 +223,6 @@ import { usePayBybankSetup } from "../../../../hooks/payBybankSetup";
       return;
     }
     error.value = result?.message;
-    phone.value = '';
   };
 
   const handleOnComplete = (val) => {
