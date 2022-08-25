@@ -23,6 +23,7 @@
               autoFormat
               :defaultCountry="getBupayload.country_code"
               :dropdownOptions="dropdownOptions"
+              :preferredCountries="['NG','KE', 'UG', 'CI']"
               mode="national"
               :invalidMsg="$translate('phone_number_invalid')"
               @validate="validatePhone"
@@ -151,7 +152,7 @@ import { usePayBybankSetup } from "../../../../hooks/payBybankSetup";
   const pinLength = ref(4);
   const requestId = ref("");
   const step = ref(1);
-  const countDown = ref(60);
+  const countDown = ref(180);
   var stopCountdown;
   const error = ref("");
   const otpError = ref("");
@@ -175,7 +176,7 @@ import { usePayBybankSetup } from "../../../../hooks/payBybankSetup";
 
   watch(step, (value) => {
     if (value === 2) {
-      countDown.value = 60;
+      countDown.value = 180;
       clearInterval(stopCountdown);
       startCount();
     }
