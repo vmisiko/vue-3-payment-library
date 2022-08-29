@@ -28,7 +28,7 @@ export function usePayment() {
     const paymentOptions = getBupayload.value.payment_options;
         
     const fullPayload = {
-      url: getBupayload.value.pay_direction !== "PAY_ON_DELIVERY" ? "/payment_methods" : "/pod/payment_methods",
+      url: getBupayload.value.pay_direction !== "PAY_ON_DELIVERY" ? "/payment_methods" : "/pod/pay_methods",
       params: payload,
     };
 
@@ -137,7 +137,8 @@ export function usePayment() {
       entity: getBupayload.value.entity_id,
       company_code: getBupayload.value.company_code,
       paymethod: state.defaultPaymentMethod.pay_method_id,
-      platform: 'web'
+      platform: 'web',
+      pay_direction: getBupayload.value.pay_direction,
     };
 
     const fullPayload = {

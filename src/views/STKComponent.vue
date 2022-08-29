@@ -166,10 +166,11 @@ export default {
         bulkrefno: this.getBupayload.bulk_reference_number,
         email: this.getBupayload.email,
         platform: 'web',
+        pay_direction:this.getBupayload.pay_direction,
       };
 
       const fullPayload = {
-        url: "/api/v3/process",
+        url:  this.getBupayload.pay_direction !== 'PAY_ON_DELIVERY' ?  "/api/v3/process" : '/api/v3/pod/process',
         params: payload,
       };
 
