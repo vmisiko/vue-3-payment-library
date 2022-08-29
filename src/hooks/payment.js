@@ -26,12 +26,13 @@ export function usePayment() {
     };
 
     const paymentOptions = getBupayload.value.payment_options;
+        
     const fullPayload = {
-      url: "/payment_methods",
+      url: getBupayload.value.pay_direction !== "PAY_ON_DELIVERY" ? "/payment_methods" : "/pod/payment_methods",
       params: payload,
     };
 
-    const response = await store.dispatch("paymentAxiosPost", fullPayload);
+    const response =  await store.dispatch("paymentAxiosPost", fullPayload);
     if (response.status) {
       const paymentMethods = paymentOptions
         ? response.payment_methods.filter((option) =>
@@ -140,7 +141,7 @@ export function usePayment() {
     };
 
     const fullPayload = {
-      url: "/api/v3/process",
+      url: getBupayload.value.pay_direction !== 'PAY_ON_DELIVERY' ?  "/api/v3/process" : '/api/v3/pod/process',
       params: payload,
     };
 
