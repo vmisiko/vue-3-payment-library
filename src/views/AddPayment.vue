@@ -29,6 +29,8 @@ import TopInfo from "../components/topInfo";
 import PaymentOption from "../components/paymentOption";
 import paymentGenMxn from "../mixins/paymentGenMxn";
 import Processing from "../components/processing";
+import { onMounted } from 'vue';
+import { usePayment } from "../hooks/payment";
 
 export default {
   name: "AddPayment",
@@ -48,8 +50,11 @@ export default {
   computed: {
     ...mapGetters(["getPaymentMethods"]),
   },
-  mounted() {
-    this.retrievePaymentMethods();
+  setup() {
+    const { retrievePaymentMethods } = usePayment();
+    onMounted(() => {
+      retrievePaymentMethods();
+    });
   },
   methods: {
     handleLoading(val) {

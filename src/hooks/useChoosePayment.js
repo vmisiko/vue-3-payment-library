@@ -40,6 +40,25 @@ export function useChoosePayment() {
   });
 
   async function update(method) {
+    state.defaultPaymentMethod = method;
+
+    if (getBupayload.value.pay_direction === 'PAY_ON_DELIVERY') {
+      const savedMethods = getSavedPayMethods.value;
+
+      let index;
+      let selectedSavedMethod = {};
+      savedMethods.forEach((el, i) => {
+        index = i;
+        console.log(i, el.pay_detail_id , method.pay_detail_id);
+        
+        el.pay_detail_id === method.pay_detail_id ? selectedSavedMethod = el : null;
+      });
+      selectedSavedMethod.default = 1;
+      savedMethods[index] = selectedSavedMethod;
+      store.commit('setSavedPayMethods', savedMethods);
+      return;
+    } 
+
     const payload = {
       user_id: getBupayload.value.user_id,
       pay_detail_id: method.pay_detail_id,
