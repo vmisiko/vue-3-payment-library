@@ -41,7 +41,11 @@ export default {
         case 20:
           result = "Pay by Bank";
           break;
+        case 10:
+          result = this.$translate('Bank');
+          break;
         default:
+          result = this.paymentMethod.name;
           break;
       }
 

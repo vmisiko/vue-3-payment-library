@@ -151,6 +151,7 @@
   "confirm": "FR_Confirm",
   "click_resend_code": "FR_Click “Resend code” to send a new code, or verify your account using another phone number",
   "resend_code": "FR_Resend code",
-  "change_phone_number": "FR_Change phone number"
+  "change_phone_number": "FR_Change phone number",
+  "bank": "FR_Bank"
 
 }
