@@ -38,7 +38,9 @@ export function usePayment() {
         ? response.payment_methods.filter((option) =>
             paymentOptions.includes(option.payment_method_id)
           )
-        : response.payment_methods;
+        : response.payment_methods.filter((option) =>
+          option.payment_method_id !== 10
+        ) 
       const savedMethods = paymentOptions
         ? response.saved_payment_methods.filter((option) =>
             paymentOptions.includes(option.pay_method_id)
