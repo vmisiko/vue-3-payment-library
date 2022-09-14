@@ -1,4 +1,5 @@
 import axios from "axios";
+import * as Sentry from "@sentry/vue";
 
 export default {
   paymentCustomHeaders({ state }) {
@@ -27,6 +28,7 @@ export default {
       return data;
     } catch (err) {
       await dispatch("handlePaymentAxiosErrors", err.response.status);
+      Sentry.captureException(err);
       return err;
     }
   },
@@ -47,6 +49,7 @@ export default {
       return data;
     } catch (err) {
       await dispatch("handlePaymentAxiosErrors", err.response.status);
+      Sentry.captureException(err);
       return err;
     }
   },
@@ -62,6 +65,7 @@ export default {
       return data;
     } catch (err) {
       await dispatch("handlePaymentAxiosErrors", err.response.status);
+      Sentry.captureException(err);
       return err;
     }
   },
