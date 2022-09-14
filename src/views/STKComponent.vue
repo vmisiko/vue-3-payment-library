@@ -170,8 +170,10 @@ export default {
         pay_direction:this.getBupayload.pay_direction,
       };
 
+      const version = this.getBupayload.version ?? 'v3';
+
       const fullPayload = {
-        url:  this.getBupayload.pay_direction !== 'PAY_ON_DELIVERY' ?  "/api/v3/process" : '/api/v3/pod/process',
+        url:  this.getBupayload.pay_direction !== 'PAY_ON_DELIVERY' ?  `/api/${version}/process` : '/api/v3/pod/process',
         params: payload,
       };
 
