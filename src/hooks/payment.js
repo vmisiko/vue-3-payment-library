@@ -266,6 +266,7 @@ export function usePayment() {
           if (route.name !== "FailedView" && route.name !== "AddCard") {
             router.push({ name: "FailedView" });
           }
+          Sentry.captureException(new Error(res.message));
           break;
         }
         case "pending":
@@ -280,6 +281,7 @@ export function usePayment() {
     state.errorText = res.message;
     state.loading = false;
     state.showErrorModal = true;
+    Sentry.captureException(new Error(res.message));
   }
 
   function handleContinue3DS(val) {

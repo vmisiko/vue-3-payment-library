@@ -2,6 +2,7 @@ import { reactive, toRefs } from "vue";
 import { useStore } from "vuex";
 import { useGlobalProp } from "./globalProperties";
 import { useState } from "./useState";
+import * as Sentry from "@sentry/vue";
 
 const state = reactive({
   loading: false,
@@ -63,6 +64,7 @@ export function usePayBybankSetup() {
       router.push({ name: "FailedAccountSetup" });
     }
     store.commit('setErrorText', response.message);
+    Sentry.captureException(new Error(response.message));
   };
 
   const setPhone = (phone) => {
