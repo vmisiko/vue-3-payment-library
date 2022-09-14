@@ -9,7 +9,7 @@ import { i18n, messages  } from "./plugins/i18n";
 import mitt from "mitt";
 import * as Sentry from "@sentry/vue";
 import { BrowserTracing } from "@sentry/tracing";
-
+import { createRouter , createWebHistory } from "vue-router";
 
 const emitter = mitt();
 
@@ -40,12 +40,17 @@ export default {
 
     app.mixin(paymentLibraryMxn);
 
+    const libRouter = createRouter({
+      history: createWebHistory(),
+      routes: router,
+    });
+
     Sentry.init({
       app,
       dsn: "https://a243b413655641b6880dd7cfe65e6ed8@o32379.ingest.sentry.io/6722027",
       integrations: [
         new BrowserTracing({
-          routingInstrumentation: Sentry.vueRouterInstrumentation(options.router),
+          routingInstrumentation: Sentry.vueRouterInstrumentation(libRouter),
         }),
       ],
       environment: options.config.VGS_ENVIRONMENT,
