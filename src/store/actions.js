@@ -1,5 +1,6 @@
 import axios from "axios";
 import * as Sentry from "@sentry/vue";
+import { datadogRum } from "@datadog/browser-rum";
 
 export default {
   paymentCustomHeaders({ state }) {
@@ -29,6 +30,7 @@ export default {
     } catch (err) {
       await dispatch("handlePaymentAxiosErrors", err.response.status);
       Sentry.captureException(err);
+      datadogRum.addError(err);
       return err;
     }
   },
@@ -50,6 +52,7 @@ export default {
     } catch (err) {
       await dispatch("handlePaymentAxiosErrors", err.response.status);
       Sentry.captureException(err);
+      datadogRum.addError(err);
       return err;
     }
   },
@@ -66,6 +69,7 @@ export default {
     } catch (err) {
       await dispatch("handlePaymentAxiosErrors", err.response.status);
       Sentry.captureException(err);
+      datadogRum.addError(err);
       return err;
     }
   },

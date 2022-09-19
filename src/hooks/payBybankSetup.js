@@ -3,6 +3,8 @@ import { useStore } from "vuex";
 import { useGlobalProp } from "./globalProperties";
 import { useState } from "./useState";
 import * as Sentry from "@sentry/vue";
+import { datadogRum } from "@datadog/browser-rum";
+
 
 const state = reactive({
   loading: false,
@@ -65,6 +67,7 @@ export function usePayBybankSetup() {
     }
     store.commit('setErrorText', response.message);
     Sentry.captureException(new Error(response.message));
+    datadogRum.addError(new Error(response.message));
   };
 
   const setPhone = (phone) => {

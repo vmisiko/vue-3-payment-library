@@ -99,6 +99,7 @@ import { useState } from '../hooks/useState';
 import { usePayment } from '../hooks/payment';
 import { useStore } from 'vuex';
 import * as Sentry from "@sentry/vue";
+import { datadogRum } from "@datadog/browser-rum";
 
 export default {
   name: "AddCard",
@@ -246,6 +247,7 @@ export default {
         (error) => {
           console.log(error);
           Sentry.captureException(error);
+          datadogRum.addError(error);
         }
       );
     }
@@ -299,6 +301,8 @@ export default {
       state.errorText = res.message;
       state.showErrorModal = true;
       Sentry.captureException(new Error(res.message));
+      datadogRum.addError(new Error(res.message));
+
       return;
     }
 
@@ -321,6 +325,8 @@ export default {
       state.errorText = t("failed_to_collect_card_details");
       state.showErrorModal = true;
       Sentry.captureException(new Error('Failed to continue with Additional data flow'));
+      datadogRum.addError('Failed to continue with Additional data flow');
+
     }
 
     function handleErrorClose() {

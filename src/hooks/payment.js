@@ -4,6 +4,7 @@ import { useState } from "./useState";
 import { useGlobalProp } from "./globalProperties";
 import { useSegement } from "./useSegment";
 import { usePayBybankSetup } from './payBybankSetup';
+import { datadogRum } from "@datadog/browser-rum";
 
 export function usePayment() {
   const store = useStore();
@@ -268,6 +269,8 @@ export function usePayment() {
             router.push({ name: "FailedView" });
           }
           Sentry.captureException(new Error(res.message));
+          datadogRum.addError(new Error(res.message));
+
           break;
         }
         case "pending":
@@ -283,6 +286,8 @@ export function usePayment() {
     state.loading = false;
     state.showErrorModal = true;
     Sentry.captureException(new Error(res.message));
+    datadogRum.addError(new Error(res.message));
+
   }
 
   function handleContinue3DS(val) {

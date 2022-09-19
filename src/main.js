@@ -10,6 +10,9 @@ import mitt from "mitt";
 import * as Sentry from "@sentry/vue";
 import { BrowserTracing } from "@sentry/tracing";
 import { createRouter , createWebHistory } from "vue-router";
+import { datadogRum } from '@datadog/browser-rum';
+
+
 
 const emitter = mitt();
 
@@ -56,6 +59,20 @@ export default {
       environment: options.config.VGS_ENVIRONMENT,
       tracesSampleRate: 1.0,
     });
+
+    datadogRum.init({
+      applicationId: '88cc1abf-0a01-43bc-abed-90244f9c14e1',
+      clientToken: 'pub65d73129306eddcf92546136d75e158e',
+      site: 'datadoghq.eu',
+      service:'web-payment--plugin',
+      sampleRate: 100,
+      premiumSampleRate: 100,
+      trackInteractions: true,
+      defaultPrivacyLevel:'mask-user-input',
+      env: options.config.VGS_ENVIRONMENT,
+  });
+      
+  datadogRum.startSessionReplayRecording();
   },
   i18nMessages: messages
 };

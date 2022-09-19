@@ -83,6 +83,7 @@ import TopInfo from "../components/topInfo";
 import TimerModal from "../components/modals/timerModal";
 import MpesaErrorModal from "../components/modals/MpesaErrorModal";
 import * as Sentry from "@sentry/vue";
+import { datadogRum } from "@datadog/browser-rum";
 
 export default {
   name: "STKComponent",
@@ -202,6 +203,7 @@ export default {
       this.loading = false;
       this.showErrorModal = true;
       Sentry.captureException(new Error(response.message));
+      datadogRum.addError(new Error(response.message));
     },
     async submitRetry() {
       if (this.getBupayload.bulk) {
@@ -333,6 +335,7 @@ export default {
                 params: { mpesa: "mpesa" },
               });
               Sentry.captureException(new Error(res.message));
+              datadogRum.addError(new Error(res.message));
               break;
             case "pending":
               break;
@@ -347,6 +350,7 @@ export default {
         (this.promptInfo = false), this.setErrorText(res.message);
         this.$router.push({ name: "FailedView", params: { mpesa: "M-Pesa" } });
         Sentry.captureException(new Error(res.message));
+        datadogRum.addError(new Error(res.message));
 
       });
     },
@@ -357,6 +361,7 @@ export default {
       this.setErrorText(this.$translate("unable_to_confirm_mpesa"));
       this.$router.push({ name: "FailedView", params: { mpesa: "mpesa" } });
       Sentry.captureException(new Error(this.$translate("unable_to_confirm_mpesa")));
+      datadogRum.addError(new Error(this.$translate("unable_to_confirm_mpesa")));
 
     },
     init3DS() {
