@@ -66,7 +66,7 @@
       />
     </svg>
 
-    <svg
+    <!-- <svg
       v-if="icon === 'bank'"
       :width="width || 20"
       :height="height || 18"
@@ -78,7 +78,7 @@
         d="M10 4V2C10 0.9 9.1 0 8 0H2C0.9 0 0 0.9 0 2V16C0 17.1 0.9 18 2 18H18C19.1 18 20 17.1 20 16V6C20 4.9 19.1 4 18 4H10ZM8 16H2V14H8V16ZM8 12H2V10H8V12ZM8 8H2V6H8V8ZM8 4H2V2H8V4ZM18 16H10V6H18V16ZM16 8H12V10H16V8ZM16 12H12V14H16V12Z"
         fill="#909399"
       />
-    </svg>
+    </svg> -->
 
     <svg
       v-if="icon === 'virtual accounts'"
@@ -213,8 +213,8 @@
     <!-- warnig state  -->
     <svg
       v-if="icon === 'warningstate'"
-      width="72"
-      height="72"
+      width="38"
+      height="38"
       viewBox="0 0 72 72"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -612,6 +612,20 @@
         fill="#909399"
       />
     </svg>
+
+    <svg 
+      v-if="icon === 'bank'"
+      :width="width || 38"
+      :height="height || 38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <circle cx="19" cy="19" r="19" fill="url(#pattern0)"/>
+    <defs>
+    <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
+    <use xlink:href="#image0_445_15403" transform="scale(0.0125)"/>
+    </pattern>
+    <image id="image0_445_15403" width="80" height="80" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAKtSURBVHgB7dpNSFRRGMbx1ywXWdBmpNo0LQYijTAoaFPYLmvVZja1mVYtoq3QBxFBtCtwO7ZpM9OiTbl116YghBRqAnUhioIMzIziB+o9FwVxBlGf9z3nCM8PhOFyBPnfuXPveZ22peW1DaFDOyYEYUAQA4IYEMSAIAYEMSCIAUEMCGJAEAOCGBDEgCAGBDEg6LhE6PefealMVtPXt26cl7NdnRKrtpgGqv8nqvLh02gacKf+vgvyOH85ypBRBJydW5RiaUyGR6b2XBdjyKAB641VKX2ryFBp/EC/F1PIIAG3w31JfmrJ68MqJBHvJTFDhvQaUCvcTue6Tsrdvmz6jgzBW8Dy1qWqFW43F7KQ704vb5/MA7obgws3M9cQH3yHNAvoHkWK5fGmRxJffIVUD+geSd4O/gwWbjcXcvDNbbMbjfpWbuD9j2jiOTPpCf0lVtQDViaqEhvLE6oesLc7I7HJZc+IFfWAz59el9xFuz/4oHp7MvJu4KZYiWqYcBRxHghiQBADgrxMpIvJVs4NEBy38X9WuBp0vab2Fy9fvRZDH4dG5fPXv7Kyup7+jP1bSI9f68kEWa/N/BIeHplsOlbeereEWK/NPGC9xfiqvsdIy3q9Nt5EQAwIYkAQA4IYEMSAIAYEmQc81XliX8d8rddmHjB/P9d0rP9ONth6beZ7YTcRbiQ7g6npmnR0tMujB5fkycMrwdZr40QaxJsIiAFBDAgymUhvT4hrHsdKrZxOHmesJ9TqNxE3IfY50NwP90VMq+8Pql/CrSbEoVmeUH4GgtQDttoZhGa5M1G/ibjPG/c/ie/JpVwPfBNxe2J3QguG35/mTgTEz0AQA4IYEMSAIAYEMSCIAUEMCGJAEAOCGBDEgCAGBDEgiAFBDAhiQBADghgQxIAgBgRtAnVFP3v39lWNAAAAAElFTkSuQmCC"/>
+    </defs>
+    </svg>
+
   </div>
 </template>
 

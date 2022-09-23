@@ -21,6 +21,11 @@ import TermsOfService from "../views/PayBybank/TermsOfService";
 import AccountReadyView from "../views/PayBybank/AccountReadyView";
 import FailedAccountSetup from "../views/PayBybank/FailedAccountSetup";
 import PayByBank from "../views/PayBybank";
+import AddWithdrawal from "../views/ManageWithdrawalOptions/AddWithdrawal";
+import BankWithdrawal from "../views/ManageWithdrawalOptions/BankWIthdrawal";
+import ConfirmBankDetails from "../views/ManageWithdrawalOptions/ConfirmBankDetails";
+import MobileWithrawal from "../views/ManageWithdrawalOptions/MobileWithdrawal";
+import ManageWithdrawalOptions from "../views/ManageWithdrawalOptions";
 
 const routes = [
   {
@@ -141,6 +146,41 @@ const routes = [
         path: "/bank/pay",
         name: "PayByBank",
         component: PayByBank,
+      },
+      {
+        path: "/add-withdrawal",
+        name: "AddWithdrawal",
+        component: AddWithdrawal,
+      },
+      {
+        path: "/bank-withdrawal",
+        name: "BankWithdrawal",
+        component: BankWithdrawal,
+      },
+      {
+        path: "/bank-withdrawal",
+        name: "BankWithdrawal",
+        component: BankWithdrawal,
+      },
+      {
+        path: "/confirm-bank-details",
+        name: "ConfirmBankDetails",
+        component: ConfirmBankDetails,
+      },
+      {
+        path: "/confirm-bank-details",
+        name: "ConfirmBankDetails",
+        component: ConfirmBankDetails,
+      },
+      {
+        path: "/mobile-withdrawal",
+        name: "MobileWithrawal",
+        component: MobileWithrawal,
+      },
+      {
+        path: "/manage-withrawal",
+        name: "ManageWithdrawal",
+        component: ManageWithdrawalOptions,
       },
     ],
   },

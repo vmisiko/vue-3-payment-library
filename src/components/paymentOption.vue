@@ -60,7 +60,8 @@ export default {
             ...this.commonTrackPayload(),
             phone_number: "",
           });
-          this.submit();
+
+          this.getBupayload.pay_direction === "PAY_OUT" ? this.$router.push({ name: "AddMobile" }) : this.submit();
           break;
         case 2:
           window.analytics.track("Add Card", {
@@ -68,6 +69,13 @@ export default {
             card_network: null,
           });
           this.$router.push("/add-card");
+          break;
+        case 10:
+          window.analytics.track("Add bank", {
+            ...this.commonTrackPayload(),
+            card_network: null,
+          });
+          this.$router.push({ name: "BankWithdrawal" });
           break;
         case 20:
           window.analytics.track("Add Pay by Bank", {

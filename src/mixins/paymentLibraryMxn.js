@@ -130,11 +130,15 @@ const mixin = {
         case "bank-transfer":
           this.$router.push({ name: "PayByBank" });
           break;
+        case "manage-withrawal-options":
+          this.$router.push({ name: "ManageWithdrawal" });
+          break;
+        case "add-withdrawal":
+          this.$router.push({ name: "AddWithdrawal" });
+          break;
         default:
           break;
       }
-
-
     },
     loadLanguageAsync(lang) {
       const locales = require.context(
