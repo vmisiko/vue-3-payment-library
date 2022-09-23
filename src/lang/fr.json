@@ -152,6 +152,8 @@
   "click_resend_code": "FR_Click “Resend code” to send a new code, or verify your account using another phone number",
   "resend_code": "FR_Resend code",
   "change_phone_number": "FR_Change phone number",
-  "bank": "FR_Bank"
+  "bank": "FR_Bank",
+  "did_not_recieve_otp_Code": "Didn’t receive the OTP code?",
+  "add_withdraw_option": "Add withdrawal option"
 
 }

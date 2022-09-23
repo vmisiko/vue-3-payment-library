@@ -23,9 +23,10 @@ import FailedAccountSetup from "../views/PayBybank/FailedAccountSetup";
 import PayByBank from "../views/PayBybank";
 import AddWithdrawal from "../views/ManageWithdrawalOptions/AddWithdrawal";
 import BankWithdrawal from "../views/ManageWithdrawalOptions/BankWIthdrawal";
-import ConfirmBankDetails from "../views/ManageWithdrawalOptions/ConfirmBankDetails";
+import ConfirmOtp from "../views/ManageWithdrawalOptions/ConfirmOtp";
 import MobileWithrawal from "../views/ManageWithdrawalOptions/MobileWithdrawal";
 import ManageWithdrawalOptions from "../views/ManageWithdrawalOptions";
+import OtpFail from "../views/ManageWithdrawalOptions/OtpFail";
 
 const routes = [
   {
@@ -162,15 +163,16 @@ const routes = [
         name: "BankWithdrawal",
         component: BankWithdrawal,
       },
+
       {
-        path: "/confirm-bank-details",
-        name: "ConfirmBankDetails",
-        component: ConfirmBankDetails,
+        path: "/confirm-otp",
+        name: "ConfirmOtp",
+        component: ConfirmOtp,
       },
       {
-        path: "/confirm-bank-details",
-        name: "ConfirmBankDetails",
-        component: ConfirmBankDetails,
+        path: "/otp-fail",
+        name: "OtpFail",
+        component: OtpFail,
       },
       {
         path: "/mobile-withdrawal",

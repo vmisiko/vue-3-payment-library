@@ -159,6 +159,19 @@
       />
     </svg>
 
+    <svg
+      v-if="icon === 'chevron-right'"
+      :width="width || 8"
+      :height="height || 12"
+      viewBox="0 0 8 12"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M1.99984 0L0.589844 1.41L5.16984 6L0.589844 10.59L1.99984 12L7.99984 6L1.99984 0Z"
+        fill="#909399"
+      />
+    </svg>
     <!-- back icon -->
     <svg
       @click="handleBack"

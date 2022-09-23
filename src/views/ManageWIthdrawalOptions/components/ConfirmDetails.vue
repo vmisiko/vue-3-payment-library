@@ -29,7 +29,7 @@
         color="primary"
         class="mgt-8"
         type="submit"
-        @click="$emit('close')"
+        @click="router.push({name: 'ConfirmOtp'})"
       >
         Save Withdrawal Details
       </sendy-btn>
@@ -43,10 +43,12 @@
 
 <script setup>
 import { onMounted, ref, watch } from "vue";
+import { useGlobalProp } from "../../../hooks/globalProperties";
 const confirmModal = ref(null);
 
 const props = defineProps(["show"]);
 const emit = defineEmits(['close']);
+const { router }  = useGlobalProp();
 
 
 watch(() => props.show, (val) => {

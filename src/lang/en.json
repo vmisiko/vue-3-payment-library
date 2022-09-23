@@ -169,6 +169,8 @@
   "click_resend_code": "Click “Resend code” to send a new code, or verify your account using another phone number",
   "resend_code": "Resend code",
   "change_phone_number": "Change phone number",
-  "bank": "Bank Transfer"
+  "bank": "Bank Transfer",
+  "did_not_recieve_otp_Code": "Didn’t receive the OTP code?", 
+  "add_withdraw_option": "Add withdrawal option"
 }
 

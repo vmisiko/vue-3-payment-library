@@ -39,7 +39,7 @@ const { getPaymentMethods, retrievePaymentMethods, getLoading } = useState();
 
 onMounted(() => {
   retrievePaymentMethods();
-})
+});
 </script>
 
 <style>
