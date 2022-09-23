@@ -159,7 +159,7 @@ const routes = [
         component: BankWithdrawal,
       },
       {
-        path: "/bank-withdrawal",
+        path: "/bank-withdrawal/:edit?",
         name: "BankWithdrawal",
         component: BankWithdrawal,
       },

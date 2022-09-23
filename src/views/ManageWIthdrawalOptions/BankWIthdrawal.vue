@@ -47,10 +47,16 @@
         </div>
       </div>
 
+      <div v-if="isEdit" @click="isDelete=true" class="mgt-8 text-btn direction-flex pointer" >
+        <IconView icon="delete" />
+        <span class="text-btn"> Remove bank </span>
+      </div>
+
       <div class="mgy-10"></div>
 
       <div>
         <sendy-btn
+        v-if="!isEdit"
         @click="handleConfirm"
         color="primary"
         :block="true"
@@ -59,20 +65,25 @@
       </div>
     </div>
     <ConfirmDetailsModal :show="confirm"  @close="confirm=false"/>
+    <ConfirmDeleteModal :show="isDelete"  @close="isDelete=false"/>
   </div>
   
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import TopInfo from '../../components/topInfo.vue';
+import { useGlobalProp } from '../../hooks/globalProperties';
 import ConfirmDetailsModal from './components/ConfirmDetails.vue';
+import ConfirmDeleteModal from './components/ConfirmDelete.vue';
 
 const icon = ref('back');
 const confirm = ref(false);
+const isDelete = ref(false);
 const accountName = ref('');
 const bankName = ref('');
 const accountNumber = ref('');
+const { router, route } =useGlobalProp();
 
 const handleConfirm = () => {
   console.log('handleConfirm');
@@ -80,5 +91,10 @@ const handleConfirm = () => {
   console.log('handleConfirm', confirm.value);
 
 };
+
+const isEdit = computed(() => {
+  console.log(route.params.edit);
+  return route.params.edit ? true : false;
+});
 
 </script>

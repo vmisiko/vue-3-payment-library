@@ -11,7 +11,7 @@
       </TopInfo>
 
 
-      <div class="direction-flex mgt-5">
+      <div class="direction-flex mgt-5 pointer" @click="handleSelect">
         <IconView icon="bank"  class="mgy-auto"/>
         <div class="mgl-4">
           <span class="text-caption-1 semi-bold">Absa Bank</span> <br/>
@@ -49,18 +49,17 @@
 <script setup>
 import { ref } from 'vue';
 import TopInfo from '../../components/topInfo.vue';
+import { useGlobalProp } from '../../hooks/globalProperties';
 
 const icon = ref('back');
 const confirm = ref(false);
 const accountName = ref('');
 const bankName = ref('');
 const accountNumber = ref('');
+const { router } = useGlobalProp();
 
-const handleConfirm = () => {
-  console.log('handleConfirm');
-  confirm.value = true;
-  console.log('handleConfirm', confirm.value);
-
+const handleSelect = () => {
+  router.push({ name: "BankWithdrawal", params: { edit: true }});
 };
 
 </script>
