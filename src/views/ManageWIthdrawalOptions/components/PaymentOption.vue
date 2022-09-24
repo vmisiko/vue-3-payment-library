@@ -57,14 +57,14 @@ const  handleSelect = (paymentMethod) =>  {
             phone_number: "",
           });
 
-          router.push({ name: "AddMobile" })
+          router.push({ name: "MobileWithrawal" });
           break;
         case 10:
           window.analytics.track("Add bank", {
             ...commonTrackPayload(),
             card_network: null,
           });
-          router.push({ name: "BankWithdrawal" });
+          router.push({ name: "MobileWithrawal" });
           break;
         case 20:
           window.analytics.track("Add Pay by Bank", {
