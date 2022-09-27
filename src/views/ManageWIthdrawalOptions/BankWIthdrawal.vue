@@ -9,60 +9,61 @@
           </span>
         </template>
       </TopInfo>
+      <form @submit.prevent="handleConfirm">
+        <div class="mgt-5">
 
-      <div class="mgt-5">
+          <div class="textfield mgt-5">
+            <label for="" class="normal-text"> Bank Name</label>
+            <select
+              v-model="selectedBank"
+              class="phone-input"
+              required
+            >   
+              <option :value="null" selected> Select your bank </option>
+              <option v-for="(bank, index) in banks" :key="index" :value="bank"> {{ bank.name }}</option>
+            </select>
+          </div>
 
-        <div class="textfield mgt-5">
-          <label for="" class="normal-text"> Bank Name</label>
-          <select
-            v-model="bankName"
-            class="phone-input"
-            required
-          >   
-            <option selected> Select your bank </option>
-            <option value="kcb"> KCB</option>
-            <option value="coorp"> CO-ORP</option>
-            <option value="equity"> Equity</option>
-          </select>
+          <div class="textfield mgt-5">
+            <label for="" class="normal-text"> Account Name</label>
+            <input
+              type="text"
+              v-model="accountName"
+              class="phone-input"
+              placeholder="Enter your account name"
+              required
+            /> 
+          </div>
+
+          <div class="textfield mgt-5">
+            <label for="" class="normal-text"> Account Number</label>
+            <input
+              type="text"
+              v-model="accountNumber"
+              class="phone-input"
+              placeholder="Enter your account number"
+              required
+            /> 
+          </div>
         </div>
 
-        <div class="textfield mgt-5">
-          <label for="" class="normal-text"> Account Name</label>
-          <input
-            type="text"
-            v-model="accountName"
-            class="phone-input"
-            placeholder="Enter your account name"
-          /> 
+        <div v-if="isEdit" @click="isDelete=true" class="mgt-8 text-btn direction-flex pointer" >
+          <IconView icon="delete" />
+          <span class="text-btn"> Remove bank </span>
         </div>
 
-        <div class="textfield mgt-5">
-          <label for="" class="normal-text"> Account Number</label>
-          <input
-            type="text"
-            v-model="accountNumber"
-            class="phone-input"
-            placeholder="Enter your account number"
-          /> 
+        <div class="mgy-10"></div>
+
+        <div>
+          <sendy-btn
+          v-if="!isEdit"
+          type="submit"
+          color="primary"
+          :block="true"
+          text="Continue"
+          />
         </div>
-      </div>
-
-      <div v-if="isEdit" @click="isDelete=true" class="mgt-8 text-btn direction-flex pointer" >
-        <IconView icon="delete" />
-        <span class="text-btn"> Remove bank </span>
-      </div>
-
-      <div class="mgy-10"></div>
-
-      <div>
-        <sendy-btn
-        v-if="!isEdit"
-        @click="handleConfirm"
-        color="primary"
-        :block="true"
-        text="Continue"
-        />
-      </div>
+      </form>
     </div>
     <ConfirmDetailsModal :show="confirm"  @close="confirm=false"/>
     <ConfirmDeleteModal :show="isDelete"  @close="isDelete=false"/>
@@ -77,30 +78,30 @@ import { useGlobalProp } from '../../hooks/globalProperties';
 import ConfirmDetailsModal from './components/ConfirmDetails.vue';
 import ConfirmDeleteModal from './components/ConfirmDelete.vue';
 import { useWithdrawals } from '../../hooks/useWithdrawals';
+import { useState } from '../../hooks/useState';
 
 const icon = ref('back');
 const confirm = ref(false);
 const isDelete = ref(false);
-const accountName = ref('');
-const bankName = ref('');
-const accountNumber = ref('');
-const { router, route } = useGlobalProp();
-const { getBanks } = useWithdrawals();
 
-onMounted(() => {
-  getBanks();
+const { router, route } = useGlobalProp();
+const { getBupayload } = useState();
+const {  
+  accountName,
+  selectedBank,
+  accountNumber,
+  banks,
+  isEdit,
+  getBanks,
+} = useWithdrawals();
+
+onMounted( async () => {
+  await getBanks();
 });
 
 const handleConfirm = () => {
-  console.log('handleConfirm');
   confirm.value = true;
-  console.log('handleConfirm', confirm.value);
-
 };
 
-const isEdit = computed(() => {
-  console.log(route.params.edit);
-  return route.params.edit ? true : false;
-});
 
 </script>

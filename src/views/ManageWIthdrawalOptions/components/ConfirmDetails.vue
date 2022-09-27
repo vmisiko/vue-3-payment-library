@@ -16,9 +16,9 @@
         <div class="direction-flex mgt-5">
           <IconView icon="bank"  class="mgy-auto"/>
           <div class="mgl-4">
-            <span class="text-caption-1 semi-bold text-gray90">Bank Name</span>: <span class="text-caption-1">Absa Bank</span> <br/>
-            <span class="text-caption-1 semi-bold text-gray90">Acc Name</span>: <span class="text-caption-1">Arabica Coffee</span> <br/>
-            <span class="text-caption-1 semi-bold text-gray90">Acc No</span>: <span class="text-caption-1">010002345678910</span> <br/>
+            <span class="text-caption-1 semi-bold text-gray90">Bank Name</span>: <span class="text-caption-1">{{ selectedBank?.name }}</span> <br/>
+            <span class="text-caption-1 semi-bold text-gray90">Acc Name</span>: <span class="text-caption-1">{{ accountName }}</span> <br/>
+            <span class="text-caption-1 semi-bold text-gray90">Acc No</span>: <span class="text-caption-1">{{ accountNumber }}</span> <br/>
           </div>
         </div>
 
@@ -29,7 +29,8 @@
         color="primary"
         class="mgt-8"
         type="submit"
-        @click="router.push({name: 'ConfirmOtp'})"
+        @click="submit"
+        :loading="loading"
       >
         Save Withdrawal Details
       </sendy-btn>
@@ -44,11 +45,17 @@
 <script setup>
 import { onMounted, ref, watch } from "vue";
 import { useGlobalProp } from "../../../hooks/globalProperties";
-const confirmModal = ref(null);
+import { useWithdrawals } from "../../../hooks/useWithdrawals";
+import  { useOtp } from "../../../hooks/useOtp";
+import { useStore } from "vuex";
 
+const confirmModal = ref(null);
 const props = defineProps(["show"]);
 const emit = defineEmits(['close']);
+const store = useStore();
 const { router }  = useGlobalProp();
+const { getOtp } = useOtp();
+const { accountName, accountNumber, selectedBank, addBank, loading } = useWithdrawals();
 
 
 watch(() => props.show, (val) => {
@@ -56,7 +63,6 @@ watch(() => props.show, (val) => {
 });
 
 onMounted(() => {
-  console.log(props.show);
   props.show ? handleOpen() : handleClose();
 })
 
@@ -66,6 +72,20 @@ const handleOpen = () => {
 
 const handleClose = () => {
   confirmModal.value.style.display  = "none";
+};
+
+const submit = async () => {
+  console.log('getopt');
+  const response = await getOtp();
+  if (response.status) {
+    router.push({ name: 'ConfirmOtp' });
+    return;
+  }
+  store.dispatch('paymentNotification' , {
+    text:response.message,
+    type: "error"
+  });
+  console.log('failed to send otp');
 };
 </script>
 

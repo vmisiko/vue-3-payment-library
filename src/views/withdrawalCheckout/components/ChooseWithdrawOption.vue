@@ -15,7 +15,17 @@
     
     <span class="spacer"></span>
 
-    <IconView class="mgy-auto" icon="chevron-right" />
+    <div :class="{ 'mgt-2': paymentOption.pay_method_id === 20 }">
+        <input
+          class="float-right payment-input"
+          name="paymentoption"
+          type="radio"
+          :value="value"
+          :checked="isChecked"
+          :disabled="disableLogic"
+          @input="$emit('update:modelValue', $event.target.value)"
+        />
+      </div>
   </div>
 </template>
 
@@ -34,7 +44,6 @@ const { getBupayload } = useState();
 const { router } = useGlobalProp();
 
 onMounted(() => {
-  console.log(props.paymentMethod);
   if (props.paymentMethod?.pay_method_id === 10 ) {
     getBankDetails();
   }
@@ -64,5 +73,6 @@ const handleSelect = () => {
       break;
   }
 };
+
 
 </script>

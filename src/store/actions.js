@@ -74,6 +74,23 @@ export default {
       return err;
     }
   },
+  async paymentAxiosDelete({dispatch}, payload) {
+    try {
+      const { url, params } = payload;
+      const headers = await dispatch("paymentCustomHeaders");
+      const { data } = await axios.delete(
+        `${this.$sendyOptions.config.BASE_URL}${url}`,
+        params,
+        headers
+      );
+      return data;
+    } catch (err) {
+      await dispatch("handlePaymentAxiosErrors", err.response.status);
+      Sentry.captureException(err);
+      datadogRum.addError(err);
+      return err;
+    }
+  },
   /*eslint-disable */
   async handlePaymentAxiosErrors({ state }, error) {
     switch (error) {

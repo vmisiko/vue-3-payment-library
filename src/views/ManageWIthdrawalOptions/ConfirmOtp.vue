@@ -50,13 +50,19 @@ import PaymentOption from './components/PaymentOption.vue';
 import Processing from "../../components/processing";
 import { useState } from '../../hooks/useState';
 import { useGlobalProp } from '../../hooks/globalProperties';
+import { useOtp } from '../../hooks/useOtp';
+import { useWithdrawals } from '../../hooks/useWithdrawals';
+import { useStore } from 'vuex';
+
 const title = ref('Add a withdrawal option');
 const icon = ref("back");
-const pinLength = ref(4);
 const { router } = useGlobalProp();
 const otp = ref();
 const disableotp = ref(true);
-const otpError = ref('');
+const store = useStore();
+
+const { validateOtp, otpError, pinLength } = useOtp();
+const { addBank, accountName, accountNumber , selectedBank, isEdit } = useWithdrawals();
 
 
 const handleOnComplete = (val) => {
@@ -66,9 +72,13 @@ const handleOnComplete = (val) => {
 
 };
 
-const submit = () => {
-  router.push({name: 'OtpFail'});
-}
+const submit = async () => {
+  const response = await validateOtp(otp.value);
+  if (!response.status) {
+    router.push({ name: 'OtpFail' });
+  }
+ await addBank();
+};
 
 </script>
 
