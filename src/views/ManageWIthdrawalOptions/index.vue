@@ -10,19 +10,10 @@
         </template>
       </TopInfo>
 
-
-      <div class="direction-flex mgt-5 pointer" @click="handleSelect">
-        <IconView icon="bank"  class="mgy-auto"/>
-        <div class="mgl-4">
-          <span class="text-caption-1 semi-bold">Absa Bank</span> <br/>
-          <span class="text-caption-1  text-gray80">Acc Name : Arabica Coffee</span> <br/>
-          <span class="text-caption-1 text-gray80">Acc No : 10002345678910</span> <br/>
-        </div>
-        
-        <span class="spacer"></span>
-
-        <IconView class="mgy-auto" icon="chevron-right" />
+      <div class="mgt-5" v-for="(paymethod, index) in getSavedPayMethods" :key="index">
+        <WithdrawOption :paymentMethod="paymethod" />
       </div>
+      
       <hr
         class="margin-hr mgt-n2"
       />
@@ -47,9 +38,12 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import TopInfo from '../../components/topInfo.vue';
+import WithdrawOption from './components/WithdrawOption.vue';
 import { useGlobalProp } from '../../hooks/globalProperties';
+import { useState } from '../../hooks/useState';
+import { usePayment } from '../../hooks/payment';
 
 const icon = ref('back');
 const confirm = ref(false);
@@ -58,8 +52,12 @@ const bankName = ref('');
 const accountNumber = ref('');
 const { router } = useGlobalProp();
 
-const handleSelect = () => {
-  router.push({ name: "BankWithdrawal", params: { edit: true }});
-};
+const { getSavedPayMethods, getLoading } = useState();
+const { retrievePaymentMethods } = usePayment();
+
+onMounted(() => {
+  retrievePaymentMethods();
+});
+
 
 </script>

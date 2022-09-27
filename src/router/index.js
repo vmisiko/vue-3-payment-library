@@ -24,7 +24,7 @@ import PayByBank from "../views/PayBybank";
 import AddWithdrawal from "../views/ManageWithdrawalOptions/AddWithdrawal";
 import BankWithdrawal from "../views/ManageWithdrawalOptions/BankWIthdrawal";
 import ConfirmOtp from "../views/ManageWithdrawalOptions/ConfirmOtp";
-import MobileWithrawal from "../views/ManageWithdrawalOptions/MobileWithdrawal";
+import MobileWithdrawal from "../views/ManageWithdrawalOptions/MobileWithdrawal";
 import ManageWithdrawalOptions from "../views/ManageWithdrawalOptions";
 import OtpFail from "../views/ManageWithdrawalOptions/OtpFail";
 
@@ -175,9 +175,9 @@ const routes = [
         component: OtpFail,
       },
       {
-        path: "/mobile-withdrawal",
-        name: "MobileWithrawal",
-        component: MobileWithrawal,
+        path: "/mobile-withdrawal/:edit?",
+        name: "MobileWithdrawal",
+        component: MobileWithdrawal,
       },
       {
         path: "/manage-withrawal",

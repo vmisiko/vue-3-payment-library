@@ -71,11 +71,12 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import TopInfo from '../../components/topInfo.vue';
 import { useGlobalProp } from '../../hooks/globalProperties';
 import ConfirmDetailsModal from './components/ConfirmDetails.vue';
 import ConfirmDeleteModal from './components/ConfirmDelete.vue';
+import { useWithdrawals } from '../../hooks/useWithdrawals';
 
 const icon = ref('back');
 const confirm = ref(false);
@@ -83,7 +84,12 @@ const isDelete = ref(false);
 const accountName = ref('');
 const bankName = ref('');
 const accountNumber = ref('');
-const { router, route } =useGlobalProp();
+const { router, route } = useGlobalProp();
+const { getBanks } = useWithdrawals();
+
+onMounted(() => {
+  getBanks();
+});
 
 const handleConfirm = () => {
   console.log('handleConfirm');

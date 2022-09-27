@@ -2,6 +2,7 @@ import axios from "axios";
 import * as Sentry from "@sentry/vue";
 import { datadogRum } from "@datadog/browser-rum";
 
+
 export default {
   paymentCustomHeaders({ state }) {
     const authToken = state.bupayload.authToken;
