@@ -34,12 +34,11 @@
 
       <div class="mgy-10"></div>
 
-      <div>
+      <div class="text-right">
         <sendy-btn
         v-if="!isEdit"
         @click="handleConfirm"
         color="primary"
-        :block="true"
         text="Continue"
         :disable="disable"
         />
@@ -61,13 +60,14 @@ import { useGlobalProp } from '../../hooks/globalProperties';
 import ConfirmDetailsModal from './components/ConfirmDetails.vue';
 import ConfirmDeleteModal from './components/ConfirmDelete.vue';
 import { useState } from '../../hooks/useState';
+import { useWithdrawals } from '../../hooks/useWithdrawals';
 
 const icon = ref('back');
 const formattedPhone = ref("");
 const disable = ref(false);
-const phone = ref("");
 const confirm = ref(false);
 const isDelete = ref(false);
+const error = ref("");
 const dropdownOptions = ref({
   disabled: true,
   showFlags: true,
@@ -77,6 +77,7 @@ const dropdownOptions = ref({
 const { getBupayload } = useState();
 
 const { router, route } = useGlobalProp();
+const { phone } = useWithdrawals();
 
 const handleConfirm = () => {
   confirm.value = true;

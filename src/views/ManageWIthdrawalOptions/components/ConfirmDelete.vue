@@ -22,34 +22,47 @@
         </div>
       </div>
 
-      <sendy-btn
-        :block="true"
-        color="primary"
-        class="mgt-5"
-        type="submit"
-        @click="submit"
-        :loading="loading"
-      >
-        Delete
-      </sendy-btn>
+      <div class="flex justify-between">
+        <sendy-btn
+          color="info"
+          class="mgt-5"
+          type="text"
+          @click="$emit('close')"
+        >
+          Cancel
+        </sendy-btn>
+        <span class="spacer"></span>
+        <sendy-btn
+          color="primary"
+          class="mgt-5"
+          type="submit"
+          @click="submit"
+          :loading="loading"
+        >
+          Delete
+        </sendy-btn>
+    </div>
 
-      <div class="mgy-5 text-center">
-        <span @click="$emit('close')" class="text-midnightBlue20 cursor pointer"> Cancel </span>
-      </div>
+      
     </div>
   </div>
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, useSlots, watch } from "vue";
+import { useStore } from "vuex";
 import { useGlobalProp } from "../../../hooks/globalProperties";
+import { useOtp } from "../../../hooks/useOtp";
 import { useWithdrawals } from "../../../hooks/useWithdrawals";
-const confirmModal = ref(null);
 
+const confirmModal = ref(null);
 const props = defineProps(["show"]);
 const emit = defineEmits(['close']);
 const { router }  = useGlobalProp();
-const { selectedPaymentOption,  selectedBank, accountName, accountNumber, loading } = useWithdrawals();
+const store = useStore();
+
+const { getOtp, loading } = useOtp();
+const { selectedPaymentOption,  selectedBank, accountName, accountNumber } = useWithdrawals();
 
 watch(() => props.show, (val) => {
   val ? handleOpen() : handleClose();
@@ -69,16 +82,18 @@ const handleClose = () => {
 };
 
 const submit  = async () => {
-  const response = await getOtp();
-  if (response.status) {
-    router.push({ name: 'ConfirmOtp', params: { delete: true }});
-    return;
-  }
-  store.dispatch('paymentNotification' , {
-    text:response.message,
-    type: "error"
-  });
-  console.log('failed to send otp');
+  router.push({ name: 'ConfirmOtp', params: { delete: true }});
+
+  // const response = await getOtp();
+  // if (response.status) {
+  //   router.push({ name: 'ConfirmOtp', params: { delete: true }});
+  //   return;
+  // }
+  // store.dispatch('paymentNotification' , {
+  //   text:response.message,
+  //   type: "error"
+  // });
+
 }
 </script>
 

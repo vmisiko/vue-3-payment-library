@@ -54,8 +54,8 @@ const props = defineProps(["show"]);
 const emit = defineEmits(['close']);
 const store = useStore();
 const { router }  = useGlobalProp();
-const { getOtp } = useOtp();
-const { accountName, accountNumber, selectedBank, selectedPaymentOption, addBank, loading } = useWithdrawals();
+const { getOtp, loading } = useOtp();
+const { accountName, accountNumber, selectedBank, selectedPaymentOption, addBank } = useWithdrawals();
 
 
 watch(() => props.show, (val) => {
@@ -75,16 +75,17 @@ const handleClose = () => {
 };
 
 const submit = async () => {
-  console.log('getopt');
-  const response = await getOtp();
-  if (response.status) {
-    router.push({ name: 'ConfirmOtp' });
-    return;
-  }
-  store.dispatch('paymentNotification' , {
-    text: response.message,
-    type: "error"
-  });
+  router.push({ name: 'ConfirmOtp' });
+
+  // const response = await getOtp();
+  // if (response.status) {
+  //   router.push({ name: 'ConfirmOtp' });
+  //   return;
+  // }
+  // store.dispatch('paymentNotification' , {
+  //   text: response.message,
+  //   type: "error"
+  // });
 };
 </script>
 

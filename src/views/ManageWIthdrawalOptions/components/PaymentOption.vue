@@ -20,10 +20,12 @@
 import { computed } from "vue";
 import { useGlobalProp } from '../../../hooks/globalProperties';
 import { useSegement } from '../../../hooks/useSegment';
+import { useWithdrawals } from "../../../hooks/useWithdrawals";
 
 const props = defineProps(["paymentMethod"]);
 const { t: translate, router, }  = useGlobalProp();
 const { commonTrackPayload } = useSegement();
+const { selectedPaymentOption } = useWithdrawals();
 
 const optionName = computed(()=> {
   let result = translate("credit_card_payment_small");
@@ -50,34 +52,33 @@ const optionName = computed(()=> {
 
 
 const  handleSelect = (paymentMethod) =>  {
-
-      switch (paymentMethod.payment_method_id) {
-        case 1:
-          window.analytics.track("Add M-Pesa", {
-            ...commonTrackPayload(),
-            phone_number: "",
-          });
-
-          router.push({ name: "MobileWithdrawal" });
-          break;
-        case 10:
-          window.analytics.track("Add bank", {
-            ...commonTrackPayload(),
-            card_network: null,
-          });
-          router.push({ name: "BankWithdrawal" });
-          break;
-        case 20:
-          window.analytics.track("Add Pay by Bank", {
-            ...commonTrackPayload(),
-            card_network: null,
-          });
-          router.push({ name: "HowitWorks" });
-          break;
-        default:
-          router.push("/add-card");
-          break;
-      }
+  selectedPaymentOption.value = paymentMethod;
+  switch (paymentMethod.payment_method_id) {
+    case 1:
+      window.analytics.track("Add M-Pesa", {
+        ...commonTrackPayload(),
+        phone_number: "",
+      });
+      router.push({ name: "MobileWithdrawal" });
+      break;
+    case 10:
+      window.analytics.track("Add bank", {
+        ...commonTrackPayload(),
+        card_network: null,
+      });
+      router.push({ name: "BankWithdrawal" });
+      break;
+    case 20:
+      window.analytics.track("Add Pay by Bank", {
+        ...commonTrackPayload(),
+        card_network: null,
+      });
+      router.push({ name: "HowitWorks" });
+      break;
+    default:
+      router.push("/add-card");
+      break;
+  }
 };
 
 </script>

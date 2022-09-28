@@ -7,6 +7,7 @@ const accountName = ref('');
 const selectedBank = ref(null);
 const accountNumber = ref('');
 const selectedPaymentOption = ref("");
+const phone = ref("");
 
 export function useWithdrawals() {
 
@@ -53,13 +54,17 @@ export function useWithdrawals() {
     }
     loading.value = true;
     const response = await store.dispatch("paymentAxiosPost", fullPayload);
-    console.log(response);
 
     if (response.status) {
       router.push({ name: "ManageWithdrawal"});
       store.dispatch("paymentNotification", {
         text: `${selectedBank.value.name}. | Acc No: ${accountNumber.value} has been added`,
       })
+      selectedPaymentOption.value = "";
+      selectedBank.value = "";
+      accountName.value = ""
+      selectedBank.value = ""
+      accountNumber.value = ""
       return;
     }
     store.dispatch("paymentNotification", {
@@ -69,12 +74,12 @@ export function useWithdrawals() {
     loading.value = false;
   };
 
-  const addMpesa = async (phone) => {
+  const addMpesa = async () => {
 
     const payload = {
       "operator_id": 1,
       "operator_name": "MPESA",
-      "user_account_no": phone,
+      "user_account_no": phone.value,
       "user_id": getBupayload.value.user_id,
       "country_code": getBupayload.value.country_code,
       "entity_id": getBupayload.value.entity_id,
@@ -93,6 +98,11 @@ export function useWithdrawals() {
       store.dispatch("paymentNotification", {
         text: `M-PESA | Mobile No: ${phone.value} has been added`,
       })
+      selectedPaymentOption.value = "";
+      selectedBank.value = "";
+      accountName.value = ""
+      selectedBank.value = ""
+      accountNumber.value = ""
       return;
     }
     store.dispatch("paymentNotification", {
@@ -103,13 +113,9 @@ export function useWithdrawals() {
   };
 
   const deleteBank = async () => {
-    const payload = {
-      account_id: selectedPaymentOption.value.pay_detail_id
-    }
-    
+  
     const fullPayload = {
-      params: payload,
-      url: "/api/v3/payout/account"
+      url: `/api/v3/payout/account/${selectedPaymentOption.value.pay_detail_id}`
     }
     
     loading.value = true;
@@ -119,21 +125,28 @@ export function useWithdrawals() {
     if (response.status) {
       router.push({ name: 'ManageWithdrawal'});
       store.dispatch("paymentNotification", {
-        text: `${selectedPaymentOption.value.bankDetails.operator_name}. | Acc No: ${selectedPaymentOption.value.pay_method_detail} has been deleted`,
+        text: `${selectedPaymentOption.value.bankDetails.operator_name}. | Acc No: ${selectedPaymentOption.value.pay_method_details} has been deleted`,
       })
+      selectedPaymentOption.value = "";
+      selectedBank.value = "";
+      accountName.value = ""
+      selectedBank.value = ""
+      accountNumber.value = ""
       return;
     }
 
     store.dispatch("paymentNotification", {
       text: `Failed to delete`,
       type: "error"
+
     });
   }; 
 
   const deleteMpesa = async () => {
+    console.log('delete mpesa')
     const payload = {
       pay_detail_id: selectedPaymentOption.value.pay_detail_id,
-      user_id: selectedPaymentOption.value.getBupayload.user_id,
+      user_id: getBupayload.value.user_id,
     };
 
     const fullPayload = {
@@ -166,6 +179,7 @@ export function useWithdrawals() {
     banks,
     selectedPaymentOption,
     loading,
+    phone,
     getBanks,
     addBank,
     addMpesa,

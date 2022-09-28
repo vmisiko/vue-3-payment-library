@@ -23,7 +23,7 @@
         <span class="mgl-2 text-caption-2 text-error" v-if="otpError">{{ otpError }}</span>
         <div class="mgt-3 text-center">
           <span  class="text-gray70 pointer">{{ $translate('did_not_recieve_otp_Code') }}</span>
-          <span @click="handleOnComplete" class="text-midnightBlue20 text-gray70 "> Resend </span>
+          <span @click="getOtp" class="text-midnightBlue20 text-gray70 "> Resend </span>
         </div>
       </div>
 
@@ -60,7 +60,7 @@ const otp = ref();
 const disableotp = ref(true);
 const store = useStore();
 
-const { validateOtp, otpError, pinLength } = useOtp();
+const { validateOtp, otpError, pinLength, getOtp, loading: loadingOtp } = useOtp();
 const { addBank, addMpesa, selectedPaymentOption, accountName, accountNumber , selectedBank, isEdit, deleteBank, deleteMpesa, loading } = useWithdrawals();
 
 const handleOnComplete = (val) => {
@@ -69,15 +69,17 @@ const handleOnComplete = (val) => {
 };
 
 const submit = async () => {
-  const response = await validateOtp(otp.value);
-  if (!response.status) {
-    router.push({ name: 'OtpFail' });
-  }
+  // const response = await validateOtp(otp.value);
+  // if (!response.status) {
+  //   router.push({ name: 'OtpFail' });
+  //   return;
+  // }
   if (route.params.delete) {
     selectedPaymentOption.value?.pay_method_id === 10 ? await deleteBank() : await deleteMpesa(); 
     return;
   }
-  await addBank();
+  console.log(selectedPaymentOption.value?.payment_method_id);
+  selectedPaymentOption.value?.payment_method_id === 10 ? await addBank() : await addMpesa(); 
 };
 
 </script>

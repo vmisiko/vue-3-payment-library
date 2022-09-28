@@ -94,11 +94,14 @@
       display: flex;
       justify-content: space-between;
     }
+    .spacer {
+      flex-grow: 1;
+    }
     .justify-center {
       display: flex;
       justify-content: center;
     }
-    .jusistify-start {
+    .justify-start {
       display: flex;
       justify-content: start;
     }
