@@ -79,10 +79,7 @@ const { getBupayload } = useState();
 const { router, route } = useGlobalProp();
 
 const handleConfirm = () => {
-  console.log('handleConfirm');
   confirm.value = true;
-  console.log('handleConfirm', confirm.value);
-
 };
 
 const validatePhone = (val) => {

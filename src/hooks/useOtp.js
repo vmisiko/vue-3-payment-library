@@ -31,7 +31,7 @@ export function useOtp()  {
       pinLength.value = result.config?.pinLength || 4;
       requestId.value = result.config.request_id;
     }
-
+    
     return result;
   };
 

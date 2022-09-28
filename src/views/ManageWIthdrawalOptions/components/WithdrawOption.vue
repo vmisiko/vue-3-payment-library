@@ -1,10 +1,11 @@
 <template>
   <div class="direction-flex pointer" @click="handleSelect">
-    <IconView :icon="paymentMethod?.pay_method_name.toLowerCase()"  class="mgy-auto"/>
+    <IconView v-if="paymentMethod?.pay_method_id === 1" icon="m-pesa"  class="mgy-auto"/>
+    <IconView v-if="paymentMethod?.pay_method_id === 10" :icon="paymentMethod?.pay_method_name?.toLowerCase()"  class="mgy-auto"/>
 
     <div class="mgl-4" v-if="paymentMethod?.pay_method_id === 10">
-      <span class="text-caption-1 semi-bold">Absa Bank</span> <br/>
-      <span class="text-caption-1  text-gray80">Acc Name : Arabica Coffee</span> <br/>
+      <span class="text-caption-1 semi-bold">{{ bankDetails?.operator_name }}</span> <br/>
+      <span class="text-caption-1  text-gray80">Acc Name : {{ `${getBupayload.firstname} ${getBupayload.lastname}` }}</span> <br/>
       <span class="text-caption-1 text-gray80">Acc No : {{ paymentMethod.pay_method_details }}</span> <br/>
     </div>
 
@@ -24,17 +25,18 @@ import { onMounted, ref } from "vue";
 import { useStore } from "vuex";
 import { useGlobalProp } from "../../../hooks/globalProperties";
 import { useState } from "../../../hooks/useState";
+import { useWithdrawals } from "../../../hooks/useWithdrawals";
 
 const props = defineProps(['paymentMethod']);
-const bankName = ref("Absa Bank");
-const accountName = ref("Victor Misiko");
+const bankDetails = ref("");
 
 const store = useStore();
 const { getBupayload } = useState();
 const { router } = useGlobalProp();
+const iconUrl = ref("https://sendy-web-apps-assets.s3.eu-west-1.amazonaws.com/payment-method-icons");
 
+const { selectedPaymentOption } = useWithdrawals();
 onMounted(() => {
-  console.log(props.paymentMethod);
   if (props.paymentMethod?.pay_method_id === 10 ) {
     getBankDetails();
   }
@@ -42,21 +44,19 @@ onMounted(() => {
 
 const getBankDetails = async () => {
   const fullPayload = {
-    url: `/api/v3/payout/account/${getBupayload.value.user_id}`
+    url: `/api/v3/payout/account/${props.paymentMethod.pay_detail_id}`
   };
   const response = await store.dispatch('paymentAxiosGet', fullPayload);
-  console.log(response);
+  bankDetails.value = response;
 };
 
 const handleSelect = () => {
-  console.log(props.paymentMethod);
+  selectedPaymentOption.value = { ...props.paymentMethod, bankDetails: bankDetails.value };
   switch (props.paymentMethod.pay_method_id) {
     case 10:
-      console.log("10 selected");
       router.push({ name: "BankWithdrawal", params: { edit: true }});
       break;
     case 1:
-      console.log("addedd 1");
       router.push({ name: "MobileWithdrawal", params: { edit: true }}); 
       break;
     default:

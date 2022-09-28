@@ -5,12 +5,30 @@
         <span>Are you sure you want to remove this withdrawal option?</span>
       </div>
 
+      <div class="direction-flex mgt-5" v-if="selectedPaymentOption?.pay_method_id === 10">
+        <IconView icon="bank"  class="mgy-auto"/>
+        <div class="mgl-4">
+          <span class="text-caption-1 semi-bold text-gray90">Bank Name</span>: <span class="text-caption-1">{{ selectedPaymentOption?.bankDetails?.operator_name   || "N/A" }}</span> <br/>
+          <span class="text-caption-1 semi-bold text-gray90">Acc Name</span>: <span class="text-caption-1">{{ `${getBupayload.firstname} ${getBupayload.lastname}` }}</span> <br/>
+          <span class="text-caption-1 semi-bold text-gray90">Acc No</span>: <span class="text-caption-1">{{ selectedPaymentOption.pay_method_details }}</span> <br/>
+        </div>
+      </div>
+
+      <div class="direction-flex mgt-5" v-if="selectedPaymentOption?.pay_method_id === 1">
+        <IconView icon="m-pesa"  class="mgy-auto"/>
+        <div class="mgl-4">
+          <span class="text-caption-1 semi-bold text-gray90">M-PESA</span> <br/>
+          <span class="text-caption-1 semi-bold text-gray90">Mobile Number</span>: <span class="text-caption-1">{{ selectedPaymentOption.pay_method_details || "N/A" }}</span> <br/>
+        </div>
+      </div>
+
       <sendy-btn
         :block="true"
         color="primary"
         class="mgt-5"
         type="submit"
-        @click="router.push({name: 'ConfirmOtp'})"
+        @click="submit"
+        :loading="loading"
       >
         Delete
       </sendy-btn>
@@ -25,12 +43,13 @@
 <script setup>
 import { onMounted, ref, watch } from "vue";
 import { useGlobalProp } from "../../../hooks/globalProperties";
+import { useWithdrawals } from "../../../hooks/useWithdrawals";
 const confirmModal = ref(null);
 
 const props = defineProps(["show"]);
 const emit = defineEmits(['close']);
 const { router }  = useGlobalProp();
-
+const { selectedPaymentOption,  selectedBank, accountName, accountNumber, loading } = useWithdrawals();
 
 watch(() => props.show, (val) => {
   val ? handleOpen() : handleClose();
@@ -48,6 +67,19 @@ const handleOpen = () => {
 const handleClose = () => {
   confirmModal.value.style.display  = "none";
 };
+
+const submit  = async () => {
+  const response = await getOtp();
+  if (response.status) {
+    router.push({ name: 'ConfirmOtp', params: { delete: true }});
+    return;
+  }
+  store.dispatch('paymentNotification' , {
+    text:response.message,
+    type: "error"
+  });
+  console.log('failed to send otp');
+}
 </script>
 
 <style lang="scss">

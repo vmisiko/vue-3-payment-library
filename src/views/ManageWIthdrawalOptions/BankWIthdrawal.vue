@@ -72,7 +72,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import TopInfo from '../../components/topInfo.vue';
 import { useGlobalProp } from '../../hooks/globalProperties';
 import ConfirmDetailsModal from './components/ConfirmDetails.vue';
@@ -92,16 +92,21 @@ const {
   accountNumber,
   banks,
   isEdit,
+  selectedPaymentOption,
   getBanks,
 } = useWithdrawals();
 
 onMounted( async () => {
   await getBanks();
+  if (isEdit.value) {
+    selectedBank.value = banks.value.filter(bank => bank?.operator_id === selectedPaymentOption.value?.bankDetails?.operator_id)[0];
+    accountName.value = `${getBupayload.value.firstname} ${getBupayload.value.lastname}`
+    accountNumber.value = selectedPaymentOption.value?.pay_method_details;
+  }
 });
 
 const handleConfirm = () => {
   confirm.value = true;
 };
-
 
 </script>

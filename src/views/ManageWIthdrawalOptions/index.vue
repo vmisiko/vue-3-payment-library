@@ -11,13 +11,12 @@
       </TopInfo>
 
       <div class="mgt-5" v-for="(paymethod, index) in getSavedPayMethods" :key="index">
-        <WithdrawOption :paymentMethod="paymethod" />
+        <WithdrawOption :payment-method="paymethod" />
+        <hr
+          class="margin-hr mgt-n2"
+        />
       </div>
       
-      <hr
-        class="margin-hr mgt-n2"
-      />
-
       <span class="link mgt-5">
         + {{ $translate("add_withdraw_option") }}</span
       >
@@ -40,10 +39,10 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import TopInfo from '../../components/topInfo.vue';
-import WithdrawOption from './components/WithdrawOption.vue';
 import { useGlobalProp } from '../../hooks/globalProperties';
 import { useState } from '../../hooks/useState';
 import { usePayment } from '../../hooks/payment';
+import WithdrawOption from './components/WithdrawOption.vue';
 
 const icon = ref('back');
 const confirm = ref(false);
@@ -55,9 +54,8 @@ const { router } = useGlobalProp();
 const { getSavedPayMethods, getLoading } = useState();
 const { retrievePaymentMethods } = usePayment();
 
-onMounted(() => {
-  retrievePaymentMethods();
+onMounted( async () => {
+  await retrievePaymentMethods();
 });
-
 
 </script>

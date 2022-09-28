@@ -163,9 +163,8 @@ const routes = [
         name: "BankWithdrawal",
         component: BankWithdrawal,
       },
-
       {
-        path: "/confirm-otp",
+        path: "/confirm-otp/:delete?",
         name: "ConfirmOtp",
         component: ConfirmOtp,
       },

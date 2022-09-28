@@ -35,9 +35,8 @@
       text="Confirm"
       :disable="disableotp"
       @click="submit"
+      :loading="loading"
       />
-
-
     </div>
   </div>
 </template>
@@ -56,20 +55,17 @@ import { useStore } from 'vuex';
 
 const title = ref('Add a withdrawal option');
 const icon = ref("back");
-const { router } = useGlobalProp();
+const { router , route} = useGlobalProp();
 const otp = ref();
 const disableotp = ref(true);
 const store = useStore();
 
 const { validateOtp, otpError, pinLength } = useOtp();
-const { addBank, accountName, accountNumber , selectedBank, isEdit } = useWithdrawals();
-
+const { addBank, addMpesa, selectedPaymentOption, accountName, accountNumber , selectedBank, isEdit, deleteBank, deleteMpesa, loading } = useWithdrawals();
 
 const handleOnComplete = (val) => {
   otp.value = val;
   disableotp.value = false;
-  router.push({name: 'OtpFail'});
-
 };
 
 const submit = async () => {
@@ -77,7 +73,11 @@ const submit = async () => {
   if (!response.status) {
     router.push({ name: 'OtpFail' });
   }
- await addBank();
+  if (route.params.delete) {
+    selectedPaymentOption.value?.pay_method_id === 10 ? await deleteBank() : await deleteMpesa(); 
+    return;
+  }
+  await addBank();
 };
 
 </script>

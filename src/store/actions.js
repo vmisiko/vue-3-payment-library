@@ -78,10 +78,13 @@ export default {
     try {
       const { url, params } = payload;
       const headers = await dispatch("paymentCustomHeaders");
+      const values = {
+        params,
+        headers: headers.headers,
+      };
       const { data } = await axios.delete(
         `${this.$sendyOptions.config.BASE_URL}${url}`,
-        params,
-        headers
+        values
       );
       return data;
     } catch (err) {

@@ -55,7 +55,7 @@ const emit = defineEmits(['close']);
 const store = useStore();
 const { router }  = useGlobalProp();
 const { getOtp } = useOtp();
-const { accountName, accountNumber, selectedBank, addBank, loading } = useWithdrawals();
+const { accountName, accountNumber, selectedBank, selectedPaymentOption, addBank, loading } = useWithdrawals();
 
 
 watch(() => props.show, (val) => {
@@ -82,10 +82,9 @@ const submit = async () => {
     return;
   }
   store.dispatch('paymentNotification' , {
-    text:response.message,
+    text: response.message,
     type: "error"
   });
-  console.log('failed to send otp');
 };
 </script>
 
