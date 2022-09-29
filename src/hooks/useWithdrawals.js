@@ -172,6 +172,11 @@ export function useWithdrawals() {
     })
   }
 
+  const formatCurrency = (amount)  => {
+    const result = parseFloat(amount);
+    return result.toLocaleString();
+  };
+
   return {
     isEdit,
     accountName,
@@ -186,5 +191,6 @@ export function useWithdrawals() {
     addMpesa,
     deleteBank,
     deleteMpesa,
+    formatCurrency,
   }
 }

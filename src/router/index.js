@@ -27,6 +27,10 @@ import ConfirmOtp from "../views/ManageWithdrawalOptions/ConfirmOtp";
 import MobileWithdrawal from "../views/ManageWithdrawalOptions/MobileWithdrawal";
 import ManageWithdrawalOptions from "../views/ManageWithdrawalOptions";
 import OtpFail from "../views/ManageWithdrawalOptions/OtpFail";
+import WithdrawalCheckout from "../views/WithdrawalCheckout";
+import WithdrawalSuccess from "../views/WithdrawalCheckout/WithdrawalSuccess";
+import WithdrawalFailed from "../views/WithdrawalCheckout/WithdrawalFailed";
+
 
 const routes = [
   {
@@ -183,6 +187,22 @@ const routes = [
         name: "ManageWithdrawal",
         component: ManageWithdrawalOptions,
       },
+      {
+        path: "/withdraw-cash",
+        name: "WithdrawalCheckout",
+        component: WithdrawalCheckout,
+      },
+      {
+        path: "/withdraw-cash-failed",
+        name: "WithdrawalFailed",
+        component: WithdrawalFailed,
+      },
+      {
+        path: "/withdraw-cash-success",
+        name: "WithdrawalSuccess",
+        component: WithdrawalSuccess,
+      }
+
     ],
   },
 ];
