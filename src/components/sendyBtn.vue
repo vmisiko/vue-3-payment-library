@@ -1,5 +1,4 @@
 <template>
-  <div>
     <button
       :type="type || 'text'"
       class="primary-btn"
@@ -10,13 +9,12 @@
         'midnightblue-btn-block': color === 'info',
         'error-btn-block': color === 'error',
         'btn-outline primary': outline,
-        large: large,
+        'large': large,
       }"
     >
       <IconView icon="loading" v-if="loading" />
       <slot v-if="!loading"> {{ text ? text : $translate("submit") }} </slot>
     </button>
-  </div>
 </template>
 
 <script>

@@ -103,6 +103,11 @@ onMounted( async () => {
     accountName.value = `${getBupayload.value.firstname} ${getBupayload.value.lastname}`
     accountNumber.value = selectedPaymentOption.value?.pay_method_details;
   }
+  else {
+    selectedBank.valu = "";
+    accountName.value ="";
+    accountNumber.value = "";
+  }
 });
 
 const handleConfirm = () => {

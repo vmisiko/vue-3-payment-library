@@ -66,7 +66,7 @@
       />
     </svg>
 
-    <svg v-if="icon=== 'm-pesa'" class="mpesa" :width=" width|| 38" :height="height ||38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <svg v-if="icon === 'm-pesa'" class="mpesa" :width=" width|| 38" :height="height ||38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <circle cx="19" cy="19" r="19" fill="url(#pattern0)"/>
       <defs>
       <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">

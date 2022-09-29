@@ -42,7 +42,8 @@ export function useWithdrawals() {
     const payload = {
       "operator_id": selectedBank.value.operator_id,
       "operator_name": selectedBank.value.name,
-      "user_account_no": accountName.value,
+      "user_account_no": accountNumber.value,
+      "account_name": accountName.value,
       "user_id": getBupayload.value.user_id,
       "country_code": getBupayload.value.country_code,
       "entity_id": getBupayload.value.entity_id,
