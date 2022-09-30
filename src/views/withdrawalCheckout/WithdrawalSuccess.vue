@@ -4,7 +4,7 @@
       <TopInfo
         :icon="icon"
         :title="title"
-        :mpesaCode="mpesaCode"
+        :mpesaCode="$route.params.reciept"
       />
 
     <div>
@@ -69,7 +69,7 @@
         </div>
         <div class="direction-flex" v-if="selectedPaymentOption?.pay_method_id === 10">
           
-          <img :src="require('../../assets/withdrawals/bank.svg')" alt="">
+          <img class="mgy-auto" :src="require('../../assets/withdrawals/bank-withdrawal.svg')" alt="">
 
           <div class="mgl-4">
             <span class="text-caption-1 semi-bold text-gray90">Bank Name</span>: <span class="text-caption-1">{{ selectedPaymentOption?.bankDetails?.operator_name   || "N/A" }}</span> <br/>
@@ -79,7 +79,7 @@
         </div>
 
         <div class="direction-flex mgt-5" v-if="selectedPaymentOption?.pay_method_id === 1">
-          <img :src="require('../../assets/withdrawals/m-pesa.svg')" alt="">
+          <img class="mgy-auto"  :src="require('../../assets/withdrawals/m-pesa-withdrawal.svg')" alt="">
           <div class="mgl-4">
             <span class="text-caption-1 semi-bold text-gray90">M-PESA</span> <br/>
             <span class="text-caption-1 semi-bold text-gray90">Mobile Number</span>: <span class="text-caption-1">{{ selectedPaymentOption.pay_method_details || "N/A" }}</span> <br/>
@@ -118,14 +118,14 @@ const loading = ref("");
 const mpesaCode = ref("");
 
 const { getBupayload , getSavedPayMethods, } = useState()
-const { selectedPaymentOption , formatCurrency} = useWithdrawals();
+const { selectedPaymentOption , formatCurrency } = useWithdrawals();
 const { route, router} = useGlobalProp();
 const { commonTrackPayload } = useSegement();
 
 const routing = () => {
   window.analytics.track("Done after Successful Payment", {
     ...commonTrackPayload(),
-    duration_of_response: route.params.duration,
+    duration_of_response: null,
   });
   router.push(localStorage.entry_route);
 };

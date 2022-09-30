@@ -1,6 +1,6 @@
 <template>
   <div class="flex-center">
-    <Processing v-if="getLoading" text="Loading..." />
+    <Processing v-if="getLoading" :text="loadingText" />
 
     <div class="card" v-else>
       <TopInfo :icon="icon" title="Withdraw Cash">
@@ -64,7 +64,7 @@ import { useStore } from 'vuex';
 import { useWithdrawals } from '../../hooks/useWithdrawals';
 
 const icon = ref('back');
-const confirm = ref(true);
+const confirm = ref(false);
 const accountName = ref('');
 const bankName = ref('');
 const accountNumber = ref('');
@@ -73,7 +73,7 @@ const { router } = useGlobalProp();
 
 const store = useStore();
 const { getSavedPayMethods, getLoading, getBupayload } = useState();
-const { selectedPaymentOption, formatCurrency } = useWithdrawals();
+const { selectedPaymentOption, loadingText, formatCurrency, withdraw } = useWithdrawals();
 const { retrievePaymentMethods } = usePayment();
 
 onMounted( async () => {

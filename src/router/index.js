@@ -198,7 +198,7 @@ const routes = [
         component: WithdrawalFailed,
       },
       {
-        path: "/withdraw-cash-success",
+        path: "/withdraw-cash-success/:reciept?",
         name: "WithdrawalSuccess",
         component: WithdrawalSuccess,
       }

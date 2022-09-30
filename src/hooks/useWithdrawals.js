@@ -2,6 +2,7 @@ import {ref, computed } from "vue";
 import { useStore } from "vuex";
 import { useGlobalProp } from "./globalProperties";
 import { useState } from "./useState";
+import { datadogRum } from "@datadog/browser-rum";
 
 const accountName = ref('');
 const selectedBank = ref(null);
@@ -14,6 +15,10 @@ export function useWithdrawals() {
   const banks = ref([]);
   const store = useStore();
   const loading = ref(false);
+  const transactionId = ref("");
+  const poll_limit = ref(30);
+  const polling_count = ref(0);
+  const loadingText = ref('Loading ...');
   const { route , router} = useGlobalProp();
 
   const { getBupayload } = useState();
@@ -172,6 +177,130 @@ export function useWithdrawals() {
     })
   }
 
+  const withdraw = async () => {
+    const payload = {
+      country: getBupayload.value.country_code,
+      amount: getBupayload.value.amount,
+      phone: selectedPaymentOption.value.pay_method_id === 1 ? selectedPaymentOption.value.pay_method_details : "",
+      email: getBupayload.value.email,
+      txref: getBupayload.value.txref,
+      userid: getBupayload.value.user_id,
+      currency: getBupayload.value.currency,
+      bulk: getBupayload.value.bulk,
+      entity: getBupayload.value.entity_id,
+      company_code: getBupayload.value.company_code,
+      pay_detail_id: selectedPaymentOption.value.pay_detail_id,
+      paymethod: selectedPaymentOption.value.pay_method_id,
+      bank : selectedPaymentOption.value?.bankDetails?.operator_name || null,
+      bank_account: selectedPaymentOption?.value?.pay_method_details || null,
+      platform: 'web',
+      pay_direction: getBupayload.value.pay_direction,
+    }
+
+    const fullPayload = {
+      params: payload,
+      url: '/api/v3/process'
+    }
+    store.commit("setLoading", true);
+    loadingText.value = "Confirming your payment. This may take a moment.";
+    const response = await store.dispatch('paymentAxiosPost', fullPayload);
+    console.log(response);
+    transactionId.value = response.transaction_id;
+    if (response.status) {
+      switch (response.transaction_status) {
+        case "pending": {
+          poll();
+          break;
+        }
+        case "success": {
+          store.commit("setLoading", false);
+          router.push({
+            name: "WithdrawalSuccess",
+            params: {
+              reciept: response?.receipt_no,
+            }
+          });
+          break;
+        }
+        default:
+          break;
+      }
+    }
+  }
+
+  const poll = () => {
+    store.commit("setLoading", true);
+    for (let poll_count = 0; poll_count < poll_limit.value; poll_count++) {
+      (function (poll_count) {
+        setTimeout(() => {
+          if (polling_count.value === poll_limit.value) {
+            poll_count = poll_limit.value;
+            return;
+          }
+
+          TransactionIdStatus();
+          if (poll_count === poll_limit.value - 1) {
+            store.commit("setLoading", false);
+            router.push({ name: "WithdrawalFailed" });
+            datadogRum.addError(new Error("Polling time out"));
+            return;
+          }
+        }, 10000 * poll_count);
+      })(poll_count);
+    }
+  }
+
+  const TransactionIdStatus = async () =>  {
+    const payload = {
+      url: `/api/v1/process/status/${transactionId.value}`,
+    };
+
+    const res = await store.dispatch("paymentAxiosGet", payload);
+
+    if (res.status) {
+      switch (res.transaction_status) {
+        case "success": {
+          polling_count.value = poll_limit.value;
+          store.dispatch("paymentNotification", {
+            text: res.message,
+          });
+          store.commit("setLoading", false);
+          store.commit("setLoading", false);
+          router.push({
+            name: "WithdrawalSuccess",
+            params: {
+              reciept: res?.receipt_no,
+            }
+          });
+          break;
+        }
+        case "failed": {
+          polling_count.value = poll_limit.value;
+          store.commit("setLoading", false);
+          store.commit("setErrorText", res.message);
+          router.push({
+            name: "WithdrawalFailed",
+          });
+          datadogRum.addError(new Error(res.message));
+          break;
+        }
+        case "pending":
+          break;
+        default:
+          break;
+      }
+      return res;
+    }
+    polling_count.value = poll_limit.value;
+    store.commit("setLoading", false);
+    store.commit("setErrorText", res.message);
+    router.push({
+      name: "WithdrawalFailed",
+    });
+    datadogRum.addError(new Error(res.message));
+
+  }
+
   const formatCurrency = (amount)  => {
     const result = parseFloat(amount);
     return result.toLocaleString();
@@ -186,11 +315,13 @@ export function useWithdrawals() {
     selectedPaymentOption,
     loading,
     phone,
+    loadingText,
     getBanks,
     addBank,
     addMpesa,
     deleteBank,
     deleteMpesa,
     formatCurrency,
+    withdraw,
   }
 }

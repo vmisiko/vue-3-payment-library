@@ -22,7 +22,7 @@
 
         <div class="direction-flex" v-if="selectedPaymentOption?.pay_method_id === 10">
           
-          <img :src="require('../../../assets/withdrawals/bank.svg')" alt="">
+          <img :src="require('../../../assets/withdrawals/bank-withdrawal.svg')" alt="">
 
           <div class="mgl-4">
             <span class="text-caption-1 semi-bold text-gray90">Bank Name</span>: <span class="text-caption-1">{{ selectedPaymentOption?.bankDetails?.operator_name   || "N/A" }}</span> <br/>
@@ -32,7 +32,7 @@
         </div>
 
         <div class="direction-flex mgt-5" v-if="selectedPaymentOption?.pay_method_id === 1">
-          <img :src="require('../../../assets/withdrawals/m-pesa.svg')" alt="">
+          <img :src="require('../../../assets/withdrawals/m-pesa-withdrawal.svg')" alt="">
           <div class="mgl-4">
             <span class="text-caption-1 semi-bold text-gray90">M-PESA</span> <br/>
             <span class="text-caption-1 semi-bold text-gray90">Mobile Number</span>: <span class="text-caption-1">{{ selectedPaymentOption.pay_method_details || "N/A" }}</span> <br/>
@@ -57,7 +57,7 @@
         color="primary"
         type="submit"
         @click="submit"
-        :loading="loading"
+        :loading="getLoading"
       >
         Withdraw
       </sendy-btn>
@@ -72,14 +72,15 @@ import { useGlobalProp } from "../../../hooks/globalProperties";
 import { useWithdrawals } from "../../../hooks/useWithdrawals";
 import  { useOtp } from "../../../hooks/useOtp";
 import { useStore } from "vuex";
+import { useState } from "../../../hooks/useState";
 
 const confirmModal = ref(null);
 const props = defineProps(["show", "payMethod"]);
 const emit = defineEmits(['close']);
 const store = useStore();
 const { router }  = useGlobalProp();
-const { getOtp, loading } = useOtp();
-const { selectedPaymentOption, phone, formatCurrency} = useWithdrawals();
+const { getLoading } = useState();
+const { selectedPaymentOption, phone, formatCurrency, withdraw } = useWithdrawals();
 
 
 watch(() => props.show, (val) => {
@@ -98,9 +99,12 @@ const handleClose = () => {
   confirmModal.value.style.display  = "none";
 };
 
-const submit = async () => {
-  router.push({ name: 'WithdrawalSuccess' });
-};
+const submit = () => {
+  withdraw();
+  emit('close');
+}
+
+
 </script>
 
 <style lang="scss">
