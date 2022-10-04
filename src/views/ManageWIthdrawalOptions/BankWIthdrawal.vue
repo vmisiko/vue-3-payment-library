@@ -20,7 +20,7 @@
               required
             >   
               <option :value="null" selected> Select your bank </option>
-              <option v-for="(bank, index) in banks" :key="index" :value="bank"> {{ bank.name }}</option>
+              <option v-for="(bank) in banks" :key="bank.operator_id" :value="bank"> {{ bank.name }}</option>
             </select>
           </div>
 
