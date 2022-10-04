@@ -71,7 +71,6 @@ watch(() => props.show, (val) => {
 });
 
 onMounted(() => {
-  console.log(props.show);
   props.show ? handleOpen() : handleClose();
 })
 

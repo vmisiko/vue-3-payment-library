@@ -49,7 +49,6 @@ export function useChoosePayment() {
       let selectedSavedMethod = {};
       savedMethods.forEach((el, i) => {
         index = i;
-        console.log(i, el.pay_detail_id , method.pay_detail_id);
         
         el.pay_detail_id === method.pay_detail_id ? selectedSavedMethod = el : null;
       });

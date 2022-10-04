@@ -156,7 +156,6 @@ export function useWithdrawals() {
   }; 
 
   const deleteMpesa = async () => {
-    console.log('delete mpesa')
     const payload = {
       pay_detail_id: selectedPaymentOption.value.pay_detail_id,
       user_id: getBupayload.value.user_id,
@@ -211,7 +210,6 @@ export function useWithdrawals() {
     store.commit("setLoading", true);
     loadingText.value = "Confirming your payment. This may take a moment.";
     const response = await store.dispatch('paymentAxiosPost', fullPayload);
-    console.log(response);
     transactionId.value = response.transaction_id;
     if (response.status) {
       switch (response.transaction_status) {

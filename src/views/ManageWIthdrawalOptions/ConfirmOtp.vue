@@ -85,7 +85,6 @@ const submit = async () => {
     selectedPaymentOption.value?.pay_method_id === 10 ? await deleteBank() : await deleteMpesa(); 
     return;
   }
-  console.log(selectedPaymentOption.value?.payment_method_id);
   selectedPaymentOption.value?.payment_method_id === 10 ? await addBank() : await addMpesa(); 
 };
 

@@ -49,7 +49,6 @@ export default {
   },
   methods: {
     startCount() {
-      console.log(this.countdown);
       const stopCountdown = setInterval(() => {
         this.countdown -= 1;
         if (!this.countdown) {

@@ -245,8 +245,6 @@ export default {
           }
         },
         (error) => {
-          console.log(error);
-          Sentry.captureException(error);
           datadogRum.addError(error);
         }
       );

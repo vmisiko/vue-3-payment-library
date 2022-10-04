@@ -49,7 +49,6 @@ export function useState() {
     store.commit('setLoading', true);
     const response =  await store.dispatch("paymentAxiosPost", fullPayload);
     store.commit('setLoading', false);
-    console.log(response);
     if (response.status) {
       const paymentMethods = paymentOptions
         ? response.payment_methods.filter((option) =>
@@ -63,7 +62,6 @@ export function useState() {
         : response.saved_payment_methods;
       store.commit("setPaymentMethods", paymentMethods);
       store.commit("setSavedPayMethods", savedMethods);
-      console.log(getPaymentMethods.value);
     }
   }
 
