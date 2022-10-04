@@ -28,6 +28,7 @@
           <sendy-btn
           color="primary"
           text="Done"
+          @click="submit"
           />
         </div>
       
@@ -47,6 +48,7 @@ import { usePayment } from '../../hooks/payment';
 import WithdrawOption from './components/WithdrawOption.vue';
 import Processing from '../../components/processing.vue';
 import { useStore } from 'vuex';
+import { useSegement } from '../../hooks/useSegment';
 
 const icon = ref('back');
 const confirm = ref(false);
@@ -58,11 +60,27 @@ const { router } = useGlobalProp();
 const store = useStore();
 const { getSavedPayMethods, getLoading } = useState();
 const { retrievePaymentMethods } = usePayment();
+const { commonTrackPayload } = useSegement();
 
 onMounted( async () => {
   store.commit("setLoading", true);
   await retrievePaymentMethods();
   store.commit("setLoading", false);
+  if (!getSavedPayMethods.value.length) {
+    router.push({name: 'AddWithdrawal'});
+  }
+  window.analytics.track("Exit after withdrawal checkout", {
+    ...commonTrackPayload(),
+    duration_of_response: null,
+  });
 });
 
+
+const submit = () => {
+  window.analytics.track("Exit Manage Payment Options", {
+    ...commonTrackPayload(),
+    duration_of_response: route.params.duration,
+  });
+  router.push(localStorage.entry_route);
+}
 </script>

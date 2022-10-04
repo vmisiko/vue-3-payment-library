@@ -62,6 +62,7 @@ import { usePayment } from '../../hooks/payment';
 import Processing from '../../components/processing.vue';
 import { useStore } from 'vuex';
 import { useWithdrawals } from '../../hooks/useWithdrawals';
+import { useSegement } from '../../hooks/useSegment';
 
 const icon = ref('back');
 const confirm = ref(false);
@@ -75,15 +76,30 @@ const store = useStore();
 const { getSavedPayMethods, getLoading, getBupayload } = useState();
 const { selectedPaymentOption, loadingText, formatCurrency, withdraw } = useWithdrawals();
 const { retrievePaymentMethods } = usePayment();
+const { commonTrackPayload }= useSegement();
 
 onMounted( async () => {
   store.commit("setLoading", true);
   await retrievePaymentMethods();
   store.commit("setLoading", false);
+
+  if (!getSavedPayMethods.value.length) {
+    router.push({name: 'AddWithdrawal'});
+  }
+  window.analytics.track("Loaded withdrawal checkout page", {
+    ...commonTrackPayload(),
+    duration_of_response: null,
+  });
+
 });
 
 const handleContinue = () => {
   confirm.value = true
-}
+  window.analytics.track("Exit after withdrawal checkout", {
+    ...commonTrackPayload(),
+    duration_of_response: null,
+  });
+  router.push(localStorage.entry_route);
+};
 
 </script>

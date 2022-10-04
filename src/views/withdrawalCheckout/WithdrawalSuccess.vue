@@ -89,12 +89,11 @@
 
       <div class="mgt-8 text-right">
         <sendy-btn
-          :block="true"
-          :loading="loading"
           color="primary"
+          class="mgt-10"
           @click="routing"
         >
-          {{ this.$translate("done") }}
+          {{ $translate("done") }}
         </sendy-btn>
       </div>
     </div>

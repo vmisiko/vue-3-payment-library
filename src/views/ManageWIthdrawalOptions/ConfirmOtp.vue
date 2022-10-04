@@ -23,7 +23,14 @@
         <span class="mgl-2 text-caption-2 text-error" v-if="otpError">{{ otpError }}</span>
         <div class="mgt-3 text-center">
           <span  class="text-gray70 pointer">{{ $translate('did_not_recieve_otp_Code') }}</span>
-          <span @click="getOtp" class="text-midnightBlue20 text-gray70 "> Resend </span>
+          <IconView
+              class="mgl-2"
+              icon="loading1"
+              width="1.5em"
+              height="1.5em"
+              v-if="loadingOtp"
+            />
+          <span v-else @click="getOtp" class="text-midnightBlue20 text-gray70 pointer "> Resend </span>
         </div>
       </div>
 

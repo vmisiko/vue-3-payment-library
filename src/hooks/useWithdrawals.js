@@ -73,6 +73,9 @@ export function useWithdrawals() {
       accountNumber.value = ""
       return;
     }
+    else if (response.duplicate) {
+      router.push({ name: "DuplicateAccount"});
+    }
     store.dispatch("paymentNotification", {
         text: `Failed to add Add withdral option`,
         type: "error"
@@ -85,6 +88,7 @@ export function useWithdrawals() {
     const payload = {
       "operator_id": 1,
       "operator_name": "MPESA",
+      "psp": "SAFARICOM",
       "user_account_no": phone.value,
       "user_id": getBupayload.value.user_id,
       "country_code": getBupayload.value.country_code,
@@ -110,6 +114,9 @@ export function useWithdrawals() {
       selectedBank.value = ""
       accountNumber.value = ""
       return;
+    }
+    else if (response.duplicate) {
+      router.push({ name: "DuplicateAccount"});
     }
     store.dispatch("paymentNotification", {
         text: response.message,

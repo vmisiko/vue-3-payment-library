@@ -4,28 +4,26 @@
       <TopInfo
         :icon="icon"
         :title="title"
-        :mpesaCode="mpesaCode"
       />
 
 
       <div class="mgt-4 body-2-regular text-gray70">
         <span>Sorry, we are experiencing some technical issues <br> processing your withdrawal.
-        </span>
+        </span> <br/>
 
-        <span>         
-           Please try again later
+        <span class="mgt-5">         
+          Please try again later
         </span>
       </div>
 
 
       <div class="mgt-8 text-right">
         <sendy-btn
-          :block="true"
-          :loading="loading"
           color="primary"
+          class="mgt-10"
           @click="routing"
         >
-          {{ this.$translate("close") }}
+          {{ $translate("close") }}
         </sendy-btn>
       </div>
     </div>

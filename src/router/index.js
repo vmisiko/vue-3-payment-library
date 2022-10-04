@@ -30,6 +30,7 @@ import OtpFail from "../views/ManageWithdrawalOptions/OtpFail";
 import WithdrawalCheckout from "../views/WithdrawalCheckout";
 import WithdrawalSuccess from "../views/WithdrawalCheckout/WithdrawalSuccess";
 import WithdrawalFailed from "../views/WithdrawalCheckout/WithdrawalFailed";
+import DuplicateAccount from "../views/ManageWithdrawalOptions/DuplicateAccount";
 
 
 const routes = [
@@ -186,6 +187,11 @@ const routes = [
         path: "/manage-withrawal",
         name: "ManageWithdrawal",
         component: ManageWithdrawalOptions,
+      },
+      {
+        path: "/duplicate",
+        name: "DuplicateAccount",
+        component: DuplicateAccount,
       },
       {
         path: "/withdraw-cash",

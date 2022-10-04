@@ -350,3 +350,9 @@
   width: 100% !important;
 }
 
+@each $size in $sizes {
+
+  .w-#{$size} {
+    width: $size !important;
+  }
+}
