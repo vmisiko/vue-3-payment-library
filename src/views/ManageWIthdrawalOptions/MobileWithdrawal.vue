@@ -53,7 +53,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { VueTelInput } from "vue3-tel-input";
 import TopInfo from '../../components/topInfo.vue';
 import { useGlobalProp } from '../../hooks/globalProperties';
@@ -77,7 +77,13 @@ const dropdownOptions = ref({
 const { getBupayload } = useState();
 
 const { router, route } = useGlobalProp();
-const { phone } = useWithdrawals();
+const { phone, isEdit, selectedPaymentOption } = useWithdrawals();
+
+onMounted(()=> {
+  if (isEdit.value) {
+    phone.value = selectedPaymentOption.value?.pay_method_details;
+  };
+});
 
 const handleConfirm = () => {
   confirm.value = true;
@@ -91,10 +97,6 @@ const validatePhone = (val) => {
     error.value = '';
   }
 };
-
-const isEdit = computed(() => {
-  return route.params.edit ? true : false;
-});
 
 </script>
 <style>

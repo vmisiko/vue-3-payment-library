@@ -9,11 +9,13 @@
 
       <div class="mgt-4 body-2-regular text-gray70">
         <span>Sorry, we are experiencing some technical issues <br> processing your withdrawal.
-        </span> <br/>
+        </span> 
 
-        <span class="mgt-5">         
-          Please try again later
-        </span>
+        <div class="mgt-5">
+          <span>         
+            Please try again later
+          </span>
+        </div>
       </div>
 
 

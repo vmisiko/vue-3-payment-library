@@ -95,11 +95,10 @@ onMounted( async () => {
 
 const handleContinue = () => {
   confirm.value = true
-  window.analytics.track("Exit after withdrawal checkout", {
+  window.analytics.track("Contiue with withdrawal checkout", {
     ...commonTrackPayload(),
     duration_of_response: null,
   });
-  router.push(localStorage.entry_route);
 };
 
 </script>

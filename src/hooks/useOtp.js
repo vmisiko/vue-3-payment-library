@@ -41,6 +41,7 @@ export function useOtp()  {
       request_id: requestId.value,
       code: otp,
       company_code: getBupayload.value.company_code,
+      email: getBupayload.value.email
     }
 
     const fullPayload = {

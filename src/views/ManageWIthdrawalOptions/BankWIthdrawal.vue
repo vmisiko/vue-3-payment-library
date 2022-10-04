@@ -104,7 +104,7 @@ onMounted( async () => {
     accountNumber.value = selectedPaymentOption.value?.pay_method_details;
   }
   else {
-    selectedBank.valu = "";
+    selectedBank.value = "";
     accountName.value ="";
     accountNumber.value = "";
   }

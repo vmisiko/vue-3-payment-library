@@ -52,6 +52,7 @@ export function useWithdrawals() {
       "user_id": getBupayload.value.user_id,
       "country_code": getBupayload.value.country_code,
       "entity_id": getBupayload.value.entity_id,
+      "pay_method_id": selectedPaymentOption.value.payment_method_id,
       "test": false,
     };
     const fullPayload = {
@@ -77,7 +78,7 @@ export function useWithdrawals() {
       router.push({ name: "DuplicateAccount"});
     }
     store.dispatch("paymentNotification", {
-        text: `Failed to add Add withdral option`,
+        text: `Failed to add Add withdrawal option`,
         type: "error"
     });
     loading.value = false;
@@ -93,6 +94,7 @@ export function useWithdrawals() {
       "user_id": getBupayload.value.user_id,
       "country_code": getBupayload.value.country_code,
       "entity_id": getBupayload.value.entity_id,
+      "pay_method_id": selectedPaymentOption.value.payment_method_id,
       "test": false,
     };
 
@@ -230,7 +232,10 @@ export function useWithdrawals() {
         default:
           break;
       }
+      return;
     }
+    store.commit("setLoading", false);
+    router.push({ name: "WithdrawalFailed" });
   }
 
   const poll = () => {

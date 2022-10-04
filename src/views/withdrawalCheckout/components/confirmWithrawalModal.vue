@@ -20,20 +20,20 @@
           <span class="body-2-semibold text-gray80"> Send money to</span>
         </div>
 
-        <div class="direction-flex" v-if="selectedPaymentOption?.pay_method_id === 10">
-          
-          <img :src="require('../../../assets/withdrawals/bank-withdrawal.svg')" alt="">
 
-          <div class="mgl-4">
+        <div class="direction-flex">
+          
+          <div class="w-38 mgy-auto">
+            <img 
+            class="mgx-auto" :src="`${iconUrl}/${selectedPaymentOption.pay_method_name.toLowerCase()}-withdrawal.svg`" alt="">
+          </div>
+
+          <div class="mgl-4" v-if="selectedPaymentOption?.pay_method_id === 10">
             <span class="text-caption-1 semi-bold text-gray90">Bank Name</span>: <span class="text-caption-1">{{ selectedPaymentOption?.bankDetails?.operator_name   || "N/A" }}</span> <br/>
             <span class="text-caption-1 semi-bold text-gray90">Acc Name</span>: <span class="text-caption-1">{{ `${getBupayload.firstname} ${getBupayload.lastname}` }}</span> <br/>
             <span class="text-caption-1 semi-bold text-gray90">Acc No</span>: <span class="text-caption-1">{{ selectedPaymentOption.pay_method_details }}</span> <br/>
           </div>
-        </div>
-
-        <div class="direction-flex mgt-5" v-if="selectedPaymentOption?.pay_method_id === 1">
-          <img :src="require('../../../assets/withdrawals/m-pesa-withdrawal.svg')" alt="">
-          <div class="mgl-4">
+          <div class="mgl-4" v-if="selectedPaymentOption?.pay_method_id === 1">
             <span class="text-caption-1 semi-bold text-gray90">M-PESA</span> <br/>
             <span class="text-caption-1 semi-bold text-gray90">Mobile Number</span>: <span class="text-caption-1">{{ selectedPaymentOption.pay_method_details || "N/A" }}</span> <br/>
           </div>
@@ -78,7 +78,7 @@ const confirmModal = ref(null);
 const props = defineProps(["show", "payMethod"]);
 const emit = defineEmits(['close']);
 const store = useStore();
-const { router }  = useGlobalProp();
+const { router , iconUrl }  = useGlobalProp();
 const { getLoading } = useState();
 const { selectedPaymentOption, phone, formatCurrency, withdraw } = useWithdrawals();
 
