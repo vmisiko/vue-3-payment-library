@@ -38,7 +38,6 @@ export function useOtp()  {
   const validateOtp = async (otp) => {
     if (!otp) { return false};
     const payload =  {
-      request_id: requestId.value,
       code: otp,
       company_code: getBupayload.value.company_code,
       email: getBupayload.value.email
