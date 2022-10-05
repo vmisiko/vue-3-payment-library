@@ -88,7 +88,7 @@
 </template>
 
 <script>
-import { onMounted, onBeforeMount, toRefs, ref, reactive, toRef} from "vue";
+import { onMounted, toRefs, reactive} from "vue";
 import TopInfo from "../components/topInfo";
 import CvvModal from "../components/modals/cvvModal";
 import ErrorModal from "../components/modals/ErrorModal";
