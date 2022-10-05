@@ -351,8 +351,8 @@ import { usePayBybankSetup } from "../../../../hooks/payBybankSetup";
 }
 
 .lib-otp-input {
-  width: 40px !important;
-  height: 40px !important;
+  width: 40px ;
+  height: 40px;
   padding: 5px;
   margin: 0 10px;
   font-size: 20px;

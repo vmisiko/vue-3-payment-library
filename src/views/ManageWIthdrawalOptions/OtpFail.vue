@@ -16,10 +16,10 @@
         </svg>
 
         <div class="text-center mt-5">
-          <span class="text-gray90 text-body-1 semi-bold">{{ $transalate("oops") }}</span>
+          <span class="text-gray90 text-body-1 semi-bold">{{ $translate("oops") }}</span>
 
           <div class="text-center ">
-            <span class="text-body-2 text-gray70"> {{ $transalate("entered_incorrect_code") }} </span>
+            <span class="text-body-2 text-gray70"> {{ $translate("entered_incorrect_code") }} </span>
           </div>
         </div>
       </div>

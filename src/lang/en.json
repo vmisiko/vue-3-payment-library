@@ -190,7 +190,7 @@
   "enter_account_name": "Enter your account name",
   "enter_account_number": "Enter your account number",
   "remove_bank": "Remove bank",
-  "for_security_we_sent_otp": "For security, we have sent you a 4-digit OTP code to the your email “s****@gmail.com” to confirm this change",
+  "for_security_we_sent_otp": "For security, we have sent you a 4-digit OTP code to the your email 's****@gmail.com' to confirm this change",
   "resend": "Resend",
 
   "oops": "Ooops!",
@@ -213,9 +213,10 @@
   "sorry_experiencing_technical_issues": "Sorry, we are experiencing some technical issues processing your withdrawal.",
   "please_try_again_later": "Please try again later",
   "withdrawal_failed": "Withdrawal Failed",
-  
+
   "payment_method": "Payment Method",
   "withdrawal_details": "Withdrawal Details",
-  "withdrawal_successful": "Withdrawal Successful"
+  "withdrawal_successful": "Withdrawal Successful",
+  "confirmation": "Confirmation"
 }
 

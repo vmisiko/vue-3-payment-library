@@ -28,7 +28,7 @@ export function useOtp()  {
     const result = await store.dispatch('paymentAxiosPost', fullPayload);
     loading.value = false;
     if (result.status) {
-      pinLength.value = result.config?.pinLength || 4;
+      pinLength.value = result.config?.pin_length || 4;
       requestId.value = result.config.request_id;
     }
     

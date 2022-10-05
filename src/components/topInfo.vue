@@ -4,9 +4,7 @@
     <div class="mgt-4">
       <span class="title-payment" v-if="title">
         {{
-          $route.name === "SuccessView" && $route.params.title
-            ? $route.params.title
-            : title
+         topTitle
         }}
       </span>
     </div>
@@ -16,7 +14,7 @@
         <span
           class="subtitle-warning"
           :class="{
-            'subtitle-normal': ($route.params.name = 'ResolvePayment'),
+            'subtitle-normal': isResolvepayment,
           }"
         >
           {{ subtitle }}
@@ -41,6 +39,17 @@ export default {
       text: "",
     };
   },
+  computed: {
+    topTitle() {
+      return this.$route.name === "SuccessView" && this.$route.params.title
+              ? this.title
+              : this.title
+    },
+    isResolvepayment() {
+      return $route.params.name === 'ResolvePayment'
+    }
+  }
+
 };
 </script>
 
