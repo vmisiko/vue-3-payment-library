@@ -1,12 +1,12 @@
 <template>
   <div class="flex-center">
-    <Processing v-if="getLoading" text="Please wait ..." />
+    <Processing v-if="getLoading" :text="$translate('please_wait')" />
 
     <div class="card" v-else>
       <TopInfo :icon="icon" :title="title">
         <template v-slot:subtitle>
           <span class="body-2-regular text-gray70">
-            Select a withdrawal option to continue
+            {{ $translate('select_withdrawal_option') }}
           </span>
         </template>
       </TopInfo>

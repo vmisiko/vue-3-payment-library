@@ -1,12 +1,12 @@
 <template>
   <div class="flex-center">
-    <Processing v-if="getLoading" text="Loading..." />
+    <Processing v-if="getLoading" :text="$translate('loading')" />
 
     <div class="card" v-else>
-      <TopInfo :icon="icon" title="Withdrawal Options">
+      <TopInfo :icon="icon" :title="$translate('withdrawal_options')">
         <template v-slot:subtitle>
           <span class="body-2-regular text-gray70">
-            Manage your payment withdrawal options
+            {{ $translate('manage_your_payment') }}
           </span>
         </template>
       </TopInfo>
@@ -27,7 +27,7 @@
         <div class="text-right">
           <sendy-btn
           color="primary"
-          text="Done"
+          :text="$translate('done')"
           @click="submit"
           />
         </div>

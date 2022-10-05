@@ -5,12 +5,12 @@
         
         <div>
           <span class="text-subtitle-1"
-            > Confirm Details </span
+            > {{ $translate('confirm_details') }}</span
           >
         </div>
 
         <div class="text-body-2 mgt-4">
-          <span>Please review your payout details to ensure that they are entered correctly.</span>
+          <span>{{ $translate('please_review_payouts') }}</span>
         </div>
 
         <div class="direction-flex mgt-5">
@@ -21,15 +21,15 @@
 
           <div class="mgl-4" v-if="selectedPaymentOption?.payment_method_id === 10">
             <div class="mgl-4">
-            <span class="text-caption-1 semi-bold text-gray90">Bank Name</span>: <span class="text-caption-1">{{ selectedBank?.name }}</span> <br/>
-            <span class="text-caption-1 semi-bold text-gray90">Acc Name</span>: <span class="text-caption-1">{{ accountName }}</span> <br/>
-            <span class="text-caption-1 semi-bold text-gray90">Acc No</span>: <span class="text-caption-1">{{ accountNumber }}</span> <br/>
+            <span class="text-caption-1 semi-bold text-gray90">{{ $translate('bank_name') }}</span>: <span class="text-caption-1">{{ selectedBank?.name }}</span> <br/>
+            <span class="text-caption-1 semi-bold text-gray90">{{ $translate('acc_name') }}</span>: <span class="text-caption-1">{{ accountName }}</span> <br/>
+            <span class="text-caption-1 semi-bold text-gray90">{{ $translate('acc_no') }}</span>: <span class="text-caption-1">{{ accountNumber }}</span> <br/>
           </div>
           </div>
 
           <div class="mgl-4" v-if="selectedPaymentOption?.payment_method_id === 1">
             <span class="text-caption-1 semi-bold text-gray90">M-PESA</span> <br/>
-            <span class="text-caption-1 semi-bold text-gray90">Mobile Number</span>: <span class="text-caption-1">{{ phone || "N/A" }}</span> <br/>
+            <span class="text-caption-1 semi-bold text-gray90">{{ $translate('mobile_number') }}</span>: <span class="text-caption-1">{{ phone || "N/A" }}</span> <br/>
           </div>
         </div>
       </div>
@@ -43,7 +43,7 @@
           type="text"
           @click="$emit('close')"
         >
-          Cancel
+          {{ $translate('cancel') }}
         </sendy-btn>
         <span class="mgx-4"></span>
         <sendy-btn
@@ -53,7 +53,7 @@
         @click="submit"
         :loading="loading"
       >
-        Save Details
+        {{ $translate('save_details') }}
       </sendy-btn>
       </div>
 
@@ -96,17 +96,16 @@ const handleClose = () => {
 };
 
 const submit = async () => {
-  router.push({ name: 'ConfirmOtp' });
 
-  // const response = await getOtp();
-  // if (response.status) {
-  //   router.push({ name: 'ConfirmOtp' });
-  //   return;
-  // }
-  // store.dispatch('paymentNotification' , {
-  //   text: response.message,
-  //   type: "error"
-  // });
+  const response = await getOtp();
+  if (response.status) {
+    router.push({ name: 'ConfirmOtp' });
+    return;
+  }
+  store.dispatch('paymentNotification' , {
+    text: response.message,
+    type: "error"
+  });
 };
 </script>
 

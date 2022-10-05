@@ -6,13 +6,13 @@
 
     <div class="mgl-4" v-if="paymentMethod?.pay_method_id === 10">
       <span class="text-caption-1 semi-bold">{{ bankDetails?.operator_name }}</span> <br/>
-      <span class="text-caption-1  text-gray80">Acc Name : {{ `${getBupayload.firstname} ${getBupayload.lastname}` }}</span> <br/>
-      <span class="text-caption-1 text-gray80">Acc No : {{ paymentMethod.pay_method_details }}</span> <br/>
+      <span class="text-caption-1  text-gray80">{{ $translate("acc_name") }} : {{ `${getBupayload.firstname} ${getBupayload.lastname}` }}</span> <br/>
+      <span class="text-caption-1 text-gray80">{{ $translate("acc_no") }} : {{ paymentMethod.pay_method_details }}</span> <br/>
     </div>
 
     <div class="mgl-4" v-if="paymentMethod?.pay_method_id === 1">
       <span class="text-caption-1 semi-bold">{{ paymentMethod?.pay_method_name }}</span> <br/>
-      <span class="text-caption-1  text-gray80">Mobile Number : {{ paymentMethod?.pay_method_details }}</span> <br/>
+      <span class="text-caption-1  text-gray80">{{ $translate("mobile_number") }} : {{ paymentMethod?.pay_method_details }}</span> <br/>
     </div>
     
     <span class="spacer"></span>

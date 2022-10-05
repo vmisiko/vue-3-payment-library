@@ -41,7 +41,7 @@ const optionName = computed(()=> {
           result = translate("credit_card_payment_small");
           break;
         case 20:
-          result = "Pay by Bank";
+          result = translate("pay_by_bank");
           break;
         case 10:
           result = translate('Bank');

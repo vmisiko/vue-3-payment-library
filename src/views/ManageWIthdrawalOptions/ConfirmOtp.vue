@@ -4,7 +4,7 @@
       <TopInfo :icon="icon" title="Confirmation">
         <template v-slot:subtitle>
           <span class="body-2-regular text-gray70">
-            For security, we have sent you a 4-digit OTP code to the your email “s****@gmail.com” to confirm this change
+            {{ $translate('for_security_we_sent_otp') }}
           </span>
         </template>
       </TopInfo>
@@ -30,7 +30,7 @@
               height="1.5em"
               v-if="loadingOtp"
             />
-          <span v-else @click="getOtp" class="text-midnightBlue20 text-gray70 pointer "> Resend </span>
+          <span v-else @click="getOtp" class="text-midnightBlue20 text-gray70 pointer "> {{ $translate('resend') }} </span>
         </div>
       </div>
 
@@ -76,11 +76,11 @@ const handleOnComplete = (val) => {
 };
 
 const submit = async () => {
-  // const response = await validateOtp(otp.value);
-  // if (!response.status) {
-  //   router.push({ name: 'OtpFail' });
-  //   return;
-  // }
+  const response = await validateOtp(otp.value);
+  if (!response.status) {
+    router.push({ name: 'OtpFail' });
+    return;
+  }
   if (route.params.delete) {
     selectedPaymentOption.value?.pay_method_id === 10 ? await deleteBank() : await deleteMpesa(); 
     return;

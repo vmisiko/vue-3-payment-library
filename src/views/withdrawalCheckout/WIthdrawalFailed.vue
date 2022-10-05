@@ -3,17 +3,17 @@
     <div class="card-min">
       <TopInfo
         :icon="icon"
-        :title="title"
+        :title="$translate('withdrawal_failed')"
       />
 
 
       <div class="mgt-4 body-2-regular text-gray70">
-        <span>Sorry, we are experiencing some technical issues <br> processing your withdrawal.
+        <span>{{ $translate('sorry_experiencing_technical_issues')}}
         </span> 
 
         <div class="mgt-5">
           <span>         
-            Please try again later
+            {{ $translate('please_try_again_later') }}
           </span>
         </div>
       </div>
@@ -43,7 +43,6 @@ import { useGlobalProp } from '../../hooks/globalProperties';
 import { useSegement } from '../../hooks/useSegment';
 
 const icon = ref("warning");
-const title = ref("Withdrawal Failed");
 const subtitle = ref("");
 const loading = ref("");
 

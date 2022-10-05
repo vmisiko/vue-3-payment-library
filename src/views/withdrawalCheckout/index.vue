@@ -6,7 +6,7 @@
       <TopInfo :icon="icon" title="Withdraw Cash">
         <template v-slot:subtitle>
           <span class="body-2-regular text-gray70">
-            How would you like to be paid?
+            {{ $translate('how_would_you_like_paid') }}
           </span>
         </template>
       </TopInfo>
@@ -27,7 +27,7 @@
       <div class="direction-flex mb-5">
           <div class="">
             <span class="text-caption text-gray70">
-              Withdrawal amount
+              {{ $translate('withdrawal_amount') }}
             </span>
             <div class="payment-text-secondary">
               {{ getBupayload.currency }}
@@ -41,7 +41,7 @@
             :disabled="!picked"
             @click="handleContinue"
           >
-            continue
+            {{ $translate('continue') }}
           </sendy-btn>
         </div>
       

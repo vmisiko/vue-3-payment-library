@@ -5,7 +5,7 @@
       <TopInfo :icon="icon" :title="$translate('bank')">
         <template v-slot:subtitle>
           <span class="body-2-regular text-gray70">
-            Enter your bank account details
+            {{ $translate('enter_your_bank_details') }}
           </span>
         </template>
       </TopInfo>
@@ -13,35 +13,35 @@
         <div class="mgt-5">
 
           <div class="textfield mgt-5">
-            <label for="" class="normal-text"> Bank Name</label>
+            <label for="" class="normal-text"> {{ $translate('bank_name') }}</label>
             <select
               v-model="selectedBank"
               class="phone-input"
               required
             >   
-              <option :value="null" selected> Select your bank </option>
+              <option :value="null" selected> {{ $translate('select-your_bank') }} </option>
               <option v-for="(bank) in banks" :key="bank.operator_id" :value="bank"> {{ bank.name }}</option>
             </select>
           </div>
 
           <div class="textfield mgt-5">
-            <label for="" class="normal-text"> Account Name</label>
+            <label for="" class="normal-text"> {{ $translate('account_name') }}</label>
             <input
               type="text"
               v-model="accountName"
               class="phone-input"
-              placeholder="Enter your account name"
+              :placeholder="$translate('enter_account_name')"
               required
             /> 
           </div>
 
           <div class="textfield mgt-5">
-            <label for="" class="normal-text"> Account Number</label>
+            <label for="" class="normal-text"> {{ $translate('account_number') }}</label>
             <input
               type="text"
               v-model="accountNumber"
               class="phone-input"
-              placeholder="Enter your account number"
+              :placeholder="$translate('enter_account_number')"
               required
             /> 
           </div>
@@ -49,7 +49,7 @@
 
         <div v-if="isEdit" @click="isDelete=true" class="mgt-8 text-btn direction-flex pointer" >
           <IconView icon="delete" />
-          <span class="text-btn"> Remove bank </span>
+          <span class="text-btn"> {{ $translate('remove_bank')}} </span>
         </div>
 
         <div class="mgy-10"></div>
@@ -60,7 +60,7 @@
           type="submit"
           color="primary"
           :block="true"
-          text="Continue"
+          :text="$translate('continue')"
           />
         </div>
       </form>

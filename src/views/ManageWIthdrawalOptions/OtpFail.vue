@@ -16,10 +16,10 @@
         </svg>
 
         <div class="text-center mt-5">
-          <span class="text-gray90 text-body-1 semi-bold"> Ooops!</span>
+          <span class="text-gray90 text-body-1 semi-bold">{{ $transalate("oops") }}</span>
 
           <div class="text-center ">
-            <span class="text-body-2 text-gray70">You have entered an incorrect code. Please try again.</span>
+            <span class="text-body-2 text-gray70"> {{ $transalate("entered_incorrect_code") }} </span>
           </div>
         </div>
       </div>
@@ -29,7 +29,7 @@
         @click="submit"
         color="primary"
         :block="true"
-        text="Resend"
+        :text="$translate('resend')"
         :loading="loading"
         />
     </div>

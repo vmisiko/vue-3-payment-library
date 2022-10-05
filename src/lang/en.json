@@ -171,6 +171,51 @@
   "change_phone_number": "Change phone number",
   "bank": "Bank Transfer",
   "did_not_recieve_otp_Code": "Didn’t receive the OTP code?", 
-  "add_withdraw_option": "Add withdrawal option"
+
+  "add_withdraw_option": "Add withdrawal option",
+  "sure_remove_withdrawal_option": "Are you sure you want to remove this withdrawal option?",
+  "bank_name": "Bank Name",
+  "acc_name": "Acc Name",
+  "acc_no": "Acc No",
+  "mobile_number": "Mobile Number",
+  "confirm_details": "Confirm Details",
+  "please_review_payout": "Please review your payout details to ensure that they are entered correctly.",
+  "save_details": "Save Details",
+  "select_withdrawal_option": "Select a withdrawal option to continue",
+
+  "enter_your_bank_details": "Enter your bank account details",
+  "select_your_bank": "Select your bank",
+  "account_name": "Account Name",
+  "account_number": "Account Number",
+  "enter_account_name": "Enter your account name",
+  "enter_account_number": "Enter your account number",
+  "remove_bank": "Remove bank",
+  "for_security_we_sent_otp": "For security, we have sent you a 4-digit OTP code to the your email “s****@gmail.com” to confirm this change",
+  "resend": "Resend",
+
+  "oops": "Ooops!",
+  "seems_you_have_already_added": "It seems you have already added that",
+  "as_withdrawal_option": "as a withdrawal option",
+  "back_to_withdrawal": "Back to Withdrawal Options",
+  "bank_account": "bank account",
+
+  "loading": "Loading...",
+  "withdrawal_options": "Withdrawal Options",
+  "manage_your_payment": "Manage your payment withdrawal options",
+  "entered_incorrect_code": "You have entered an incorrect code. Please try again.",
+  "enter_mpesa_details": "Enter your M-PESA details",
+  "remove_option": "Remove Option",
+
+  "send_money_to": "Send money to",
+  "withdrawal_amount": "Withdrawal amount",
+  "withdraw": "Withdraw",
+  "how_would_you_like_paid": "How would you like to be paid?",
+  "sorry_experiencing_technical_issues": "Sorry, we are experiencing some technical issues processing your withdrawal.",
+  "please_try_again_later": "Please try again later",
+  "withdrawal_failed": "Withdrawal Failed",
+  
+  "payment_method": "Payment Method",
+  "withdrawal_details": "Withdrawal Details",
+  "withdrawal_successful": "Withdrawal Successful"
 }
 

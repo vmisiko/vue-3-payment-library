@@ -5,7 +5,7 @@
         
         <div class="flex">
           <span class="text-subtitle-1"
-            > Confirm Details </span
+            > {{ $translate('confirm_details') }}  </span
           >
 
           <span class="spacer"></span>
@@ -17,7 +17,7 @@
         <hr class="mgt-6">
 
         <div class="mgy-4">
-          <span class="body-2-semibold text-gray80"> Send money to</span>
+          <span class="body-2-semibold text-gray80"> {{ $translate('send_money_to') }}</span>
         </div>
 
 
@@ -29,13 +29,13 @@
           </div>
 
           <div class="mgl-4" v-if="selectedPaymentOption?.pay_method_id === 10">
-            <span class="text-caption-1 semi-bold text-gray90">Bank Name</span>: <span class="text-caption-1">{{ selectedPaymentOption?.bankDetails?.operator_name   || "N/A" }}</span> <br/>
-            <span class="text-caption-1 semi-bold text-gray90">Acc Name</span>: <span class="text-caption-1">{{ `${getBupayload.firstname} ${getBupayload.lastname}` }}</span> <br/>
-            <span class="text-caption-1 semi-bold text-gray90">Acc No</span>: <span class="text-caption-1">{{ selectedPaymentOption.pay_method_details }}</span> <br/>
+            <span class="text-caption-1 semi-bold text-gray90">{{ $translate('bank_name') }}</span>: <span class="text-caption-1">{{ selectedPaymentOption?.bankDetails?.operator_name   || "N/A" }}</span> <br/>
+            <span class="text-caption-1 semi-bold text-gray90">{{ $translate('acc_name') }}</span>: <span class="text-caption-1">{{ `${getBupayload.firstname} ${getBupayload.lastname}` }}</span> <br/>
+            <span class="text-caption-1 semi-bold text-gray90">{{ $translate('acc_no') }}</span>: <span class="text-caption-1">{{ selectedPaymentOption.pay_method_details }}</span> <br/>
           </div>
           <div class="mgl-4" v-if="selectedPaymentOption?.pay_method_id === 1">
             <span class="text-caption-1 semi-bold text-gray90">M-PESA</span> <br/>
-            <span class="text-caption-1 semi-bold text-gray90">Mobile Number</span>: <span class="text-caption-1">{{ selectedPaymentOption.pay_method_details || "N/A" }}</span> <br/>
+            <span class="text-caption-1 semi-bold text-gray90">{{ $translate('mobile_number') }}</span>: <span class="text-caption-1">{{ selectedPaymentOption.pay_method_details || "N/A" }}</span> <br/>
           </div>
         </div>
       
@@ -44,7 +44,7 @@
       <div class="flex justify-between mgt-5">
         <div class="w-full">
           <span class="text-caption text-gray70">
-            Withdrawal amount
+            {{ $translate('withdrawal_amount') }}
           </span>
           <div class="payment-text-secondary">
             {{ getBupayload.currency }}
@@ -59,7 +59,7 @@
         @click="submit"
         :loading="getLoading"
       >
-        Withdraw
+        {{ $translate('withdrawal') }}
       </sendy-btn>
       </div>
     </div>

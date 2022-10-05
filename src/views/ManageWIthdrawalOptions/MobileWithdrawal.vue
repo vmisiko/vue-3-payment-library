@@ -5,7 +5,7 @@
       <TopInfo :icon="icon" title="M-PESA">
         <template v-slot:subtitle>
           <span class="body-2-regular text-gray70">
-            Enter your M-PESA details
+           {{ $translate('enter_mpesa_details') }}
           </span>
         </template>
       </TopInfo>
@@ -13,7 +13,7 @@
       <div class="mgt-5">
 
         <div class="textfield mgt-5">
-          <label for="" class="normal-text"> Mobile Number</label>
+          <label for="" class="normal-text"> {{ $translate('mobile_number') }}</label>
           <vue-tel-input
             v-model="phone"
             autoFormat
@@ -29,7 +29,7 @@
 
       <div v-if="isEdit" @click="isDelete=true" class="mgt-8 text-btn direction-flex pointer" >
         <IconView icon="delete" />
-        <span class="text-btn"> Remove Option </span>
+        <span class="text-btn"> {{ $translate('remove_option') }} </span>
       </div>
 
       <div class="mgy-10"></div>
@@ -39,7 +39,7 @@
         v-if="!isEdit"
         @click="handleConfirm"
         color="primary"
-        text="Continue"
+        :text="$translate('continue')"
         :disable="disable"
         />
       </div>

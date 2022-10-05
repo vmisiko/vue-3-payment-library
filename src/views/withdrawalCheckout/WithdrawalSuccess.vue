@@ -3,7 +3,7 @@
     <div class="card-min">
       <TopInfo
         :icon="icon"
-        :title="title"
+        :title="$translate('withdrawal_successful')"
         :mpesaCode="$route.params.reciept"
       />
 
@@ -27,23 +27,16 @@
       <div class="mgt-8">
         <span class="normal-text">
           {{
-            `Payment Method`
+            $translate('payment_method')
           }}</span
         >
 
         <div class="direction-flex float-right">
-          <img
-            v-if="selectedPaymentOption.pay_method_id === 1"
-            :src="require(`../../assets/withdrawals/${selectedPaymentOption.pay_method_name.toLowerCase()}`)"
-            alt=""
-          />
-          <IconView
-            class="mgt-n2"
-            v-if="selectedPaymentOption.pay_method_id === 10"
-            icon="bank"
-            width="34"
-            height="24"
-          />
+          
+          <img 
+           :src="`${iconUrl}/${selectedPaymentOption.pay_method_name.toLowerCase()}-withdrawal.svg`" 
+           alt=""
+           >
           <span
             class="mgl-2 text-caption-1"
             v-if="selectedPaymentOption.pay_method_id === 1"
@@ -63,29 +56,23 @@
 
     <hr class="margin-hr" />
 
-      <div class="mgt-8">
-        <div>
-          <span class="body-2-semibold text-gray80">Withdrawal Details</span>
-        </div>
-        <div class="direction-flex" v-if="selectedPaymentOption?.pay_method_id === 10">
+    <div class="direction-flex">
           
-          <img class="mgy-auto" :src="require('../../assets/withdrawals/bank-withdrawal.svg')" alt="">
-
-          <div class="mgl-4">
-            <span class="text-caption-1 semi-bold text-gray90">Bank Name</span>: <span class="text-caption-1">{{ selectedPaymentOption?.bankDetails?.operator_name   || "N/A" }}</span> <br/>
-            <span class="text-caption-1 semi-bold text-gray90">Acc Name</span>: <span class="text-caption-1">{{ `${getBupayload.firstname} ${getBupayload.lastname}` }}</span> <br/>
-            <span class="text-caption-1 semi-bold text-gray90">Acc No</span>: <span class="text-caption-1">{{ selectedPaymentOption.pay_method_details }}</span> <br/>
-          </div>
+      <div class="w-38 mgy-auto">
+        <img 
+        class="mgx-auto" :src="`${iconUrl}/${selectedPaymentOption.pay_method_name.toLowerCase()}-withdrawal.svg`" alt="">
         </div>
 
-        <div class="direction-flex mgt-5" v-if="selectedPaymentOption?.pay_method_id === 1">
-          <img class="mgy-auto"  :src="require('../../assets/withdrawals/m-pesa-withdrawal.svg')" alt="">
-          <div class="mgl-4">
-            <span class="text-caption-1 semi-bold text-gray90">M-PESA</span> <br/>
-            <span class="text-caption-1 semi-bold text-gray90">Mobile Number</span>: <span class="text-caption-1">{{ selectedPaymentOption.pay_method_details || "N/A" }}</span> <br/>
-          </div>
-        </div>
+      <div class="mgl-4" v-if="selectedPaymentOption?.pay_method_id === 10">
+        <span class="text-caption-1 semi-bold text-gray90">{{ $translate('bank_name') }}</span>: <span class="text-caption-1">{{ selectedPaymentOption?.bankDetails?.operator_name   || "N/A" }}</span> <br/>
+        <span class="text-caption-1 semi-bold text-gray90">{{ $translate('acc_name') }}</span>: <span class="text-caption-1">{{ selectedPaymentOption?.bankDetails?.account_name || `${getBupayload.firstname} ${getBupayload.lastname}` }}</span> <br/>
+        <span class="text-caption-1 semi-bold text-gray90">{{ $translate('acc_no') }}</span>: <span class="text-caption-1">{{ selectedPaymentOption.pay_method_details }}</span> <br/>
       </div>
+      <div class="mgl-4" v-if="selectedPaymentOption?.pay_method_id === 1">
+        <span class="text-caption-1 semi-bold text-gray90">M-PESA</span> <br/>
+        <span class="text-caption-1 semi-bold text-gray90">{{ $translate('mobile_number') }}</span>: <span class="text-caption-1">{{ selectedPaymentOption.pay_method_details || "N/A" }}</span> <br/>
+      </div>
+    </div>
 
       <div class="mgt-8 text-right">
         <sendy-btn
@@ -118,7 +105,7 @@ const mpesaCode = ref("");
 
 const { getBupayload , getSavedPayMethods, } = useState()
 const { selectedPaymentOption , formatCurrency } = useWithdrawals();
-const { route, router} = useGlobalProp();
+const { route, router, iconUrl } = useGlobalProp();
 const { commonTrackPayload } = useSegement();
 
 const routing = () => {

@@ -2,7 +2,7 @@
   <div id="cvv-modal" class="modal" ref="confirmModal">
     <div class="modal-content">
       <div class="mgt-5">
-        <span>Are you sure you want to remove this withdrawal option?</span>
+        <span>{{ $translate("sure_remove_withdrawal_option") }}</span>
       </div>
 
       <div class="direction-flex mgt-5">
@@ -12,14 +12,14 @@
         </div>
 
         <div class="mgl-4" v-if="selectedPaymentOption?.pay_method_id === 10">
-          <span class="text-caption-1 semi-bold text-gray90">Bank Name</span>: <span class="text-caption-1">{{ selectedPaymentOption?.bankDetails?.operator_name   || "N/A" }}</span> <br/>
-          <span class="text-caption-1 semi-bold text-gray90">Acc Name</span>: <span class="text-caption-1">{{ `${getBupayload.firstname} ${getBupayload.lastname}` }}</span> <br/>
-          <span class="text-caption-1 semi-bold text-gray90">Acc No</span>: <span class="text-caption-1">{{ selectedPaymentOption.pay_method_details }}</span> <br/>
+          <span class="text-caption-1 semi-bold text-gray90">{{ $translate("bank_name") }}</span>: <span class="text-caption-1">{{ selectedPaymentOption?.bankDetails?.operator_name   || "N/A" }}</span> <br/>
+          <span class="text-caption-1 semi-bold text-gray90"> {{ $translate("acc_name") }}</span>: <span class="text-caption-1">{{ selectedPaymentOption?.bankDetails?.account_name || `${getBupayload.firstname} ${getBupayload.lastname}` }}</span> <br/>
+          <span class="text-caption-1 semi-bold text-gray90">{{ $translate("acc_no") }}</span>: <span class="text-caption-1">{{ selectedPaymentOption.pay_method_details }}</span> <br/>
         </div>
 
         <div class="mgl-4" v-if="selectedPaymentOption?.pay_method_id === 1">
           <span class="text-caption-1 semi-bold text-gray90">M-PESA</span> <br/>
-          <span class="text-caption-1 semi-bold text-gray90">Mobile Number</span>: <span class="text-caption-1">{{ selectedPaymentOption.pay_method_details || "N/A" }}</span> <br/>
+          <span class="text-caption-1 semi-bold text-gray90">{{ $translate("mobile_number") }}</span>: <span class="text-caption-1">{{ selectedPaymentOption.pay_method_details || "N/A" }}</span> <br/>
         </div>
       </div>
 
@@ -30,7 +30,7 @@
           type="text"
           @click="$emit('close')"
         >
-          Cancel
+          {{ $translate('cancel') }}
         </sendy-btn>
         <span class="mgx-4"></span>
         <sendy-btn
@@ -40,7 +40,7 @@
           @click="submit"
           :loading="loading"
         >
-          Delete
+          {{ $translate('delete') }}
         </sendy-btn>
       </div>
 
@@ -83,17 +83,15 @@ const handleClose = () => {
 };
 
 const submit  = async () => {
-  router.push({ name: 'ConfirmOtp', params: { delete: true }});
-
-  // const response = await getOtp();
-  // if (response.status) {
-  //   router.push({ name: 'ConfirmOtp', params: { delete: true }});
-  //   return;
-  // }
-  // store.dispatch('paymentNotification' , {
-  //   text:response.message,
-  //   type: "error"
-  // });
+  const response = await getOtp();
+  if (response.status) {
+    router.push({ name: 'ConfirmOtp', params: { delete: true }});
+    return;
+  }
+  store.dispatch('paymentNotification' , {
+    text:response.message,
+    type: "error"
+  });
 
 }
 </script>

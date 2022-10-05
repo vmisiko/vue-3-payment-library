@@ -17,10 +17,10 @@
 
         <span class="spacer"></span>
         <div class="text-center mt-5">
-          <span class="text-gray90 text-body-1 semi-bold"> Ooops!</span>
+          <span class="text-gray90 text-body-1 semi-bold"> {{ $translate('oops') }}</span>
 
           <div class="text-center ">
-            <span class="text-body-2 text-gray70">It seems you have already added that <span>{{ selectedPaymentOption?.payment_method_id === 10 ? 'bank account' : 'mobile number'}} </span> as a withdrawal option</span>
+            <span class="text-body-2 text-gray70">{{ $translate('seems_you_have_already_added') }} <span>{{ selectedPaymentOption?.payment_method_id === 10 ? $translate('bank_account') : $translate('mobile_number') }} </span> {{ $translate('as_withdrawal_option') }}</span>
           </div>
         </div>
       </div>
@@ -30,7 +30,7 @@
         <sendy-btn
           @click="$router.push({name: 'ManageWithdrawal'})"
           color="primary"
-          text="Back to Withdrawal Options"
+          :text="$translate('back_to_withdrawal')"
           :loading="loading"
         />
       </div>
@@ -40,6 +40,7 @@
 </template>
 
 <script setup>
+import { translate } from "@intlify/core-base";
 import { useWithdrawals } from "../../hooks/useWithdrawals";
 
 const { selectedPaymentOption } = useWithdrawals();
