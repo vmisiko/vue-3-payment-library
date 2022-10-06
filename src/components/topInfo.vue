@@ -46,7 +46,7 @@ export default {
               : this.title
     },
     isResolvepayment() {
-      return $route.params.name === 'ResolvePayment'
+      return this.$route.params.name === 'ResolvePayment'
     }
   }
 

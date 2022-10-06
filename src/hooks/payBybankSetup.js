@@ -2,7 +2,6 @@ import { reactive, toRefs } from "vue";
 import { useStore } from "vuex";
 import { useGlobalProp } from "./globalProperties";
 import { useState } from "./useState";
-import * as Sentry from "@sentry/vue";
 import { datadogRum } from "@datadog/browser-rum";
 
 
@@ -66,7 +65,6 @@ export function usePayBybankSetup() {
       router.push({ name: "FailedAccountSetup" });
     }
     store.commit('setErrorText', response.message);
-    Sentry.captureException(new Error(response.message));
     datadogRum.addError(new Error(response.message));
   };
 

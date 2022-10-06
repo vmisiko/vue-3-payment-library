@@ -1,6 +1,5 @@
 import { mapActions, mapGetters, mapMutations } from "vuex";
 import { i18n } from "../plugins/i18n";
-import * as Sentry from "@sentry/vue";
 import { datadogRum } from '@datadog/browser-rum';
 
 
@@ -97,12 +96,6 @@ const mixin = {
       this.loadLanguageAsync(payload.locale ? payload.locale : "en");
       window.analytics.identify(payload.user_id, {
         email: payload.email,
-      });
-
-      Sentry.setUser({ 
-        name: `${payload.firstname} ${payload.lastname}`,
-        email: payload.email,
-        user_id: payload.user_id,
       });
 
       datadogRum.setUser({ 

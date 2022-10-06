@@ -98,7 +98,6 @@ import { useGlobalProp } from '../hooks/globalProperties';
 import { useState } from '../hooks/useState';
 import { usePayment } from '../hooks/payment';
 import { useStore } from 'vuex';
-import * as Sentry from "@sentry/vue";
 import { datadogRum } from "@datadog/browser-rum";
 
 export default {
@@ -298,7 +297,6 @@ export default {
       store.commit('setLoading', false);
       state.errorText = res.message;
       state.showErrorModal = true;
-      Sentry.captureException(new Error(res.message));
       datadogRum.addError(new Error(res.message));
 
       return;
@@ -322,7 +320,6 @@ export default {
       initForm();
       state.errorText = t("failed_to_collect_card_details");
       state.showErrorModal = true;
-      Sentry.captureException(new Error('Failed to continue with Additional data flow'));
       datadogRum.addError('Failed to continue with Additional data flow');
 
     }

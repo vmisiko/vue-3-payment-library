@@ -266,7 +266,6 @@ export function usePayment() {
           if (route.name !== "FailedView" && route.name !== "AddCard") {
             router.push({ name: "FailedView" });
           }
-          Sentry.captureException(new Error(res.message));
           datadogRum.addError(new Error(res.message));
 
           break;
@@ -283,7 +282,6 @@ export function usePayment() {
     state.errorText = res.message;
     state.loading = false;
     state.showErrorModal = true;
-    Sentry.captureException(new Error(res.message));
     datadogRum.addError(new Error(res.message));
 
   }
