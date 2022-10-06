@@ -79,7 +79,7 @@ onMounted( async () => {
 const submit = () => {
   window.analytics.track("Exit Manage Payment Options", {
     ...commonTrackPayload(),
-    duration_of_response: route.params.duration,
+    duration_of_response: null,
   });
   router.push(localStorage.entry_route);
 }

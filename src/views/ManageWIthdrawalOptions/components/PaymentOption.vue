@@ -7,7 +7,7 @@
     :class="{'mgr-5': paymentMethod.payment_method_id === 10}"
     >
       <img 
-      class="mgx-auto" :src="`${iconUrl}/${paymentMethod.name.toLowerCase()}-withdrawal.svg`" alt="">
+      class="mgx-auto" :src="`${iconUrl}/${paymentMethod?.name?.toLowerCase()}-withdrawal.svg`" alt="">
     </div>
     <div class="direction-flex mgy-auto mgl-5 w-full">
       <span > {{ optionName }} </span>

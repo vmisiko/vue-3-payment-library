@@ -1,7 +1,7 @@
 <template>
   <div class="direction-flex pointer" @click="handleSelect">
       <div class="w-38 mgy-auto">
-        <img class="mgx-auto" :src="`${iconUrl}/${paymentMethod.pay_method_name.toLowerCase()}-withdrawal.svg`" alt="">
+        <img class="mgx-auto" :src="`${iconUrl}/${paymentMethod?.pay_method_name?.toLowerCase()}-withdrawal.svg`" alt="">
       </div>
 
     <div class="mgl-4" v-if="paymentMethod?.pay_method_id === 10">

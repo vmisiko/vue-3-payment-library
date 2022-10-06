@@ -16,7 +16,7 @@
         <div class="direction-flex mgt-5">
           <div class="w-38 mgy-auto">
             <img 
-            class="mgx-auto" :src="`${iconUrl}/${selectedPaymentOption.name.toLowerCase()}-withdrawal.svg`" alt="">
+            class="mgx-auto" :src="`${iconUrl}/${selectedPaymentOption?.name?.toLowerCase()}-withdrawal.svg`" alt="">
           </div>
 
           <div class="mgl-4" v-if="selectedPaymentOption?.payment_method_id === 10">

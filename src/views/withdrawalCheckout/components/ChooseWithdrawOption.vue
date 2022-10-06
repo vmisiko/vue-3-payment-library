@@ -1,6 +1,6 @@
 <template>
   <div class="direction-flex pointer">
-    <IconView :icon="paymentMethod?.pay_method_name.toLowerCase()"  class="mgy-auto"/>
+    <IconView :icon="paymentMethod?.pay_method_name?.toLowerCase()"  class="mgy-auto"/>
 
     <div class="mgl-4" v-if="paymentMethod?.pay_method_id === 10">
       <span class="text-caption-1 semi-bold">{{ bankDetails.operator_name }}</span> <br/>
