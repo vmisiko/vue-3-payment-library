@@ -63,7 +63,8 @@ export function useWithdrawals() {
     const response = await store.dispatch("paymentAxiosPost", fullPayload);
 
     if (response.status) {
-      router.push({ name: "ManageWithdrawal"});
+      const entrypoint = localStorage.get('entry');
+      entrypoint === "WithdrawalCheckout" ? router.push({ name: "WithdralCheckout"})  : router.push({ name: "ManageWithdrawal"});
       store.dispatch("paymentNotification", {
         text: `${selectedBank.value.name}. | Acc No: ${accountNumber.value} has been added`,
       })
@@ -106,7 +107,8 @@ export function useWithdrawals() {
     const response = await store.dispatch("paymentAxiosPost", fullPayload);
 
     if (response.status) {
-      router.push({ name: "ManageWithdrawal"});
+      const entrypoint = localStorage.get('entry');
+      entrypoint === "WithdrawalCheckout" ? router.push({ name: "WithdralCheckout"})  : router.push({ name: "ManageWithdrawal"});
       store.dispatch("paymentNotification", {
         text: `M-PESA | Mobile No: ${phone.value} has been added`,
       })

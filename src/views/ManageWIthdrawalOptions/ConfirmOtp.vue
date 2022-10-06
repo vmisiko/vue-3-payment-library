@@ -1,6 +1,8 @@
 <template>
   <div class="flex-center">
-    <div class="card" >
+    <Processing v-if="loading" :text="$translate('please_wait')" />
+
+    <div class="card" v-else >
       <div class="">
         <IconView :icon="icon" />
         <div class="mgt-4">

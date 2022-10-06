@@ -199,6 +199,7 @@
   "payment_method": "Payment Method",
   "withdrawal_details": "Withdrawal Details",
   "withdrawal_successful": "Withdrawal Successful",
-  "confirmation": "Confirmation"
+  "confirmation": "Confirmation",
+  "unavailable_withdrawal": "Unavailable. Amount exceeds daily withrawal limit"
 
 }

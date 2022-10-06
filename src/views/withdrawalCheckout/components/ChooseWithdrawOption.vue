@@ -1,21 +1,27 @@
 <template>
-  <div class="direction-flex pointer">
-    <IconView :icon="paymentMethod?.pay_method_name?.toLowerCase()"  class="mgy-auto"/>
+  <div class=" pointer" :class="{'disabled': isDisabled}">
+    <div class="direction-flex">
+      <div class="w-38 mgy-auto">
+        <img 
+          class="mgx-auto" 
+          :src="`${iconUrl}/${paymentMethod?.pay_method_name?.toLowerCase()}-withdrawal.svg`" alt=""
+        >
+      </div>
 
-    <div class="mgl-4" v-if="paymentMethod?.pay_method_id === 10">
-      <span class="text-caption-1 semi-bold">{{ bankDetails.operator_name }}</span> <br/>
-      <span class="text-caption-1  text-gray80">{{ $translate('acc_name') }} : {{ bankDetails.account_name || getBupayload.firstname + " " + getBupayload.lastname }}</span> <br/>
-      <span class="text-caption-1 text-gray80">{{ $translate('acc_no') }} : {{ paymentMethod.pay_method_details }}</span> <br/>
-    </div>
+      <div class="mgl-4" v-if="paymentMethod?.pay_method_id === 10">
+        <span class="text-caption-1 semi-bold">{{ bankDetails.operator_name }}</span> <br/>
+        <span class="text-caption-1  text-gray80">{{ $translate('acc_name') }} : {{ bankDetails.account_name || getBupayload.firstname + " " + getBupayload.lastname }}</span> <br/>
+        <span class="text-caption-1 text-gray80">{{ $translate('acc_no') }} : {{ paymentMethod.pay_method_details }}</span> <br/>
+      </div>
 
-    <div class="mgl-4" v-if="paymentMethod?.pay_method_id === 1">
-      <span class="text-caption-1 semi-bold">{{ paymentMethod?.pay_method_name }}</span> <br/>
-      <span class="text-caption-1  text-gray80">{{ $translate('mobile_number') }} : {{ paymentMethod?.pay_method_details }}</span> <br/>
-    </div>
-    
-    <span class="spacer"></span>
+      <div class="mgl-4" v-if="paymentMethod?.pay_method_id === 1">
+        <span class="text-caption-1 semi-bold">{{ paymentMethod?.pay_method_name }}</span> <br/>
+        <span class="text-caption-1  text-gray80">{{ $translate('mobile_number') }} : {{ paymentMethod?.pay_method_details }}</span> <br/>
+      </div>
+      
+      <span class="spacer"></span>
 
-    <div class="mgy-auto">
+      <div class="mgy-auto">
         <input
           class="float-right payment-input"
           name="withdrawalOption"
@@ -27,11 +33,15 @@
           }"
         />
       </div>
+    </div>
+    <div class="text-caption-2 text-sendy-red-30 mgt-3" v-if="isDisabled">
+      <span class="">{{ $translate("unavailable_withdrawal") }}</span>
+    </div>
   </div>
 </template>
 
 <script setup>
-  import { onMounted, ref } from "vue";
+  import { computed, onMounted, ref } from "vue";
   import { useStore } from "vuex";
   import { useGlobalProp } from "../../../hooks/globalProperties";
   import { useState } from "../../../hooks/useState";
@@ -43,10 +53,14 @@
   
   const store = useStore();
   const { getBupayload } = useState();
-  const { router } = useGlobalProp();
-  const iconUrl = ref("https://sendy-web-apps-assets.s3.eu-west-1.amazonaws.com/payment-method-icons");
-  
+  const { router, iconUrl } = useGlobalProp();
+
   const { selectedPaymentOption } = useWithdrawals();
+
+  const isDisabled = computed(() => {
+    return getBupayload.value.amount > (props.paymentMethod?.withdrawal_limit || 0);
+  });
+
   onMounted(() => {
     if (props.paymentMethod?.pay_method_id === 10 ) {
       getBankDetails();
