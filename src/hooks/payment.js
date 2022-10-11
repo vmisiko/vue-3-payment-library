@@ -3,12 +3,15 @@ import { useStore } from "vuex";
 import { useState } from "./useState";
 import { useGlobalProp } from "./globalProperties";
 import { useSegement } from "./useSegment";
+import { usePayBybankSetup } from './payBybankSetup';
+import { datadogRum } from "@datadog/browser-rum";
 
 export function usePayment() {
   const store = useStore();
   const { t, route, router } = useGlobalProp();
   const { state } = useState();
   const { commonTrackPayload } = useSegement();
+  const { getBalance } = usePayBybankSetup();
 
   const getSavedPayMethods = computed(() => store.getters.getSavedPayMethods);
   const getBupayload = computed(() => store.getters.getBupayload);
@@ -24,18 +27,19 @@ export function usePayment() {
     };
 
     const paymentOptions = getBupayload.value.payment_options;
+        
     const fullPayload = {
-      url: "/payment_methods",
+      url: getBupayload.value.pay_direction !== "PAY_ON_DELIVERY" ? "/payment_methods" : "/pod/pay_methods",
       params: payload,
     };
 
-    const response = await store.dispatch("paymentAxiosPost", fullPayload);
+    const response =  await store.dispatch("paymentAxiosPost", fullPayload);
     if (response.status) {
       const paymentMethods = paymentOptions
         ? response.payment_methods.filter((option) =>
             paymentOptions.includes(option.payment_method_id)
           )
-        : response.payment_methods;
+        : response.payment_methods
       const savedMethods = paymentOptions
         ? response.saved_payment_methods.filter((option) =>
             paymentOptions.includes(option.pay_method_id)
@@ -134,11 +138,13 @@ export function usePayment() {
       entity: getBupayload.value.entity_id,
       company_code: getBupayload.value.company_code,
       paymethod: state.defaultPaymentMethod.pay_method_id,
-      platform: 'web'
+      platform: 'web',
+      pay_direction: getBupayload.value.pay_direction,
     };
 
+    const version = getBupayload.value?.version ?? 'v3';
     const fullPayload = {
-      url: "/api/v3/process",
+      url: getBupayload.value.pay_direction !== 'PAY_ON_DELIVERY' ?  `/api/${version}/process` : '/api/v3/pod/process',
       params: payload,
     };
 
@@ -260,6 +266,8 @@ export function usePayment() {
           if (route.name !== "FailedView" && route.name !== "AddCard") {
             router.push({ name: "FailedView" });
           }
+          datadogRum.addError(new Error(res.message));
+
           break;
         }
         case "pending":
@@ -274,6 +282,8 @@ export function usePayment() {
     state.errorText = res.message;
     state.loading = false;
     state.showErrorModal = true;
+    datadogRum.addError(new Error(res.message));
+
   }
 
   function handleContinue3DS(val) {
@@ -376,6 +386,16 @@ export function usePayment() {
   }
 
   async function payBybankCollect() {
+    store.commit('setLoading', true);
+    const balance = await getBalance();
+
+    if (parseFloat(balance) < parseFloat(getBupayload.value.amount)) {
+      store.commit('setLoading', false);
+      return router.push({
+        name: 'PayByBank'
+      });
+    }
+
     const payload = {
       country: getBupayload.value.country_code,
       amount: getBupayload.value.amount,
@@ -386,14 +406,16 @@ export function usePayment() {
       entity: getBupayload.value.entity_id,
       paymethod: state.defaultPaymentMethod.pay_method_id,
       company_code: getBupayload.value.company_code,
+      firstname: getBupayload.value.firstname,
+      lastname: getBupayload.value.lastname,
+      platform: 'web'
     };
 
     const fullPayload = {
       url: "/api/v3/onepipe/collect",
       params: payload,
     };
-
-    store.commit("setLoading", true);
+    store.commit('setLoading', true);
     const response = await store.dispatch("paymentAxiosPost", fullPayload);
     store.commit("setLoading", false);
     if (response.status) {

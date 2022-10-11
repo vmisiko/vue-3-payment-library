@@ -51,7 +51,7 @@ app.mount("#app");
 
 ### How to call the payment library.
 
-So there 6 entry points:
+So there 8 entry points:
  ```
  1. checkout
  2. payment-option
@@ -59,6 +59,8 @@ So there 6 entry points:
  4. Choose-payment-checkout - Choose payment page with checkout.
  5. bank-transfer - Pay by Bank Deposit page.
  6. resolve-payment-checkout - For resolving payments
+ 7. withdraw-checkout - for Checkout of withdrawal
+ 8. manage-withrawal-options - for managing withdrawal checkouts.
  ```
 
 ![Checkouts sample Checkout](docs/images/checkouts.svg)
@@ -83,8 +85,10 @@ So there 6 entry points:
     firstname: 'John',
     lastname: 'doe',
     payment_options: [1, 2],// This are the payment_methods_id you get from the paymeht methods available. They are used to filter the payment methods you want the user shown. If you don't wnat to filter live it empty.
-    company_code: 'SKML', // add compnay code to associate a transaction to it's repective company.
+    company_code: 'SKML', // add company code to associate a transaction to it's repective company.
     locale: 'en', // add locale. 'en' & 'fr' are the supported languages now.
+    pay_direction: "PAY_IN" // includes 'PAY_IN', 'PAY_OUT', 'PAY_ON_DELIVERY',
+
   };
 
   this.$paymentInit(buPayload, 'checkout'); //the 2nd argument can be a 'checkout', 'payment-option', 'choose-payment' or 'choose-payment-checkout, in order to access the 5 entry points of the Bu as listed above.

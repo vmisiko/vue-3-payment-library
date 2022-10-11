@@ -87,6 +87,26 @@
     justify-content: center;
   }
 
+  .flex {
+    display: flex;
+
+    .justify-between {
+      display: flex;
+      justify-content: space-between;
+    }
+    .spacer {
+      flex-grow: 1;
+    }
+    .justify-center {
+      display: flex;
+      justify-content: center;
+    }
+    .justify-start {
+      display: flex;
+      justify-content: start;
+    }
+  }
+
   .direction-flex {
     display: flex;
     .flex-column {
@@ -325,3 +345,14 @@
   .payment-input {
     border: 0.5px solid #C0C4CC !important;
   }
+  
+.w-full {
+  width: 100% !important;
+}
+
+@each $size in $sizes {
+
+  .w-#{$size} {
+    width: $size !important;
+  }
+}

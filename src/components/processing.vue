@@ -23,7 +23,7 @@ import "moment-duration-format";
 
 export default {
   name: "Processing",
-  props: ["text", "count", "title"],
+  props: ["text", "count", "title", 'countDownStart'],
   data() {
     return {
       countdown: 300,
@@ -40,6 +40,12 @@ export default {
         this.startCount();
       }
     },
+  },
+  mounted() {
+    this.countdown = this.countDownStart > 0 ?  this.countDownStart : 300;
+    if (this.count) {
+      this.startCount();
+    }
   },
   methods: {
     startCount() {

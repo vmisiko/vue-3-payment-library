@@ -46,7 +46,8 @@
 
       <hr class="mgt-10" />
 
-      <div class="mgt-8 text-btn direction-flex pointer" @click="removeCard">
+      <div v-if="getSelectedPayOption.category !=='Mobile Money'" class="mgt-8"></div>
+      <div v-if="getSelectedPayOption.category !=='Mobile Money'" class="mgt-8 text-btn direction-flex pointer" @click="removeCard">
         <IconView icon="delete" />
         <span class="text-btn">{{ `Remove ${paymentOption}` }}</span>
       </div>

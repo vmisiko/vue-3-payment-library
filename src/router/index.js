@@ -21,6 +21,17 @@ import TermsOfService from "../views/PayBybank/TermsOfService";
 import AccountReadyView from "../views/PayBybank/AccountReadyView";
 import FailedAccountSetup from "../views/PayBybank/FailedAccountSetup";
 import PayByBank from "../views/PayBybank";
+import AddWithdrawal from "../views/ManageWithdrawalOptions/AddWithdrawal";
+import BankWithdrawal from "../views/ManageWithdrawalOptions/BankWIthdrawal";
+import ConfirmOtp from "../views/ManageWithdrawalOptions/ConfirmOtp";
+import MobileWithdrawal from "../views/ManageWithdrawalOptions/MobileWithdrawal";
+import ManageWithdrawalOptions from "../views/ManageWithdrawalOptions";
+import OtpFail from "../views/ManageWithdrawalOptions/OtpFail";
+import WithdrawalCheckout from "../views/WithdrawalCheckout";
+import WithdrawalSuccess from "../views/WithdrawalCheckout/WithdrawalSuccess";
+import WithdrawalFailed from "../views/WithdrawalCheckout/WithdrawalFailed";
+import DuplicateAccount from "../views/ManageWithdrawalOptions/DuplicateAccount";
+
 
 const routes = [
   {
@@ -142,6 +153,62 @@ const routes = [
         name: "PayByBank",
         component: PayByBank,
       },
+      {
+        path: "/add-withdrawal",
+        name: "AddWithdrawal",
+        component: AddWithdrawal,
+      },
+      {
+        path: "/bank-withdrawal",
+        name: "BankWithdrawal",
+        component: BankWithdrawal,
+      },
+      {
+        path: "/bank-withdrawal/:edit?",
+        name: "BankWithdrawal",
+        component: BankWithdrawal,
+      },
+      {
+        path: "/confirm-otp/:delete?",
+        name: "ConfirmOtp",
+        component: ConfirmOtp,
+      },
+      {
+        path: "/otp-fail",
+        name: "OtpFail",
+        component: OtpFail,
+      },
+      {
+        path: "/mobile-withdrawal/:edit?",
+        name: "MobileWithdrawal",
+        component: MobileWithdrawal,
+      },
+      {
+        path: "/manage-withrawal",
+        name: "ManageWithdrawal",
+        component: ManageWithdrawalOptions,
+      },
+      {
+        path: "/duplicate",
+        name: "DuplicateAccount",
+        component: DuplicateAccount,
+      },
+      {
+        path: "/withdraw-cash",
+        name: "WithdrawalCheckout",
+        component: WithdrawalCheckout,
+      },
+      {
+        path: "/withdraw-cash-failed",
+        name: "WithdrawalFailed",
+        component: WithdrawalFailed,
+      },
+      {
+        path: "/withdraw-cash-success/:reciept?",
+        name: "WithdrawalSuccess",
+        component: WithdrawalSuccess,
+      }
+
     ],
   },
 ];

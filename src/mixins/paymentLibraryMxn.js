@@ -1,5 +1,7 @@
 import { mapActions, mapGetters, mapMutations } from "vuex";
 import { i18n } from "../plugins/i18n";
+import { datadogRum } from '@datadog/browser-rum';
+
 
 const mixin = {
   data() {
@@ -96,6 +98,12 @@ const mixin = {
         email: payload.email,
       });
 
+      datadogRum.setUser({ 
+        name: `${payload.firstname} ${payload.lastname}`,
+        email: payload.email,
+        user_id: payload.user_id,
+      });
+
       switch (entry) {
         case "checkout":
           this.$router.push({ name: "Entry" });
@@ -114,6 +122,15 @@ const mixin = {
           break;
         case "bank-transfer":
           this.$router.push({ name: "PayByBank" });
+          break;
+        case "manage-withrawal-options":
+          this.$router.push({ name: "ManageWithdrawal" });
+          break;
+        case "add-withdrawal":
+          this.$router.push({ name: "AddWithdrawal" });
+          break;
+        case "withdraw-checkout":
+          this.$router.push({ name: "WithdrawalCheckout" });
           break;
         default:
           break;

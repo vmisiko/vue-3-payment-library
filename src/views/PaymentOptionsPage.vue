@@ -1,45 +1,44 @@
 <template>
   <div class="flex-center">
-    <div>
-      <Processing v-if="getLoading" :text="loadingText" />
-      <div class="card" v-else>
-        <TopInfo :icon="icon" :title="title" />
+    <Processing v-if="getLoading" :text="loadingText" />
 
-        <span v-if="creditCards.length !== 0" class="mgt-2 text-overline">{{
-          $translate("credit_card_payment")
-        }}</span>
-        <div class="" v-if="creditCards.length !== 0">
-          <div v-for="(card, index) in creditCards" :key="index">
-            <PaymentOption :payMethod="card" />
-          </div>
+    <div class="card" v-else>
+      <TopInfo :icon="icon" :title="title" />
+
+      <span v-if="creditCards.length !== 0" class="mgt-2 text-overline">{{
+        $translate("credit_card_payment")
+      }}</span>
+      <div class="" v-if="creditCards.length !== 0">
+        <div v-for="(card, index) in creditCards" :key="index">
+          <PaymentOption :payMethod="card" />
         </div>
-
-        <span v-if="savedMobile.length !== 0" class="mgt-8 text-overline">{{
-          $translate("mobile_money")
-        }}</span>
-        <div v-if="savedMobile.length !== 0">
-          <div v-for="(mobile, index) in savedMobile" :key="index">
-            <PaymentOption :payMethod="mobile" />
-          </div>
-        </div>
-
-        <div class="mgt-8" v-if="virtualAccounts.length !== 0">
-          <span class="text-overline"> BANK TRANSFER</span>
-          <div>
-            <div v-for="(vaccount, index) in virtualAccounts" :key="index">
-              <PaymentOption :payMethod="vaccount" />
-            </div>
-          </div>
-        </div>
-
-        <hr class="mgt-5" />
-
-        <span class="link mgt-5" @click="$router.push('/add-payment')">
-          + {{ $translate("add_payment_option") }}</span
-        >
-
-        <div class="mgt-10"></div>
       </div>
+
+      <span v-if="savedMobile.length !== 0" class="mgt-8 text-overline">{{
+        $translate("mobile_money")
+      }}</span>
+      <div v-if="savedMobile.length !== 0">
+        <div v-for="(mobile, index) in savedMobile" :key="index">
+          <PaymentOption :payMethod="mobile" />
+        </div>
+      </div>
+
+      <div class="mgt-8" v-if="virtualAccounts.length !== 0">
+        <span class="text-overline"> BANK TRANSFER</span>
+        <div>
+          <div v-for="(vaccount, index) in virtualAccounts" :key="index">
+            <PaymentOption :payMethod="vaccount" />
+          </div>
+        </div>
+      </div>
+
+      <hr class="mgt-5" />
+
+      <span class="link mgt-5" @click="$router.push('/add-payment')">
+        + {{ $translate("add_payment_option") }}</span
+      >
+
+      <div class="mgt-10"></div>
     </div>
   </div>
 </template>
@@ -110,9 +109,6 @@ export default {
       this.defaultPaymentMethod = this.getSavedPayMethods
         ? this.getSavedPayMethods.filter((method) => method.default === 1)[0]
         : [];
-      // if (!this.defaultPaymentMethod) {
-      //   // this.checkAvailableOptions(this.defaultPaymentMethod);
-      // }
     },
     handleRouting() {
       const entryRoute = localStorage.entry_route;

@@ -27,14 +27,14 @@
         <p class="caption-1-regular text-gray90">
           {{ $translate("last_transfer") }}:
           <strong class="text-green30">
-            {{ getBupayload.currency }} {{ lastTransferAmount }}
+            {{ getBupayload.currency }} {{ lastTransferAmount === 'NaN' ? 0 :  lastTransferAmount }}
           </strong>
         </p>
 
         <p class="mgt-7 caption-1-regular text-gray90">
           {{ $translate("amount_pending") }}:
           <strong class="text-orange90">
-            {{ getBupayload.currency }} {{ pendingAmount }}
+            {{ getBupayload.currency }} {{ pendingAmount === 'NaN' ? amountDue :  pendingAmount }}
           </strong>
         </p>
       </div>

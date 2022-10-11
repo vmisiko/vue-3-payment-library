@@ -32,82 +32,23 @@
           :loading="loading"
           color="primary"
           :text="$translate('agree_and_continue')"
-          @click="openAccount"
+          @click="showPhone=true"
         />
       </div>
     </div>
+    <VerifyPhoneModal :show="showPhone" @close="showPhone=false" />
   </div>
 </template>
 
-<script>
+<script setup>
 import { mapGetters, mapMutations } from "vuex";
 import Processing from "../../components/processing";
+import { usePayBybankSetup } from "../../hooks/payBybankSetup";
 import paymentGenMxn from "../../mixins/paymentGenMxn";
+import VerifyPhoneModal from "./components/modals/verifyPhoneModal.vue";
 
-export default {
-  name: "TermsOfService",
-  components: {
-    Processing,
-  },
-  mixins: [paymentGenMxn],
-  data() {
-    return {
-      showProcessing: false,
-      count: true,
-      loading: false,
-    };
-  },
-  computed: {
-    ...mapGetters(["getBupayload"]),
-  },
-  methods: {
-    ...mapMutations([
-      "setErrorText",
-      "setVirtualAccounts",
-      "setSelectedVirtualAccount",
-    ]),
-    async openAccount() {
-      this.loading = true;
-      this.showProcessing = true;
-      this.count = true;
-      window.analytics.track("Agree and Continue",  {
-        ...this.commonTrackPayload,
-      });
+const { showProcessing, showPhone, count, loading, openAccount  } = usePayBybankSetup();
 
-      const phone = this.getBupayload.phonenumber.includes("+") ? this.getBupayload.phonenumber.split("+")[1] : this.getBupayload.phonenumber;
-
-      const payload = {
-        user_id: this.getBupayload.user_id,
-        first_name: this.getBupayload.firstname,
-        surname: this.getBupayload.lastname,
-        email: this.getBupayload.email,
-        mobile_number: phone,
-        entity: this.getBupayload.entity_id,
-        country_code: this.getBupayload.country_code,
-      };
-
-      const fullPayload = {
-        url: "/api/v3/onepipe/open_account",
-        params: payload,
-      };
-
-      const response = await this.$paymentAxiosPost(fullPayload);
-      this.loading = false;
-      this.showProcessing = false;
-      if (response.status) {
-        this.setVirtualAccounts(response.accounts);
-        const account = response.accounts.filter(
-          (el) => el.is_primary === true
-        );
-        this.setSelectedVirtualAccount(account[0].account_number);
-        this.$router.push({ name: "AccountReadyView" });
-        return;
-      }
-      this.$router.push({ name: "FailedAccountSetup" });
-      this.setErrorText(response.message);
-    },
-  },
-};
 </script>
 
 <style scoped>

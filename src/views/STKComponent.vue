@@ -82,6 +82,7 @@ import { VueTelInput } from "vue3-tel-input";
 import TopInfo from "../components/topInfo";
 import TimerModal from "../components/modals/timerModal";
 import MpesaErrorModal from "../components/modals/MpesaErrorModal";
+import { datadogRum } from "@datadog/browser-rum";
 
 export default {
   name: "STKComponent",
@@ -166,10 +167,13 @@ export default {
         bulkrefno: this.getBupayload.bulk_reference_number,
         email: this.getBupayload.email,
         platform: 'web',
+        pay_direction:this.getBupayload.pay_direction,
       };
 
+      const version = this.getBupayload.version ?? 'v3';
+
       const fullPayload = {
-        url: "/api/v3/process",
+        url:  this.getBupayload.pay_direction !== 'PAY_ON_DELIVERY' ?  `/api/${version}/process` : '/api/v3/pod/process',
         params: payload,
       };
 
@@ -197,6 +201,7 @@ export default {
       this.showTimer = false;
       this.loading = false;
       this.showErrorModal = true;
+      datadogRum.addError(new Error(response.message));
     },
     async submitRetry() {
       if (this.getBupayload.bulk) {
@@ -327,6 +332,7 @@ export default {
                 name: "FailedView",
                 params: { mpesa: "mpesa" },
               });
+              datadogRum.addError(new Error(res.message));
               break;
             case "pending":
               break;
@@ -340,6 +346,8 @@ export default {
         this.showTimer = false;
         (this.promptInfo = false), this.setErrorText(res.message);
         this.$router.push({ name: "FailedView", params: { mpesa: "M-Pesa" } });
+        datadogRum.addError(new Error(res.message));
+
       });
     },
     closeTimer() {
@@ -348,6 +356,8 @@ export default {
       this.promptInfo = false;
       this.setErrorText(this.$translate("unable_to_confirm_mpesa"));
       this.$router.push({ name: "FailedView", params: { mpesa: "mpesa" } });
+      datadogRum.addError(new Error(this.$translate("unable_to_confirm_mpesa")));
+
     },
     init3DS() {
       this.redirect = false;

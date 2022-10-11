@@ -88,7 +88,7 @@
 </template>
 
 <script>
-import { onMounted, onBeforeMount, toRefs, ref, reactive, toRef} from "vue";
+import { onMounted, toRefs, reactive} from "vue";
 import TopInfo from "../components/topInfo";
 import CvvModal from "../components/modals/cvvModal";
 import ErrorModal from "../components/modals/ErrorModal";
@@ -98,6 +98,7 @@ import { useGlobalProp } from '../hooks/globalProperties';
 import { useState } from '../hooks/useState';
 import { usePayment } from '../hooks/payment';
 import { useStore } from 'vuex';
+import { datadogRum } from "@datadog/browser-rum";
 
 export default {
   name: "AddCard",
@@ -243,7 +244,7 @@ export default {
           }
         },
         (error) => {
-          console.log(error);
+          datadogRum.addError(error);
         }
       );
     }
@@ -296,6 +297,8 @@ export default {
       store.commit('setLoading', false);
       state.errorText = res.message;
       state.showErrorModal = true;
+      datadogRum.addError(new Error(res.message));
+
       return;
     }
 
@@ -317,6 +320,8 @@ export default {
       initForm();
       state.errorText = t("failed_to_collect_card_details");
       state.showErrorModal = true;
+      datadogRum.addError('Failed to continue with Additional data flow');
+
     }
 
     function handleErrorClose() {

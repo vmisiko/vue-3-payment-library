@@ -1,4 +1,6 @@
 import axios from "axios";
+import { datadogRum } from "@datadog/browser-rum";
+
 
 export default {
   paymentCustomHeaders({ state }) {
@@ -27,6 +29,7 @@ export default {
       return data;
     } catch (err) {
       await dispatch("handlePaymentAxiosErrors", err.response.status);
+      datadogRum.addError(err);
       return err;
     }
   },
@@ -47,6 +50,7 @@ export default {
       return data;
     } catch (err) {
       await dispatch("handlePaymentAxiosErrors", err.response.status);
+      datadogRum.addError(err);
       return err;
     }
   },
@@ -62,6 +66,26 @@ export default {
       return data;
     } catch (err) {
       await dispatch("handlePaymentAxiosErrors", err.response.status);
+      datadogRum.addError(err);
+      return err;
+    }
+  },
+  async paymentAxiosDelete({dispatch}, payload) {
+    try {
+      const { url, params } = payload;
+      const headers = await dispatch("paymentCustomHeaders");
+      const values = {
+        params,
+        headers: headers.headers,
+      };
+      const { data } = await axios.delete(
+        `${this.$sendyOptions.config.BASE_URL}${url}`,
+        values
+      );
+      return data;
+    } catch (err) {
+      await dispatch("handlePaymentAxiosErrors", err.response.status);
+      datadogRum.addError(err);
       return err;
     }
   },

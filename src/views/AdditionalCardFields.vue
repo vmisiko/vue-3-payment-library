@@ -244,7 +244,6 @@ export default {
                 this.$emit("continue", false);
               })
               .catch((error) => {
-                console.log(error);
                 this.loading = false;
                 this.$emit("continue", false);
               });
