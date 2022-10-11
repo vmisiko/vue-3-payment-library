@@ -10,7 +10,7 @@
         </div>
 
         <div class="text-body-2 mgt-4">
-          <span>{{ $translate('please_review_payouts') }}</span>
+          <span>{{ $translate('please_review_payout') }}</span>
         </div>
 
         <div class="direction-flex mgt-5">
