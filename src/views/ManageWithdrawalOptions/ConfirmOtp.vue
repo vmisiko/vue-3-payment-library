@@ -13,7 +13,7 @@
 
         <div class="mgt-4">
             <span>
-              For security, we have sent you a {{ pinLength }}-digit OTP code to the your email '{{ formateEmail }}' to confirm this change
+              For security, we have sent you a {{ pinLength }}-digit OTP code to the your email '{{ formatEmail }}' to confirm this change
             </span>
         </div>
       </div>
@@ -76,7 +76,7 @@ const { getBupayload } = useState();
 const { validateOtp, otpError, pinLength, getOtp, loading: loadingOtp } = useOtp();
 const { addBank, addMpesa, selectedPaymentOption, accountName, accountNumber , selectedBank, isEdit, deleteBank, deleteMpesa, loading } = useWithdrawals();
 
-const formateEmail = computed(() => {
+const formatEmail = computed(() => {
   const res = `${getBupayload.value.email.split("@")[0].substr(0,1)}****@${getBupayload.value.email.split("@")[1]}`;
   return res;
 });
