@@ -31,10 +31,11 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import { useStore, toRefs } from "vuex";
 import TopInfo from "../components/topInfo";
 import PaymentDetail from "../components/paymentDetail";
 import paymentGenMxn from "../mixins/paymentGenMxn";
+import { usePayment } from "../hooks/payment";
 
 export default {
   name: "Payment",
@@ -47,44 +48,28 @@ export default {
     return {
       icon: "success",
       title: this.$translate("payment_successful"),
-      subtitle: "",
-      paymentStatus: null,
-      currency: "KES",
-      amount: 0.0,
-      loading: false,
-      defaultPaymentMethod: null,
-      isMpesa: false,
-      mpesaCode: "",
     };
   },
-  computed: {
-    ...mapGetters(["getSavedPayMethods", "getBupayload", "getErrorObject"]),
-  },
-  watch: {
-    getSavedPayMethods(val) {
-      this.defaultPaymentMethod = val
-        ? val.filter((method) => method.default === 1)[0]
-        : [];
-    },
-  },
-  mounted() {
-    this.getDefaultpayMethod();
+  setup() {
+    const store = useStore();
+    const {
+      getSavedPayMethods,
+      getBupayload,
+      getErrorText,
+      getLoading,
+      state,
+    } = usePayment();
+
+  
+    return {
+      getSavedPayMethods,
+      getBupayload,
+      getErrorText,
+      getLoading,
+      ...toRefs(state),
+    };
   },
   methods: {
-    ...mapMutations([
-      "setErrorText",
-      "setPaymentMethods",
-      "setSavedPayMethods",
-    ]),
-    getDefaultpayMethod() {
-      this.defaultPaymentMethod = this.getSavedPayMethods
-        ? this.getSavedPayMethods.filter((method) => method.default === 1)[0]
-        : [];
-      this.currency = this.getBupayload.currency;
-      this.amount = this.getBupayload.amount;
-      this.mpesaCode = this.$route.params.mpesaCode;
-      this.isMpesa = this.defaultPaymentMethod.pay_method_id === 1;
-    },
     routing() {
       window.analytics.track("Done after Successful Payment", {
         ...this.commonTrackPayload(),

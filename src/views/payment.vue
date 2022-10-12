@@ -46,7 +46,8 @@
     />
     <ErrorModal
       :show="showErrorModal"
-      :text="errorText"
+      :text="errorText ? errorText : $translate('failed_to_charge_card')"
+      :title="$translate('failed_to_charge_card_title')"
       @close="handleErrorModalClose"
     />
   </div>
@@ -99,7 +100,6 @@ export default {
     onMounted(async () => {
       const entryPath = localStorage.getItem("entry_route");
       if (window.history.state.back !== entryPath &&  window.history.state.back !== '/add-payment') {
-        getDefaultpayMethod();
         return;
       };
       store.commit("setLoading", true);

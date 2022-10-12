@@ -40,7 +40,7 @@
           @click="submit"
           :loading="loading"
         >
-          {{ $translate('delete') }}
+          {{ selectedPaymentOption?.pay_method_id === 1 ? $translate('remove_mpesa') :  $translate('remove_bank')}}
         </sendy-btn>
       </div>
 

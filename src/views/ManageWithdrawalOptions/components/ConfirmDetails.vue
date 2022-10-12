@@ -47,7 +47,7 @@
         </sendy-btn>
         <span class="mgx-4"></span>
         <sendy-btn
-        class="w-full"
+        class="w-full pdx-4"
         color="primary"
         type="submit"
         @click="submit"

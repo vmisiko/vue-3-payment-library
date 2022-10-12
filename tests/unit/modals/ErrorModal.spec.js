@@ -15,6 +15,7 @@ describe("ErrorModal", () => {
     propsData: {
       show: true,
       text: "An error Occurred!",
+      title: "Failed to Charge Card"
     },
     i18n,
     stubs: {
@@ -37,5 +38,11 @@ describe("ErrorModal", () => {
   it("Tests handleClose() function", () => {
     wrapper.vm.handleClose();
     expect(wrapper.find(".modal").isVisible()).to.be.false;
+  });
+  it("Tests props title, text supolied", () => {
+    title = "Failed to Charge Card";
+    text = "Failed to charge card"
+    expect(wrapper.props('title')).to.be.equal(title);
+    expect(wrapper.props('text')).to.be.equal(text);
   });
 });

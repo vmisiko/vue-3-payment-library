@@ -6,7 +6,7 @@
       </div>
 
       <div class="mgt-4">
-        <span> {{ $translate("could_not_add_card") }} </span>
+        <span> {{ title ? title : $translate("could_not_add_card") }} </span>
         <div>
           <span class="text-caption text-sendy-red-30">
             {{ text }}
@@ -29,7 +29,7 @@
 <script>
 export default {
   name: "ErrorModal",
-  props: ["show", "text"],
+  props: ["show", "text" , "title"],
   data() {
     return {};
   },

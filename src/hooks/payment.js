@@ -283,7 +283,6 @@ export function usePayment() {
     state.loading = false;
     state.showErrorModal = true;
     datadogRum.addError(new Error(res.message));
-
   }
 
   function handleContinue3DS(val) {

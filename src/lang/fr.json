@@ -44,6 +44,7 @@
   "expiry_date": "Date d'expiration",
   "failed_network_error": "Échoué. Erreur de réseau !",
   "failed_to_charge_card": "La carte n'a pas été facturée. Veuillez réessayer.",
+  "failed_to_charge_card_title": "Failed to charge card",
   "failed_to_charge_using_mpesa": "Impossible de facturer avec Mobile Money. Veuillez réessayer.",
   "failed_to_collect_card_details": "Impossible de récupérer les détails de la carte. Veuillez réessayer",
   "how_it_works": "Comment cela fonctionne",
@@ -200,6 +201,7 @@
   "withdrawal_details": "Withdrawal Details",
   "withdrawal_successful": "Withdrawal Successful",
   "confirmation": "Confirmation",
-  "unavailable_withdrawal": "Unavailable. Amount exceeds daily withrawal limit"
+  "unavailable_withdrawal": "Unavailable. Amount exceeds daily withrawal limit",
+  "please_wait_process_request": "Please wait while we process your request"
 
 }

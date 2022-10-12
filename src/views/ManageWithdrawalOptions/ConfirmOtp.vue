@@ -1,6 +1,6 @@
 <template>
   <div class="flex-center">
-    <Processing v-if="loading" :text="$translate('please_wait')" />
+    <Processing v-if="loading" :text="$translate('please_wait_process_request')" />
 
     <div class="card" v-else >
       <div class="">
@@ -47,6 +47,7 @@
 
       <sendy-btn 
       color="primary"
+      class=""
       :block="true"
       text="Confirm"
       :disabled="disableotp"

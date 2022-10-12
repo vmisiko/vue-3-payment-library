@@ -43,27 +43,27 @@
     }
 
     .pdl-#{$size} {
-      padding-left: mult($size);
+      padding-left: mult($size) !important;
     }
 
     .pdr-#{$size} {
-      padding-right: mult($size);
+      padding-right: mult($size) !important;
     }
 
     .pdt-#{$size} {
-      padding-top: mult($size);
+      padding-top: mult($size) !important;
     }
 
     .pdb-#{$size} {
-      padding-bottom: mult($size);
+      padding-bottom: mult($size) !important;
     }
 
     .pdx-#{$size} {
-      padding: 0 mult($size);
+      padding: 0 mult($size) !important;
     }
     
     .pda-#{$size} {
-      padding: mult($size);
+      padding: mult($size) !important;
     }
   }
 
