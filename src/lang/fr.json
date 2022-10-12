@@ -75,6 +75,7 @@
   "processing_card": "Traitement du paiement par carte",
   "remove_card": "Supprimer la carte",
   "remove_mpesa": "Supprimer MTN Mobile Money",
+  "remove": "Remove",
   "retry": "Réessayer",
   "retry_payment": "Réessayer le paiement",
   "retry_in": "Réessayer dans 3min 57secondes...",

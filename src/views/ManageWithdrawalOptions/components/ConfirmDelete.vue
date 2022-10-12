@@ -34,13 +34,13 @@
         </sendy-btn>
         <span class="mgx-4"></span>
         <sendy-btn
-          color="primary"
+          color="primary pdx-4"
           class="mgt-5 w-full"
           type="submit"
           @click="submit"
           :loading="loading"
         >
-          {{ selectedPaymentOption?.pay_method_id === 1 ? $translate('remove_mpesa') :  $translate('remove_bank')}}
+          {{  $translate('remove') }}
         </sendy-btn>
       </div>
 

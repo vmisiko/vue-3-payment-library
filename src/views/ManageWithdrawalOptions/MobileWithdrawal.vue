@@ -16,12 +16,14 @@
           <label for="" class="normal-text"> {{ $translate('mobile_number') }}</label>
           <vue-tel-input
             v-model="phone"
+            :value="phone"
             autoFormat
             :defaultCountry="getBupayload.country_code"
             :dropdownOptions="dropdownOptions"
             mode="national"
             :invalidMsg="$translate('phone_number_invalid')"
             @validate="validatePhone"
+            :disabled="isEdit"
           >
           </vue-tel-input>
         </div>
@@ -80,8 +82,9 @@ const { router, route } = useGlobalProp();
 const { phone, isEdit, selectedPaymentOption } = useWithdrawals();
 
 onMounted(()=> {
+  console.log(selectedPaymentOption.value?.pay_method_details.toString());
   if (isEdit.value) {
-    phone.value = selectedPaymentOption.value?.pay_method_details;
+    phone.value = selectedPaymentOption.value?.pay_method_details.toString();
   };
 });
 
