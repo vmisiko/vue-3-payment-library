@@ -83,7 +83,6 @@ const formatEmail = computed(() => {
 });
 
 const handleOnComplete = (val) => {
-  console.log(val);
   otp.value = val;
   disableotp.value = false;
 };
