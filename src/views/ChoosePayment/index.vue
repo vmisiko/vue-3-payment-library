@@ -142,7 +142,7 @@ export default {
     });
 
     onMounted(async () => {
-      window.analytic.track("View choose payment option", {
+      window.analytics.track("View choose payment option", {
         ...commonTrackPayload()
       });
       store.commit("setLoading", true);

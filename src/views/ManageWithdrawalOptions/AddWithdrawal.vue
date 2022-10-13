@@ -32,13 +32,18 @@ import TopInfo from '../../components/topInfo.vue';
 import PaymentOption from './components/PaymentOption.vue';
 import Processing from "../../components/processing";
 import { useState } from '../../hooks/useState';
+import { useSegement } from '../../hooks/useSegment';
 const title = ref('Add a withdrawal option');
 const icon = ref("back");
 
 const { getPaymentMethods, retrievePaymentMethods, getLoading } = useState();
+const { commonTrackPayload } = useSegement();
 
 onMounted(() => {
   retrievePaymentMethods();
+  window.analytics.track("View Add a Withdrawal Option Page", {
+    ...commonTrackPayload(),
+  });
 });
 </script>
 

@@ -29,7 +29,7 @@
       <div class="text-right mgb-5">
         <sendy-btn
           class="mgl-5"
-          @click="$router.push({name: 'ManageWithdrawal'})"
+          @click="handleBack"
           color="primary"
           :text="$translate('back_to_withdrawal')"
           :loading="loading"
@@ -42,9 +42,20 @@
 
 <script setup>
 import { translate } from "@intlify/core-base";
+import { useGlobalProp } from "../../hooks/globalProperties";
+import { useSegement } from "../../hooks/useSegment";
 import { useWithdrawals } from "../../hooks/useWithdrawals";
 
 const { selectedPaymentOption } = useWithdrawals();
+const { router } = useGlobalProp();
+const { commonTrackPayload} = useSegement();
+
+const handleBack = () => {
+  window.analytics.track("Tap back to withdrawal options", {
+    ...commonTrackPayload(),
+  });
+  router.push({name: 'ManageWithdrawal'});
+}
 
 </script>
 

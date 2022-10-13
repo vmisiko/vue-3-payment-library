@@ -54,12 +54,14 @@ import { onMounted, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { useGlobalProp } from "../../../hooks/globalProperties";
 import { useOtp } from "../../../hooks/useOtp";
+import { useSegement } from "../../../hooks/useSegment";
 import { useWithdrawals } from "../../../hooks/useWithdrawals";
 
 const confirmModal = ref(null);
 const props = defineProps(["show"]);
 const emit = defineEmits(['close']);
 const { router }  = useGlobalProp();
+const { commonTrackPayload } = useSegement();
 const store = useStore();
 const iconUrl = ref("https://sendy-web-apps-assets.s3.eu-west-1.amazonaws.com/payment-method-icons");
 
@@ -76,6 +78,9 @@ onMounted(() => {
 
 const handleOpen = () => {
   confirmModal.value.style.display = "block";
+  window.analytics.track("View confirm deleting a withdrawal option details", {
+    ...commonTrackPayload(),
+  });
 };
 
 const handleClose = () => {
@@ -83,6 +88,9 @@ const handleClose = () => {
 };
 
 const submit  = async () => {
+  window.analytics.track("Tap save deleting a withdrawal option details", {
+    ...commonTrackPayload(),
+  });
   const response = await getOtp();
   if (response.status) {
     router.push({ name: 'ConfirmOtp', params: { delete: true }});

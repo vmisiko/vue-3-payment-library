@@ -180,7 +180,7 @@ export default {
       await retrievePaymentMethods();
       store.commit("setLoading", false);
       getDefaultpayMethod();
-      window.analytic.track("View choose checkout payment option", {
+      window.analytics.track("View choose checkout payment option", {
         ...commonTrackPayload(),
         defaultedPaymentOption: state.defaultPaymentMethod.pay_method_name,
       });

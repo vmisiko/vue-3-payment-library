@@ -3,6 +3,7 @@ import { useStore } from "vuex";
 import { useGlobalProp } from "./globalProperties";
 import { useState } from "./useState";
 import { datadogRum } from "@datadog/browser-rum";
+import { useSegement } from "./useSegment";
 
 const accountName = ref('');
 const selectedBank = ref(null);
@@ -22,6 +23,7 @@ export function useWithdrawals() {
   const { route , router} = useGlobalProp();
 
   const { getBupayload } = useState();
+  const { commonTrackPayload } = useSegement();
 
   const isEdit = computed(() => {
     return route.params.edit ? true : false;
@@ -43,7 +45,6 @@ export function useWithdrawals() {
   }
 
   const addBank = async () => {
-
     const payload = {
       "operator_id": selectedBank.value.operator_id,
       "operator_name": selectedBank.value.name,
@@ -63,6 +64,9 @@ export function useWithdrawals() {
     const response = await store.dispatch("paymentAxiosPost", fullPayload);
     loading.value = false;
     if (response.status) {
+      window.analytics.track("Withdrawal option saved successfully", {
+        ...commonTrackPayload(),
+      });
       const entrypoint = localStorage.getItem('entry');
       entrypoint === "withdraw-checkout" ? router.push({ name: "WithdrawalCheckout"})  : router.push({ name: "ManageWithdrawal"});
       store.dispatch("paymentNotification", {
@@ -76,10 +80,17 @@ export function useWithdrawals() {
       return;
     }
     else if (response.duplicate) {
+      window.analytics.track("Withdrawal option already exists", {
+        ...commonTrackPayload(),
+      });
       router.push({ name: "DuplicateAccount"});
+      return;
     }
+    window.analytics.track("Withdrawal option failed to save", {
+      ...commonTrackPayload(),
+    });
     store.dispatch("paymentNotification", {
-        text: `Failed to add Add withdrawal option`,
+        text: `Withdrawal option failed to save`,
         type: "error"
     });
     loading.value = false;
@@ -107,6 +118,9 @@ export function useWithdrawals() {
     const response = await store.dispatch("paymentAxiosPost", fullPayload);
     loading.value = false;
     if (response.status) {
+      window.analytics.track("Withdrawal option saved successfully", {
+        ...commonTrackPayload(),
+      });
       const entrypoint = localStorage.getItem('entry');
       entrypoint === "withdraw-checkout"  ? router.push({name: "WithdrawalCheckout"})  : router.push({name: "ManageWithdrawal"});
       store.dispatch("paymentNotification", {
@@ -120,8 +134,15 @@ export function useWithdrawals() {
       return;
     }
     else if (response.duplicate) {
+      window.analytics.track("Withdrawal option already exists", {
+        ...commonTrackPayload(),
+      });
       router.push({ name: "DuplicateAccount"});
-    }
+      return;
+    } 
+    window.analytics.track("Withdrawal option failed to save", {
+      ...commonTrackPayload(),
+    });
     store.dispatch("paymentNotification", {
         text: response.message,
         type: "error"
@@ -139,6 +160,9 @@ export function useWithdrawals() {
     loading.value = false;
 
     if (response.status) {
+      window.analytics.track("Withdrawal option deleted successfully", {
+        ...commonTrackPayload(),
+      });
       router.push({ name: 'ManageWithdrawal'});
       store.dispatch("paymentNotification", {
         text: `${selectedPaymentOption.value.bankDetails.operator_name}. | Acc No: ${selectedPaymentOption.value.pay_method_details} has been deleted`,
@@ -151,6 +175,13 @@ export function useWithdrawals() {
       return;
     }
 
+    window.analytics.track("Withdrawal option failed to delete", {
+      ...commonTrackPayload(),
+      reason: response.message,
+      message: response.message,
+      sendyErrorCode: null,
+    });
+  
     store.dispatch("paymentNotification", {
       text: `Failed to delete`,
       type: "error"
@@ -174,12 +205,23 @@ export function useWithdrawals() {
     loading.value = false;
 
     if (response.status) {
+
+      window.analytics.track("Withdrawal option deleted successfully", {
+        ...commonTrackPayload(),
+      });
       router.push({ name: 'ManageWithdrawal'});
       store.dispatch("paymentNotification", {
         text: `M-PESA | Mobile No: ${selectedPaymentOption.value.pay_method_details} has been removed`,
       })
       return;
     }
+
+    window.analytics.track("Withdrawal option failed to delete", {
+      ...commonTrackPayload(),
+      reason: response.message,
+      message: response.message,
+      sendyErrorCode: null,
+    });
     store.dispatch("paymentNotification", {
       text: response.message,
       type: "error" 

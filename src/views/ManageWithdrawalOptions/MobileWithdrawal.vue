@@ -29,7 +29,7 @@
         </div>
       </div>
 
-      <div v-if="isEdit" @click="isDelete=true" class="mgt-8 text-btn direction-flex pointer" >
+      <div v-if="isEdit" @click="deletePhone" class="mgt-8 text-btn direction-flex pointer" >
         <IconView icon="delete" />
         <span class="text-btn"> {{ $translate('remove_option') }} </span>
       </div>
@@ -82,13 +82,18 @@ const { router, route } = useGlobalProp();
 const { phone, isEdit, selectedPaymentOption } = useWithdrawals();
 
 onMounted(()=> {
-  console.log(selectedPaymentOption.value?.pay_method_details.toString());
   if (isEdit.value) {
     phone.value = selectedPaymentOption.value?.pay_method_details.toString();
   };
+  window.analytics.track("View Add a Withdrawal Option Page", {
+    ...commonTrackPayload()
+  });
 });
 
 const handleConfirm = () => {
+  window.analytics.track("Tap submit a withdrawal option details", {
+    ...commonTrackPayload(),
+  })
   confirm.value = true;
 };
 
@@ -100,6 +105,13 @@ const validatePhone = (val) => {
     error.value = '';
   }
 };
+
+const deletePhone = () => {
+  window.analytics.track("Tap delete a withdrawal option details", {
+    ...commonTrackPayload(),
+  })
+  isDelete.value = true;
+}
 
 </script>
 <style>

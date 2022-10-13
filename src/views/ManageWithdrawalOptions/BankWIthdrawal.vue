@@ -18,6 +18,7 @@
               v-model="selectedBank"
               class="phone-input"
               required
+              @input="handleSelect"
             >   
               <option :value="null" selected> {{ $translate('select-your_bank') }} </option>
               <option v-for="(bank) in banks" :key="bank.operator_id" :value="bank"> {{ bank.name }}</option>
@@ -47,7 +48,7 @@
           </div>
         </div>
 
-        <div v-if="isEdit" @click="isDelete=true" class="mgt-8 text-btn direction-flex pointer" >
+        <div v-if="isEdit" @click="deleteBank" class="mgt-8 text-btn direction-flex pointer" >
           <IconView icon="delete" />
           <span class="text-btn"> {{ $translate('remove_bank')}} </span>
         </div>
@@ -79,6 +80,7 @@ import ConfirmDetailsModal from './components/ConfirmDetails.vue';
 import ConfirmDeleteModal from './components/ConfirmDelete.vue';
 import { useWithdrawals } from '../../hooks/useWithdrawals';
 import { useState } from '../../hooks/useState';
+import { useSegement } from '../../hooks/useSegment';
 
 const icon = ref('back');
 const confirm = ref(false);
@@ -96,6 +98,7 @@ const {
   getBanks,
 } = useWithdrawals();
 
+const { commonTrackPayload } = useSegement();
 onMounted( async () => {
   await getBanks();
   if (isEdit.value) {
@@ -108,10 +111,31 @@ onMounted( async () => {
     accountName.value ="";
     accountNumber.value = "";
   }
+  window.analytics.track("View Add a Withdrawal Option Page", {
+    ...commonTrackPayload()
+  });
 });
 
 const handleConfirm = () => {
+  window.analytics.track("Tap submit a withdrawal option details", {
+    ...commonTrackPayload(),
+  })
   confirm.value = true;
 };
+
+const handleSelect = (e) => {
+  const bank = e.target.value;
+  window.analytics.track("Select bank to transfer", {
+    ...commonTrackPayload(),
+    bankSelected: bank.name
+  });
+}
+
+const deleteBank = () => {
+  window.analytics.track("Tap delete a withdrawal option details", {
+    ...commonTrackPayload(),
+  })
+  isDelete.value = true;
+}
 
 </script>

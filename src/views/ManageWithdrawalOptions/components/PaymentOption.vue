@@ -58,21 +58,21 @@ const  handleSelect = (paymentMethod) =>  {
   selectedPaymentOption.value = paymentMethod;
   switch (paymentMethod.payment_method_id) {
     case 1:
-      window.analytics.track("Add M-Pesa", {
+      window.analytics.track("Select M-Pesa", {
         ...commonTrackPayload(),
-        phone_number: "",
+        phoneNumber: paymentMethod.pay_method_details,
       });
       router.push({ name: "MobileWithdrawal" });
       break;
     case 10:
-      window.analytics.track("Add bank", {
+      window.analytics.track("Select bank", {
         ...commonTrackPayload(),
         card_network: null,
       });
       router.push({ name: "BankWithdrawal" });
       break;
     case 20:
-      window.analytics.track("Add Pay by Bank", {
+      window.analytics.track("Select Pay by Bank", {
         ...commonTrackPayload(),
         card_network: null,
       });

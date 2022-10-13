@@ -39,7 +39,7 @@
               height="1.5em"
               v-if="loadingOtp"
             />
-          <span v-else @click="getOtp" class="text-midnightBlue20 text-gray70 pointer "> {{ $translate('resend') }} </span>
+          <span v-else @click="resendOtp" class="text-midnightBlue20 text-gray70 pointer "> {{ $translate('resend') }} </span>
         </div>
       </div>
 
@@ -59,7 +59,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import VOtpInput from 'vue3-otp-input';
 import PaymentOption from './components/PaymentOption.vue';
 import Processing from "../../components/processing";
@@ -67,6 +67,7 @@ import { useState } from '../../hooks/useState';
 import { useGlobalProp } from '../../hooks/globalProperties';
 import { useOtp } from '../../hooks/useOtp';
 import { useWithdrawals } from '../../hooks/useWithdrawals';
+import { useSegement } from '../../hooks/useSegment';
 
 const icon = ref('back');
 const { router , route } = useGlobalProp();
@@ -76,10 +77,17 @@ const { getBupayload } = useState();
 
 const { validateOtp, otpError, pinLength, getOtp, loading: loadingOtp } = useOtp();
 const { addBank, addMpesa, selectedPaymentOption, accountName, accountNumber , selectedBank, isEdit, deleteBank, deleteMpesa, loading } = useWithdrawals();
+const { commonTrackPayload } = useSegement();
 
 const formatEmail = computed(() => {
   const res = `${getBupayload.value.email.split("@")[0].substr(0,1)}****@${getBupayload.value.email.split("@")[1]}`;
   return res;
+});
+
+onMounted(() => {
+  window.analytics.track("View withdrawal option OTP confirmation page", {
+    ...commonTrackPayload()
+  });
 });
 
 const handleOnComplete = (val) => {
@@ -87,7 +95,17 @@ const handleOnComplete = (val) => {
   disableotp.value = false;
 };
 
+const resendOtp = () => {
+  window.analytics.track("Tap resend OTP", {
+    ...commonTrackPayload()
+  });
+  getOtp();
+};
+
 const submit = async () => {
+  window.analytics.track("Tap confirm OTP", {
+    ...commonTrackPayload()
+  });
   const response = await validateOtp(otp.value);
   if (!response.status) {
     router.push({ name: 'OtpFail' });

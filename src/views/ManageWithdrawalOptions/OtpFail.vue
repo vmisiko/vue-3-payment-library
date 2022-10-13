@@ -37,14 +37,22 @@
 </template>
 
 <script setup>
+import { onMounted } from "@vue/runtime-core";
 import { useStore } from "vuex";
 import { useGlobalProp } from "../../hooks/globalProperties";
 import { useOtp } from "../../hooks/useOtp";
+import { useSegement } from "../../hooks/useSegment";
 
 const store = useStore();
 const { router } = useGlobalProp();
 const { getOtp, loading } = useOtp();
+const { commonTrackPayload } = useSegement();
 
+onMounted(() => {
+  window.analytics.track("View failed add withdrawal option page", {
+    ...commonTrackPayload(),
+  })
+})
 const submit = async () => {
   const response = await getOtp();
   if (response.status) {
@@ -56,6 +64,7 @@ const submit = async () => {
     type: "error"
   });
 }
+
 
 </script>
 

@@ -67,6 +67,7 @@ import { useGlobalProp } from "../../../hooks/globalProperties";
 import { useWithdrawals } from "../../../hooks/useWithdrawals";
 import  { useOtp } from "../../../hooks/useOtp";
 import { useStore } from "vuex";
+import { useSegement } from "../../../hooks/useSegment";
 
 const confirmModal = ref(null);
 const props = defineProps(["show", "payMethod"]);
@@ -74,6 +75,7 @@ const emit = defineEmits(['close']);
 const store = useStore();
 const { router }  = useGlobalProp();
 const { getOtp, loading } = useOtp();
+const { commonTrackPayload } = useSegement();
 const iconUrl = ref("https://sendy-web-apps-assets.s3.eu-west-1.amazonaws.com/payment-method-icons");
 
 const { accountName, accountNumber, selectedBank, selectedPaymentOption, phone } = useWithdrawals();
@@ -89,6 +91,9 @@ onMounted(() => {
 
 const handleOpen = () => {
   confirmModal.value.style.display = "block";
+  window.analytics.track("Tap submit a withdrawal option details", {
+    ...commonTrackPayload(),
+  })
 };
 
 const handleClose = () => {
@@ -96,7 +101,10 @@ const handleClose = () => {
 };
 
 const submit = async () => {
-
+  window.analytics.track("Tap save a withdrawal option details", {
+    ...commonTrackPayload(),
+  });
+  
   const response = await getOtp();
   if (response.status) {
     router.push({ name: 'ConfirmOtp' });
