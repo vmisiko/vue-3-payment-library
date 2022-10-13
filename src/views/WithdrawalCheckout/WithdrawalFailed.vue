@@ -52,7 +52,7 @@ const { route, router} = useGlobalProp();
 const { commonTrackPayload } = useSegement();
 
 const routing = () => {
-  window.analytics.track("Done after Successful Payment", {
+  window.analytics.track("Tap close after failed withdrawal", {
     ...commonTrackPayload(),
     duration_of_response: route.params.duration,
   });

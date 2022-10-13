@@ -73,12 +73,14 @@ import { useWithdrawals } from "../../../hooks/useWithdrawals";
 import  { useOtp } from "../../../hooks/useOtp";
 import { useStore } from "vuex";
 import { useState } from "../../../hooks/useState";
+import { useSegement } from "../../../hooks/useSegment";
 
 const confirmModal = ref(null);
 const props = defineProps(["show", "payMethod"]);
 const emit = defineEmits(['close']);
 const store = useStore();
 const { router , iconUrl }  = useGlobalProp();
+const { commonTrackPayload } = useSegement();
 const { getLoading } = useState();
 const { selectedPaymentOption, phone, formatCurrency, withdraw } = useWithdrawals();
 
@@ -93,6 +95,9 @@ onMounted(() => {
 
 const handleOpen = () => {
   confirmModal.value.style.display = "block";
+  window.analytics.track("View Confirm Withdrawal Page", {
+    ...commonTrackPayload()
+  });
 };
 
 const handleClose = () => {
@@ -100,6 +105,9 @@ const handleClose = () => {
 };
 
 const submit = () => {
+  window.analytics.track("Tap Confirm withdrawal", {
+    ...commonTrackPayload()
+  });
   withdraw();
   emit('close');
 }

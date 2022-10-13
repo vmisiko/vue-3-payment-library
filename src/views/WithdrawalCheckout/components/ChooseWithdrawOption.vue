@@ -44,12 +44,14 @@
   import { computed, onMounted, ref } from "vue";
   import { useStore } from "vuex";
   import { useGlobalProp } from "../../../hooks/globalProperties";
+import { useSegement } from "../../../hooks/useSegment";
   import { useState } from "../../../hooks/useState";
   import { useWithdrawals } from "../../../hooks/useWithdrawals";
   
   const props = defineProps(['paymentMethod', 'modelValue']);
   const emit = defineEmits(['update:modelValue']);
   const bankDetails = ref("");
+  const { commonTrackPayload } = useSegement();
   
   const store = useStore();
   const { getBupayload } = useState();
@@ -76,6 +78,10 @@
   };
   
   const handleSelect = () => {
+    window.analytics.track("Select withdraw cash option", {
+      ...commonTrackPayload(),
+      selectedOption: props.paymentMethod.pay_method_name,
+    });
     selectedPaymentOption.value  = { ...props.paymentMethod, bankDetails: bankDetails.value };
   };
 

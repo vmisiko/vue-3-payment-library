@@ -18,8 +18,8 @@
         />
       </div>
       
-      <span class="link mgt-5" @click="router.push({ name: 'AddWithdrawal'})" >
-        + {{ $translate("add_withdraw_option") }}</span
+      <span class="link mgt-5" @click="manageWithdrawOption" >
+        + {{ $translate("manage_withdrawal_options") }}</span
       >
 
       <div class="mgy-10"></div>
@@ -86,19 +86,24 @@ onMounted( async () => {
   if (!getSavedPayMethods.value.length) {
     router.push({name: 'AddWithdrawal'});
   }
-  window.analytics.track("Loaded withdrawal checkout page", {
+  window.analytics.track("View Withdraw Cash Options page", {
     ...commonTrackPayload(),
-    duration_of_response: null,
   });
 
 });
 
 const handleContinue = () => {
   confirm.value = true
-  window.analytics.track("Contiue with withdrawal checkout", {
+  window.analytics.track("Tap Continue after selecting a cash withdrawal option", {
     ...commonTrackPayload(),
-    duration_of_response: null,
   });
 };
+
+const manageWithdrawOption = () => {
+  window.analytics.track("Tap Manage Withdrawal Options during withdrawal", {
+    ...commonTrackPayload(),
+  });
+  router.push({name: "ManageWithdrawal"});
+}
 
 </script>

@@ -109,9 +109,8 @@ const { route, router, iconUrl } = useGlobalProp();
 const { commonTrackPayload } = useSegement();
 
 const routing = () => {
-  window.analytics.track("Done after Successful Payment", {
+  window.analytics.track("Tap done after successful withdrawal", {
     ...commonTrackPayload(),
-    duration_of_response: null,
   });
   router.push(localStorage.entry_route);
 };

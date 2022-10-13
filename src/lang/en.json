@@ -221,7 +221,7 @@
   "withdrawal_successful": "Withdrawal Successful",
   "confirmation": "Confirmation",
   "unavailable_withdrawal": "Unavailable. Amount exceeds daily withrawal limit",
-  "please_wait_process_request": "Please wait while we process your request"
-
+  "please_wait_process_request": "Please wait while we process your request",
+  "manage_withdrawal_options": "Manage withdrawal options"
 }
 

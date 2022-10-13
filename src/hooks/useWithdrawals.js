@@ -253,6 +253,9 @@ export function useWithdrawals() {
       url: '/api/v3/process'
     }
     store.commit("setLoading", true);
+    window.analytics.track("View confirming withdrawal payment processing page", {
+      ...commonTrackPayload()
+    });
     loadingText.value = "Confirming your payment. This may take a moment.";
     const response = await store.dispatch('paymentAxiosPost', fullPayload);
     transactionId.value = response.transaction_id;
@@ -263,6 +266,9 @@ export function useWithdrawals() {
           break;
         }
         case "success": {
+          window.analytics.track("Withdrawal successfully processed", {
+            ...commonTrackPayload()
+          });
           store.commit("setLoading", false);
           router.push({
             name: "WithdrawalSuccess",
@@ -278,6 +284,12 @@ export function useWithdrawals() {
       return;
     }
     store.commit("setLoading", false);
+    window.analytics.track("Withdrawal failed to be processed", {
+      ...commonTrackPayload(),
+      reason: response.message,
+      message: response.message,
+      sendyErrorCode: "",
+    });
     router.push({ name: "WithdrawalFailed" });
   }
 
