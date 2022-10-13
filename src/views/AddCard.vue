@@ -99,6 +99,7 @@ import { useState } from '../hooks/useState';
 import { usePayment } from '../hooks/payment';
 import { useStore } from 'vuex';
 import { datadogRum } from "@datadog/browser-rum";
+import { useSegement } from '../hooks/useSegment';
 
 export default {
   name: "AddCard",
@@ -126,6 +127,7 @@ export default {
 
     const store = useStore();
 
+    const { commonTrackPayload } = useSegement();
     const cardState = reactive({
       cardno: "",
       card_name: "",
@@ -210,6 +212,10 @@ export default {
     }
 
     function onsubmit() {
+      window.analytics.track("Submit Add Card", {
+        ...commonTrackPayload(),
+      });
+
       const isValid = setErrors();
       if (!isValid) {
         return;
@@ -251,6 +257,9 @@ export default {
 
     async function saveNewCard(reponseData) {
       store.commit('setLoading', true);
+      window.analytics.track("Processing your card", {
+        ...commonTrackPayload(),
+      });
       reponseData.platform = 'web';
       const payload = {
         url: "/api/v2/save",
@@ -284,6 +293,9 @@ export default {
             store.dispatch('paymentNotification', {
               text: t("card_details_added"),
             });
+            window.analytics.track("Payment option saved successfully", {
+              ...commonTrackPayload(),
+            });
             router.push("/choose-payment");
             state.loading = false;
             break;
@@ -295,10 +307,15 @@ export default {
 
       state.showProcessing = false;
       store.commit('setLoading', false);
+      window.analytics.track("Payment option not saved successfully", {
+        ...commonTrackPayload(),
+        reason: res.message,
+        sendErrorCode: "",
+        message: res.message,
+      });
       state.errorText = res.message;
       state.showErrorModal = true;
       datadogRum.addError(new Error(res.message));
-
       return;
     }
 
@@ -319,6 +336,9 @@ export default {
       store.commit('setLoading', false);
       initForm();
       state.errorText = t("failed_to_collect_card_details");
+      window.analytics.track("Payment option not saved successfully", {
+        ...commonTrackPayload(),
+      });
       state.showErrorModal = true;
       datadogRum.addError('Failed to continue with Additional data flow');
 

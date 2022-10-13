@@ -121,6 +121,9 @@ export default {
     if (this.getSelectedPayOption.category === 'Credit or Debit Card') {
       await this.fetchCardDetails();
     }
+    window.analytics.track("View Payment Option", {
+      ...this.commonTrackPayload(),
+    });
   },
   methods: {
     removeCard() {

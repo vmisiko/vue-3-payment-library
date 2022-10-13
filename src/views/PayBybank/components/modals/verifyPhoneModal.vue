@@ -40,7 +40,7 @@
             class=""
             color="primary"
             :disabled="!disable"
-            @click="getOtp"
+            @click="sendOtp"
             :loading="loading"
           >
             {{ $translate('get_security_code') }}
@@ -107,7 +107,7 @@
           <sendy-btn
           :block="true"
           color="primary"
-          @click="getOtp"
+          @click="resendOtp"
           :loading="loading"
           >
            {{ $translate('resend_code')}}
@@ -137,10 +137,12 @@ import * as moment from "moment";
 import "moment-duration-format";
 import { useStore } from 'vuex';
 import { usePayBybankSetup } from "../../../../hooks/payBybankSetup";
+import { useSegement } from '../../../../hooks/useSegment';
  
-  const { t } = useGlobalProp();
+  const { t, router } = useGlobalProp();
   const { getBupayload } = useState();
   const store = useStore();
+  const { commonTrackPayload } = useSegement();
 
   const props = defineProps(["show"]);
   const emit = defineEmits(["close"]);
@@ -190,6 +192,9 @@ import { usePayBybankSetup } from "../../../../hooks/payBybankSetup";
   const handleOpen = () => {
       let el = verifyPhone.value;
       el.style.display = "block";
+      window.analytics.track("View verify phone number", {
+        ...commonTrackPayload(),
+      });
   };
 
   const handleClose = () => {
@@ -206,6 +211,20 @@ import { usePayBybankSetup } from "../../../../hooks/payBybankSetup";
       error.value = '';
     }
   };
+
+  const sendOtp = () => {
+    window.analytics.track('Submit phone number for verification', {
+      ...commonTrackPayload()
+    });
+    getOtp();
+  }
+
+  const resendOtp = () => {
+    window.analytics.track('Tap didnt receive a code', {
+      ...commonTrackPayload()
+    });
+    getOtp();
+  }
 
   const getOtp = async () => {
     error.value = '';
@@ -236,6 +255,9 @@ import { usePayBybankSetup } from "../../../../hooks/payBybankSetup";
   };
 
   const validateOtp = async () => {
+    window.analytics.track('Confirm entered code', {
+      ...commonTrackPayload()
+    });
     if (!otp.value) { return false};
     const payload =  {
       request_id: requestId.value,

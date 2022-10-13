@@ -132,6 +132,7 @@ import ChooseOption from "./components/chooseOption";
 import { useChoosePayment } from "../../hooks/useChoosePayment";
 import { usePayment } from "../../hooks/payment";
 import { useState } from "../../hooks/useState";
+import { useSegement } from '../../hooks/useSegment';
 
 export default {
   name: "ChoosePaymentCheckout",
@@ -154,6 +155,7 @@ export default {
     const { retrievePaymentMethods, getDefaultpayMethod, submit } =
       usePayment();
     const store = useStore();
+    const { commonTrackPayload } = useSegement();
 
     const {
       creditCards,
@@ -178,6 +180,10 @@ export default {
       await retrievePaymentMethods();
       store.commit("setLoading", false);
       getDefaultpayMethod();
+      window.analytic.track("View choose checkout payment option", {
+        ...commonTrackPayload(),
+        defaultedPaymentOption: state.defaultPaymentMethod.pay_method_name,
+      });
     });
 
     function handleErrorModalClose() {

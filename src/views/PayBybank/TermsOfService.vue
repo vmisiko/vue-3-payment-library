@@ -24,7 +24,7 @@
 
       <div class="direction-flex mgt-13">
         <div class="mgy-auto">
-          <span @click="$router.go(-1)" class="link"> {{ $translate("cancel") }}</span>
+          <span @click="handleCancel" class="link"> {{ $translate("cancel") }}</span>
         </div>
 
         <div class="spacer"></div>
@@ -32,7 +32,7 @@
           :loading="loading"
           color="primary"
           :text="$translate('agree_and_continue')"
-          @click="showPhone=true"
+          @click="handleContinue"
         />
       </div>
     </div>
@@ -43,11 +43,29 @@
 <script setup>
 import { mapGetters, mapMutations } from "vuex";
 import Processing from "../../components/processing";
+import { useGlobalProp } from "../../hooks/globalProperties";
 import { usePayBybankSetup } from "../../hooks/payBybankSetup";
+import { useSegement } from "../../hooks/useSegment";
 import paymentGenMxn from "../../mixins/paymentGenMxn";
 import VerifyPhoneModal from "./components/modals/verifyPhoneModal.vue";
 
 const { showProcessing, showPhone, count, loading, openAccount  } = usePayBybankSetup();
+const {router } = useGlobalProp();
+const { commonTrackPayload } = useSegement();
+
+const handleCancel = () => {
+  router.go(-1)
+  window.analytics.track("Cancel agreeing to terms of service", {
+    ...commonTrackPayload(),
+  });
+}
+
+const handleContinue = () => {
+  showPhone.value = true;
+  window.analytics.track("Agree to terms of service", {
+    ...commonTrackPayload(),
+  });
+}
 
 </script>
 

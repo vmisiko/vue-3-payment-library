@@ -3,6 +3,7 @@ import { useStore } from "vuex";
 import { useGlobalProp } from "./globalProperties";
 import { useState } from "./useState";
 import { datadogRum } from "@datadog/browser-rum";
+import { useSegement } from "./useSegment";
 
 
 const state = reactive({
@@ -18,8 +19,9 @@ export function usePayBybankSetup() {
   const { getBupayload } = useState();
   const store = useStore();
   const { router, route } = useGlobalProp();
+  const { commonTrackPayload } = useSegement();
 
-   const getBalance = async () => {
+  const getBalance = async () => {
     const fullPayload = {
       url: `/api/v3/onepipe/balance/?entityId=${getBupayload.value.entity_id}&userId=${getBupayload.value.user_id}&countryCode=${getBupayload.value.country_code}`,
     };
@@ -29,6 +31,10 @@ export function usePayBybankSetup() {
   }
   const openAccount =  async () => {
     state.showProcessing = true;
+    window.analytics.track("View pay by bank setup processing", {
+      ...commonTrackPayload()
+    });
+
     state.count = true;
     window.analytics.track("Agree and Continue",  {
       ...getBupayload,
@@ -57,6 +63,9 @@ export function usePayBybankSetup() {
       const account = response.accounts.filter(
         (el) => el.is_primary === true
       );
+      window.analytics.track("Payment option saved successfully", {
+        ...commonTrackPayload()
+      });
       store.commit('setSelectedVirtualAccount', account[0].account_number);
       router.push({ name: "AccountReadyView" });
       return;
@@ -64,6 +73,9 @@ export function usePayBybankSetup() {
     if (route.name !== 'FailedAccountSetup') {
       router.push({ name: "FailedAccountSetup" });
     }
+    window.analytics.track("Payment option failed to save", {
+      ...commonTrackPayload()
+    });
     store.commit('setErrorText', response.message);
     datadogRum.addError(new Error(response.message));
   };

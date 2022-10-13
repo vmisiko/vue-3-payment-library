@@ -40,8 +40,14 @@ export function useChoosePayment() {
   });
 
   async function update(method) {
-    state.defaultPaymentMethod = method;
+    window.analytics.track("Select payment option", {
+      ...commonTrackPayload(),
+      previousPaymentMethod: state.defaultPaymentMethod.pay_method_name,
+      newPaymentOption: method.pay_method_name,
+    });
 
+    state.defaultPaymentMethod = method;
+    
     if (getBupayload.value.pay_direction === 'PAY_ON_DELIVERY') {
       const savedMethods = getSavedPayMethods.value;
 
@@ -70,15 +76,16 @@ export function useChoosePayment() {
       url: `/set_default`,
       params: payload,
     };
-
-    window.analytics.track("Choose Payment Option", {
-      ...commonTrackPayload(),
-      payment_method: method.pay_method_name,
-    });
-
     state.loading = true;
     const response = await store.dispatch("paymentAxiosPost", fullPayload);
     state.loading = false;
+    if (response.status) {
+      window.analytics.track("Change Payment option", {
+        ...commonTrackPayload(),
+        previousPaymentMethod: state.defaultPaymentMethod.pay_method_name,
+        newPaymentOption: method.pay_method_name,
+      });
+    }
     store.dispatch("paymentNotification", {
       type: response.status ? "" : "error",
       text: response.status

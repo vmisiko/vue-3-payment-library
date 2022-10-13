@@ -85,7 +85,7 @@ export function usePayment() {
   async function submit() {
     state.startResponseTime = new Date();
     if (route.name !== "FailedView") {
-      window.analytics.track("Confirm and Pay", {
+      window.analytics.track("Tap Confirm and Pay", {
         ...commonTrackPayload(),
         payment_method: state.defaultPaymentMethod.pay_method_name,
         amount: getBupayload.value.amount,
@@ -176,6 +176,10 @@ export function usePayment() {
           store.commit("setLoading", false);
           store.setLoading(false);
           const duration = Date.now() - state.startResponseTime;
+          window.analytics.track("Payment processed successfully", {
+            ...commonTrackPayload(),
+            message: response.message,
+          })
           router.push({
             name: "SuccessView",
             duration: duration,
@@ -190,6 +194,12 @@ export function usePayment() {
     store.commit("setErrorText", response.message);
     store.commit("setLoading", false);
     router.push({ name: "FailedView" });
+    window.analytics.track("Payment processing failed", {
+      ...commonTrackPayload(),
+      message: response.message,
+      reason: response.message,
+      sendyErrorCode: "",
+    });
   }
 
   function pollCard() {
@@ -210,8 +220,20 @@ export function usePayment() {
               state.errorText = t("failed_to_collect_card_details");
               store.commit("setErrorText", state.errorText);
               state.showErrorModal = true;
+              window.analytics.track("Payment option not saved successfully", {
+                ...commonTrackPayload(),
+                message: "Polling time Out",
+                reason: "Polling time out",
+                sendyErrorCode: "",
+              });
               return;
             }
+            window.analytics.track("Payment processing failed", {
+              ...commonTrackPayload(),
+              message: "Polling time Out",
+              reason: "Polling time out",
+              sendyErrorCode: "",
+            });
             state.errorText = t("failed_to_charge_card");
             store.commit("setErrorText", state.errorText);
             router.push({ name: "FailedView" });
@@ -236,10 +258,14 @@ export function usePayment() {
           store.dispatch("paymentNotification", {
             text: res.message,
           });
+          
           store.commit("setLoading", false);
           store.commit("setLoading", false);
           if (route.name === "AddCard") {
             state.loading = false;
+            window.analytics.track("Payment option saved successfully", {
+              ...commonTrackPayload(),
+            });
             router.push("/choose-payment");
             return;
           } else {
@@ -261,6 +287,9 @@ export function usePayment() {
           if (route.name === "AddCard") {
             state.loading = false;
             state.showErrorModal = true;
+            window.analytics.track("Payment option not saved successfully", {
+              ...commonTrackPayload(),
+            });
             return;
           }
           if (route.name !== "FailedView" && route.name !== "AddCard") {

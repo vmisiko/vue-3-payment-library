@@ -71,6 +71,9 @@ export default {
   },
   methods: {
     finish() {
+      window.analytics.track("Finish pay by bank setup", {
+        ...this.commonTrackPayload()
+      });
       this.$paymentNotification({
         text: this.$translate('pay_by_bank_added'),
       });

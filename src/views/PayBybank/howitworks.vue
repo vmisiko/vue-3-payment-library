@@ -51,7 +51,7 @@
 
       <div class="direction-flex mgt-13">
         <div class="mgy-auto">
-          <span @click="$router.go(-1)" class="link">
+          <span @click="handleMaybelater" class="link">
             {{ $translate("maybe_later") }}</span
           >
         </div>
@@ -61,29 +61,37 @@
           :loading="loading"
           color="primary"
           :text="$translate('setup_pay_by_bank')"
-          @click="$router.push('/bank/terms-of-service')"
+          @click="handleSetupNow"
         />
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
+import {ref } from 'vue';
 import SendyBtn from "../../components/sendyBtn.vue";
+import { useGlobalProp } from '../../hooks/globalProperties';
+import { useSegement } from '../../hooks/useSegment';
 import ListView from "./components/listview.vue";
 
-export default {
-  name: "HowitWorks",
-  components: {
-    ListView,
-    SendyBtn,
-  },
-  data() {
-    return {
-      loading: false,
-    };
-  },
-};
+const loading = ref(false);
+const { router, route } = useGlobalProp();
+const { commonTrackPayload } = useSegement();
+
+const handleMaybelatern = () => {
+  router.go(-1);
+  window.analytics.track("Set up pay by bank later", {
+    ...commonTrackPayload(),
+  });
+}
+
+const handleSetupNow = () => {
+  router.push('/bank/terms-of-service');
+  window.analytics.track("Set up pay by bank now", {
+    ...commonTrackPayload(),
+  });
+}
 </script>
 
 <style scoped>

@@ -101,6 +101,7 @@ import Processing from "../../components/processing";
 import { useChoosePayment } from "../../hooks/useChoosePayment";
 import { usePayment } from "../../hooks/payment";
 import { useState } from "../../hooks/useState";
+import { useSegement } from '../../hooks/useSegment';
 
 export default {
   name: "ChoosePayment",
@@ -120,6 +121,7 @@ export default {
     const { retrievePaymentMethods } = usePayment();
     const store = useStore();
     const { state } = useState();
+    const { commonTrackPayload } = useSegement();
 
     const {
       creditCards,
@@ -140,6 +142,9 @@ export default {
     });
 
     onMounted(async () => {
+      window.analytic.track("View choose payment option", {
+        ...commonTrackPayload()
+      });
       store.commit("setLoading", true);
       await retrievePaymentMethods();
       store.commit("setLoading", false);

@@ -75,6 +75,7 @@ import AdditionalCardFields from "./AdditionalCardFields";
 import ErrorModal from "../components/modals/ErrorModal";
 import Processing from "../components/processing";
 import { usePayment } from "../hooks/payment";
+import { useSegement } from '../hooks/useSegment';
 
 export default {
   name: "FailedView",
@@ -106,6 +107,7 @@ export default {
       handleContinue3DS,
       getDefaultpayMethod,
     } = usePayment();
+    const { commonTrackPayload } = useSegement();
 
     onMounted(async () => {
       getDefaultpayMethod();
@@ -114,6 +116,9 @@ export default {
     function handleErrorModalClose() {
       state.showErrorModal = false;
       state.showAdditionalCardFields = false;
+      window.analytics.track("Tap close failed payment prompt", {
+        ...commonTrackPayload()
+      });
     }
 
     return {

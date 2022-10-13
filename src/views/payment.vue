@@ -63,6 +63,7 @@ import TransactionLimitModal from "../components/modals/transactionalLimitModal"
 import AdditionalCardFields from "./AdditionalCardFields";
 import ErrorModal from "../components/modals/ErrorModal";
 import { usePayment } from "../hooks/payment";
+import { useSegement } from '../hooks/useSegment';
 
 export default {
   name: "Payment",
@@ -84,6 +85,7 @@ export default {
   },
   setup() {
     const store = useStore();
+    const { commonTrackPayload } = useSegement();
     const {
       getSavedPayMethods,
       getBupayload,
@@ -113,6 +115,9 @@ export default {
     function handleErrorModalClose() {
       state.showErrorModal = false;
       state.showAdditionalCardFields = false;
+      window.analytics.track("Tap close failed payment prompt", {
+        ...commonTrackPayload()
+      });
     }
 
     return {

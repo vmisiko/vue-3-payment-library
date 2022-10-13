@@ -34,7 +34,7 @@
 
       <hr class="mgt-5" />
 
-      <span class="link mgt-5" @click="$router.push('/add-payment')">
+      <span class="link mgt-5" @click="addOption">
         + {{ $translate("add_payment_option") }}</span
       >
 
@@ -100,7 +100,7 @@ export default {
     await this.retrievePaymentMethods();
     this.setLoading(false);
     this.getDefaultpayMethod();
-    window.analytics.track("Tap Payment Options Menu", {
+    window.analytics.track("View Manage Payment Options", {
       ...this.commonTrackPayload(),
     });
   },
@@ -114,6 +114,12 @@ export default {
       const entryRoute = localStorage.entry_route;
       this.$router.push(entryRoute);
     },
+    addOption() {
+      window.analytics.track("Add Payment Options", {
+        ...this.commonTrackPayload(),
+      });
+      this.$router.push('/add-payment');
+    }
   },
 };
 </script>

@@ -50,7 +50,7 @@ export default {
   methods: {
     ...mapMutations(["setSelectedPayOption"]),
     handleSelect() {
-      window.analytics.track("Tap Payment Option", {
+      window.analytics.track("Tap Manage Payment Options", {
         ...this.commonTrackPayload(),
       });
       this.setSelectedPayOption(this.payMethod);

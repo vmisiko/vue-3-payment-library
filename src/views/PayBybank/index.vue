@@ -81,6 +81,7 @@ import Processing from "../../components/processing";
 import paymentGenMxn from "../../mixins/paymentGenMxn";
 import FailedTransferModal from "./components/modals/FailedTransferModal";
 import InsufficientTransferModal from "./components/modals/InsufficientTransferModal";
+import { messages } from "../../plugins/i18n";
 
 export default {
   name: "PayByBank",
@@ -149,7 +150,7 @@ export default {
       this.showProcessing = true;
       this.count = true;
 
-      window.analytics.track("Confirm Pay By Bank Transfer",  {
+      window.analytics.track("Tap Confirm Payment",  {
         ...this.commonTrackPayload,
         amount: this.topupAmount,
         currency: this.getBupayload.currency,
@@ -215,6 +216,10 @@ export default {
 
       if (this.getBupayload.amount <= response.availableBalance) {
         this.poll_count = this.poll_limit;
+        window.analytics.track("Payment processed successfully", {
+          ...this.commonTrackPayload(),
+          message: this.$translate("transfer_successful"),
+        });
         this.$router.push({
           name: "SuccessView",
           params: {

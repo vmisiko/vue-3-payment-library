@@ -49,10 +49,12 @@
 
 <script>
 import { mapGetters } from "vuex";
+import paymentGenMxn from "../../../mixins/paymentGenMxn"
 
 export default {
   name: "AccountsDisplay",
   props: ["modelValue", "accounts"],
+  mixins: [paymentGenMxn],
   data() {
     return {
       loading: false,
@@ -72,8 +74,14 @@ export default {
     handleInput(e) {
       this.$emit("update:modelValue'", e.target.value);
       this.account = e.target.value;
+      window.analytics.track("Switch available bank ", {
+        ...this.commonTrackPayload()
+      });
     },
     handleCopy() {
+      window.analytics.track("Copy pay by bank account number", {
+        ...this.commonTrackPayload()
+      });
       const cb = navigator.clipboard;
       const span = document.getElementById("account");
       cb.writeText(span.innerText).then(() => {
