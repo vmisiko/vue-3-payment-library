@@ -29,15 +29,9 @@ export function useWithdrawals() {
     return route.params.edit ? true : false;
   });
 
-  const getBanks = async () => {
-
-    const payload = {
-      country_code: getBupayload.value.country_code,
-    }
-    
+  const getBanks = async () => {    
     const fullPayload = {
-      params: payload,
-      url: `/api/v1/dashboard/bank`,
+      url: `/api/v1/dashboard/bank/country/${getBupayload.value.country_code}`,
     }
 
     const response = await store.dispatch('paymentAxiosGet', fullPayload);
@@ -149,7 +143,7 @@ export function useWithdrawals() {
     });
   };
 
-  const deleteBank = async () => {
+  const deleteWithdrawalOption = async () => {
   
     const fullPayload = {
       url: `/api/v3/payout/account/${selectedPaymentOption.value.pay_detail_id}`
@@ -164,9 +158,10 @@ export function useWithdrawals() {
         ...commonTrackPayload(),
       });
       router.push({ name: 'ManageWithdrawal'});
+      const message = selectedPaymentOption.value.pay_method_id === 10 ? `${selectedPaymentOption.value.bankDetails.operator_name}. | Acc No: ${selectedPaymentOption.value.pay_method_details} has been deleted` : `M-PESA | Mobile No: ${selectedPaymentOption.value.pay_method_details} has been removed`;
       store.dispatch("paymentNotification", {
-        text: `${selectedPaymentOption.value.bankDetails.operator_name}. | Acc No: ${selectedPaymentOption.value.pay_method_details} has been deleted`,
-      })
+        text: message
+      });
       selectedPaymentOption.value = "";
       selectedBank.value = "";
       accountName.value = ""
@@ -384,7 +379,7 @@ export function useWithdrawals() {
     getBanks,
     addBank,
     addMpesa,
-    deleteBank,
+    deleteWithdrawalOption,
     deleteMpesa,
     formatCurrency,
     withdraw,

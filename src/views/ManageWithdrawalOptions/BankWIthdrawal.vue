@@ -20,7 +20,7 @@
               required
               @input="handleSelect"
             >   
-              <option :value="null" selected> {{ $translate('select-your_bank') }} </option>
+              <option :value="null" selected> {{ $translate('select_your_bank') }} </option>
               <option v-for="(bank) in banks" :key="bank.operator_id" :value="bank"> {{ bank.name }}</option>
             </select>
           </div>

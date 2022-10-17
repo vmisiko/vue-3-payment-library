@@ -76,7 +76,7 @@ const disableotp = ref(true);
 const { getBupayload } = useState();
 
 const { validateOtp, otpError, pinLength, getOtp, loading: loadingOtp } = useOtp();
-const { addBank, addMpesa, selectedPaymentOption, accountName, accountNumber , selectedBank, isEdit, deleteBank, deleteMpesa, loading } = useWithdrawals();
+const { addBank, addMpesa, selectedPaymentOption, accountName, accountNumber , selectedBank, isEdit, deleteBank, deleteWithdrawalOption, loading } = useWithdrawals();
 const { commonTrackPayload } = useSegement();
 
 const formatEmail = computed(() => {
@@ -112,7 +112,7 @@ const submit = async () => {
     return;
   }
   if (route.params.delete) {
-    selectedPaymentOption.value?.pay_method_id === 10 ? await deleteBank() : await deleteMpesa(); 
+    await deleteWithdrawalOption();
     return;
   }
   selectedPaymentOption.value?.payment_method_id === 10 ? await addBank() : await addMpesa(); 
