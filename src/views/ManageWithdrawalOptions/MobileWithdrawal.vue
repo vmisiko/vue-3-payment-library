@@ -63,6 +63,7 @@ import ConfirmDetailsModal from './components/ConfirmDetails.vue';
 import ConfirmDeleteModal from './components/ConfirmDelete.vue';
 import { useState } from '../../hooks/useState';
 import { useWithdrawals } from '../../hooks/useWithdrawals';
+import { useSegement } from '../../hooks/useSegment';
 
 const icon = ref('back');
 const formattedPhone = ref("");
@@ -77,13 +78,13 @@ const dropdownOptions = ref({
 });
 
 const { getBupayload } = useState();
-
+const { commonTrackPayload } = useSegement(); 
 const { router, route } = useGlobalProp();
 const { phone, isEdit, selectedPaymentOption } = useWithdrawals();
 
 onMounted(()=> {
   if (isEdit.value) {
-    phone.value = selectedPaymentOption.value?.pay_method_details.toString();
+    phone.value = selectedPaymentOption.value?.pay_method_details ? selectedPaymentOption.value?.pay_method_details?.toString(): "";
   };
   window.analytics.track("View Add a Withdrawal Option Page", {
     ...commonTrackPayload()
@@ -93,12 +94,12 @@ onMounted(()=> {
 const handleConfirm = () => {
   window.analytics.track("Tap submit a withdrawal option details", {
     ...commonTrackPayload(),
-  })
+  });
   confirm.value = true;
 };
 
 const validatePhone = (val) => {
-  phone.value = val.valid ? val.number.split("+")[1] : null;
+  phone.value = val.valid ? val.number.split("+")[1] : "";
   formattedPhone.value = `+${val.countryCallingCode} ${val.nationalNumber}`;
   disable.value = val.valid;
   if (val.valid) {
