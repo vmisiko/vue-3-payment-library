@@ -77,6 +77,7 @@
 </template>
 
 <script>
+import { toRef } from 'vue';
 import { mapGetters, mapMutations } from "vuex";
 import { VueTelInput } from "vue3-tel-input";
 import TopInfo from "../components/topInfo";
@@ -84,6 +85,8 @@ import TimerModal from "../components/modals/timerModal";
 import MpesaErrorModal from "../components/modals/MpesaErrorModal";
 import { datadogRum } from "@datadog/browser-rum";
 import { useSegement } from '../hooks/useSegment';
+import { usePayment } from '../hooks/payment';
+import { useState } from '../hooks/useState';
 
 export default {
   name: "STKComponent",
@@ -185,6 +188,7 @@ export default {
         email: this.getBupayload.email,
         platform: 'web',
         pay_direction:this.getBupayload.pay_direction,
+        test: this.getBupayload?.test ?? false,
       };
 
       const version = this.getBupayload.version ?? 'v3';

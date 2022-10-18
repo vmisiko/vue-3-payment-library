@@ -4,6 +4,7 @@ import { useState } from "./useState";
 import { useGlobalProp } from "./globalProperties";
 import { useSegement } from "./useSegment";
 import moment from "moment-timezone";
+import { usePayment } from "./payment";
 
 export function useChoosePayment() {
   const { router, t } = useGlobalProp();
@@ -11,6 +12,7 @@ export function useChoosePayment() {
   const { state } = useState();
   const { getSavedPayMethods, getBupayload, getLoading } = useState();
   const { commonTrackPayload } = useSegement();
+  const { retrievePaymentMethods } = usePayment();
 
   const creditCards = computed(() => {
     const result = getSavedPayMethods.value
@@ -47,7 +49,6 @@ export function useChoosePayment() {
     });
 
     state.defaultPaymentMethod = method;
-    
     if (getBupayload.value.pay_direction === 'PAY_ON_DELIVERY') {
       const savedMethods = getSavedPayMethods.value;
 
@@ -85,6 +86,7 @@ export function useChoosePayment() {
         previousPaymentMethod: state.defaultPaymentMethod.pay_method_name,
         newPaymentOption: method.pay_method_name,
       });
+      retrievePaymentMethods();
     }
     store.dispatch("paymentNotification", {
       type: response.status ? "" : "error",

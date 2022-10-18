@@ -242,7 +242,7 @@ export function useWithdrawals() {
       bank_account: selectedPaymentOption?.value?.pay_method_details || null,
       platform: 'web',
       pay_direction: getBupayload.value.pay_direction,
-      test: false,
+      test: getBupayload?.value?.test ?? false,
     }
 
     const fullPayload = {
@@ -291,6 +291,7 @@ export function useWithdrawals() {
       withdraw_option: selectedPaymentOption.value.pay_method_name,
       account_number: selectedPaymentOption.value.pay_method_details,
     });
+    failureReason.value = response.message;
     router.push({ name: "WithdrawalFailed" });
   }
 
@@ -315,6 +316,7 @@ export function useWithdrawals() {
               withdraw_option: selectedPaymentOption.value.pay_method_name,
               account_number: selectedPaymentOption.value.pay_method_details,
             });
+            failureReason.value = "Withdrawal failed to be processed, Please try again later.";
             router.push({ name: "WithdrawalFailed" });
             datadogRum.addError(new Error("Polling time out"));
             return;
@@ -382,6 +384,7 @@ export function useWithdrawals() {
     polling_count.value = poll_limit.value;
     store.commit("setLoading", false);
     store.commit("setErrorText", res.message);
+    failureReason.value = res.message;
     window.analytics.track('Withdrawal failed to be processed', {
       ...commonTrackPayload(),
       reason: res.message,

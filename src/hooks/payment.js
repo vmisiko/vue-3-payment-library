@@ -140,6 +140,7 @@ export function usePayment() {
       paymethod: state.defaultPaymentMethod.pay_method_id,
       platform: 'web',
       pay_direction: getBupayload.value.pay_direction,
+      test: getBupayload?.value?.test ?? false,
     };
 
     const version = getBupayload.value?.version ?? 'v3';

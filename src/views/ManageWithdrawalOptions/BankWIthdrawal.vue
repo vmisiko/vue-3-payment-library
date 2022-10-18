@@ -131,7 +131,6 @@ const handleConfirm = () => {
 
 const handleSelect = (e) => {
   const bank = e.target.value;
-  console.log(bank, 'bank selected');
   window.analytics.track("Select bank to transfer", {
     ...commonTrackPayload(),
     withdrawal_option: 'bank',
