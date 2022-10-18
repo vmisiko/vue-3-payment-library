@@ -83,6 +83,7 @@ import TopInfo from "../components/topInfo";
 import TimerModal from "../components/modals/timerModal";
 import MpesaErrorModal from "../components/modals/MpesaErrorModal";
 import { datadogRum } from "@datadog/browser-rum";
+import { useSegement } from '../hooks/useSegment';
 
 export default {
   name: "STKComponent",
@@ -128,8 +129,19 @@ export default {
       }
     },
   },
+  setup() {
+    const { commonTrackPayload } = useSegement();
+    return {
+      commonTrackPayload
+    }
+
+  },
   mounted() {
     this.getDefaultpayMethod();
+    window.analytics.track('View mobile money stk page', {
+      ...this.commonTrackPayload(),
+      payment_method: 'M-Pesa',
+    });
   },
   methods: {
     ...mapMutations(["setErrorText"]),
@@ -143,6 +155,11 @@ export default {
           : `Pay with ${this.defaultPaymentMethod.pay_method_name} Money`;
     },
     async submit() {
+      window.analytics.track('Continue after entering mobile number', {
+        ...this.commonTrackPayload(),
+        payment_method: 'M-Pesa',
+        phoneNumber: this.formattedPhone,
+      });
       const entrypoint = localStorage.getItem("entry");
       if (entrypoint === "resolve-payment-checkout") {
         this.submitRetry();
@@ -288,6 +305,12 @@ export default {
               that.loading = false;
               that.showTimer = false;
               that.promptInfo = false;
+              window.analytics.track('Payment processing failed', {
+                ...this.commonTrackPayload(),
+                reason: 'Time out',
+                sendyErrorCode: "",
+                message: this.$translate("failed_to_charge_using_mpesa"),
+              });
               that.setErrorText(this.$translate("failed_to_charge_using_mpesa"));
               that.$router.push({
                 name: "FailedView",
@@ -317,6 +340,11 @@ export default {
               this.loading = false;
               this.showTimer = false;
               this.promptInfo = false;
+              window.analytics.track('Payment processed successfully', {
+                ...this.commonTrackPayload(),
+                payment_method: 'M-pesa',
+                phone_number: this.formattedPhone,
+              });
               this.$router.push({
                 name: "SuccessView",
                 params: { mpesaCode: res.receipt_no },
@@ -328,6 +356,12 @@ export default {
               this.setErrorText(res.message);
               this.showTimer = false;
               this.promptInfo = false;
+              window.analytics.track('Payment processing failed', {
+                ...this.commonTrackPayload(),
+                reason: res.message,
+                sendyErrorCode: "",
+                message: res.message,
+              });
               this.$router.push({
                 name: "FailedView",
                 params: { mpesa: "mpesa" },
@@ -345,6 +379,12 @@ export default {
         this.poll_count = this.poll_limit;
         this.showTimer = false;
         (this.promptInfo = false), this.setErrorText(res.message);
+        window.analytics.track('Payment processing failed', {
+          ...this.commonTrackPayload(),
+          reason: res.message,
+          sendyErrorCode: "",
+          message: res.message,
+        });
         this.$router.push({ name: "FailedView", params: { mpesa: "M-Pesa" } });
         datadogRum.addError(new Error(res.message));
 

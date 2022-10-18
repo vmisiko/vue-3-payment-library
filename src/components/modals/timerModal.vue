@@ -23,6 +23,7 @@ import { useSegement } from '../../hooks/useSegment';
 export default {
   name: "TimerModal",
   props: ["show"],
+  emits: ['close'],
   data() {
     return {
       loading: false,
@@ -44,7 +45,9 @@ export default {
   },
   setup() {
     const { commonTrackPayload } = useSegement();
-    return commonTrackPayload;
+    return {
+      commonTrackPayload
+    };
   },
   mounted() {
     this.show ? this.handleOpen() : this.handleClose();
