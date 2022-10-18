@@ -124,6 +124,12 @@ const mixin = {
           this.$router.push({ name: "PayByBank" });
           break;
         case "manage-withrawal-options":
+          window.analytics.track('Manage Withdrawal Options Entry Point initialized', {
+            user_id: this.getBupayload.user_id,
+            product: this.getBupayload.entity_id,
+            timestamp: Date.now(),
+            platform_name: "web",
+          });
           this.$router.push({ name: "ManageWithdrawal" });
           break;
         case "add-withdrawal":

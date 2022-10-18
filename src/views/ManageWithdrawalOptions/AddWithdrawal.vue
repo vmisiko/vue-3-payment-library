@@ -41,7 +41,7 @@ const { commonTrackPayload } = useSegement();
 
 onMounted(() => {
   retrievePaymentMethods();
-  window.analytics.track("View Add a Withdrawal Option Page", {
+  window.analytics.track("View Add Withdrawal Options Page", {
     ...commonTrackPayload(),
   });
 });

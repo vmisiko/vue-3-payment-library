@@ -25,6 +25,7 @@
 import { onMounted, ref } from "vue";
 import { useStore } from "vuex";
 import { useGlobalProp } from "../../../hooks/globalProperties";
+import { useSegement } from "../../../hooks/useSegment";
 import { useState } from "../../../hooks/useState";
 import { useWithdrawals } from "../../../hooks/useWithdrawals";
 
@@ -37,6 +38,7 @@ const { router } = useGlobalProp();
 const iconUrl = ref("https://sendy-web-apps-assets.s3.eu-west-1.amazonaws.com/payment-method-icons");
 
 const { selectedPaymentOption } = useWithdrawals();
+const { commonTrackPayload } = useSegement();
 onMounted(() => {
   if (props.paymentMethod?.pay_method_id === 10 ) {
     getBankDetails();
@@ -53,6 +55,13 @@ const getBankDetails = async () => {
 
 const handleSelect = () => {
   selectedPaymentOption.value = { ...props.paymentMethod, bankDetails: bankDetails.value };
+  
+  window.analytics.track('Select a withdrawal option', {
+    ...commonTrackPayload(),
+    intention: 'view',
+    withdrawal_option: selectedPaymentOption?.value?.pay_method_name,
+    account: selectedPaymentOption?.value?.pay_method_details,
+  })
   switch (props.paymentMethod.pay_method_id) {
     case 10:
       router.push({ name: "BankWithdrawal", params: { edit: true }});

@@ -58,23 +58,26 @@ const  handleSelect = (paymentMethod) =>  {
   selectedPaymentOption.value = paymentMethod;
   switch (paymentMethod.payment_method_id) {
     case 1:
-      window.analytics.track("Select M-Pesa", {
+      window.analytics.track("Select a withdrawal option", {
         ...commonTrackPayload(),
-        phoneNumber: paymentMethod.pay_method_details,
+        intention: 'add',
+        withdrawal_option: 'M-pesa',
       });
       router.push({ name: "MobileWithdrawal" });
       break;
     case 10:
-      window.analytics.track("Select bank", {
+      window.analytics.track("Select a withdrawal option", {
         ...commonTrackPayload(),
-        card_network: null,
+        intention: 'add',
+        withdrawal_option: 'bank',
       });
       router.push({ name: "BankWithdrawal" });
       break;
     case 20:
-      window.analytics.track("Select Pay by Bank", {
+      window.analytics.track("Select a withdrawal option", {
         ...commonTrackPayload(),
-        card_network: null,
+        intention: 'add',
+        withdrawal_option: paymentMethod.name,
       });
       router.push({ name: "HowitWorks" });
       break;
