@@ -108,9 +108,15 @@ const submit = async () => {
   });
   const response = await validateOtp(otp.value);
   if (!response.status) {
+    window.analytics.track("OTP Validation Failed", {
+      ...commonTrackPayload()
+    });
     router.push({ name: 'OtpFail' });
     return;
   }
+  window.analytics.track("OTP Validation Passed", {
+      ...commonTrackPayload()
+    });
   if (route.params.delete) {
     await deleteWithdrawalOption();
     return;
