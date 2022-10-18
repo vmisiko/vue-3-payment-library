@@ -42,7 +42,7 @@ export function useChoosePayment() {
   async function update(method) {
     window.analytics.track("Select payment option", {
       ...commonTrackPayload(),
-      previousPaymentMethod: state.defaultPaymentMethod.pay_method_name,
+      previousPaymentMethod: state.defaultPaymentMethod?.pay_method_name,
       newPaymentOption: method.pay_method_name,
     });
 
@@ -97,46 +97,17 @@ export function useChoosePayment() {
   function handleRouting() {
     const entryRoute = localStorage.entry_route;
     const entryPoint = localStorage.entry;
-    const method = getSavedPayMethods.value.filter(
-      (elements) => elements.pay_detail_id === state.picked
-    )[0];
-
-    const payment_method = method
-      ? method
-      : getSavedPayMethods.value.filter(
-          (elements) => elements.pay_method_id === parseInt(state.picked)
-        )[0];
-
+   
     const countSavedCards = getSavedPayMethods.value.filter(
       (element) => element.pay_method_id === 2
     );
 
-    switch (payment_method.pay_method_id) {
-      case 1:
-        window.analytics.track("Continue after selecting  M-Pesa", {
-          ...commonTrackPayload(),
-        });
-        break;
-      case 2:
-        window.analytics.track("Continue after selecting Card", {
-          ...commonTrackPayload(),
-          number_of_cards: countSavedCards.length,
-          selected_cards_network: payment_method.psp,
-        });
-        break;
-      case 20:
-        window.analytics.track("Continue after selecting Pay by bank", {
-          ...commonTrackPayload(),
-          number_of_cards: countSavedCards.length,
-          selected_cards_network: payment_method.psp,
-        });
-        break;
-      default:
-        window.analytics.track(`Continue after selecting  ${payment_method.pay_method_name}`, {
-          ...commonTrackPayload(),
-        });
-        break;
-    }
+    window.analytics.track("Continue after selecting payment option", {
+      ...commonTrackPayload(),
+      payment_method: state.defaultPaymentMethod.pay_method_name,
+      number_of_cards: countSavedCards.length,
+      selected_cards_network: state.defaultPaymentMethod.psp,
+    });
 
     switch (entryPoint) {
       case "checkout":

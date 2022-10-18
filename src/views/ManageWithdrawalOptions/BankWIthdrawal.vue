@@ -19,6 +19,7 @@
               class="phone-input"
               required
               @input="handleSelect"
+              :disabled="isEdit"
             >   
               <option :value="null" selected> {{ $translate('select_your_bank') }} </option>
               <option v-for="(bank) in banks" :key="bank.operator_id" :value="bank"> {{ bank.name }}</option>
@@ -31,8 +32,10 @@
               type="text"
               v-model="accountName"
               class="phone-input"
+              :class="{'disabled': isEdit}"
               :placeholder="$translate('enter_account_name')"
               required
+              :disabled="isEdit"
             /> 
           </div>
 
@@ -42,8 +45,10 @@
               type="text"
               v-model="accountNumber"
               class="phone-input"
+              :class="{'disabled': isEdit}"
               :placeholder="$translate('enter_account_number')"
               required
+              :disabled="isEdit"
             /> 
           </div>
         </div>
@@ -119,6 +124,7 @@ onMounted( async () => {
 const handleConfirm = () => {
   window.analytics.track("Tap submit a withdrawal option details", {
     ...commonTrackPayload(),
+    withdrawal_option: 'bank'
   })
   confirm.value = true;
 };
@@ -127,6 +133,7 @@ const handleSelect = (e) => {
   const bank = e.target.value;
   window.analytics.track("Select bank to transfer", {
     ...commonTrackPayload(),
+    withdrawal_option: 'bank',
     bankSelected: bank.name
   });
 }
@@ -134,6 +141,7 @@ const handleSelect = (e) => {
 const deleteBank = () => {
   window.analytics.track("Tap delete a withdrawal option details", {
     ...commonTrackPayload(),
+    withdrawal_option: 'bank'
   })
   isDelete.value = true;
 }

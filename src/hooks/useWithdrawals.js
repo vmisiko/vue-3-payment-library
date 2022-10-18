@@ -10,6 +10,7 @@ const selectedBank = ref(null);
 const accountNumber = ref('');
 const selectedPaymentOption = ref("");
 const phone = ref("");
+const failureReason = ref("");
 
 export function useWithdrawals() {
 
@@ -241,6 +242,7 @@ export function useWithdrawals() {
       bank_account: selectedPaymentOption?.value?.pay_method_details || null,
       platform: 'web',
       pay_direction: getBupayload.value.pay_direction,
+      test: false,
     }
 
     const fullPayload = {
@@ -262,7 +264,9 @@ export function useWithdrawals() {
         }
         case "success": {
           window.analytics.track("Withdrawal successfully processed", {
-            ...commonTrackPayload()
+            ...commonTrackPayload(),
+            withdraw_option: selectedPaymentOption.value.pay_method_name,
+            account_number: selectedPaymentOption.value.pay_method_details,
           });
           store.commit("setLoading", false);
           router.push({
@@ -284,6 +288,8 @@ export function useWithdrawals() {
       reason: response.message,
       message: response.message,
       sendyErrorCode: "",
+      withdraw_option: selectedPaymentOption.value.pay_method_name,
+      account_number: selectedPaymentOption.value.pay_method_details,
     });
     router.push({ name: "WithdrawalFailed" });
   }
@@ -301,6 +307,14 @@ export function useWithdrawals() {
           TransactionIdStatus();
           if (poll_count === poll_limit.value - 1) {
             store.commit("setLoading", false);
+            window.analytics.track('Withdrawal failed to be processed', {
+              ...commonTrackPayload(),
+              reason: 'Time out',
+              sendyErrorCode: '',
+              message: "Time Out",
+              withdraw_option: selectedPaymentOption.value.pay_method_name,
+              account_number: selectedPaymentOption.value.pay_method_details,
+            });
             router.push({ name: "WithdrawalFailed" });
             datadogRum.addError(new Error("Polling time out"));
             return;
@@ -326,6 +340,11 @@ export function useWithdrawals() {
           });
           store.commit("setLoading", false);
           store.commit("setLoading", false);
+          window.analytics.track('Withdrawal successfully processed', {
+            ...commonTrackPayload(),
+            withdraw_option: selectedPaymentOption.value.pay_method_name,
+            account_number: selectedPaymentOption.value.pay_method_details,
+          });
           router.push({
             name: "WithdrawalSuccess",
             params: {
@@ -338,6 +357,15 @@ export function useWithdrawals() {
           polling_count.value = poll_limit.value;
           store.commit("setLoading", false);
           store.commit("setErrorText", res.message);
+          failureReason.value = res.message;
+          window.analytics.track('Withdrawal failed to be processed', {
+            ...commonTrackPayload(),
+            reason: res.message,
+            sendyErrorCode: '',
+            message: res.message,
+            withdraw_option: selectedPaymentOption.value.pay_method_name,
+            account_number: selectedPaymentOption.value.pay_method_details,
+          });
           router.push({
             name: "WithdrawalFailed",
           });
@@ -354,6 +382,14 @@ export function useWithdrawals() {
     polling_count.value = poll_limit.value;
     store.commit("setLoading", false);
     store.commit("setErrorText", res.message);
+    window.analytics.track('Withdrawal failed to be processed', {
+      ...commonTrackPayload(),
+      reason: res.message,
+      sendyErrorCode: '',
+      message: res.message,
+      withdraw_option: selectedPaymentOption.value.pay_method_name,
+      account_number: selectedPaymentOption.value.pay_method_details,
+    });
     router.push({
       name: "WithdrawalFailed",
     });
@@ -376,6 +412,7 @@ export function useWithdrawals() {
     loading,
     phone,
     loadingText,
+    failureReason,
     getBanks,
     addBank,
     addMpesa,

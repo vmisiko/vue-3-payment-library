@@ -79,7 +79,7 @@ const loading = ref(false);
 const { router, route } = useGlobalProp();
 const { commonTrackPayload } = useSegement();
 
-const handleMaybelatern = () => {
+const handleMaybelater = () => {
   router.go(-1);
   window.analytics.track("Set up pay by bank later", {
     ...commonTrackPayload(),

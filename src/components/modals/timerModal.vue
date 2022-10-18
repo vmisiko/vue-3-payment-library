@@ -18,6 +18,7 @@
 <script>
 import * as moment from "moment";
 import "moment-duration-format";
+import { useSegement } from '../../hooks/useSegment';
 
 export default {
   name: "TimerModal",
@@ -41,6 +42,10 @@ export default {
       }
     },
   },
+  setup() {
+    const { commonTrackPayload } = useSegement();
+    return commonTrackPayload;
+  },
   mounted() {
     this.show ? this.handleOpen() : this.handleClose();
   },
@@ -48,6 +53,10 @@ export default {
     handleOpen() {
       let el = this.$refs.timerModal;
       el.style.display = "block";
+      window.analytics.track('View mobile money processing', {
+        ...this.commonTrackPayload(),
+        payment_method: 'M-pesa'
+      });
       const stopCountdown = setInterval(() => {
         this.countdown -= 1;
         if (!this.countdown) {

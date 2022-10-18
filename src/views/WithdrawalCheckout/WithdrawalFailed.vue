@@ -8,7 +8,7 @@
 
 
       <div class="mgt-4 body-2-regular text-gray70">
-        <span>{{ $translate('sorry_experiencing_technical_issues')}}
+        <span>{{ failureReason || $translate('sorry_experiencing_technical_issues')}}
         </span> 
 
         <div class="mgt-5">
@@ -47,7 +47,7 @@ const subtitle = ref("");
 const loading = ref("");
 
 const { getBupayload , getSavedPayMethods, } = useState()
-const { selectedPaymentOption } = useWithdrawals();
+const { selectedPaymentOption, failureReason } = useWithdrawals();
 const { route, router} = useGlobalProp();
 const { commonTrackPayload } = useSegement();
 
