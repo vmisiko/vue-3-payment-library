@@ -7,12 +7,13 @@
       class="text-center mgt-0"
       :icon="paymentMethod.name.toLowerCase()"
     />
+    <div class="direction-flex mgy-auto mgl-5 w-full">
+      <span class=""> {{ optionName }} </span>
 
-    <span class="mgl-5"> {{ optionName }} </span>
+      <span class="spacer"></span>
 
-    <span class="spacer"></span>
-
-    <IconView icon="greator-gray" width="8" height="12" />
+      <IconView icon="greator-gray" width="8" height="12" />
+    </div>
   </div>
 </template>
 
@@ -56,30 +57,34 @@ export default {
     handleSelect(paymentMethod) {
       switch (paymentMethod.payment_method_id) {
         case 1:
-          window.analytics.track("Add M-Pesa", {
+          window.analytics.track("Add Payment Options", {
             ...this.commonTrackPayload(),
+            payment_method: paymentMethod.name,
             phone_number: "",
           });
 
           this.getBupayload.pay_direction === "PAY_OUT" ? this.$router.push({ name: "AddMobile" }) : this.submit();
           break;
         case 2:
-          window.analytics.track("Add Card", {
+          window.analytics.track("Add Payment Options", {
             ...this.commonTrackPayload(),
+            payment_method: paymentMethod.name,
             card_network: null,
           });
           this.$router.push("/add-card");
           break;
         case 10:
-          window.analytics.track("Add bank", {
+          window.analytics.track("Add Payment Options", {
             ...this.commonTrackPayload(),
+            payment_method: paymentMethod.name,
             card_network: null,
           });
           this.$router.push({ name: "BankWithdrawal" });
           break;
         case 20:
-          window.analytics.track("Add Pay by Bank", {
+          window.analytics.track("Add Payment Options", {
             ...this.commonTrackPayload(),
+            payment_method: "pay by bank",
             card_network: null,
           });
           this.$router.push({ name: "HowitWorks" });
