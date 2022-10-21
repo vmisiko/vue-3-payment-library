@@ -115,7 +115,7 @@ export default {
       this.$router.push(entryRoute);
     },
     addOption() {
-      window.analytics.track("Add Payment Options", {
+      window.analytics.track("Add Payment Option", {
         ...this.commonTrackPayload(),
       });
       this.$router.push('/add-payment');

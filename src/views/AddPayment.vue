@@ -31,6 +31,7 @@ import paymentGenMxn from "../mixins/paymentGenMxn";
 import Processing from "../components/processing";
 import { onMounted } from 'vue';
 import { usePayment } from "../hooks/payment";
+import { useSegement } from '../hooks/useSegment';
 
 export default {
   name: "AddPayment",
@@ -52,7 +53,11 @@ export default {
   },
   setup() {
     const { retrievePaymentMethods } = usePayment();
+    const { commonTrackPayload } = useSegement();
     onMounted(() => {
+      window.analytics.track("View Add Payment Options", {
+      ...commonTrackPayload(),
+    });
       retrievePaymentMethods();
     });
   },

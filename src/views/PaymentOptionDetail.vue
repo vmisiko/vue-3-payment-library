@@ -123,6 +123,7 @@ export default {
     }
     window.analytics.track("View Payment Option", {
       ...this.commonTrackPayload(),
+      payment_method: this.getSelectedPayOption.pay_method_name,
     });
   },
   methods: {

@@ -50,11 +50,11 @@ export function usePayment() {
     }
   }
 
-  function checkAvailableOptions(defaultPaymentMethod) {
+
+  function checkAvailableOptions() {
     if (
       getSavedPayMethods.value &&
-      getSavedPayMethods.value.length > 0 &&
-      !defaultPaymentMethod
+      getSavedPayMethods.value.length > 0
     ) {
       route.name !== "ChoosePaymentCheckout"
         ? router.push({
@@ -65,20 +65,17 @@ export function usePayment() {
 
       return;
     }
-    if (!defaultPaymentMethod) {
-      router.push({ name: "AddPayment", params: { entry: "entry" } });
-      return;
-    }
+    router.push({ name: "AddPayment", params: { entry: "entry" } });
   }
 
   function getDefaultpayMethod() {
     state.defaultPaymentMethod = getSavedPayMethods.value
       ? getSavedPayMethods.value.filter((method) => method.default === 1)[0]
-      : [];
+      : null;
     state.currency = getBupayload.value.currency;
     state.amount = getBupayload.value.amount;
     if (!state.defaultPaymentMethod) {
-      checkAvailableOptions(state.defaultPaymentMethod);
+      checkAvailableOptions();
     }
   }
 
