@@ -9,7 +9,7 @@
         <div class="float-right">
           <span class="text-caption-1">
             {{ getBupayload.currency }}
-            {{ $formatCurrency(getBupayload.amount) }}
+            {{ formatCurrency(getBupayload.amount) }}
           </span>
         </div>
 
@@ -20,7 +20,7 @@
             <div class="direction-flex">
               <span class="text-caption-2">Country Code</span>
               <label class="mgl-11 text-caption-2">{{
-                defaultPaymentMethod.pay_method_id === 1
+                state.defaultPaymentMethod.pay_method_id === 1
                   ? "M-PESA payment number"
                   : "Phone Number"
               }}</label>
@@ -45,7 +45,7 @@
 
           <div class="alert pda-2 mgt-10">
             <span class="text-caption-2 text-midnightBlue20">{{
-              defaultPaymentMethod.pay_method_id === 1
+              state.defaultPaymentMethod.pay_method_id === 1
                 ? $translate("mpesa_prompt")
                 : $translate("mobile_prompt")
             }}</span>
@@ -56,7 +56,7 @@
               color="primary"
               class="float-right"
               @click="submit"
-              :loading="loading"
+              :loading="state.loading"
               :disabled="!disable"
             >
               {{ $translate("continue") }}
@@ -71,14 +71,14 @@
         </div>
       </div>
       <TimerModal :show="showTimer" @close="closeTimer" />
-      <MpesaErrorModal :show="showErrorModal" :text="errorText" />
+      <MpesaErrorModal :show="state.showErrorModal" :text="state.errorText" />
     </div>
   </div>
 </template>
 
-<script>
-import { toRef } from 'vue';
-import { mapGetters, mapMutations } from "vuex";
+<script setup>
+import { ref, watch, onMounted } from 'vue';
+import { useStore } from "vuex";
 import { VueTelInput } from "vue3-tel-input";
 import TopInfo from "../components/topInfo";
 import TimerModal from "../components/modals/timerModal";
@@ -87,346 +87,348 @@ import { datadogRum } from "@datadog/browser-rum";
 import { useSegement } from '../hooks/useSegment';
 import { usePayment } from '../hooks/payment';
 import { useState } from '../hooks/useState';
+import { useGlobalProp } from '../hooks/globalProperties';
 
-export default {
-  name: "STKComponent",
-  components: {
-    TopInfo,
-    TimerModal,
-    VueTelInput,
-    MpesaErrorModal,
-  },
-  data() {
-    return {
-      icon: "back",
-      title: this.$translate("pay_with_mpesa"),
-      phone: null,
-      promptInfo: false,
-      error: "",
-      loading: false,
-      transaction_id: null,
-      poll_count: 0,
-      poll_limit: 30,
-      showTimer: false,
-      dropdownOptions: {
-        disabled: true,
-        showFlags: true,
-        showDialCodeInSelection: true,
-      },
-      formattedPhone: null,
-      disable: false,
-      showErrorModal: false,
-      errorText: this.$translate("unable_to_send_mpesa_request"),
-      defaultPaymentMethod: 1,
-      additional_data: null,
-      redirect: false,
-    };
-  },
-  computed: {
-    ...mapGetters(["getBupayload"]),
-  },
-  watch: {
-    phone(val) {
-      if (val && val.length > 8) {
-        this.error = "";
-      }
-    },
-  },
-  setup() {
-    const { commonTrackPayload } = useSegement();
-    return {
-      commonTrackPayload
+const dropdownOptions = ref({
+    disabled: true,
+    showFlags: true,
+    showDialCodeInSelection: true,
+});
+
+const promptInfo = ref(false);
+const showTimer = ref(false);
+const icon = ref('back');
+const title = ref("pay_with_mpesa");
+const phone = ref('');
+const error = ref('');
+const disable = ref(false);
+const formattedPhone = ref('');
+const redirect = ref(false);
+const startResponseTime = ref('');
+
+const store = useStore();
+const { t, router, } = useGlobalProp();
+const { getBupayload, state, setErrorText } = useState();
+const { commonTrackPayload } = useSegement();
+const { getDefaultpayMethod } = usePayment();
+
+watch(phone, (val) => {
+    if (val && val.length > 8) {
+      error.val = "";
+    }
+});
+
+onMounted(()=> {
+  getDefaultpayMethod();
+  title.value = state.defaultPaymentMethod?.pay_detail_id === 1 ? t("pay_with_mpesa")
+          : `Pay with ${state.defaultPaymentMethod.pay_method_name} Money`;
+  state.errorText = t("unable_to_send_mpesa_request");
+
+  window.analytics.track('View mobile money stk page', {
+    ...commonTrackPayload(),
+    payment_method: 'M-Pesa',
+  });
+})
+
+const submit = async () => {
+  window.analytics.track('Continue after entering mobile number', {
+    ...commonTrackPayload(),
+    payment_method: 'M-Pesa',
+    phoneNumber: formattedPhone.value,
+  });
+  const entrypoint = localStorage.getItem("entry");
+  if (entrypoint === "resolve-payment-checkout") {
+    submitRetry();
+    return;
+  }
+
+  state.loading = true;
+  promptInfo.value = true;
+  const payload = {
+    country: getBupayload.value.country_code,
+    amount: getBupayload.value.amount,
+    txref: getBupayload.value.txref,
+    userid: getBupayload.value.user_id,
+    currency: getBupayload.value.currency,
+    bulk: getBupayload.value.bulk,
+    entity: getBupayload.value.entity_id,
+    firstname: getBupayload.value.firstname,
+    lastname: getBupayload.value.lastname,
+    paymethod: state.defaultPaymentMethod.pay_method_id,
+    phonenumber: formattedPhone.value,
+    company_code: getBupayload.value.company_code,
+    bulkrefno: getBupayload.value.bulk_reference_number,
+    email: getBupayload.value.email,
+    platform: 'web',
+    pay_direction: getBupayload.value.pay_direction,
+    test: getBupayload.value?.test ?? false,
+  };
+
+  const version = getBupayload.value.version ?? 'v3';
+
+  const fullPayload = {
+    url: getBupayload.value.pay_direction !== 'PAY_ON_DELIVERY' ?  `/api/${version}/process` : '/api/v3/pod/process',
+    params: payload,
+  };
+
+  const response = await store.dispatch('paymentAxiosPost', fullPayload);
+  state.transaction_id = response.transaction_id;
+  if (response.status) {
+    if (getBupayload.bulk) {
+      state.loading = false;
+      router.push({
+        name: "SuccessView",
+        duration: "",
+      });
+      return;
     }
 
-  },
-  mounted() {
-    this.getDefaultpayMethod();
-    window.analytics.track('View mobile money stk page', {
-      ...this.commonTrackPayload(),
-      payment_method: 'M-Pesa',
-    });
-  },
-  methods: {
-    ...mapMutations(["setErrorText"]),
-    getDefaultpayMethod() {
-      this.defaultPaymentMethod = this.getSavedPayMethods
-        ? this.getSavedPayMethods.filter((method) => method.default === 1)[0]
-        : [];
-      this.title =
-        this.defaultPaymentMethod.pay_detail_id === 1
-          ? this.$translate("pay_with_mpesa")
-          : `Pay with ${this.defaultPaymentMethod.pay_method_name} Money`;
-    },
-    async submit() {
-      window.analytics.track('Continue after entering mobile number', {
-        ...this.commonTrackPayload(),
-        payment_method: 'M-Pesa',
-        phoneNumber: this.formattedPhone,
-      });
-      const entrypoint = localStorage.getItem("entry");
-      if (entrypoint === "resolve-payment-checkout") {
-        this.submitRetry();
-        return;
-      }
+    if (response.redirect) {
+      state.additionalData = response.additional_data;
+      init3DS();
+      return;
+    }
+    pollMpesa();
+    return;
+  }
+  promptInfo.value = false;
+  showTimer.value = false;
+  state.loading = false;
+  state.showErrorModal = true;
+  datadogRum.addError(new Error(response.message));
+  setErrorText(response.message);
 
-      this.loading = true;
-      this.promptInfo = true;
-      const payload = {
-        country: this.getBupayload.country_code,
-        amount: this.getBupayload.amount,
-        txref: this.getBupayload.txref,
-        userid: this.getBupayload.user_id,
-        currency: this.getBupayload.currency,
-        bulk: this.getBupayload.bulk,
-        entity: this.getBupayload.entity_id,
-        firstname: this.getBupayload.firstname,
-        lastname: this.getBupayload.lastname,
-        paymethod: this.defaultPaymentMethod.pay_method_id,
-        phonenumber: this.formattedPhone,
-        company_code: this.getBupayload.company_code,
-        bulkrefno: this.getBupayload.bulk_reference_number,
-        email: this.getBupayload.email,
-        platform: 'web',
-        pay_direction:this.getBupayload.pay_direction,
-        test: this.getBupayload?.test ?? false,
-      };
+  window.analytics.track('Payment processing failed', {
+    ...commonTrackPayload(),
+    reason: response.message,
+    message: response.message,
+  });
+  router.push({ name: "FailedView", params: { mpesa: "M-Pesa" } });
+};
 
-      const version = this.getBupayload.version ?? 'v3';
+const submitRetry = async () => {
+  if (getBupayload.value.bulk) {
+    bulkretry();
+    return;
+  }
 
-      const fullPayload = {
-        url:  this.getBupayload.pay_direction !== 'PAY_ON_DELIVERY' ?  `/api/${version}/process` : '/api/v3/pod/process',
-        params: payload,
-      };
+  startResponseTime.value = new Date();
 
-      const response = await this.$paymentAxiosPost(fullPayload);
-      this.transaction_id = response.transaction_id;
-      if (response.status) {
-        if (this.getBupayload.bulk) {
-          this.loading = false;
-          this.$router.push({
-            name: "SuccessView",
-            duration: "",
+  state.loading = true;
+  const payload = {
+    user_id: getBupayload.value.user_id,
+    company_code: getBupayload.value.company_code,
+    entity: getBupayload.value.entity_id,
+    pay_detail_id: formattedPhone.value,
+    payment_method: state.defaultPaymentMethod.pay_method_id,
+    references:getBupayload.value.references,
+  };
+
+  const fullPayload = {
+    url: "/api/v3/process/retry",
+    params: payload,
+  };
+
+  const response = await store.dispatch('paymentAxiosPost', fullPayload);
+
+  state.transaction_id = response.transaction_id;
+  if (response.status) {
+    pollMpesa();
+    return;
+  }
+
+  promptInfo.value = false;
+  showTimer.value = false;
+  state.loading = false;
+  state.showErrorModal = true;
+  setErrorText(res.message);
+
+  window.analytics.track('Payment processing failed', {
+    ...commonTrackPayload(),
+    reason: res.message,
+    sendyErrorCode: "",
+    message: res.message,
+  });
+  router.push({ name: "FailedView", params: { mpesa: "M-Pesa" } });
+}
+
+const bulkretry = async () => {
+  startResponseTime = new Date();
+  state.loading = true;
+
+  const payload = {
+    user_id: getBupayload.value.user_id,
+    company_code: getBupayload.value.company_code,
+    entity: getBupayload.value.entity_id,
+    pay_detail_id: formattedPhone.value,
+    payment_method: 1,
+    references: getBupayload.value.references,
+  };
+
+  const fullPayload = {
+    url: "/api/v3/bulk/retry",
+    params: payload,
+  };
+
+  const response = await store('paymentAxiosPost', fullPayload);
+
+  state.transaction_id = response.transaction_id;
+  if (response.status) {
+    pollMpesa();
+    return;
+  }
+  promptInfo.value = false;
+  showTimer.value = false;
+  state.loading = false;
+  state.showErrorModal = true;
+};
+
+const validatePhone = (val) => {
+  formattedPhone.value = val.valid ? val.number.split("+")[1] : null;
+  disable.value = val.valid;
+  return;
+};
+
+const pollMpesa = () => {
+  state.poll_count = 0;
+  for (let poll_count = 0; poll_count < state.poll_limit; poll_count++) {
+    (function (poll_count) {
+      setTimeout(() => {
+        if (state.poll_count === state.poll_limit) {
+          poll_count = state.poll_limit;
+          return;
+        }
+
+        TransactionIdStatus();
+        if (poll_count === state.poll_limit - 1) {
+          state.loading = false;
+          showTimer.value = false;
+          promptInfo.value = false;
+          window.analytics.track('Payment processing failed', {
+            ...commonTrackPayload(),
+            reason: 'Time out',
+            sendyErrorCode: "",
+            message: t("failed_to_charge_using_mpesa"),
+          });
+          setErrorText(t("failed_to_charge_using_mpesa"));
+          router.push({
+            name: "FailedView",
+            params: { mpesa: "mpesa" },
           });
           return;
         }
+      }, 10000 * poll_count);
+    })(poll_count);
+  }
+};
 
-        if (response.redirect) {
-          this.additionalData = response.additional_data;
-          this.init3DS();
-          return;
-        }
-        this.pollMpesa();
-        return;
-      }
-      this.promptInfo = false;
-      this.showTimer = false;
-      this.loading = false;
-      this.showErrorModal = true;
-      datadogRum.addError(new Error(response.message));
-    },
-    async submitRetry() {
-      if (this.getBupayload.bulk) {
-        this.bulkretry();
-        return;
-      }
+const TransactionIdStatus = async () => {
+  showTimer.value = true;
 
-      this.startResponseTime = new Date();
+  const payload = {
+    url: `/api/v1/process/status/${state.transaction_id}`,
+  };
 
-      this.loading = true;
-      const payload = {
-        user_id: this.getBupayload.user_id,
-        company_code: this.getBupayload.company_code,
-        entity: this.getBupayload.entity_id,
-        pay_detail_id: this.formattedPhone,
-        payment_method: this.defaultPaymentMethod.pay_method_id,
-        references: this.getBupayload.references,
-      };
-
-      const fullPayload = {
-        url: "/api/v3/process/retry",
-        params: payload,
-      };
-
-      const response = await this.$paymentAxiosPost(fullPayload);
-
-      this.transaction_id = response.transaction_id;
-      if (response.status) {
-        this.pollMpesa();
-        return;
-      }
-      this.promptInfo = false;
-      this.showTimer = false;
-      this.loading = false;
-      this.showErrorModal = true;
-    },
-    async bulkretry() {
-      this.startResponseTime = new Date();
-      this.loading = true;
-      const payload = {
-        user_id: this.getBupayload.user_id,
-        company_code: this.getBupayload.company_code,
-        entity: this.getBupayload.entity_id,
-        pay_detail_id: this.formattedPhone,
-        payment_method: 1,
-        references: this.getBupayload.references,
-      };
-
-      const fullPayload = {
-        url: "/api/v3/bulk/retry",
-        params: payload,
-      };
-
-      const response = await this.$paymentAxiosPost(fullPayload);
-
-      this.transaction_id = response.transaction_id;
-      if (response.status) {
-        this.pollMpesa();
-        return;
-      }
-      this.promptInfo = false;
-      this.showTimer = false;
-      this.loading = false;
-      this.showErrorModal = true;
-    },
-    validatePhone(val) {
-      this.formattedPhone = val.valid ? val.number.split("+")[1] : null;
-      this.disable = val.valid;
-      return;
-    },
-    pollMpesa() {
-      this.poll_count = 0;
-      for (let poll_count = 0; poll_count < this.poll_limit; poll_count++) {
-        const that = this;
-        (function (poll_count) {
-          setTimeout(() => {
-            if (that.poll_count === that.poll_limit) {
-              poll_count = that.poll_limit;
-              return;
-            }
-
-            that.TransactionIdStatus();
-            if (poll_count === that.poll_limit - 1) {
-              that.loading = false;
-              that.showTimer = false;
-              that.promptInfo = false;
-              window.analytics.track('Payment processing failed', {
-                ...this.commonTrackPayload(),
-                reason: 'Time out',
-                sendyErrorCode: "",
-                message: this.$translate("failed_to_charge_using_mpesa"),
-              });
-              that.setErrorText(this.$translate("failed_to_charge_using_mpesa"));
-              that.$router.push({
-                name: "FailedView",
-                params: { mpesa: "mpesa" },
-              });
-              return;
-            }
-          }, 10000 * poll_count);
-        })(poll_count);
-      }
-    },
-
-    async TransactionIdStatus() {
-      this.showTimer = true;
-
-      const payload = {
-        url: `/api/v1/process/status/${this.transaction_id}`,
-      };
-      this.$paymentAxiosGet(payload).then((res) => {
-        if (res.status) {
-          switch (res.transaction_status) {
-            case "success":
-              this.poll_count = this.poll_limit;
-              this.$paymentNotification({
-                text: res.message,
-              });
-              this.loading = false;
-              this.showTimer = false;
-              this.promptInfo = false;
-              window.analytics.track('Payment processed successfully', {
-                ...this.commonTrackPayload(),
-                payment_method: 'M-pesa',
-                phone_number: this.formattedPhone,
-              });
-              this.$router.push({
-                name: "SuccessView",
-                params: { mpesaCode: res.receipt_no },
-              });
-              break;
-            case "failed":
-              this.poll_count = this.poll_limit;
-              this.loading = false;
-              this.setErrorText(res.message);
-              this.showTimer = false;
-              this.promptInfo = false;
-              window.analytics.track('Payment processing failed', {
-                ...this.commonTrackPayload(),
-                reason: res.message,
-                sendyErrorCode: "",
-                message: res.message,
-              });
-              this.$router.push({
-                name: "FailedView",
-                params: { mpesa: "mpesa" },
-              });
-              datadogRum.addError(new Error(res.message));
-              break;
-            case "pending":
-              break;
-            default:
-              break;
-          }
-          return res;
-        }
-        this.loading = false;
-        this.poll_count = this.poll_limit;
-        this.showTimer = false;
-        (this.promptInfo = false), this.setErrorText(res.message);
+  const res = await store.dispatch('paymentAxiosGet', payload);
+  if (res.status) {
+    switch (res.transaction_status) {
+      case "success":
+        state.poll_count = state.poll_limit;
+        store.dispatch('paymentNotification', {
+          text: res.message,
+        });
+        state.loading = false;
+        showTimer.value = false;
+        promptInfo.value = false;
+        window.analytics.track('Payment processed successfully', {
+          ...commonTrackPayload(),
+          payment_method: 'M-pesa',
+          phone_number: formattedPhone.value,
+        });
+        router.push({
+          name: "SuccessView",
+          params: { mpesaCode: res.receipt_no },
+        });
+        break;
+      case "failed":
+        state.poll_count = state.poll_limit;
+        state.loading = false;
+        setErrorText(res.message);
+        showTimer.value = false;
+        promptInfo.value = false;
         window.analytics.track('Payment processing failed', {
-          ...this.commonTrackPayload(),
+          ...commonTrackPayload(),
           reason: res.message,
           sendyErrorCode: "",
           message: res.message,
         });
-        this.$router.push({ name: "FailedView", params: { mpesa: "M-Pesa" } });
+        router.push({
+          name: "FailedView",
+          params: { mpesa: "mpesa" },
+        });
         datadogRum.addError(new Error(res.message));
+        break;
+      case "pending":
+        break;
+      default:
+        break;
+    }
+    return res;
+  }
 
-      });
-    },
-    closeTimer() {
-      this.loading = false;
-      this.showTimer = false;
-      this.promptInfo = false;
-      this.setErrorText(this.$translate("unable_to_confirm_mpesa"));
-      this.$router.push({ name: "FailedView", params: { mpesa: "mpesa" } });
-      datadogRum.addError(new Error(this.$translate("unable_to_confirm_mpesa")));
+  state.loading = false;
+  state.poll_count = state.poll_limit;
+  showTimer.value = false;
+  promptInfo.value = false;
+  setErrorText(res.message);
 
-    },
-    init3DS() {
-      this.redirect = false;
-      const res = !this.additionalData
-        ? this.additionalData
-        : this.additionalData[0];
-      const url = res.field;
-      const urlWindow = window.open(url, "");
+  window.analytics.track('Payment processing failed', {
+    ...commonTrackPayload(),
+    reason: res.message,
+    sendyErrorCode: "",
+    message: res.message,
+  });
+  router.push({ name: "FailedView", params: { mpesa: "M-Pesa" } });
+  datadogRum.addError(new Error(res.message));
+};
 
-      if (typeof urlWindow == "undefined") {
-        this.redirect = true;
-        return;
-      }
-      const timer = setInterval(() => {
-        if (urlWindow.closed) {
-          this.pollMpesa();
-          clearInterval(timer);
-        }
-      }, 500);
+const closeTimer = () => {
+  state.loading = false;
+  showTimer.value = false;
+  promptInfo.value = false;
+  setErrorText(t("unable_to_confirm_mpesa"));
+  router.push({ name: "FailedView", params: { mpesa: "mpesa" } });
+  datadogRum.addError(new Error(t("unable_to_confirm_mpesa")));
 
-      setTimeout(() => {
-        urlWindow.close();
-      }, 180000);
-    },
-  },
+};
+
+const init3DS = () => {
+  redirect.value = false;
+  const res = additionalData.value
+    ? additionalData.value
+    : additionalData.value[0];
+  const url = res.field;
+  const urlWindow = window.open(url, "");
+
+  if (typeof urlWindow == "undefined") {
+    redirect.value = true;
+    return;
+  }
+  const timer = setInterval(() => {
+    if (urlWindow.closed) {
+      pollMpesa();
+      clearInterval(timer);
+    }
+  }, 500);
+
+  setTimeout(() => {
+    urlWindow.close();
+  }, 180000);
+};
+
+const formatCurrency = (amount) =>{
+  const result = parseFloat(amount);
+  return result.toLocaleString();
 };
 </script>
 

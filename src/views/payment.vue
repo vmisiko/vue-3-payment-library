@@ -102,6 +102,7 @@ export default {
     onMounted(async () => {
       const entryPath = localStorage.getItem("entry_route");
       if (window.history.state.back !== entryPath &&  window.history.state.back !== '/add-payment') {
+        getDefaultpayMethod();
         return;
       };
       store.commit("setLoading", true);

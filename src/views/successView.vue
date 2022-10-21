@@ -31,7 +31,8 @@
 </template>
 
 <script>
-import { useStore, toRefs } from "vuex";
+import { toRefs } from 'vue';
+import { useStore } from "vuex";
 import TopInfo from "../components/topInfo";
 import PaymentDetail from "../components/paymentDetail";
 import paymentGenMxn from "../mixins/paymentGenMxn";
