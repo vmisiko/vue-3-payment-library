@@ -133,6 +133,12 @@ const mixin = {
           this.$router.push({ name: "ManageWithdrawal" });
           break;
         case "add-withdrawal":
+          window.analytics.track('Withdrawal Checkout Entry Point initialized', {
+            user_id: this.getBupayload.user_id,
+            product: this.getBupayload.entity_id,
+            timestamp: Date.now(),
+            platform_name: "web",
+          });
           this.$router.push({ name: "AddWithdrawal" });
           break;
         case "withdraw-checkout":

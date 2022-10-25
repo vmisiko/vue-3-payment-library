@@ -93,6 +93,7 @@ export function usePayment() {
     if (route.name === "FailedView") {
       window.analytics.track("Try again after Failed Payment", {
         ...commonTrackPayload(),
+        payment_method: state.defaultPaymentMethod?.pay_method_name,
       });
     }
 
@@ -263,6 +264,9 @@ export function usePayment() {
             state.loading = false;
             window.analytics.track("Payment option saved successfully", {
               ...commonTrackPayload(),
+              message: res.message,
+              reason: res.message,
+              sendy_error_code: "",
             });
             router.push("/choose-payment");
             return;
@@ -287,6 +291,9 @@ export function usePayment() {
             state.showErrorModal = true;
             window.analytics.track("Payment option not saved successfully", {
               ...commonTrackPayload(),
+              message: res.message,
+              reason: res.message,
+              sendy_error_code: "",
             });
             return;
           }
@@ -309,6 +316,12 @@ export function usePayment() {
     state.errorText = res.message;
     state.loading = false;
     state.showErrorModal = true;
+    window.analytics.track("Payment option not saved successfully", {
+      ...commonTrackPayload(),
+      message: res.message,
+      reason: res.message,
+      sendy_error_code: "",
+    });
     datadogRum.addError(new Error(res.message));
   }
 

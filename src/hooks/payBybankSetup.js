@@ -32,7 +32,8 @@ export function usePayBybankSetup() {
   const openAccount =  async () => {
     state.showProcessing = true;
     window.analytics.track("View pay by bank setup processing", {
-      ...commonTrackPayload()
+      ...commonTrackPayload(),
+      payment_method: 'Pay by bank'
     });
 
     state.count = true;
@@ -64,7 +65,9 @@ export function usePayBybankSetup() {
         (el) => el.is_primary === true
       );
       window.analytics.track("Payment option saved successfully", {
-        ...commonTrackPayload()
+        ...commonTrackPayload(),
+        payment_method: 'Pay by bank',
+        message: response.message,
       });
       store.commit('setSelectedVirtualAccount', account[0].account_number);
       router.push({ name: "AccountReadyView" });
@@ -74,7 +77,10 @@ export function usePayBybankSetup() {
       router.push({ name: "FailedAccountSetup" });
     }
     window.analytics.track("Payment option failed to save", {
-      ...commonTrackPayload()
+      ...commonTrackPayload(),
+      message: response.message,
+      reason: response.message,
+      payment_method: 'Pay by bank'
     });
     store.commit('setErrorText', response.message);
     datadogRum.addError(new Error(response.message));

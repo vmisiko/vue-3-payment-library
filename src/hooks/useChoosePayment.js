@@ -44,8 +44,8 @@ export function useChoosePayment() {
   async function update(method) {
     window.analytics.track("Select payment option", {
       ...commonTrackPayload(),
-      previousPaymentMethod: state.defaultPaymentMethod?.pay_method_name,
-      newPaymentOption: method.pay_method_name,
+      previous_payment_option: state.defaultPaymentMethod?.pay_method_name,
+      new_payment_option: method.pay_method_name,
     });
 
     state.defaultPaymentMethod = method;
@@ -83,8 +83,8 @@ export function useChoosePayment() {
     if (response.status) {
       window.analytics.track("Change Payment option", {
         ...commonTrackPayload(),
-        previousPaymentMethod: state.defaultPaymentMethod.pay_method_name,
-        newPaymentOption: method.pay_method_name,
+        previous_payment_option: state.defaultPaymentMethod.pay_method_name,
+        new_payment_option: method.pay_method_name,
       });
       retrievePaymentMethods();
     }

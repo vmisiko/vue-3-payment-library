@@ -96,7 +96,8 @@ onMounted(() => {
 const handleOpen = () => {
   confirmModal.value.style.display = "block";
   window.analytics.track("View Confirm Withdrawal Page", {
-    ...commonTrackPayload()
+    ...commonTrackPayload(),
+    withdrawal_option: selectedPaymentOption.value?.pay_method_name,
   });
 };
 
@@ -106,7 +107,8 @@ const handleClose = () => {
 
 const submit = () => {
   window.analytics.track("Tap Confirm withdrawal", {
-    ...commonTrackPayload()
+    ...commonTrackPayload(),
+    withdrawal_option: selectedPaymentOption.value?.pay_method_name,
   });
   withdraw();
   emit('close');

@@ -80,7 +80,7 @@ import { useSegement } from "../../../hooks/useSegment";
   const handleSelect = () => {
     window.analytics.track("Select withdraw cash option", {
       ...commonTrackPayload(),
-      selectedOption: props.paymentMethod.pay_method_name,
+      selected_option: props.paymentMethod.pay_method_name,
       account: props.paymentMethod.pay_method_details,
     });
     selectedPaymentOption.value  = { ...props.paymentMethod, bankDetails: bankDetails.value };

@@ -93,6 +93,7 @@ const handleOpen = () => {
   confirmModal.value.style.display = "block";
   window.analytics.track("Tap submit a withdrawal option details", {
     ...commonTrackPayload(),
+    withdrawal_option: selectedPaymentOption.value?.pay_method_name,
   })
 };
 
@@ -103,6 +104,8 @@ const handleClose = () => {
 const submit = async () => {
   window.analytics.track("Tap save a withdrawal option details", {
     ...commonTrackPayload(),
+    withdrawal_option: selectedPaymentOption.value?.pay_method_name,
+
   });
   
   const response = await getOtp();

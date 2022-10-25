@@ -182,7 +182,7 @@ export default {
       getDefaultpayMethod();
       window.analytics.track("View choose checkout payment option", {
         ...commonTrackPayload(),
-        defaultedPaymentOption: state.defaultPaymentMethod.pay_method_name,
+        defaulted_payment_option: state.defaultPaymentMethod.pay_method_name,
       });
     });
 

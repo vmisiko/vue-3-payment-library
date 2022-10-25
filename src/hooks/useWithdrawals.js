@@ -61,6 +61,7 @@ export function useWithdrawals() {
     if (response.status) {
       window.analytics.track("Withdrawal option saved successfully", {
         ...commonTrackPayload(),
+        message: response.message
       });
       const entrypoint = localStorage.getItem('entry');
       entrypoint === "withdraw-checkout" ? router.push({ name: "WithdrawalCheckout"})  : router.push({ name: "ManageWithdrawal"});
@@ -77,12 +78,16 @@ export function useWithdrawals() {
     else if (response.duplicate) {
       window.analytics.track("Withdrawal option already exists", {
         ...commonTrackPayload(),
+        message: response.message
       });
       router.push({ name: "DuplicateAccount"});
       return;
     }
     window.analytics.track("Withdrawal option failed to save", {
       ...commonTrackPayload(),
+      message: response.message,
+      reason: response.message,
+      sendy_error_code: "",
     });
     store.dispatch("paymentNotification", {
         text: `Withdrawal option failed to save`,
@@ -115,6 +120,7 @@ export function useWithdrawals() {
     if (response.status) {
       window.analytics.track("Withdrawal option saved successfully", {
         ...commonTrackPayload(),
+        message: response.message,
       });
       const entrypoint = localStorage.getItem('entry');
       entrypoint === "withdraw-checkout"  ? router.push({name: "WithdrawalCheckout"})  : router.push({name: "ManageWithdrawal"});
@@ -131,12 +137,16 @@ export function useWithdrawals() {
     else if (response.duplicate) {
       window.analytics.track("Withdrawal option already exists", {
         ...commonTrackPayload(),
+        message: response.message,
       });
       router.push({ name: "DuplicateAccount"});
       return;
     } 
     window.analytics.track("Withdrawal option failed to save", {
       ...commonTrackPayload(),
+      message: response.message,
+      reason: response.message,
+      sendy_error_code: "",
     });
     store.dispatch("paymentNotification", {
         text: response.message,
@@ -157,6 +167,7 @@ export function useWithdrawals() {
     if (response.status) {
       window.analytics.track("Withdrawal option deleted successfully", {
         ...commonTrackPayload(),
+        message: response.message,
       });
       router.push({ name: 'ManageWithdrawal'});
       const message = selectedPaymentOption.value.pay_method_id === 10 ? `${selectedPaymentOption.value.bankDetails.operator_name}. | Acc No: ${selectedPaymentOption.value.pay_method_details} has been deleted` : `M-PESA | Mobile No: ${selectedPaymentOption.value.pay_method_details} has been removed`;
@@ -175,7 +186,7 @@ export function useWithdrawals() {
       ...commonTrackPayload(),
       reason: response.message,
       message: response.message,
-      sendyErrorCode: null,
+      sendy_error_code: null,
     });
   
     store.dispatch("paymentNotification", {
@@ -204,6 +215,7 @@ export function useWithdrawals() {
 
       window.analytics.track("Withdrawal option deleted successfully", {
         ...commonTrackPayload(),
+        message: response.message,
       });
       router.push({ name: 'ManageWithdrawal'});
       store.dispatch("paymentNotification", {
@@ -216,7 +228,7 @@ export function useWithdrawals() {
       ...commonTrackPayload(),
       reason: response.message,
       message: response.message,
-      sendyErrorCode: null,
+      sendy_error_code: null,
     });
     store.dispatch("paymentNotification", {
       text: response.message,
@@ -265,7 +277,8 @@ export function useWithdrawals() {
         case "success": {
           window.analytics.track("Withdrawal successfully processed", {
             ...commonTrackPayload(),
-            withdraw_option: selectedPaymentOption.value.pay_method_name,
+            message: response.message,
+            withdrawal_option: selectedPaymentOption.value.pay_method_name,
             account_number: selectedPaymentOption.value.pay_method_details,
           });
           store.commit("setLoading", false);
@@ -287,8 +300,8 @@ export function useWithdrawals() {
       ...commonTrackPayload(),
       reason: response.message,
       message: response.message,
-      sendyErrorCode: "",
-      withdraw_option: selectedPaymentOption.value.pay_method_name,
+      sendy_error_code: "",
+      withdrawal_option: selectedPaymentOption.value.pay_method_name,
       account_number: selectedPaymentOption.value.pay_method_details,
     });
     failureReason.value = response.message;
@@ -311,9 +324,9 @@ export function useWithdrawals() {
             window.analytics.track('Withdrawal failed to be processed', {
               ...commonTrackPayload(),
               reason: 'Time out',
-              sendyErrorCode: '',
+              sendy_error_code: '',
               message: "Time Out",
-              withdraw_option: selectedPaymentOption.value.pay_method_name,
+              withdrawal_option: selectedPaymentOption.value.pay_method_name,
               account_number: selectedPaymentOption.value.pay_method_details,
             });
             failureReason.value = "Withdrawal failed to be processed, Please try again later.";
@@ -344,7 +357,7 @@ export function useWithdrawals() {
           store.commit("setLoading", false);
           window.analytics.track('Withdrawal successfully processed', {
             ...commonTrackPayload(),
-            withdraw_option: selectedPaymentOption.value.pay_method_name,
+            withdrawal_option: selectedPaymentOption.value.pay_method_name,
             account_number: selectedPaymentOption.value.pay_method_details,
           });
           router.push({
@@ -363,9 +376,9 @@ export function useWithdrawals() {
           window.analytics.track('Withdrawal failed to be processed', {
             ...commonTrackPayload(),
             reason: res.message,
-            sendyErrorCode: '',
+            sendy_error_code: '',
             message: res.message,
-            withdraw_option: selectedPaymentOption.value.pay_method_name,
+            withdrawal_option: selectedPaymentOption.value.pay_method_name,
             account_number: selectedPaymentOption.value.pay_method_details,
           });
           router.push({
@@ -388,9 +401,9 @@ export function useWithdrawals() {
     window.analytics.track('Withdrawal failed to be processed', {
       ...commonTrackPayload(),
       reason: res.message,
-      sendyErrorCode: '',
+      sendy_error_code: '',
       message: res.message,
-      withdraw_option: selectedPaymentOption.value.pay_method_name,
+      withdrawal_option: selectedPaymentOption.value.pay_method_name,
       account_number: selectedPaymentOption.value.pay_method_details,
     });
     router.push({

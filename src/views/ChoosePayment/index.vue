@@ -142,20 +142,21 @@ export default {
     });
 
     onMounted(async () => {
-      window.analytics.track("View choose payment option", {
-        ...commonTrackPayload()
-      });
       store.commit("setLoading", true);
       await retrievePaymentMethods();
       store.commit("setLoading", false);
       getDefaultpayMethod();
+      window.analytics.track("View choose payment option", {
+        ...commonTrackPayload(),
+        "defaulted_payment_option": state?.defaultPaymentMethod?.pay_method_name
+      });
     });
 
     function getDefaultpayMethod() {
-      const method = getSavedPayMethods.value
+       state.defaultPaymentMethod = getSavedPayMethods.value
         ? getSavedPayMethods.value.filter((method) => method.default === 1)[0]
-        : [];
-      state.picked = method ? method.pay_detail_id : "";
+        : {};
+      state.picked = state.defaultPaymentMethod ? state.defaultPaymentMethod.pay_detail_id : "";
     }
 
     return {

@@ -134,7 +134,6 @@ const submit = async () => {
   window.analytics.track('Continue after entering mobile number', {
     ...commonTrackPayload(),
     payment_method: 'M-Pesa',
-    phoneNumber: formattedPhone.value,
   });
   const entrypoint = localStorage.getItem("entry");
   if (entrypoint === "resolve-payment-checkout") {
@@ -202,6 +201,7 @@ const submit = async () => {
     ...commonTrackPayload(),
     reason: response.message,
     message: response.message,
+    sendy_error_code: "",
   });
   router.push({ name: "FailedView", params: { mpesa: "M-Pesa" } });
 };
@@ -246,7 +246,7 @@ const submitRetry = async () => {
   window.analytics.track('Payment processing failed', {
     ...commonTrackPayload(),
     reason: res.message,
-    sendyErrorCode: "",
+    sendy_error_code: "",
     message: res.message,
   });
   router.push({ name: "FailedView", params: { mpesa: "M-Pesa" } });
@@ -307,7 +307,7 @@ const pollMpesa = () => {
           window.analytics.track('Payment processing failed', {
             ...commonTrackPayload(),
             reason: 'Time out',
-            sendyErrorCode: "",
+            sendy_error_code: "",
             message: t("failed_to_charge_using_mpesa"),
           });
           setErrorText(t("failed_to_charge_using_mpesa"));
@@ -359,7 +359,7 @@ const TransactionIdStatus = async () => {
         window.analytics.track('Payment processing failed', {
           ...commonTrackPayload(),
           reason: res.message,
-          sendyErrorCode: "",
+          sendy_error_code: "",
           message: res.message,
         });
         router.push({
@@ -385,7 +385,7 @@ const TransactionIdStatus = async () => {
   window.analytics.track('Payment processing failed', {
     ...commonTrackPayload(),
     reason: res.message,
-    sendyErrorCode: "",
+    sendy_error_code: "",
     message: res.message,
   });
   router.push({ name: "FailedView", params: { mpesa: "M-Pesa" } });

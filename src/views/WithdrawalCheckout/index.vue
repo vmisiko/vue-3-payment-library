@@ -104,6 +104,7 @@ const handleContinue = () => {
   confirm.value = true
   window.analytics.track("Tap Continue after selecting a cash withdrawal option", {
     ...commonTrackPayload(),
+    withdrawal_option: selectedPaymentOption.value.pay_method_name,
   });
 };
 

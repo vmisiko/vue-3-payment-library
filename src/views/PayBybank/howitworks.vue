@@ -83,6 +83,7 @@ const handleMaybelater = () => {
   router.go(-1);
   window.analytics.track("Set up pay by bank later", {
     ...commonTrackPayload(),
+    payment_method: "pay by bank"
   });
 }
 
@@ -90,6 +91,7 @@ const handleSetupNow = () => {
   router.push('/bank/terms-of-service');
   window.analytics.track("Set up pay by bank now", {
     ...commonTrackPayload(),
+    payment_method: "pay by bank",
   });
 }
 </script>

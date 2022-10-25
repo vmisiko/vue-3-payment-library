@@ -117,7 +117,8 @@ onMounted( async () => {
     accountNumber.value = "";
   }
   window.analytics.track(isEdit.value ? "View Manage a Withdrawal Option Page" : "View Add a Withdrawal Option Page", {
-    ...commonTrackPayload()
+    ...commonTrackPayload(),
+    withdrawal_option: 'bank',
   });
 });
 
@@ -134,7 +135,7 @@ const handleSelect = (e) => {
   window.analytics.track("Select bank to transfer", {
     ...commonTrackPayload(),
     withdrawal_option: 'bank',
-    bankSelected: bank.name
+    bank_selected: bank.name
   });
 }
 

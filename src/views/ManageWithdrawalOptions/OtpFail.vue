@@ -54,6 +54,9 @@ onMounted(() => {
   })
 })
 const submit = async () => {
+  window.analytics.track("Tap resend OTP", {
+    ...commonTrackPayload(),
+  })
   const response = await getOtp();
   if (response.status) {
     router.push({ name: 'ConfirmOtp' });

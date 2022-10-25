@@ -295,6 +295,7 @@ export default {
             });
             window.analytics.track("Payment option saved successfully", {
               ...commonTrackPayload(),
+              message: res.message
             });
             router.push("/choose-payment");
             state.loading = false;
@@ -310,7 +311,7 @@ export default {
       window.analytics.track("Payment option not saved successfully", {
         ...commonTrackPayload(),
         reason: res.message,
-        sendErrorCode: "",
+        sendy_error_code: "",
         message: res.message,
       });
       state.errorText = res.message;
@@ -338,6 +339,9 @@ export default {
       state.errorText = t("failed_to_collect_card_details");
       window.analytics.track("Payment option not saved successfully", {
         ...commonTrackPayload(),
+        mesage: t("failed_to_collect_card_details"),
+        reason: t("failed_to_collect_card_details"),
+        sendy_error_code: '',
       });
       state.showErrorModal = true;
       datadogRum.addError('Failed to continue with Additional data flow');

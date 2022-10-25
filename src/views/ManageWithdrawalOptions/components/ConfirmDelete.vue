@@ -80,6 +80,7 @@ const handleOpen = () => {
   confirmModal.value.style.display = "block";
   window.analytics.track("View confirm deleting a withdrawal option details", {
     ...commonTrackPayload(),
+    payment_method: selectedPaymentOption.value.pay_method_name,
   });
 };
 
@@ -90,6 +91,7 @@ const handleClose = () => {
 const submit  = async () => {
   window.analytics.track("Tap save deleting a withdrawal option details", {
     ...commonTrackPayload(),
+    payment_method: selectedPaymentOption.value.pay_method_name,
   });
   const response = await getOtp();
   if (response.status) {

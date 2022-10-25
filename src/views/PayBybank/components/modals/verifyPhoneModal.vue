@@ -194,6 +194,7 @@ import { useSegement } from '../../../../hooks/useSegment';
       el.style.display = "block";
       window.analytics.track("View verify phone number", {
         ...commonTrackPayload(),
+        payment_method: "pay by bank"
       });
   };
 
@@ -214,14 +215,16 @@ import { useSegement } from '../../../../hooks/useSegment';
 
   const sendOtp = () => {
     window.analytics.track('Submit phone number for verification', {
-      ...commonTrackPayload()
+      ...commonTrackPayload(),
+      payment_method: "pay by bank"
     });
     getOtp();
   }
 
   const resendOtp = () => {
     window.analytics.track('Tap didnt receive a code', {
-      ...commonTrackPayload()
+      ...commonTrackPayload(),
+      payment_method: "pay by bank"
     });
     getOtp();
   }
@@ -256,7 +259,8 @@ import { useSegement } from '../../../../hooks/useSegment';
 
   const validateOtp = async () => {
     window.analytics.track('Confirm entered code', {
-      ...commonTrackPayload()
+      ...commonTrackPayload(),
+      payment_method: "Pay by bank",
     });
     if (!otp.value) { return false};
     const payload =  {

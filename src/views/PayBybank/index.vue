@@ -152,6 +152,7 @@ export default {
 
       window.analytics.track("Tap Confirm Payment",  {
         ...this.commonTrackPayload,
+        payment_method: 'Pay by bank',
         amount: this.topupAmount,
         currency: this.getBupayload.currency,
       });

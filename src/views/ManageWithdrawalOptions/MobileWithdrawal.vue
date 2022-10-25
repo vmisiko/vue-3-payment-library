@@ -87,7 +87,8 @@ onMounted(()=> {
     phone.value = selectedPaymentOption.value?.pay_method_details ? selectedPaymentOption.value?.pay_method_details?.toString(): "";
   };
   window.analytics.track(isEdit.value ? "View Manage a Withdrawal Option Page" : "View Add a Withdrawal Option Page", {
-    ...commonTrackPayload()
+    ...commonTrackPayload(),
+    withdrawal_option: 'M-Pesa',
   });
 });
 
