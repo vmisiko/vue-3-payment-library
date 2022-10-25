@@ -1,10 +1,12 @@
 import { ref, onMounted, computed } from "vue";
 import { useStore } from "vuex";
+import { useGlobalProp } from "./globalProperties";
 
 export function useSegement() {
   const startTime = ref("");
   const store = useStore();
   const getBupayload = computed(() => store.getters.getBupayload);
+  const { sendyOptions } = useGlobalProp();
 
   onMounted(() => {
     startTime.value = new Date();
@@ -67,10 +69,11 @@ export function useSegement() {
           n.parentNode.insertBefore(t, n);
           analytics._loadOptions = e;
         };
-        analytics._writeKey = "926xrVY1VJtPAPzFx5E9UjxjRJFGOBor";
+        const segmentKey = sendyOptions.config.VGS_ENVIRONMENT === 'sandbox' ? "rKWx4tQ7ZV5kKMJAODDbtwrpewLjA0DV" : "926xrVY1VJtPAPzFx5E9UjxjRJFGOBor";
+        analytics._writeKey = segmentKey
         analytics.SNIPPET_VERSION = "4.15.3";
-        analytics.load("926xrVY1VJtPAPzFx5E9UjxjRJFGOBor");
-        // analytics.page();
+        analytics.load(segmentKey);
+        console.log('segment', segmentKey, "ENV", sendyOptions.config.ENV);
       }
   }
 

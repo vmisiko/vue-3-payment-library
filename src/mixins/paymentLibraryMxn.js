@@ -244,9 +244,10 @@ const mixin = {
             n.parentNode.insertBefore(t, n);
             analytics._loadOptions = e;
           };
-          analytics._writeKey = "926xrVY1VJtPAPzFx5E9UjxjRJFGOBor";
+          const segmentKey = this.config.VGS_ENVIRONMENT === 'sandbox' ? "rKWx4tQ7ZV5kKMJAODDbtwrpewLjA0DV" : "926xrVY1VJtPAPzFx5E9UjxjRJFGOBor";
+          analytics._writeKey = segmentKey;
           analytics.SNIPPET_VERSION = "4.15.3";
-          analytics.load("926xrVY1VJtPAPzFx5E9UjxjRJFGOBor");
+          analytics.load(segmentKey);
           // analytics.page();
         }
     },
