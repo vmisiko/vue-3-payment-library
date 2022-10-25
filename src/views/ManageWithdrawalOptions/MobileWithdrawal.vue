@@ -88,7 +88,7 @@ onMounted(()=> {
   };
   window.analytics.track(isEdit.value ? "View Manage a Withdrawal Option Page" : "View Add a Withdrawal Option Page", {
     ...commonTrackPayload(),
-    withdrawal_option: 'M-Pesa',
+    withdrawal_option: 'M-PESA',
   });
 });
 

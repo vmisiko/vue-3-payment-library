@@ -64,7 +64,7 @@ export default {
         ? this.getSavedPayMethods.filter((method) => method.default === 1)[0]
         : null;
       return this.defaultpayMethod && this.defaultpayMethod.pay_method_id === 1
-        ? "M-Pesa"
+        ? "M-PESA"
         : `${
             this.defaultpayMethod
               ? this.defaultpayMethod.pay_method_name

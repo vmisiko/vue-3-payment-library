@@ -61,7 +61,7 @@ const  handleSelect = (paymentMethod) =>  {
       window.analytics.track("Select a withdrawal option", {
         ...commonTrackPayload(),
         intention: 'add',
-        withdrawal_option: 'M-pesa',
+        withdrawal_option: 'M-PESA',
       });
       router.push({ name: "MobileWithdrawal" });
       break;

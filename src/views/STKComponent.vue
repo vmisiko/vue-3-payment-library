@@ -126,14 +126,14 @@ onMounted(()=> {
 
   window.analytics.track('View mobile money stk page', {
     ...commonTrackPayload(),
-    payment_method: 'M-Pesa',
+    payment_method: 'M-PESA',
   });
 })
 
 const submit = async () => {
   window.analytics.track('Continue after entering mobile number', {
     ...commonTrackPayload(),
-    payment_method: 'M-Pesa',
+    payment_method: 'M-PESA',
   });
   const entrypoint = localStorage.getItem("entry");
   if (entrypoint === "resolve-payment-checkout") {
@@ -203,7 +203,7 @@ const submit = async () => {
     message: response.message,
     sendy_error_code: "",
   });
-  router.push({ name: "FailedView", params: { mpesa: "M-Pesa" } });
+  router.push({ name: "FailedView", params: { mpesa: "M-PESA" } });
 };
 
 const submitRetry = async () => {
@@ -249,7 +249,7 @@ const submitRetry = async () => {
     sendy_error_code: "",
     message: res.message,
   });
-  router.push({ name: "FailedView", params: { mpesa: "M-Pesa" } });
+  router.push({ name: "FailedView", params: { mpesa: "M-PESA" } });
 }
 
 const bulkretry = async () => {
@@ -342,7 +342,7 @@ const TransactionIdStatus = async () => {
         promptInfo.value = false;
         window.analytics.track('Payment processed successfully', {
           ...commonTrackPayload(),
-          payment_method: 'M-pesa',
+          payment_method: 'M-PESA',
           phone_number: formattedPhone.value,
         });
         router.push({
@@ -388,7 +388,7 @@ const TransactionIdStatus = async () => {
     sendy_error_code: "",
     message: res.message,
   });
-  router.push({ name: "FailedView", params: { mpesa: "M-Pesa" } });
+  router.push({ name: "FailedView", params: { mpesa: "M-PESA" } });
   datadogRum.addError(new Error(res.message));
 };
 

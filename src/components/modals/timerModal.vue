@@ -58,7 +58,7 @@ export default {
       el.style.display = "block";
       window.analytics.track('View mobile money processing', {
         ...this.commonTrackPayload(),
-        payment_method: 'M-pesa'
+        payment_method: 'M-PESA'
       });
       const stopCountdown = setInterval(() => {
         this.countdown -= 1;

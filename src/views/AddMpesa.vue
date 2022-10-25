@@ -54,7 +54,7 @@ export default {
     async submit() {
       this.loading = true;
       const payMethod = this.getPaymentMethods.find(
-        (element) => element.name === "M-Pesa"
+        (element) => element.name === "M-PESA"
       );
 
       const payload = {
