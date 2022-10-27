@@ -136,7 +136,7 @@ export function useChoosePayment() {
   }
 
   function addPaymentOption() {
-    window.analytics.track("Add Payment Option", {
+    window.analytics.track("Add Payment Option Link", {
       ...commonTrackPayload(),
       timezone: paymentTimezone,
       country_code: getBupayload.value.country_code,

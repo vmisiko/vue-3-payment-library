@@ -195,6 +195,7 @@ const submit = async () => {
   state.loading = false;
   state.showErrorModal = true;
   datadogRum.addError(new Error(response.message));
+  state.errorText = response.message;
   setErrorText(response.message);
 
   window.analytics.track('Payment processing failed', {

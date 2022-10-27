@@ -64,7 +64,6 @@ import AdditionalCardFields from "./AdditionalCardFields";
 import ErrorModal from "../components/modals/ErrorModal";
 import { usePayment } from "../hooks/payment";
 import { useSegement } from '../hooks/useSegment';
-import { stat } from "fs";
 
 export default {
   name: "Payment",
