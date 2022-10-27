@@ -52,6 +52,7 @@ export default {
     handleSelect() {
       window.analytics.track("Tap Manage Payment Options", {
         ...this.commonTrackPayload(),
+        selected_option: this.payMethod.pay_method_name,
       });
       this.setSelectedPayOption(this.payMethod);
       this.$router.push({

@@ -129,6 +129,7 @@ const mixin = {
             product: this.getBupayload.entity_id,
             timestamp: Date.now(),
             platform_name: "web",
+            pay_direction: this.getBupayload.pay_direction,
           });
           this.$router.push({ name: "ManageWithdrawal" });
           break;
@@ -138,6 +139,7 @@ const mixin = {
             product: this.getBupayload.entity_id,
             timestamp: Date.now(),
             platform_name: "web",
+            pay_direction: this.getBupayload.pay_direction,
           });
           this.$router.push({ name: "AddWithdrawal" });
           break;

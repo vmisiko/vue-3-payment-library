@@ -38,7 +38,8 @@ export function usePayBybankSetup() {
 
     state.count = true;
     window.analytics.track("Agree and Continue",  {
-      ...getBupayload,
+      ...commonTrackPayload(),
+      payment_method: 'Pay by bank'
     });
 
     const phone = state.phone || getBupayload.phonenumber?.split("+")[1];

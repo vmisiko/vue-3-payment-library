@@ -103,6 +103,7 @@ export default {
 
       window.analytics.track("Complete Payment", {
         ...this.commonTrackPayload(),
+        payment_method: "M-PESA",
       });
 
       for (let poll_count = 0; poll_count < this.poll_limit; poll_count++) {

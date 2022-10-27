@@ -53,6 +53,7 @@ const { commonTrackPayload} = useSegement();
 const handleBack = () => {
   window.analytics.track("Tap back to withdrawal options", {
     ...commonTrackPayload(),
+    withdrawal_option: selectedPaymentOption.value?.name,
   });
   router.push({name: 'ManageWithdrawal'});
 }

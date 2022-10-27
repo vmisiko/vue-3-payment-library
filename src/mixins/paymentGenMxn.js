@@ -47,6 +47,7 @@ const mixin = {
         timestamp: Date.now(),
         platform_name: this.isMobile ? this.getMobileOs() : "web",
         duration_on_page: finishTime,
+        pay_direction: this.getBupayload.pay_direction,
       };
       return payload;
     },

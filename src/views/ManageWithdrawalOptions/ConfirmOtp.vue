@@ -86,7 +86,8 @@ const formatEmail = computed(() => {
 
 onMounted(() => {
   window.analytics.track("View withdrawal option OTP confirmation page", {
-    ...commonTrackPayload()
+    ...commonTrackPayload(),
+    withdrawal_option: selectedPaymentOption.value?.pay_method_name ?? selectedPaymentOption.value?.name,
   });
 });
 
@@ -97,25 +98,29 @@ const handleOnComplete = (val) => {
 
 const resendOtp = () => {
   window.analytics.track("Tap resend OTP", {
-    ...commonTrackPayload()
+    ...commonTrackPayload(),
+    withdrawal_option: selectedPaymentOption.value?.pay_method_name ?? selectedPaymentOption.value?.name,
   });
   getOtp();
 };
 
 const submit = async () => {
   window.analytics.track("Tap confirm OTP", {
-    ...commonTrackPayload()
+    ...commonTrackPayload(),
+    withdrawal_option: selectedPaymentOption.value?.pay_method_name ?? selectedPaymentOption.value?.name,
   });
   const response = await validateOtp(otp.value);
   if (!response.status) {
     window.analytics.track("OTP Validation Failed", {
-      ...commonTrackPayload()
+      ...commonTrackPayload(),
+      withdrawal_option: selectedPaymentOption.value?.pay_method_name ?? selectedPaymentOption.value?.name,
     });
     router.push({ name: 'OtpFail' });
     return;
   }
   window.analytics.track("OTP Validation Passed", {
-      ...commonTrackPayload()
+      ...commonTrackPayload(),
+      withdrawal_option: selectedPaymentOption.value?.pay_method_name ?? selectedPaymentOption.value?.name,
     });
   if (route.params.delete) {
     await deleteWithdrawalOption();

@@ -82,10 +82,11 @@ export function useSegement() {
     const finishTime = date - startTime.value;
     const payload = {
       user_id: getBupayload.value.user_id,
-      product: getBupayload.value.entity_id,
+      product: parseInt(getBupayload.value.entity_id) === 6 ? "Fulfillment" : "Supply",
       timestamp: Date.now(),
       platform_name: isMobile ? getMobileOs() : "web",
       duration_on_page: finishTime,
+      pay_direction: getBupayload.value.pay_direction,
     };
     return payload;
   }

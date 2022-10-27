@@ -180,6 +180,7 @@ export default {
                 ...that.commonTrackPayload,
                 amount: that.topupAmount,
                 currency: that.getBupayload.currency,
+                payment_method: 'Pay by bank'
               });
               return;
             }
@@ -194,6 +195,7 @@ export default {
                 ...that.commonTrackPayload,
                 amount: that.topupAmount,
                 currency: that.getBupayload.currency,
+                payment_method: 'Pay by bank'
               });
               return;
             }
@@ -220,6 +222,7 @@ export default {
         window.analytics.track("Payment processed successfully", {
           ...this.commonTrackPayload(),
           message: this.$translate("transfer_successful"),
+          payment_method: 'Pay by bank'
         });
         this.$router.push({
           name: "SuccessView",
@@ -245,7 +248,8 @@ export default {
           ...this.commonTrackPayload,
           amount: this.amountDue,
           currency: this.getBupayload.currency,
-          transfer_amount: this.lastTransferAmount
+          transfer_amount: this.lastTransferAmount,
+          payment_method: 'Pay by bank'
         });
       }
       this.balance = response.availableBalance; 

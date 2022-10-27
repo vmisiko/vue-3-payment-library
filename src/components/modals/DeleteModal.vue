@@ -84,6 +84,7 @@ export default {
       const startTime = new Date();
       window.analytics.track("Delete card", {
         ...this.commonTrackPayload(),
+        payment_method: this.getSelectedPayOption.pay_method_name,
         card_network: this.getSelectedPayOption.psp,
       });
 
@@ -105,6 +106,7 @@ export default {
         {
           ...this.commonTrackPayload(),
           duration_taken: finishTime,
+          payment_method: this.getSelectedPayOption.pay_method_name,
           card_network: this.$route.params.cardTitle,
           ...(!response.status && { failure_reason: response.message }),
         }
@@ -149,6 +151,7 @@ export default {
         {
           ...this.commonTrackPayload(),
           duration_taken: finishTime,
+          payment_method: this.getSelectedPayOption.pay_method_name,
         }
       );
 
@@ -165,6 +168,7 @@ export default {
     cancelRemove() {
       window.analytics.track(`Cancel Remove ${this.payMethodName}`, {
         ...this.commonTrackPayload(),
+        payment_method: this.getSelectedPayOption.pay_method_name,
       });
       this.$emit("close");
     },

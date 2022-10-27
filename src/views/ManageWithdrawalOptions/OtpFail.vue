@@ -42,11 +42,13 @@ import { useStore } from "vuex";
 import { useGlobalProp } from "../../hooks/globalProperties";
 import { useOtp } from "../../hooks/useOtp";
 import { useSegement } from "../../hooks/useSegment";
+import { useWithdrawals } from "../../hooks/useWithdrawals";
 
 const store = useStore();
 const { router } = useGlobalProp();
 const { getOtp, loading } = useOtp();
 const { commonTrackPayload } = useSegement();
+const { selectedPaymentOption } = useWithdrawals();
 
 onMounted(() => {
   window.analytics.track("View failed add withdrawal option page", {
@@ -56,6 +58,7 @@ onMounted(() => {
 const submit = async () => {
   window.analytics.track("Tap resend OTP", {
     ...commonTrackPayload(),
+    withdrawal_option: selectedPaymentOption.value?.pay_method_name ?? selectedPaymentOption.value?.name,
   })
   const response = await getOtp();
   if (response.status) {

@@ -84,6 +84,7 @@ export default {
     removeCard() {
       window.analytics.track("Remove card", {
         ...this.commonTrackPayload(),
+        payment_method: "card",
       });
       this.showDeleteModal = true;
     },

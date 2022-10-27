@@ -111,6 +111,7 @@ const { commonTrackPayload } = useSegement();
 const routing = () => {
   window.analytics.track("Tap done after successful withdrawal", {
     ...commonTrackPayload(),
+    payment_method: selectedPaymentOption.value.pay_method_name,
   });
   router.push(localStorage.entry_route);
 };

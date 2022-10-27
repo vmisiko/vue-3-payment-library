@@ -64,6 +64,7 @@ import AdditionalCardFields from "./AdditionalCardFields";
 import ErrorModal from "../components/modals/ErrorModal";
 import { usePayment } from "../hooks/payment";
 import { useSegement } from '../hooks/useSegment';
+import { stat } from "fs";
 
 export default {
   name: "Payment",
@@ -117,7 +118,8 @@ export default {
       state.showErrorModal = false;
       state.showAdditionalCardFields = false;
       window.analytics.track("Tap close failed payment prompt", {
-        ...commonTrackPayload()
+        ...commonTrackPayload(),
+        pay_direction: state.defaultPaymentMethod?.pay_method_name,
       });
     }
 

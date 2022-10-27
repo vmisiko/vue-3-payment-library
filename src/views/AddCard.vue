@@ -214,6 +214,7 @@ export default {
     function onsubmit() {
       window.analytics.track("Submit Add Card", {
         ...commonTrackPayload(),
+        payment_method: "card",
       });
 
       const isValid = setErrors();
@@ -259,6 +260,7 @@ export default {
       store.commit('setLoading', true);
       window.analytics.track("Processing your card", {
         ...commonTrackPayload(),
+        payment_method: "card",
       });
       reponseData.platform = 'web';
       const payload = {
@@ -295,7 +297,8 @@ export default {
             });
             window.analytics.track("Payment option saved successfully", {
               ...commonTrackPayload(),
-              message: res.message
+              message: res.message,
+              payment_method: "card",
             });
             router.push("/choose-payment");
             state.loading = false;
@@ -313,6 +316,7 @@ export default {
         reason: res.message,
         sendy_error_code: "",
         message: res.message,
+        payment_method: "card",
       });
       state.errorText = res.message;
       state.showErrorModal = true;
@@ -342,6 +346,7 @@ export default {
         mesage: t("failed_to_collect_card_details"),
         reason: t("failed_to_collect_card_details"),
         sendy_error_code: '',
+        payment_method: "card",
       });
       state.showErrorModal = true;
       datadogRum.addError('Failed to continue with Additional data flow');

@@ -144,6 +144,7 @@ export default {
 
       window.analytics.track("Try again after Failed Payment", {
         ...this.commonTrackPayload(),
+        payment_method: this.defaultPaymentMethod?.pay_method_name,
       });
 
       this.loading = true;
@@ -205,6 +206,7 @@ export default {
 
       window.analytics.track("Try again after Failed Payment", {
         ...this.commonTrackPayload(),
+        payment_method: this.defaultPaymentMethod?.pay_method_name,
       });
 
       if (this.defaultPaymentMethod.pay_method_id === 1) {

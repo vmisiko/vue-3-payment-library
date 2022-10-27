@@ -202,6 +202,8 @@ const submit = async () => {
     reason: response.message,
     message: response.message,
     sendy_error_code: "",
+    payment_method: state.defaultPaymentMethod?.pay_method_name,
+
   });
   router.push({ name: "FailedView", params: { mpesa: "M-PESA" } });
 };
@@ -248,6 +250,7 @@ const submitRetry = async () => {
     reason: res.message,
     sendy_error_code: "",
     message: res.message,
+
   });
   router.push({ name: "FailedView", params: { mpesa: "M-PESA" } });
 }
@@ -309,6 +312,7 @@ const pollMpesa = () => {
             reason: 'Time out',
             sendy_error_code: "",
             message: t("failed_to_charge_using_mpesa"),
+            payment_method: state.defaultPaymentMethod?.pay_method_name,
           });
           setErrorText(t("failed_to_charge_using_mpesa"));
           router.push({
@@ -344,6 +348,7 @@ const TransactionIdStatus = async () => {
           ...commonTrackPayload(),
           payment_method: 'M-PESA',
           phone_number: formattedPhone.value,
+          payment_method: state.defaultPaymentMethod?.pay_method_name,
         });
         router.push({
           name: "SuccessView",
@@ -361,6 +366,7 @@ const TransactionIdStatus = async () => {
           reason: res.message,
           sendy_error_code: "",
           message: res.message,
+          payment_method: state.defaultPaymentMethod?.pay_method_name,
         });
         router.push({
           name: "FailedView",
@@ -387,6 +393,7 @@ const TransactionIdStatus = async () => {
     reason: res.message,
     sendy_error_code: "",
     message: res.message,
+    payment_method: state.defaultPaymentMethod?.pay_method_name,
   });
   router.push({ name: "FailedView", params: { mpesa: "M-PESA" } });
   datadogRum.addError(new Error(res.message));

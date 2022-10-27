@@ -64,6 +64,7 @@ export default {
     removeCard() {
       window.analytics.track("Remove Mobile Money", {
         ...this.commonTrackPayload(),
+        payment_method: this.getSelectedPayOption.pay_mathod_name,
       });
       this.showDeleteModal = true;
     },

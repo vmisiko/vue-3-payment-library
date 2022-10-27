@@ -177,6 +177,7 @@ export function usePayment() {
           const duration = Date.now() - state.startResponseTime;
           window.analytics.track("Payment processed successfully", {
             ...commonTrackPayload(),
+            payment_method: state.defaultPaymentMethod.pay_method_name,
             message: response.message,
           })
           router.push({
@@ -195,6 +196,7 @@ export function usePayment() {
     router.push({ name: "FailedView" });
     window.analytics.track("Payment processing failed", {
       ...commonTrackPayload(),
+      payment_method: state.defaultPaymentMethod.pay_method_name,
       message: response.message,
       reason: response.message,
       sendyErrorCode: "",
@@ -224,6 +226,7 @@ export function usePayment() {
                 message: "Polling time Out",
                 reason: "Polling time out",
                 sendyErrorCode: "",
+                payment_method: state.defaultPaymentMethod.pay_method_name,
               });
               return;
             }
@@ -232,6 +235,7 @@ export function usePayment() {
               message: "Polling time Out",
               reason: "Polling time out",
               sendyErrorCode: "",
+              payment_method: state.defaultPaymentMethod.pay_method_name,
             });
             state.errorText = t("failed_to_charge_card");
             store.commit("setErrorText", state.errorText);
@@ -267,6 +271,7 @@ export function usePayment() {
               message: res.message,
               reason: res.message,
               sendy_error_code: "",
+              payment_method: state.defaultPaymentMethod.pay_method_name,
             });
             router.push("/choose-payment");
             return;
@@ -294,6 +299,7 @@ export function usePayment() {
               message: res.message,
               reason: res.message,
               sendy_error_code: "",
+              payment_method: state.defaultPaymentMethod.pay_method_name,
             });
             return;
           }
@@ -321,6 +327,7 @@ export function usePayment() {
       message: res.message,
       reason: res.message,
       sendy_error_code: "",
+      payment_method: state.defaultPaymentMethod.pay_method_name,
     });
     datadogRum.addError(new Error(res.message));
   }

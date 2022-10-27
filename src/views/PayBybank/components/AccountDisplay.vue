@@ -75,12 +75,14 @@ export default {
       this.$emit("update:modelValue'", e.target.value);
       this.account = e.target.value;
       window.analytics.track("Switch available bank ", {
-        ...this.commonTrackPayload()
+        ...this.commonTrackPayload(),
+        payment_method: 'Pay by bank'
       });
     },
     handleCopy() {
       window.analytics.track("Copy pay by bank account number", {
-        ...this.commonTrackPayload()
+        ...this.commonTrackPayload(),
+        payment_method: 'Pay by bank'
       });
       const cb = navigator.clipboard;
       const span = document.getElementById("account");

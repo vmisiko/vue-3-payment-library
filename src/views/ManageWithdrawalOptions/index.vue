@@ -86,6 +86,7 @@ const addWithdraw = () => {
 const submit = () => {
   window.analytics.track("Tap done on added withdrawal option", {
     ...commonTrackPayload(),
+    withdrawal_option: selectedPaymentOption.value?.pay_method_name ?? selectedPaymentOption.value?.name,
   });
   router.push(localStorage.entry_route);
 }

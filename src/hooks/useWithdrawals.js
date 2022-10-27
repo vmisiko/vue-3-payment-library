@@ -61,7 +61,8 @@ export function useWithdrawals() {
     if (response.status) {
       window.analytics.track("Withdrawal option saved successfully", {
         ...commonTrackPayload(),
-        message: response.message
+        message: response.message,
+        withdrawal_option: selectedPaymentOption.value.name,
       });
       const entrypoint = localStorage.getItem('entry');
       entrypoint === "withdraw-checkout" ? router.push({ name: "WithdrawalCheckout"})  : router.push({ name: "ManageWithdrawal"});
@@ -78,7 +79,8 @@ export function useWithdrawals() {
     else if (response.duplicate) {
       window.analytics.track("Withdrawal option already exists", {
         ...commonTrackPayload(),
-        message: response.message
+        message: response.message,
+        withdrawal_option: selectedPaymentOption.value.name,
       });
       router.push({ name: "DuplicateAccount"});
       return;
@@ -88,6 +90,7 @@ export function useWithdrawals() {
       message: response.message,
       reason: response.message,
       sendy_error_code: "",
+      withdrawal_option: selectedPaymentOption.value.name,
     });
     store.dispatch("paymentNotification", {
         text: `Withdrawal option failed to save`,
@@ -121,6 +124,7 @@ export function useWithdrawals() {
       window.analytics.track("Withdrawal option saved successfully", {
         ...commonTrackPayload(),
         message: response.message,
+        withdrawal_option: selectedPaymentOption.value.name,
       });
       const entrypoint = localStorage.getItem('entry');
       entrypoint === "withdraw-checkout"  ? router.push({name: "WithdrawalCheckout"})  : router.push({name: "ManageWithdrawal"});
@@ -138,6 +142,7 @@ export function useWithdrawals() {
       window.analytics.track("Withdrawal option already exists", {
         ...commonTrackPayload(),
         message: response.message,
+        withdrawal_option: selectedPaymentOption.value.name,
       });
       router.push({ name: "DuplicateAccount"});
       return;
@@ -168,6 +173,7 @@ export function useWithdrawals() {
       window.analytics.track("Withdrawal option deleted successfully", {
         ...commonTrackPayload(),
         message: response.message,
+        withdrawal_option: selectedPaymentOption.value.pay_method_name,
       });
       router.push({ name: 'ManageWithdrawal'});
       const message = selectedPaymentOption.value.pay_method_id === 10 ? `${selectedPaymentOption.value.bankDetails.operator_name}. | Acc No: ${selectedPaymentOption.value.pay_method_details} has been deleted` : `M-PESA | Mobile No: ${selectedPaymentOption.value.pay_method_details} has been removed`;
@@ -187,6 +193,7 @@ export function useWithdrawals() {
       reason: response.message,
       message: response.message,
       sendy_error_code: null,
+      withdrawal_option: selectedPaymentOption.value.pay_method_name,
     });
   
     store.dispatch("paymentNotification", {
@@ -195,46 +202,6 @@ export function useWithdrawals() {
 
     });
   }; 
-
-  const deleteMpesa = async () => {
-    const payload = {
-      pay_detail_id: selectedPaymentOption.value.pay_detail_id,
-      user_id: getBupayload.value.user_id,
-    };
-
-    const fullPayload = {
-      url: "/delete_payment_method",
-      params: payload,
-    };
-
-    loading.value = true;
-    const response = await store.dispatch('paymentAxiosPost', fullPayload);
-    loading.value = false;
-
-    if (response.status) {
-
-      window.analytics.track("Withdrawal option deleted successfully", {
-        ...commonTrackPayload(),
-        message: response.message,
-      });
-      router.push({ name: 'ManageWithdrawal'});
-      store.dispatch("paymentNotification", {
-        text: `M-PESA | Mobile No: ${selectedPaymentOption.value.pay_method_details} has been removed`,
-      })
-      return;
-    }
-
-    window.analytics.track("Withdrawal option failed to delete", {
-      ...commonTrackPayload(),
-      reason: response.message,
-      message: response.message,
-      sendy_error_code: null,
-    });
-    store.dispatch("paymentNotification", {
-      text: response.message,
-      type: "error" 
-    })
-  }
 
   const withdraw = async () => {
     const payload = {
@@ -263,7 +230,8 @@ export function useWithdrawals() {
     }
     store.commit("setLoading", true);
     window.analytics.track("View confirming withdrawal payment processing page", {
-      ...commonTrackPayload()
+      ...commonTrackPayload(),
+      withdrawal_option: selectedPaymentOption.value.pay_method_name,
     });
     loadingText.value = "Confirming your payment. This may take a moment.";
     const response = await store.dispatch('paymentAxiosPost', fullPayload);

@@ -55,6 +55,7 @@ const routing = () => {
   window.analytics.track("Tap close after failed withdrawal", {
     ...commonTrackPayload(),
     duration_of_response: route.params.duration,
+    payment_method: selectedPaymentOption.value.pay_method_name,
   });
   router.push(localStorage.entry_route);
 };

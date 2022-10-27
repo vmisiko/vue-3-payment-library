@@ -95,6 +95,7 @@ onMounted(()=> {
 const handleConfirm = () => {
   window.analytics.track("Tap submit a withdrawal option details", {
     ...commonTrackPayload(),
+    withdrawal_option: "M-PESA",
   });
   confirm.value = true;
 };
@@ -111,7 +112,8 @@ const validatePhone = (val) => {
 const deletePhone = () => {
   window.analytics.track("Tap delete a withdrawal option details", {
     ...commonTrackPayload(),
-  })
+    withdrawal_option: "M-PESA"
+  });
   isDelete.value = true;
 }
 

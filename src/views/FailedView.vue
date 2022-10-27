@@ -117,7 +117,8 @@ export default {
       state.showErrorModal = false;
       state.showAdditionalCardFields = false;
       window.analytics.track("Tap close failed payment prompt", {
-        ...commonTrackPayload()
+        ...commonTrackPayload(),
+        payment_method: state.defaultPaymentMethod.pay_method_name,
       });
     }
 
