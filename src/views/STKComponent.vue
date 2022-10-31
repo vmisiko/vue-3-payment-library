@@ -71,7 +71,7 @@
         </div>
       </div>
       <TimerModal :show="showTimer" @close="closeTimer" />
-      <MpesaErrorModal :show="state.showErrorModal" :text="state.errorText" />
+      <MpesaErrorModal :show="state.showErrorModal" :text="state.errorText" @close="state.showErrorModal=false" />
     </div>
   </div>
 </template>
@@ -108,7 +108,7 @@ const startResponseTime = ref('');
 
 const store = useStore();
 const { t, router, } = useGlobalProp();
-const { getBupayload, state, setErrorText } = useState();
+const { getBupayload, state, } = useState();
 const { commonTrackPayload } = useSegement();
 const { getDefaultpayMethod } = usePayment();
 
@@ -196,7 +196,7 @@ const submit = async () => {
   state.showErrorModal = true;
   datadogRum.addError(new Error(response.message));
   state.errorText = response.message;
-  setErrorText(response.message);
+  store.commit('setErrorText', response.message);
 
   window.analytics.track('Payment processing failed', {
     ...commonTrackPayload(),
@@ -206,7 +206,6 @@ const submit = async () => {
     payment_method: state.defaultPaymentMethod?.pay_method_name,
 
   });
-  router.push({ name: "FailedView", params: { mpesa: "M-PESA" } });
 };
 
 const submitRetry = async () => {

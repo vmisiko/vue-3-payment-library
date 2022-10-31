@@ -251,6 +251,8 @@ export default {
           }
         },
         (error) => {
+          state.loading = false;
+          state.showErrorModal = true;
           datadogRum.addError(error);
         }
       );

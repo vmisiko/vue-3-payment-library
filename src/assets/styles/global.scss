@@ -107,6 +107,11 @@
     }
   }
 
+  .space-between {
+    display: flex;
+    justify-content: space-between;
+  }
+
   .direction-flex {
     display: flex;
     .flex-column {
