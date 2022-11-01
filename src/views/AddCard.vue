@@ -64,7 +64,7 @@
           </div>
 
           <div class="mgt-10 text-center">
-            <span class="charge-text"> {{ $translate("in_order_to_verify") }}</span>
+            <span class="charge-text"> {{ $translate("in_order_to_verify") }} {{ getBupayload.currency }} {{ addCardAmount }} {{ $translate("and_refund_your_card") }} </span>
           </div>
           <sendy-btn
             :block="true"
@@ -86,9 +86,8 @@
     />
   </div>
 </template>
-
 <script>
-import { onMounted, toRefs, reactive} from "vue";
+import { onMounted, toRefs, reactive, computed} from "vue";
 import TopInfo from "../components/topInfo";
 import CvvModal from "../components/modals/cvvModal";
 import ErrorModal from "../components/modals/ErrorModal";
@@ -137,6 +136,26 @@ export default {
     
     onMounted(() => {
       setForm();
+      console.log(addCardAmount.value);
+    });
+
+    const addCardAmount = computed(() => {
+      let computedAMount = 5;
+      switch (getBupayload.value.country_code) {
+        case 'UG':
+          computedAMount = computedAMount * 100;
+          break;
+        case 'NG':
+          computedAMount = computedAMount * 10;
+          break;
+        case 'CI':
+          computedAMount = computedAMount * 10;
+          break;
+        default:
+          computedAMount = computedAMount;
+          break;
+      }
+      return computedAMount;
     });
 
     const vgsForm = window.VGSCollect.create(
@@ -222,6 +241,7 @@ export default {
         return;
       }
 
+
       const newCardPayload = {
         country: getBupayload.value.country_code,
         currency: getBupayload.value.currency,
@@ -246,7 +266,8 @@ export default {
           if (status === 200) {
             const reponseData = response.data;
             delete reponseData['language'];
-            saveNewCard(reponseData);
+            console.log('getBupayload.value.pspflow ', getBupayload.value.pspflow );
+            getBupayload.value.pspflow ? processNewCard(reponseData) : saveNewCard(reponseData);
             state.loading = false;
           }
         },
@@ -258,7 +279,92 @@ export default {
       );
     }
 
+    const processNewCard = async (reponseData) => {
+      console.log('processNewCard card initialized', reponseData);
+      store.commit('setLoading', true);
+      window.analytics.track("Processing your card", {
+        ...commonTrackPayload(),
+        payment_method: "card",
+      });
+      const additionalPayload = {
+        amount: addCardAmount.value,
+        bulk: false,
+        entity: parseInt(getBupayload.value.entity_id),
+        pay_direction: 'PAY_IN',
+        paymethod: 2,
+        save: true,
+        txref: `AC_${new Date().getTime()}`,
+        // test: getBupayload.value.test,
+        platform: 'web',
+      };
+
+      reponseData = {...reponseData, ...additionalPayload};
+      console.log(reponseData, "reponseData merged");
+      const payload = {
+        url: "/api/v3/process/pspflow",
+        params: reponseData,
+      };
+
+      const res = await store.dispatch('paymentAxiosPost', payload);
+      console.log(res, "proccessNewcard res");
+      state.transaction_id = res.transaction_id;
+      console.log(res);
+
+      if (res.status) {
+        state.transactionStatus = res.transaction_status.toLowerCase();
+
+        if (res.additional_data) {
+          state.additionalData = res.additional_data;
+          state.is3DS = res.tds;
+          if (res.tds) {
+            init3DS();
+            return;
+          }
+          state.showAdditionalCardFields = true;
+          store.commit('setLoading', false);
+          return;
+        }
+
+        switch (res.transaction_status.toLowerCase()) {
+          case "pending":
+            pollCard();
+            break;
+          case "success":
+            store.commit('setLoading', false);
+            store.dispatch('paymentNotification', {
+              text: t("card_details_added"),
+            });
+            window.analytics.track("Payment option saved successfully", {
+              ...commonTrackPayload(),
+              message: res.message,
+              payment_method: "card",
+            });
+            router.push("/choose-payment");
+            state.loading = false;
+            break;
+          default:
+            break;
+        }
+        return;
+      }
+
+      state.showProcessing = false;
+      store.commit('setLoading', false);
+      window.analytics.track("Payment option not saved successfully", {
+        ...commonTrackPayload(),
+        reason: res.message,
+        sendy_error_code: "",
+        message: res.message,
+        payment_method: "card",
+      });
+      state.errorText = res.message;
+      state.showErrorModal = true;
+      datadogRum.addError(new Error(res.message));
+      return;
+    }
+
     async function saveNewCard(reponseData) {
+      console.log('saveNewCard  initialized', reponseData);
       store.commit('setLoading', true);
       window.analytics.track("Processing your card", {
         ...commonTrackPayload(),
@@ -365,6 +471,7 @@ export default {
       ...toRefs(cardState),
       ...toRefs(state),
       getLoading,
+      addCardAmount,
       onsubmit,
       handleErrorClose,
       handleContinue,

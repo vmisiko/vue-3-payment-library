@@ -78,52 +78,7 @@ export function usePayment() {
       checkAvailableOptions();
     }
   }
-
-  async function submit() {
-    state.startResponseTime = new Date();
-    if (route.name !== "FailedView") {
-      window.analytics.track("Tap Confirm and Pay", {
-        ...commonTrackPayload(),
-        payment_method: state.defaultPaymentMethod.pay_method_name,
-        amount: getBupayload.value.amount,
-        currency: getBupayload.value.currency,
-      });
-    }
-
-    if (route.name === "FailedView") {
-      window.analytics.track("Try again after Failed Payment", {
-        ...commonTrackPayload(),
-        payment_method: state.defaultPaymentMethod?.pay_method_name,
-      });
-    }
-
-    if (
-      state.defaultPaymentMethod.daily_limit &&
-      state.amount > state.defaultPaymentMethod.daily_limit
-    ) {
-      state.showTransactionLimit = true;
-      return;
-    }
-
-    if (state.defaultPaymentMethod.category === "Mobile Money") {
-      if (state.defaultPaymentMethod.pay_method_id === 1) {
-        state.amount > state.defaultPaymentMethod.transaction_limit
-          ? router.push("/mpesa-c2b")
-          : router.push("/mpesa-stk");
-        return;
-      }
-
-      state.amount > state.defaultPaymentMethod.transaction_limit
-        ? (state.showTransactionLimit = true)
-        : router.push("/mpesa-stk");
-      return;
-    }
-
-    if (state.defaultPaymentMethod.pay_method_id === 20) {
-      payBybankCollect();
-      return;
-    }
-
+  const checkout = async () =>  {
     store.commit("setLoading", true);
     const payload = {
       country: getBupayload.value.country_code,
@@ -139,11 +94,14 @@ export function usePayment() {
       platform: 'web',
       pay_direction: getBupayload.value.pay_direction,
       test: getBupayload?.value?.test ?? false,
+      pay_detail_id: state.defaultPaymentMethod.pay_detail_id,
     };
 
     const version = getBupayload.value?.version ?? 'v3';
+    
+    const url = getBupayload.value?.pspflow ? `/api/${version}/process/pspflow` : `/api/${version}/process`
     const fullPayload = {
-      url: getBupayload.value.pay_direction !== 'PAY_ON_DELIVERY' ?  `/api/${version}/process` : '/api/v3/pod/process',
+      url: getBupayload.value.pay_direction !== 'PAY_ON_DELIVERY' ? url : '/api/v3/pod/process',
       params: payload,
     };
 
@@ -201,6 +159,120 @@ export function usePayment() {
       reason: response.message,
       sendyErrorCode: "",
     });
+  }
+  async function payBybankCollect() {
+    store.commit('setLoading', true);
+    const balance = await getBalance();
+
+    if (parseFloat(balance) < parseFloat(getBupayload.value.amount)) {
+      store.commit('setLoading', false);
+      return router.push({
+        name: 'PayByBank'
+      });
+    }
+
+    const payload = {
+      country: getBupayload.value.country_code,
+      amount: getBupayload.value.amount,
+      txref: getBupayload.value.txref,
+      userid: getBupayload.value.user_id,
+      currency: getBupayload.value.currency,
+      bulk: getBupayload.value.bulk,
+      entity: getBupayload.value.entity_id,
+      paymethod: state.defaultPaymentMethod.pay_method_id,
+      company_code: getBupayload.value.company_code,
+      firstname: getBupayload.value.firstname,
+      lastname: getBupayload.value.lastname,
+      platform: 'web'
+    };
+
+    const fullPayload = {
+      url: "/api/v3/onepipe/collect",
+      params: payload,
+    };
+    store.commit('setLoading', true);
+    const response = await store.dispatch("paymentAxiosPost", fullPayload);
+    store.commit("setLoading", false);
+    if (response.status) {
+      store.dispatch("paymentNotification", {
+        text: response.message,
+      });
+      router.push({
+        name: "SuccessView",
+      });
+      return;
+    }
+    store.commit("setErrorText", response.message);
+    if (route.name !== "FailedView") {
+      router.push({ name: "FailedView" });
+    }
+    return;
+  }
+  async function processPaybybank() {
+    store.commit('setLoading', true);
+    const balance = await getBalance();
+
+    if (parseFloat(balance) < parseFloat(getBupayload.value.amount)) {
+      store.commit('setLoading', false);
+      return router.push({
+        name: 'PayByBank'
+      });
+    }
+
+    checkout();
+    return;
+  }
+  const processMobiletransactionLimit = () => {
+    if (state.defaultPaymentMethod.pay_method_id === 1) {
+      state.amount > state.defaultPaymentMethod.transaction_limit
+        ? router.push("/mpesa-c2b")
+        : router.push("/mpesa-stk");
+      return;
+    }
+
+    state.amount > state.defaultPaymentMethod.transaction_limit
+      ? (state.showTransactionLimit = true)
+      : router.push("/mpesa-stk");
+  }
+
+  async function submit() {
+    state.startResponseTime = new Date();
+    if (route.name !== "FailedView") {
+      window.analytics.track("Tap Confirm and Pay", {
+        ...commonTrackPayload(),
+        payment_method: state.defaultPaymentMethod.pay_method_name,
+        amount: getBupayload.value.amount,
+        currency: getBupayload.value.currency,
+      });
+    }
+
+    if (route.name === "FailedView") {
+      window.analytics.track("Try again after Failed Payment", {
+        ...commonTrackPayload(),
+        payment_method: state.defaultPaymentMethod?.pay_method_name,
+      });
+    }
+
+    if (
+      state.defaultPaymentMethod.daily_limit &&
+      state.amount > state.defaultPaymentMethod.daily_limit
+    ) {
+      state.showTransactionLimit = true;
+      return;
+    }
+
+    if (state.defaultPaymentMethod.category === "Mobile Money") {
+      processMobiletransactionLimit();
+      return;
+    }
+
+    if (state.defaultPaymentMethod.pay_method_id === 20) {
+      // payBybankCollect();
+      processPaybybank();
+      return;
+    }
+
+    checkout();
   }
 
   function pollCard() {
@@ -364,7 +436,7 @@ export function usePayment() {
 
     const fullPayload = {
       params: payload,
-      url: "/api/v2/submit_info",
+      url: "/api/v3/submit_info/pspflow",
     };
 
     const response = await store.dispatch("paymentAxiosPost", fullPayload);
@@ -397,7 +469,10 @@ export function usePayment() {
       return;
     }
     state.errorText = t("failed_to_collect_card_details");
-    store.dispatch('paymentNotification', response.message);
+    store.dispatch('paymentNotification', {
+      text: response.message,
+      type: 'error'
+    });
     state.showErrorModal = true;
   }
 
@@ -431,54 +506,6 @@ export function usePayment() {
     }
   }
 
-  async function payBybankCollect() {
-    store.commit('setLoading', true);
-    const balance = await getBalance();
-
-    if (parseFloat(balance) < parseFloat(getBupayload.value.amount)) {
-      store.commit('setLoading', false);
-      return router.push({
-        name: 'PayByBank'
-      });
-    }
-
-    const payload = {
-      country: getBupayload.value.country_code,
-      amount: getBupayload.value.amount,
-      txref: getBupayload.value.txref,
-      userid: getBupayload.value.user_id,
-      currency: getBupayload.value.currency,
-      bulk: getBupayload.value.bulk,
-      entity: getBupayload.value.entity_id,
-      paymethod: state.defaultPaymentMethod.pay_method_id,
-      company_code: getBupayload.value.company_code,
-      firstname: getBupayload.value.firstname,
-      lastname: getBupayload.value.lastname,
-      platform: 'web'
-    };
-
-    const fullPayload = {
-      url: "/api/v3/onepipe/collect",
-      params: payload,
-    };
-    store.commit('setLoading', true);
-    const response = await store.dispatch("paymentAxiosPost", fullPayload);
-    store.commit("setLoading", false);
-    if (response.status) {
-      store.dispatch("paymentNotification", {
-        text: response.message,
-      });
-      router.push({
-        name: "SuccessView",
-      });
-      return;
-    }
-    store.commit("setErrorText", response.message);
-    if (route.name !== "FailedView") {
-      router.push({ name: "FailedView" });
-    }
-    return;
-  }
 
   return {
     getSavedPayMethods,

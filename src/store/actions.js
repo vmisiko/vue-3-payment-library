@@ -28,7 +28,7 @@ export default {
       );
       return data;
     } catch (err) {
-      await dispatch("handlePaymentAxiosErrors", err.response.status);
+      await dispatch("handlePaymentAxiosErrors", err.response?.status);
       datadogRum.addError(err);
       return err;
     }
