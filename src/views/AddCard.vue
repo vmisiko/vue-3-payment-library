@@ -136,7 +136,6 @@ export default {
     
     onMounted(() => {
       setForm();
-      console.log(addCardAmount.value);
     });
 
     const addCardAmount = computed(() => {
@@ -266,7 +265,6 @@ export default {
           if (status === 200) {
             const reponseData = response.data;
             delete reponseData['language'];
-            console.log('getBupayload.value.pspflow ', getBupayload.value.pspflow );
             getBupayload.value.pspflow ? processNewCard(reponseData) : saveNewCard(reponseData);
             state.loading = false;
           }
@@ -280,7 +278,6 @@ export default {
     }
 
     const processNewCard = async (reponseData) => {
-      console.log('processNewCard card initialized', reponseData);
       store.commit('setLoading', true);
       window.analytics.track("Processing your card", {
         ...commonTrackPayload(),
@@ -299,16 +296,13 @@ export default {
       };
 
       reponseData = {...reponseData, ...additionalPayload};
-      console.log(reponseData, "reponseData merged");
       const payload = {
         url: "/api/v3/process/pspflow",
         params: reponseData,
       };
 
       const res = await store.dispatch('paymentAxiosPost', payload);
-      console.log(res, "proccessNewcard res");
       state.transaction_id = res.transaction_id;
-      console.log(res);
 
       if (res.status) {
         state.transactionStatus = res.transaction_status.toLowerCase();
@@ -364,7 +358,6 @@ export default {
     }
 
     async function saveNewCard(reponseData) {
-      console.log('saveNewCard  initialized', reponseData);
       store.commit('setLoading', true);
       window.analytics.track("Processing your card", {
         ...commonTrackPayload(),

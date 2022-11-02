@@ -73,7 +73,6 @@ export function useSegement() {
         analytics._writeKey = segmentKey
         analytics.SNIPPET_VERSION = "4.15.3";
         analytics.load(segmentKey);
-        console.log('segment', segmentKey, "ENV", sendyOptions.config.ENV);
       }
   }
 

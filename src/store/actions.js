@@ -30,7 +30,7 @@ export default {
     } catch (err) {
       await dispatch("handlePaymentAxiosErrors", err.response?.status);
       datadogRum.addError(err);
-      return err;
+      return err.response?.data;
     }
   },
   async paymentAxiosGet({ dispatch }, payload) {
@@ -51,7 +51,7 @@ export default {
     } catch (err) {
       await dispatch("handlePaymentAxiosErrors", err.response.status);
       datadogRum.addError(err);
-      return err;
+      return err.response?.data;
     }
   },
   async paymentAxiosPut({ dispatch }, payload) {
@@ -67,7 +67,7 @@ export default {
     } catch (err) {
       await dispatch("handlePaymentAxiosErrors", err.response.status);
       datadogRum.addError(err);
-      return err;
+      return err.response?.data;
     }
   },
   async paymentAxiosDelete({dispatch}, payload) {
@@ -86,7 +86,7 @@ export default {
     } catch (err) {
       await dispatch("handlePaymentAxiosErrors", err.response.status);
       datadogRum.addError(err);
-      return err;
+      return err.response?.data;
     }
   },
   /*eslint-disable */
