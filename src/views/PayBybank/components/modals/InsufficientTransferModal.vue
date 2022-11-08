@@ -1,6 +1,6 @@
 <template>
   <div id="insufficient-transfer" class="modal" ref="InsufficientTransfer">
-    <div class="modal-content">
+    <div class="modal-content-pl">
       <div>
         <IconView icon="warningstate" width="72px" height="72px" />
       </div>
@@ -96,7 +96,7 @@ export default {
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-.modal-content {
+.modal-content-pl {
   position: relative;
   background-color: #fefefe;
   margin: auto;

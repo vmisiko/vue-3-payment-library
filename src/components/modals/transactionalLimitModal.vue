@@ -1,6 +1,6 @@
 <template>
   <div id="error-limit" class="modal" ref="transactionLimitModal">
-    <div class="modal-content">
+    <div class="modal-content-pl">
       <div>
         <IconView icon="warning" />
       </div>
@@ -103,7 +103,7 @@ export default {
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-.modal-content {
+.modal-content-pl {
   position: relative;
   background-color: #fefefe;
   margin: auto;

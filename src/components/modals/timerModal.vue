@@ -1,6 +1,6 @@
 <template>
   <div id="timer-modal" class="modal" ref="timerModal">
-    <div class="modal-content">
+    <div class="modal-content-pl">
       <div class="mgt-4">
         <IconView icon="loading1" width="70" height="70" class="flex-center" />
       </div>
@@ -92,7 +92,7 @@ export default {
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-.modal-content {
+.modal-content-pl {
   position: relative;
   background-color: #fefefe;
   margin: auto;
