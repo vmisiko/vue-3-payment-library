@@ -330,7 +330,7 @@ const TransactionIdStatus = async () => {
   showTimer.value = true;
 
   const payload = {
-    url: `/api/v1/process/status/${state.transaction_id}`,
+    url: getBupayload.value.pay_direction === "PAY_ON_DELIVERY" ? `/api/v1/process/pod/status/${state.transaction_id}` : `/api/v1/process/status/${state.transaction_id}`,
   };
 
   const res = await store.dispatch('paymentAxiosGet', payload);
