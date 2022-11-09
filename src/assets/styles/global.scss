@@ -169,7 +169,11 @@
     .card-min {
       width: -webkit-fill-available;
     }
-  }
+
+    .modal-content-pl-pl {
+      width: 100%;
+    }
+  }  
 
   @each $direction in $directions {
 

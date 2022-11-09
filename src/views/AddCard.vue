@@ -446,7 +446,7 @@ form {
 }
 
 /* Modal Content */
-.modal-content {
+.modal-content-pl {
   position: relative;
   background-color: #fefefe;
   margin: auto;
