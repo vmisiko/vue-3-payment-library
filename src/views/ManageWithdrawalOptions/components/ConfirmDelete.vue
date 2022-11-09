@@ -1,6 +1,6 @@
 <template>
   <div id="cvv-modal" class="modal" ref="confirmModal">
-    <div class="modal-content">
+    <div class="modal-content-pl">
       <div class="mgt-5">
         <span>{{ $translate("sure_remove_withdrawal_option") }}</span>
       </div>
@@ -122,7 +122,7 @@ const submit  = async () => {
 }
 
 /* Modal Content */
-.modal-content {
+.modal-content-pl {
   position: relative;
   background-color: #fefefe;
   margin: auto;

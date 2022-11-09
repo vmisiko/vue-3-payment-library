@@ -1,6 +1,6 @@
 <template>
   <div id="delete-modal" class="modal" ref="deleteModal">
-    <div class="modal-content">
+    <div class="modal-content-pl">
       <div class="mgt-4">
         <span class="text-body-1">
           {{ $translate("sure_delete") }}
@@ -191,7 +191,7 @@ export default {
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-.modal-content {
+.modal-content-pl {
   position: relative;
   background-color: #fefefe;
   margin: auto;
