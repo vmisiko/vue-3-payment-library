@@ -32,7 +32,6 @@ import store from "./store";
 const app = createApp(App);
 
 app.use(store);
-app.use(router);
 app.use(payments, {
   store,
   router,
@@ -41,11 +40,14 @@ app.use(payments, {
     VGS_VAULT_ID: process.env.VUE_APP_VGS_VAULT_ID,
     VGS_ENVIRONMENT: process.env.VUE_APP_VGS_ENVIRONMENT,
   },
-});
+}); // Ensure your put this configurationg above app.use(router)
+app.use(router);
 
 app.mount("#app");
 ```
-
+ 
+#### Note:
+Ensure your ``` app.use(payment, {})``` this configurationg above ```app.use(router)```
 >### Business unit parameter definitions
 >>[See more](docs/BUPARAMETERS.MD)
 

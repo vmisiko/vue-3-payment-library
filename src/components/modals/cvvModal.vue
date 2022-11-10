@@ -1,6 +1,6 @@
 <template>
   <div id="cvv-modal" class="modal" ref="cvvModal">
-    <div class="modal-content">
+    <div class="modal-content-pl">
       <span class="close" @click="$emit('close')">&times;</span>
       <div>
         <IconView icon="magnify-cvv" />
@@ -69,7 +69,7 @@ export default {
 }
 
 /* Modal Content */
-.modal-content {
+.modal-content-pl {
   position: relative;
   background-color: #fefefe;
   margin: auto;

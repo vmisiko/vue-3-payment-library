@@ -109,10 +109,6 @@ export default {
     } = usePayment();
     const { commonTrackPayload } = useSegement();
 
-    onMounted(async () => {
-      getDefaultpayMethod();
-    });
-
     function handleErrorModalClose() {
       state.showErrorModal = false;
       state.showAdditionalCardFields = false;

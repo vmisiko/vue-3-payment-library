@@ -1,6 +1,6 @@
 <template>
   <div id="cvv-modal" class="modal" ref="confirmModal">
-    <div class="modal-content">
+    <div class="modal-content-pl">
       <div class="mgt-4">
         
         <div class="flex">
@@ -133,7 +133,7 @@ const submit = () => {
 }
 
 /* Modal Content */
-.modal-content {
+.modal-content-pl {
   position: relative;
   background-color: #fefefe;
   margin: auto;

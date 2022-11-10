@@ -243,7 +243,7 @@ const submitRetry = async () => {
   showTimer.value = false;
   state.loading = false;
   state.showErrorModal = true;
-  setErrorText(res.message);
+  store.commit('setErrorText', res.message);
 
   window.analytics.track('Payment processing failed', {
     ...commonTrackPayload(),
@@ -314,7 +314,7 @@ const pollMpesa = () => {
             message: t("failed_to_charge_using_mpesa"),
             payment_method: state.defaultPaymentMethod?.pay_method_name,
           });
-          setErrorText(t("failed_to_charge_using_mpesa"));
+          store.commit('setErrorText', t("failed_to_charge_using_mpesa"));
           router.push({
             name: "FailedView",
             params: { mpesa: "mpesa" },
@@ -330,7 +330,7 @@ const TransactionIdStatus = async () => {
   showTimer.value = true;
 
   const payload = {
-    url: `/api/v1/process/status/${state.transaction_id}`,
+    url: getBupayload.value.pay_direction === "PAY_ON_DELIVERY" ? `/api/v1/process/pod/status/${state.transaction_id}` : `/api/v1/process/status/${state.transaction_id}`,
   };
 
   const res = await store.dispatch('paymentAxiosGet', payload);
@@ -358,7 +358,7 @@ const TransactionIdStatus = async () => {
       case "failed":
         state.poll_count = state.poll_limit;
         state.loading = false;
-        setErrorText(res.message);
+        store.commit('setErrorText', res.message);
         showTimer.value = false;
         promptInfo.value = false;
         window.analytics.track('Payment processing failed', {
@@ -386,7 +386,7 @@ const TransactionIdStatus = async () => {
   state.poll_count = state.poll_limit;
   showTimer.value = false;
   promptInfo.value = false;
-  setErrorText(res.message);
+  store.commit('setErrorText', res.message);
 
   window.analytics.track('Payment processing failed', {
     ...commonTrackPayload(),
@@ -403,7 +403,7 @@ const closeTimer = () => {
   state.loading = false;
   showTimer.value = false;
   promptInfo.value = false;
-  setErrorText(t("unable_to_confirm_mpesa"));
+  stare.commit('setErrorText', t("unable_to_confirm_mpesa"));
   router.push({ name: "FailedView", params: { mpesa: "mpesa" } });
   datadogRum.addError(new Error(t("unable_to_confirm_mpesa")));
 
