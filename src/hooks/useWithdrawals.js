@@ -401,7 +401,6 @@ export function useWithdrawals() {
     addBank,
     addMpesa,
     deleteWithdrawalOption,
-    deleteMpesa,
     formatCurrency,
     withdraw,
   }

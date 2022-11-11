@@ -146,6 +146,9 @@ const mixin = {
         case "withdraw-checkout":
           this.$router.push({ name: "WithdrawalCheckout" });
           break;
+        case "choose-withdraw-option":
+          this.$router.push({ name: "WithdrawalCheckout" });
+          break;
         default:
           break;
       }
