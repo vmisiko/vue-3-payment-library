@@ -3,11 +3,12 @@
     class="direction-flex normal-text pointer"
     @click="handleSelect(paymentMethod)"
   >
-    <IconView
-      class="text-center mgt-0"
-      :icon="paymentMethod.name.toLowerCase()"
-    />
-    <div class="direction-flex mgy-auto mgl-5 w-full">
+    <div class="mgy-auto icon-size">
+      <IconView
+        :icon="paymentMethod.name.toLowerCase()"
+      />
+    </div>
+    <div class="direction-flex mgy-auto w-full">
       <span class=""> {{ optionName }} </span>
 
       <span class="spacer"></span>
@@ -123,3 +124,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.icon-size {
+  width: 10% !important;
+}
+</style>
