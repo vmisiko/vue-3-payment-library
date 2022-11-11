@@ -9,7 +9,7 @@ import { i18n, messages  } from "./plugins/i18n";
 import mitt from "mitt";
 import { createRouter , createWebHistory } from "vue-router";
 import { datadogRum } from '@datadog/browser-rum';
-
+export { useWithdrawals } from "./hooks/useWithdrawals";
 
 
 const emitter = mitt();
@@ -60,5 +60,4 @@ export default {
       
   datadogRum.startSessionReplayRecording();
   },
-  i18nMessages: messages
 };

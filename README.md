@@ -63,6 +63,7 @@ So there 8 entry points:
  6. resolve-payment-checkout - For resolving payments
  7. withdraw-checkout - for Checkout of withdrawal
  8. manage-withrawal-options - for managing withdrawal checkouts.
+ 8. choose-withdraw-option - for choosing withrawal options then returns back to bu
  ```
 
 ![Checkouts sample Checkout](docs/images/checkouts.svg)
@@ -96,6 +97,16 @@ So there 8 entry points:
   this.$paymentInit(buPayload, 'checkout'); //the 2nd argument can be a 'checkout', 'payment-option', 'choose-payment' or 'choose-payment-checkout, in order to access the 5 entry points of the Bu as listed above.
  ```
 
+### Note:
+If you select the entry point ```choose-withdraw-option```, You will have will be redirected back to Bu app after pressing continur when the desired withdrawal optio is selected.
+
+ In order to retrieve the selected payment method in Bu app, you wil use the below code 
+ ```
+ <script setup>
+  import { useWithdrawals } from "@sendyit/pay";
+  const { selectedPaymentOption } = useWithdrawals();
+ </script>
+ ```
 ## How to build and test
  In order to help and collaborate, clone this repo, then add what you can improve, and build the npm version of the repo locally in the dist file in the root of the folder, using the below command
 

@@ -101,11 +101,18 @@ onMounted( async () => {
 });
 
 const handleContinue = () => {
-  confirm.value = true
   window.analytics.track("Tap Continue after selecting a cash withdrawal option", {
     ...commonTrackPayload(),
     withdrawal_option: selectedPaymentOption.value.pay_method_name,
   });
+
+  const entryPoint = localStorage.entry;
+  console.log(entryPoint);
+  if (entryPoint === 'choose-withdraw-option') {
+    router.push(localStorage.entry_route);
+    return;
+  }
+  confirm.value = true;
 };
 
 const manageWithdrawOption = () => {
