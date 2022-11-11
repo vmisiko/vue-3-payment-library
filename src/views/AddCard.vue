@@ -309,8 +309,8 @@ export default {
 
         if (res.additional_data) {
           state.additionalData = res.additional_data;
-          state.is3DS = res.tds;
-          if (res.tds) {
+          state.is3DS = res.redirect;
+          if (res.redirect) {
             init3DS();
             return;
           }
@@ -377,8 +377,8 @@ export default {
 
         if (res.additional_data) {
           state.additionalData = res.additional_data;
-          state.is3DS = res.tds;
-          if (res.tds) {
+          state.is3DS = res.redirect;
+          if (res.redirect) {
             init3DS();
             return;
           }
