@@ -49,6 +49,7 @@ import WithdrawOption from './components/WithdrawOption.vue';
 import Processing from '../../components/processing.vue';
 import { useStore } from 'vuex';
 import { useSegement } from '../../hooks/useSegment';
+import { useWithdrawals } from '../../hooks/useWithdrawals';
 
 const icon = ref('back');
 const confirm = ref(false);
@@ -61,6 +62,7 @@ const store = useStore();
 const { getSavedPayMethods, getLoading } = useState();
 const { retrievePaymentMethods } = usePayment();
 const { commonTrackPayload } = useSegement();
+const { selectedPaymentOption } = useWithdrawals();
 
 onMounted( async () => {
   store.commit("setLoading", true);
