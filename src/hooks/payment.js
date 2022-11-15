@@ -95,6 +95,8 @@ export function usePayment() {
       pay_direction: getBupayload.value.pay_direction,
       test: getBupayload?.value?.test ?? false,
       pay_detail_id: state.defaultPaymentMethod.pay_detail_id,
+      bank: state.defaultPaymentMethod.bank_code,
+      bank_account: state.defaultPaymentMethod.pay_detail_id,
     };
 
     const version = getBupayload.value?.version ?? 'v3';
