@@ -117,7 +117,7 @@ export default {
     addOption() {
       window.analytics.track("Add Payment Option", {
         ...this.commonTrackPayload(),
-        payment_method: this.defaultPaymentMethod.pay_method_name,
+        payment_method: this.defaultPaymentMethod?.pay_method_name,
       });
       this.$router.push('/add-payment');
     }

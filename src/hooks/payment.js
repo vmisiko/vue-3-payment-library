@@ -133,7 +133,6 @@ export function usePayment() {
         }
         case "success": {
           store.commit("setLoading", false);
-          store.setLoading(false);
           const duration = Date.now() - state.startResponseTime;
           window.analytics.track("Payment processed successfully", {
             ...commonTrackPayload(),
@@ -292,13 +291,13 @@ export function usePayment() {
           if (poll_count === state.poll_limit - 1) {
             store.commit("setLoading", false);
             if (route.name === "AddCard") {
-              state.errorText = t("failed_to_collect_card_details");
+              state.errorText = "The request to add the card has not been completed. Please wait for about a minute before retrying. If this error persists, please reach out to our customer support team for assistance.";
               store.commit("setErrorText", state.errorText);
               state.showErrorModal = true;
               window.analytics.track("Payment option not saved successfully", {
                 ...commonTrackPayload(),
-                message: "Polling time Out",
-                reason: "Polling time out",
+                message: "The request to add the card has not been completed. Please wait for about a minute before retrying. If this error persists, please reach out to our customer support team for assistance.",
+                reason: "The request to add the card has not been completed. Please wait for about a minute before retrying. If this error persists, please reach out to our customer support team for assistance.",
                 sendyErrorCode: "",
                 payment_method: state.defaultPaymentMethod.pay_method_name,
               });
@@ -311,7 +310,7 @@ export function usePayment() {
               sendyErrorCode: "",
               payment_method: state.defaultPaymentMethod.pay_method_name,
             });
-            state.errorText = t("failed_to_charge_card");
+            state.errorText = "The request to charge the card has not been completed. Please wait for about a minute before retrying. If this error persists, please reach out to our customer support team for assistance.";
             store.commit("setErrorText", state.errorText);
             router.push({ name: "FailedView" });
             return;
@@ -345,7 +344,7 @@ export function usePayment() {
               message: res.message,
               reason: res.message,
               sendy_error_code: "",
-              payment_method: state.defaultPaymentMethod.pay_method_name,
+              payment_method: state.defaultPaymentMethod?.pay_method_name ?? 'card',
             });
             router.push("/choose-payment");
             return;
