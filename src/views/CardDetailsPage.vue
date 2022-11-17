@@ -61,7 +61,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["getSavedPayMethods", "getBupayload"]),
+    ...mapGetters(["getSavedPayMethods", "getBupayload", ]),
   },
   mounted() {
     this.fetchCardDetails();

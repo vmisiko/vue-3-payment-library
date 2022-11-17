@@ -88,11 +88,12 @@ export function usePayment() {
       userid: getBupayload.value.user_id,
       currency: getBupayload.value.currency,
       bulk: getBupayload.value.bulk,
-      entity: getBupayload.value.entity_id,
+      entity: 1,
       company_code: getBupayload.value.company_code,
       paymethod: state.defaultPaymentMethod.pay_method_id,
       platform: 'web',
       pay_direction: getBupayload.value.pay_direction,
+      phonenumber: getBupayload.value?.phonenumber ?? state.defaultPaymentMethod?.phonenumber,
       test: getBupayload?.value?.test ?? false,
       pay_detail_id: state.defaultPaymentMethod.pay_detail_id,
       bank: state.defaultPaymentMethod.bank_code,
@@ -268,11 +269,9 @@ export function usePayment() {
     }
 
     if (state.defaultPaymentMethod.pay_method_id === 20) {
-      // payBybankCollect();
-      processPaybybank();
+      getBupayload.value.pspflow ? processPaybybank() : payBybankCollect();
       return;
     }
-
     checkout();
   }
 
@@ -322,7 +321,7 @@ export function usePayment() {
 
   async function TransactionIdStatus() {
     const payload = {
-      url: getBupayload.value.pay_direction === "PAY_ON_DELIVERY" ? `/api/v1/process/pod/status/${state.transaction_id}` : `/api/v1/process/status/${state.transaction_id}`,
+      url: getBupayload.value.pay_direction === "PAY_ON_DELIVERY" ? `/api/v2/process/pod/status/${state.transaction_id}` : `/api/v2/process/status/${state.transaction_id}`,
     };
 
     const res = await store.dispatch("paymentAxiosGet", payload);
