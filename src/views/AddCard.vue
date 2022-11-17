@@ -286,12 +286,11 @@ export default {
       const additionalPayload = {
         amount: addCardAmount.value,
         bulk: false,
-        entity: parseInt(getBupayload.value.entity_id),
+        entity: 1,
         pay_direction: 'PAY_IN',
         paymethod: 2,
         save: true,
         txref: `AC_${new Date().getTime()}`,
-        // test: getBupayload.value.test,
         platform: 'web',
       };
 
