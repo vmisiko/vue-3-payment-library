@@ -292,6 +292,7 @@ export default {
         save: true,
         txref: `AC_${new Date().getTime()}`,
         platform: 'web',
+        test: getBupayload.value.test ?? false,
       };
 
       reponseData = {...reponseData, ...additionalPayload};
