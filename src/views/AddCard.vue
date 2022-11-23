@@ -265,7 +265,8 @@ export default {
           if (status === 200) {
             const reponseData = response.data;
             delete reponseData['language'];
-            getBupayload.value.pspflow ? processNewCard(reponseData) : saveNewCard(reponseData);
+            processNewCard(reponseData);
+            // saveNewCard(reponseData)
             state.loading = false;
           }
         },
@@ -297,7 +298,7 @@ export default {
 
       reponseData = {...reponseData, ...additionalPayload};
       const payload = {
-        url: "/api/v3/process/pspflow",
+        url: "/api/v3/process",
         params: reponseData,
       };
 

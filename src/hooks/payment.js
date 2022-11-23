@@ -102,9 +102,8 @@ export function usePayment() {
 
     const version = getBupayload.value?.version ?? 'v3';
     
-    const url = getBupayload.value?.pspflow ? `/api/${version}/process/pspflow` : `/api/${version}/process`
     const fullPayload = {
-      url: getBupayload.value.pay_direction !== 'PAY_ON_DELIVERY' ? url : '/api/v3/pod/process',
+      url: getBupayload.value.pay_direction !== 'PAY_ON_DELIVERY' ? `/api/${version}/process` : '/api/v3/pod/process',
       params: payload,
     };
 
@@ -269,7 +268,8 @@ export function usePayment() {
     }
 
     if (state.defaultPaymentMethod.pay_method_id === 20) {
-      getBupayload.value.pspflow ? processPaybybank() : payBybankCollect();
+      processPaybybank() 
+      // payBybankCollect();
       return;
     }
     checkout();
@@ -436,7 +436,7 @@ export function usePayment() {
 
     const fullPayload = {
       params: payload,
-      url: "/api/v3/submit_info/pspflow",
+      url: "/api/v3/submit_info",
     };
 
     const response = await store.dispatch("paymentAxiosPost", fullPayload);
