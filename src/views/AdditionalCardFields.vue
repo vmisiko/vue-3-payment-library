@@ -177,7 +177,7 @@ export default {
 
       const fullPayload = {
         params: payload,
-        url: "/api/v2/submit_info",
+        url: "/api/v3/submit_info",
       };
 
       const response = await this.$paymentAxiosPost(fullPayload);
@@ -215,7 +215,7 @@ export default {
 
             const fullPayload = {
               params: payload,
-              url: "/api/v2/submit_info",
+              url: "/api/v3/submit_info",
             };
 
             this.$paymentAxiosPost(fullPayload)
