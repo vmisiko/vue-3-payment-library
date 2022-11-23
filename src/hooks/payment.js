@@ -78,52 +78,7 @@ export function usePayment() {
       checkAvailableOptions();
     }
   }
-
-  async function submit() {
-    state.startResponseTime = new Date();
-    if (route.name !== "FailedView") {
-      window.analytics.track("Tap Confirm and Pay", {
-        ...commonTrackPayload(),
-        payment_method: state.defaultPaymentMethod.pay_method_name,
-        amount: getBupayload.value.amount,
-        currency: getBupayload.value.currency,
-      });
-    }
-
-    if (route.name === "FailedView") {
-      window.analytics.track("Try again after Failed Payment", {
-        ...commonTrackPayload(),
-        payment_method: state.defaultPaymentMethod?.pay_method_name,
-      });
-    }
-
-    if (
-      state.defaultPaymentMethod.daily_limit &&
-      state.amount > state.defaultPaymentMethod.daily_limit
-    ) {
-      state.showTransactionLimit = true;
-      return;
-    }
-
-    if (state.defaultPaymentMethod.category === "Mobile Money") {
-      if (state.defaultPaymentMethod.pay_method_id === 1) {
-        state.amount > state.defaultPaymentMethod.transaction_limit
-          ? router.push("/mpesa-c2b")
-          : router.push("/mpesa-stk");
-        return;
-      }
-
-      state.amount > state.defaultPaymentMethod.transaction_limit
-        ? (state.showTransactionLimit = true)
-        : router.push("/mpesa-stk");
-      return;
-    }
-
-    if (state.defaultPaymentMethod.pay_method_id === 20) {
-      payBybankCollect();
-      return;
-    }
-
+  const checkout = async () =>  {
     store.commit("setLoading", true);
     const payload = {
       country: getBupayload.value.country_code,
@@ -133,17 +88,22 @@ export function usePayment() {
       userid: getBupayload.value.user_id,
       currency: getBupayload.value.currency,
       bulk: getBupayload.value.bulk,
-      entity: getBupayload.value.entity_id,
+      entity: 1,
       company_code: getBupayload.value.company_code,
       paymethod: state.defaultPaymentMethod.pay_method_id,
       platform: 'web',
       pay_direction: getBupayload.value.pay_direction,
+      phonenumber: getBupayload.value?.phonenumber ?? state.defaultPaymentMethod?.phonenumber,
       test: getBupayload?.value?.test ?? false,
+      pay_detail_id: state.defaultPaymentMethod.pay_detail_id,
+      bank: state.defaultPaymentMethod.bank_code,
+      bank_account: state.defaultPaymentMethod.pay_detail_id,
     };
 
     const version = getBupayload.value?.version ?? 'v3';
+    
     const fullPayload = {
-      url: getBupayload.value.pay_direction !== 'PAY_ON_DELIVERY' ?  `/api/${version}/process` : '/api/v3/pod/process',
+      url: getBupayload.value.pay_direction !== 'PAY_ON_DELIVERY' ? `/api/${version}/process` : '/api/v3/pod/process',
       params: payload,
     };
 
@@ -173,7 +133,6 @@ export function usePayment() {
         }
         case "success": {
           store.commit("setLoading", false);
-          store.setLoading(false);
           const duration = Date.now() - state.startResponseTime;
           window.analytics.track("Payment processed successfully", {
             ...commonTrackPayload(),
@@ -202,6 +161,119 @@ export function usePayment() {
       sendyErrorCode: "",
     });
   }
+  async function payBybankCollect() {
+    store.commit('setLoading', true);
+    const balance = await getBalance();
+
+    if (parseFloat(balance) < parseFloat(getBupayload.value.amount)) {
+      store.commit('setLoading', false);
+      return router.push({
+        name: 'PayByBank'
+      });
+    }
+
+    const payload = {
+      country: getBupayload.value.country_code,
+      amount: getBupayload.value.amount,
+      txref: getBupayload.value.txref,
+      userid: getBupayload.value.user_id,
+      currency: getBupayload.value.currency,
+      bulk: getBupayload.value.bulk,
+      entity: getBupayload.value.entity_id,
+      paymethod: state.defaultPaymentMethod.pay_method_id,
+      company_code: getBupayload.value.company_code,
+      firstname: getBupayload.value.firstname,
+      lastname: getBupayload.value.lastname,
+      platform: 'web'
+    };
+
+    const fullPayload = {
+      url: "/api/v3/onepipe/collect",
+      params: payload,
+    };
+    store.commit('setLoading', true);
+    const response = await store.dispatch("paymentAxiosPost", fullPayload);
+    store.commit("setLoading", false);
+    if (response.status) {
+      store.dispatch("paymentNotification", {
+        text: response.message,
+      });
+      router.push({
+        name: "SuccessView",
+      });
+      return;
+    }
+    store.commit("setErrorText", response.message);
+    if (route.name !== "FailedView") {
+      router.push({ name: "FailedView" });
+    }
+    return;
+  }
+  async function processPaybybank() {
+    store.commit('setLoading', true);
+    const balance = await getBalance();
+
+    if (parseFloat(balance) < parseFloat(getBupayload.value.amount)) {
+      store.commit('setLoading', false);
+      return router.push({
+        name: 'PayByBank'
+      });
+    }
+
+    checkout();
+    return;
+  }
+  const processMobiletransactionLimit = () => {
+    if (state.defaultPaymentMethod.pay_method_id === 1) {
+      state.amount > state.defaultPaymentMethod.transaction_limit
+        ? router.push("/mpesa-c2b")
+        : router.push("/mpesa-stk");
+      return;
+    }
+
+    state.amount > state.defaultPaymentMethod.transaction_limit
+      ? (state.showTransactionLimit = true)
+      : router.push("/mpesa-stk");
+  }
+
+  async function submit() {
+    state.startResponseTime = new Date();
+    if (route.name !== "FailedView") {
+      window.analytics.track("Tap Confirm and Pay", {
+        ...commonTrackPayload(),
+        payment_method: state.defaultPaymentMethod.pay_method_name,
+        amount: getBupayload.value.amount,
+        currency: getBupayload.value.currency,
+      });
+    }
+
+    if (route.name === "FailedView") {
+      window.analytics.track("Try again after Failed Payment", {
+        ...commonTrackPayload(),
+        payment_method: state.defaultPaymentMethod?.pay_method_name,
+      });
+    }
+
+    if (
+      state.defaultPaymentMethod.daily_limit &&
+      state.amount > state.defaultPaymentMethod.daily_limit
+    ) {
+      state.showTransactionLimit = true;
+      return;
+    }
+
+    if (state.defaultPaymentMethod.category === "Mobile Money") {
+      processMobiletransactionLimit();
+      return;
+    }
+
+    if (state.defaultPaymentMethod.pay_method_id === 20) {
+      processPaybybank() 
+      // payBybankCollect();
+      return;
+    }
+    checkout();
+  }
 
   function pollCard() {
     store.commit("setLoading", true);
@@ -218,13 +290,13 @@ export function usePayment() {
           if (poll_count === state.poll_limit - 1) {
             store.commit("setLoading", false);
             if (route.name === "AddCard") {
-              state.errorText = t("failed_to_collect_card_details");
+              state.errorText = "The request to add the card has not been completed. Please wait for about a minute before retrying. If this error persists, please reach out to our customer support team for assistance.";
               store.commit("setErrorText", state.errorText);
               state.showErrorModal = true;
               window.analytics.track("Payment option not saved successfully", {
                 ...commonTrackPayload(),
-                message: "Polling time Out",
-                reason: "Polling time out",
+                message: "The request to add the card has not been completed. Please wait for about a minute before retrying. If this error persists, please reach out to our customer support team for assistance.",
+                reason: "The request to add the card has not been completed. Please wait for about a minute before retrying. If this error persists, please reach out to our customer support team for assistance.",
                 sendyErrorCode: "",
                 payment_method: state.defaultPaymentMethod.pay_method_name,
               });
@@ -237,7 +309,7 @@ export function usePayment() {
               sendyErrorCode: "",
               payment_method: state.defaultPaymentMethod.pay_method_name,
             });
-            state.errorText = t("failed_to_charge_card");
+            state.errorText = "The request to charge the card has not been completed. Please wait for about a minute before retrying. If this error persists, please reach out to our customer support team for assistance.";
             store.commit("setErrorText", state.errorText);
             router.push({ name: "FailedView" });
             return;
@@ -249,7 +321,7 @@ export function usePayment() {
 
   async function TransactionIdStatus() {
     const payload = {
-      url: getBupayload.value.pay_direction === "PAY_ON_DELIVERY" ? `/api/v1/process/pod/status/${state.transaction_id}` : `/api/v1/process/status/${state.transaction_id}`,
+      url: getBupayload.value.pay_direction === "PAY_ON_DELIVERY" ? `/api/v2/process/pod/status/${state.transaction_id}` : `/api/v2/process/status/${state.transaction_id}`,
     };
 
     const res = await store.dispatch("paymentAxiosGet", payload);
@@ -271,7 +343,7 @@ export function usePayment() {
               message: res.message,
               reason: res.message,
               sendy_error_code: "",
-              payment_method: state.defaultPaymentMethod.pay_method_name,
+              payment_method: state.defaultPaymentMethod?.pay_method_name ?? 'card',
             });
             router.push("/choose-payment");
             return;
@@ -364,7 +436,7 @@ export function usePayment() {
 
     const fullPayload = {
       params: payload,
-      url: "/api/v2/submit_info",
+      url: "/api/v3/submit_info",
     };
 
     const response = await store.dispatch("paymentAxiosPost", fullPayload);
@@ -397,7 +469,10 @@ export function usePayment() {
       return;
     }
     state.errorText = t("failed_to_collect_card_details");
-    store.dispatch('paymentNotification', response.message);
+    store.dispatch('paymentNotification', {
+      text: response.message,
+      type: 'error'
+    });
     state.showErrorModal = true;
   }
 
@@ -431,54 +506,6 @@ export function usePayment() {
     }
   }
 
-  async function payBybankCollect() {
-    store.commit('setLoading', true);
-    const balance = await getBalance();
-
-    if (parseFloat(balance) < parseFloat(getBupayload.value.amount)) {
-      store.commit('setLoading', false);
-      return router.push({
-        name: 'PayByBank'
-      });
-    }
-
-    const payload = {
-      country: getBupayload.value.country_code,
-      amount: getBupayload.value.amount,
-      txref: getBupayload.value.txref,
-      userid: getBupayload.value.user_id,
-      currency: getBupayload.value.currency,
-      bulk: getBupayload.value.bulk,
-      entity: getBupayload.value.entity_id,
-      paymethod: state.defaultPaymentMethod.pay_method_id,
-      company_code: getBupayload.value.company_code,
-      firstname: getBupayload.value.firstname,
-      lastname: getBupayload.value.lastname,
-      platform: 'web'
-    };
-
-    const fullPayload = {
-      url: "/api/v3/onepipe/collect",
-      params: payload,
-    };
-    store.commit('setLoading', true);
-    const response = await store.dispatch("paymentAxiosPost", fullPayload);
-    store.commit("setLoading", false);
-    if (response.status) {
-      store.dispatch("paymentNotification", {
-        text: response.message,
-      });
-      router.push({
-        name: "SuccessView",
-      });
-      return;
-    }
-    store.commit("setErrorText", response.message);
-    if (route.name !== "FailedView") {
-      router.push({ name: "FailedView" });
-    }
-    return;
-  }
 
   return {
     getSavedPayMethods,

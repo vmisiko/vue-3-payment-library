@@ -24,9 +24,9 @@
         :block="true"
         color="info"
         class="mgt-8"
-        @click="$router.push({ name: 'MpesaC2B' })"
+        @click="$emit('close')"
       >
-        {{ $translate("pay_with_mpesa_pay_bill") }}
+        {{ $translate("close") }}
       </sendy-btn>
     </div>
   </div>

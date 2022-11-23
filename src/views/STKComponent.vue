@@ -250,7 +250,6 @@ const submitRetry = async () => {
     reason: res.message,
     sendy_error_code: "",
     message: res.message,
-
   });
   router.push({ name: "FailedView", params: { mpesa: "M-PESA" } });
 }
@@ -309,12 +308,12 @@ const pollMpesa = () => {
           promptInfo.value = false;
           window.analytics.track('Payment processing failed', {
             ...commonTrackPayload(),
-            reason: 'Time out',
+            reason: 'The request to charge your M-Pesa account has not been completed. Please wait for about a minute before retrying. If this error persists, please reach out to our customer support team for assistance.',
             sendy_error_code: "",
-            message: t("failed_to_charge_using_mpesa"),
+            message: "The request to charge your M-Pesa account has not been completed. Please wait for about a minute before retrying. If this error persists, please reach out to our customer support team for assistance.",
             payment_method: state.defaultPaymentMethod?.pay_method_name,
           });
-          store.commit('setErrorText', t("failed_to_charge_using_mpesa"));
+          store.commit('setErrorText', "The request to charge your M-Pesa account has not been completed. Please wait for about a minute before retrying. If this error persists, please reach out to our customer support team for assistance.");
           router.push({
             name: "FailedView",
             params: { mpesa: "mpesa" },
@@ -406,7 +405,6 @@ const closeTimer = () => {
   stare.commit('setErrorText', t("unable_to_confirm_mpesa"));
   router.push({ name: "FailedView", params: { mpesa: "mpesa" } });
   datadogRum.addError(new Error(t("unable_to_confirm_mpesa")));
-
 };
 
 const init3DS = () => {

@@ -107,7 +107,6 @@ const handleContinue = () => {
   });
 
   const entryPoint = localStorage.entry;
-  console.log(entryPoint);
   if (entryPoint === 'choose-withdraw-option') {
     router.push(localStorage.entry_route);
     return;
