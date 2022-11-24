@@ -31,15 +31,15 @@ export function usePayBybankSetup() {
   }
   const openAccount =  async () => {
     state.showProcessing = true;
-    window.analytics.track("View pay by bank setup processing", {
+    window.analytics.track("View Pay with Transfer setup processing", {
       ...commonTrackPayload(),
-      payment_method: 'Pay by bank'
+      payment_method: 'Pay with Transfer'
     });
 
     state.count = true;
     window.analytics.track("Agree and Continue",  {
       ...commonTrackPayload(),
-      payment_method: 'Pay by bank'
+      payment_method: 'Pay with Transfer'
     });
 
     const phone = state.phone || getBupayload.phonenumber?.split("+")[1];
@@ -67,7 +67,7 @@ export function usePayBybankSetup() {
       );
       window.analytics.track("Payment option saved successfully", {
         ...commonTrackPayload(),
-        payment_method: 'Pay by bank',
+        payment_method: 'Pay with Transfer',
         message: response.message,
       });
       store.commit('setSelectedVirtualAccount', account[0].account_number);
@@ -81,7 +81,7 @@ export function usePayBybankSetup() {
       ...commonTrackPayload(),
       message: response.message,
       reason: response.message,
-      payment_method: 'Pay by bank'
+      payment_method: 'Pay with Transfer'
     });
     store.commit('setErrorText', response.message);
     datadogRum.addError(new Error(response.message));

@@ -23,7 +23,7 @@
       </div>
       <div class="direction-flex" v-if="payMethod.pay_method_id === 20">
         <IconView icon="pay-bank" />
-        <span class="mgl-2"> Pay By bank </span>
+        <span class="mgl-2"> {{$translate('pay_by_bank')}}</span>
       </div>
       <span class="spacer"></span>
       <div class="">

@@ -92,7 +92,7 @@ export default {
           result = 'Card Details'
           break;
         case 'Bank': 
-          result = 'Pay by bank'
+          result = 'Pay with Transfer'
           break;
         default:
           break;
@@ -109,7 +109,7 @@ export default {
           result = this.getSelectedPayOption.psp;
           break;
         case 'Bank': 
-          result = 'Pay by bank';
+          result = 'Pay with Transfer';
           break;
         default:
           break;

@@ -76,13 +76,13 @@ export default {
       this.account = e.target.value;
       window.analytics.track("Switch available bank ", {
         ...this.commonTrackPayload(),
-        payment_method: 'Pay by bank'
+        payment_method: 'Pay with Transfer'
       });
     },
     handleCopy() {
-      window.analytics.track("Copy pay by bank account number", {
+      window.analytics.track("Copy Pay with Transfer account number", {
         ...this.commonTrackPayload(),
-        payment_method: 'Pay by bank'
+        payment_method: 'Pay with Transfer'
       });
       const cb = navigator.clipboard;
       const span = document.getElementById("account");

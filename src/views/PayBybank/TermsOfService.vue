@@ -57,7 +57,7 @@ const handleCancel = () => {
   router.go(-1)
   window.analytics.track("Cancel agreeing to terms of service", {
     ...commonTrackPayload(),
-    payment_method: "pay by bank"
+    payment_method: "Pay with Transfer"
   });
 }
 
@@ -65,7 +65,7 @@ const handleContinue = () => {
   showPhone.value = true;
   window.analytics.track("Agree to terms of service", {
     ...commonTrackPayload(),
-    payment_method: "pay by bank",
+    payment_method: "Pay with Transfer",
   });
 }
 

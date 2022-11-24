@@ -81,17 +81,17 @@ const { commonTrackPayload } = useSegement();
 
 const handleMaybelater = () => {
   router.go(-1);
-  window.analytics.track("Set up pay by bank later", {
+  window.analytics.track("Set up Pay with Transfer later", {
     ...commonTrackPayload(),
-    payment_method: "pay by bank"
+    payment_method: "Pay with Transfer"
   });
 }
 
 const handleSetupNow = () => {
   router.push('/bank/terms-of-service');
-  window.analytics.track("Set up pay by bank now", {
+  window.analytics.track("Set up Pay with Transfer now", {
     ...commonTrackPayload(),
-    payment_method: "pay by bank",
+    payment_method: "Pay with Transfer",
   });
 }
 </script>

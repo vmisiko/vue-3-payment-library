@@ -64,7 +64,7 @@
           class="mgl-2 text-caption-1"
           v-if="paymentMethod.pay_method_id === 20"
         >
-          Pay by Bank
+          {{ $translate('pay_by_bank') }}
         </span>
       </div>
     </div>

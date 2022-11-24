@@ -59,7 +59,7 @@ So there 8 entry points:
  2. payment-option
  3. choose-payment
  4. Choose-payment-checkout - Choose payment page with checkout.
- 5. bank-transfer - Pay by Bank Deposit page.
+ 5. bank-transfer - Pay with Transfer Deposit page.
  6. resolve-payment-checkout - For resolving payments
  7. withdraw-checkout - for Checkout of withdrawal
  8. manage-withrawal-options - for managing withdrawal checkouts.

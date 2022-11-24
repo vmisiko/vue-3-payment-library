@@ -41,7 +41,7 @@ export default {
           result = this.$translate("credit_card_payment_small");
           break;
         case 20:
-          result = "Pay by Bank";
+          result = "Pay with Transfer";
           break;
         case 10:
           result = this.$translate('Bank');
@@ -85,7 +85,7 @@ export default {
         case 20:
           window.analytics.track("Add Payment Options", {
             ...this.commonTrackPayload(),
-            payment_method: "pay by bank",
+            payment_method: "Pay with Transfer",
             card_network: null,
           });
           this.$router.push({ name: "HowitWorks" });

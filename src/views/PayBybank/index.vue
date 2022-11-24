@@ -152,7 +152,7 @@ export default {
 
       window.analytics.track("Tap Confirm Payment",  {
         ...this.commonTrackPayload,
-        payment_method: 'Pay by bank',
+        payment_method: 'Pay with Transfer',
         amount: this.topupAmount,
         currency: this.getBupayload.currency,
       });
@@ -176,11 +176,11 @@ export default {
               that.showProcessing = false;
               that.loading = false;
               that.showFailedTransfer = true;
-              window.analytics.track("Pay By Bank Transfer Failed",  {
+              window.analytics.track("Pay with Transfer Transfer Failed",  {
                 ...that.commonTrackPayload,
                 amount: that.topupAmount,
                 currency: that.getBupayload.currency,
-                payment_method: 'Pay by bank'
+                payment_method: 'Pay with Transfer'
               });
               return;
             }
@@ -191,11 +191,11 @@ export default {
               that.showProcessing = false;
               that.loading = false;
               that.showFailedTransfer = true;
-              window.analytics.track("Pay By Bank Transfer Failed",  {
+              window.analytics.track("Pay with Transfer Transfer Failed",  {
                 ...that.commonTrackPayload,
                 amount: that.topupAmount,
                 currency: that.getBupayload.currency,
-                payment_method: 'Pay by bank'
+                payment_method: 'Pay with Transfer'
               });
               return;
             }
@@ -222,7 +222,7 @@ export default {
         window.analytics.track("Payment processed successfully", {
           ...this.commonTrackPayload(),
           message: this.$translate("transfer_successful"),
-          payment_method: 'Pay by bank'
+          payment_method: 'Pay with Transfer'
         });
         this.$router.push({
           name: "SuccessView",
@@ -244,12 +244,12 @@ export default {
         this.showProcessing = false;
         this.showInsufficientTransfer = true;
         this.loading = false;
-        window.analytics.track("Pay By Bank Transfer Insufficient",  {
+        window.analytics.track("Pay with Transfer Transfer Insufficient",  {
           ...this.commonTrackPayload,
           amount: this.amountDue,
           currency: this.getBupayload.currency,
           transfer_amount: this.lastTransferAmount,
-          payment_method: 'Pay by bank'
+          payment_method: 'Pay with Transfer'
         });
       }
       this.balance = response.availableBalance; 
