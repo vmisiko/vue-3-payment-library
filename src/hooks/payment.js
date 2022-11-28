@@ -88,7 +88,7 @@ export function usePayment() {
       userid: getBupayload.value.user_id,
       currency: getBupayload.value.currency,
       bulk: getBupayload.value.bulk,
-      entity: 1,
+      entity: getBupayload.value.entity_id,
       company_code: getBupayload.value.company_code,
       paymethod: state.defaultPaymentMethod.pay_method_id,
       platform: 'web',
