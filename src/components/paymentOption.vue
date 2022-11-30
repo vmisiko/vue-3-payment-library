@@ -125,8 +125,3 @@ export default {
 };
 </script>
 
-<style>
-.icon-size {
-  width: 10% !important;
-}
-</style>
