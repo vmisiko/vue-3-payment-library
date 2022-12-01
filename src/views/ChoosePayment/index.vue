@@ -5,10 +5,10 @@
     <div class="card" v-else>
       <TopInfo :icon="icon" :title="title" />
 
-      <span v-if="creditCards.length !== 0" class="mgt-2 text-overline">{{
+      <span v-if="creditCards?.length !== 0" class="mgt-2 text-overline">{{
         $translate("credit_card_payment")
       }}</span>
-      <div class="" v-if="creditCards.length !== 0">
+      <div class="" v-if="creditCards?.length !== 0">
         <div
           v-for="(card, index) in creditCards"
           :key="index"
@@ -23,7 +23,7 @@
         </div>
       </div>
 
-      <span v-if="savedMobile.length !== 0" class="mgt-8 text-overline">{{
+      <span v-if="savedMobile?.length !== 0" class="mgt-8 text-overline">{{
         $translate("mobile_money")
       }}</span>
       <div v-if="savedMobile.length !== 0">
@@ -41,7 +41,7 @@
         </div>
       </div>
 
-      <div class="mgt-8" v-if="virtualAccounts.length">
+      <div class="mgt-8" v-if="virtualAccounts?.length">
         <span class="text-overline"> {{ $translate('bank_transfer') }}</span>
         <div>
           <div

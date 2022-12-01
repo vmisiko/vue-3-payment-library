@@ -10,8 +10,11 @@
     >
     <div class="direction-flex">
       <PaymentIcon class="icon-size" :paymentOption="paymentOption" />
-      <PaymentOptionTypeText  :paymentOption="paymentOption" />
-
+      <PaymentOptionTypeText  
+        :paymentOption="paymentOption"
+        :loading="loading" 
+        :balance="balance" 
+      />
       <span class="spacer"></span>
 
       <div :class="{'mgt-2': paymentOption.pay_method_id === 20}">

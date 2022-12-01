@@ -22,13 +22,44 @@ export function usePayBybankSetup() {
   const { commonTrackPayload } = useSegement();
 
   const getBalance = async () => {
+    if (getBupayload.value.pay_direction === "PAY_ON_DELIVERY") {
+      return await getPodBalance();
+    }
+
+    const payload = {
+      entityId: getBupayload.value.entity_id,
+      userId: getBupayload.value.user_id,
+      countryCode: getBupayload.value.country_code,
+    }
+
     const fullPayload = {
-      url: `/api/v3/onepipe/balance/?entityId=${getBupayload.value.entity_id}&userId=${getBupayload.value.user_id}&countryCode=${getBupayload.value.country_code}`,
+      params: payload,
+      url: `/api/v3/onepipe/balance`,
     };
 
     const response = await store.dispatch('paymentAxiosGet', fullPayload);
     return response.availableBalance;
   }
+
+  const getPodBalance = async () => {
+    const payload = {
+      first_name: getBupayload.value.firstname,
+      surname: getBupayload.value.lastname,
+      email: getBupayload.value.email,
+      mobile_number: getBupayload.value.Pphone,
+      customer_red:  getBupayload.phone,
+    }
+
+    const fullPayload = {
+      params: payload,
+      url: '/api/v3/pod/pwt/acct_balance',
+    }
+
+    const response = await store.dispatch('paymentAxiosPost', fullPayload);
+    
+    return response.availableBalance;
+  }   
+
   const openAccount =  async () => {
     state.showProcessing = true;
     window.analytics.track("View Pay with Transfer setup processing", {
@@ -54,7 +85,7 @@ export function usePayBybankSetup() {
     };
 
     const fullPayload = {
-      url: "/api/v3/onepipe/open_account",
+      url: getBupayload.value.pay_direction !== "PAY_ON_DELIVERY" ?  "/api/v3/onepipe/open_account" : "/api/v3/pod/pwt/create_account",
       params: payload,
     };
 
@@ -95,6 +126,7 @@ export function usePayBybankSetup() {
     ...toRefs(state),
     openAccount,
     getBalance,
+    getPodBalance,
     setPhone,
   }
 }

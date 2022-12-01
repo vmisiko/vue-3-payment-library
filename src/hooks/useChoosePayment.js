@@ -33,7 +33,7 @@ export function useChoosePayment() {
   });
 
   const virtualAccounts = computed(() => {
-    const result = getSavedPayMethods.value.length
+    const result = getSavedPayMethods.value
       ? getSavedPayMethods.value.filter(
           (element) => element.category === 'Bank'
         )
@@ -49,20 +49,18 @@ export function useChoosePayment() {
     });
 
     state.defaultPaymentMethod = method;
-    if (getBupayload.value.pay_direction === 'PAY_ON_DELIVERY') {
-      const savedMethods = getSavedPayMethods.value;
-      let index;
-      let selectedSavedMethod = {};
-      savedMethods.forEach((el, i) => {
-        index = i;
-        savedMethods[i].default = 0;
-        if (el.pay_detail_id === method.pay_detail_id) {
-          selectedSavedMethod =  el 
-          selectedSavedMethod.default = 1;
-          savedMethods[index] = selectedSavedMethod;
-        }
-      });      
-      store.commit('setSavedPayMethods', savedMethods);
+    const savedMethods = getSavedPayMethods.value;
+    let selectedSavedMethod = {};
+    savedMethods.forEach((el, index) => {
+      savedMethods[index].default = 0;
+      if (el.pay_detail_id === method.pay_detail_id) {
+        selectedSavedMethod =  el 
+        selectedSavedMethod.default = 1;
+        savedMethods[index] = selectedSavedMethod;
+      }
+    });      
+    store.commit('setSavedPayMethods', savedMethods);
+    if (getBupayload.value.pay_direction === 'PAY_ON_DELIVERY') { 
       return;
     } 
 

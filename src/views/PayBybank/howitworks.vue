@@ -1,6 +1,13 @@
 <template>
   <div class="flex-center">
-    <div class="card">
+    <Processing
+      @close="showProcessing = false"
+      :count="count"
+      :title="$translate('pay_by_bank_setup')"
+      :text="$translate('assign_your_unique_account')"
+      v-if="showProcessing"
+    />
+    <div class="card" v-else>
       <div class="direction-flex">
         <svg
           width="75"
@@ -45,7 +52,7 @@
         />
         <ListView
           class="mgt-3"
-          :text="$translate('once_funds_hit_account')"
+          :text="$translate('once_transferred')"
         />
       </div>
 
@@ -69,15 +76,23 @@
 </template>
 
 <script setup>
+import { usePayBybankSetup } from '@/hooks/payBybankSetup';
+import { useState } from '@/hooks/useState';
 import {ref } from 'vue';
 import SendyBtn from "../../components/sendyBtn.vue";
 import { useGlobalProp } from '../../hooks/globalProperties';
 import { useSegement } from '../../hooks/useSegment';
 import ListView from "./components/listview.vue";
+import Processing from "../../components/processing";
+import { useStore } from 'vuex';
 
 const loading = ref(false);
 const { router, route } = useGlobalProp();
 const { commonTrackPayload } = useSegement();
+const { getBuPayload } = useState();
+const { openAccount, phone, showProcessing } = usePayBybankSetup();
+const { getBupayload } = useState();
+const store = useStore();
 
 const handleMaybelater = () => {
   router.go(-1);
@@ -88,11 +103,22 @@ const handleMaybelater = () => {
 }
 
 const handleSetupNow = () => {
-  router.push('/bank/terms-of-service');
   window.analytics.track("Set up Pay with Transfer now", {
     ...commonTrackPayload(),
     payment_method: "Pay with Transfer",
   });
+
+  console.log(getBupayload.value.pay_direction);
+  if (getBupayload.value?.pay_direction !== 'PAY_ON_DELIVERY') {
+    router.push('/bank/terms-of-service');
+    return;
+  }
+  phone.value = getBupayload.value.phonenumber;
+  store.dispatch("paymentNotification", {
+    type: "error",
+    text: 'Feature implementation in pipeline',
+  });
+  openAccount();
 }
 </script>
 

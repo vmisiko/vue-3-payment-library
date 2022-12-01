@@ -191,6 +191,7 @@ export function usePayment() {
       url: "/api/v3/onepipe/collect",
       params: payload,
     };
+    
     store.commit('setLoading', true);
     const response = await store.dispatch("paymentAxiosPost", fullPayload);
     store.commit("setLoading", false);
@@ -211,6 +212,11 @@ export function usePayment() {
   }
   async function processPaybybank() {
     store.commit('setLoading', true);
+    if (getBupayload.value.pay_direction === "PAY_ON_DELIVERY") {
+      router.push({name: "HowitWorks"});
+      return;
+    };
+
     const balance = await getBalance();
 
     if (parseFloat(balance) < parseFloat(getBupayload.value.amount)) {

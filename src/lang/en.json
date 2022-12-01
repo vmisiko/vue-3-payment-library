@@ -152,6 +152,7 @@
   "click_setup":"Click “Setup Pay with Transfer” and we assign you a unique bank account number",
   "during_checkout_transfer_to_sendy": "During checkout, you can transfer funds to Sendy using your unique bank details",
   "once_funds_hit_account": "Once your funds hit the account, we confirm that you have paid within seconds.",
+  "once_transferred": "Once you've transferred, press the `confirm transfer` button to Complete your payment",
   "setup_pay_by_bank": "Setup Pay with Transfer",
   "pay_by_bank_setup": "Pay with Transfer Setup",
   "assign_your_unique_account":"Assigning your unique account details...",
