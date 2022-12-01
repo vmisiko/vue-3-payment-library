@@ -129,13 +129,18 @@ onMounted( async () => {
   title.value = "";
   processingText.value = "Loading ...";
   getBupayload.value.pay_direction !== "PAY_ON_DELIVERY" ? await getAccounts() : null;
-  balance.value = await getBalance();
+  const bankAccount = getDefaultBankAccount();
+  balance.value = await getBalance(bankAccount);
   account.value = getSelectedVirtualAccount.value;
   showProcessing.value = false;
   title.value = t("confirming_transfer");
   processingText.value = "";
 });
 
+const getDefaultBankAccount = () => {
+  const bankAccount = getVirtualAccounts.value ? getVirtualAccounts.value?.filter((el) => el?.is_primary)[0] : '';
+  return bankAccount;
+};
 
 const confirm = () => {
   loading.value = true;
@@ -196,7 +201,8 @@ const pollbalance = () => {
 };
 
 const getBalanceP = async ()  => {
-  const bal = await getBalance(getSelectedVirtualAccount.value.bank_code);
+  const bankAccount = getDefaultBankAccount();
+  const bal = await getBalance(bankAccount);
 
   if (getBupayload.amount <= bal) {
     poll_count.value = poll_limit.value;

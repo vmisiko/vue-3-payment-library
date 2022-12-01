@@ -21,9 +21,9 @@ export function usePayBybankSetup() {
   const { router, route } = useGlobalProp();
   const { commonTrackPayload } = useSegement();
 
-  const getBalance = async (bankCode) => {
+  const getBalance = async (bankAccount) => {
     if (getBupayload.value.pay_direction === "PAY_ON_DELIVERY") {
-      return await getPodBalance(bankCode);
+      return await getPodBalance(bankAccount);
     }
 
     const payload = {
@@ -41,21 +41,23 @@ export function usePayBybankSetup() {
     return response.availableBalance;
   }
 
-  const getPodBalance = async (bankCode) => {
+  const getPodBalance = async (bankAccount) => {
+    console.log(getBupayload.value.phonenumber?.split("+")[1], 'getBupayload.value.phonenumber');
+    const phone = getBupayload.value.phonenumber?.includes("+") ? getBupayload.value.phonenumber?.split("+")[1] : getBupayload.value.phonenumber;
     const payload = {
-      user_id: getBupayload.value.user_id,
       first_name: getBupayload.value.firstname,
       surname: getBupayload.value.lastname,
       email: getBupayload.value.email,
-      mobile_number: getBupayload.value.phonenumber?.split("+")[1],
-      bank_code: bankCode,
+      mobile_no: phone,
+      bank_code: bankAccount.bank_code,
+      account_number: bankAccount.account_number,
       entity: getBupayload.value.entity_id,
       country_code: getBupayload.value.country_code,
     };
 
     const fullPayload = {
       params: payload,
-      url: '/api/v3/pod/pwt/acct_balance',
+      url: '/api/v3/pod/pwt/balance',
     }
 
     const response = await store.dispatch('paymentAxiosPost', fullPayload);
@@ -76,7 +78,9 @@ export function usePayBybankSetup() {
       payment_method: 'Pay with Transfer'
     });
 
-    const phone = state.phone || getBupayload.value.phonenumber?.split("+")[1];
+    const buPhoneNo = getBupayload.value.phonenumber?.includes("+") ? getBupayload.value.phonenumber?.split("+")[1] : getBupayload.value.phonenumber;
+
+    const phone = state.phone || buPhoneNo;
     const payload = {
       user_id: getBupayload.value.user_id,
       first_name: getBupayload.value.firstname,
@@ -88,7 +92,7 @@ export function usePayBybankSetup() {
     };
 
     const fullPayload = {
-      url: getBupayload.value.pay_direction !== "PAY_ON_DELIVERY" ?  "/api/v3/onepipe/open_account" : "/api/v3/pod/pwt/create_account",
+      url: getBupayload.value.pay_direction !== "PAY_ON_DELIVERY" ?  "/api/v3/onepipe/open_account" : "/api/v3/pod/pwt/open_account",
       params: payload,
     };
 
@@ -106,7 +110,7 @@ export function usePayBybankSetup() {
         message: response.message,
       });
       store.commit('setSelectedVirtualAccount', account[0].account_number);
-      router.push({ name: "AccountReadyView" });
+      getBupayload.value.pay_direction !== "PAY_ON_DELIVERY" ? router.push({ name: "AccountReadyView" }) : router.push({ name: "PayByBank" });
       return;
     }
     if (route.name !== 'FailedAccountSetup') {
