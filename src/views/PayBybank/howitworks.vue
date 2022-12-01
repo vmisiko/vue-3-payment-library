@@ -90,7 +90,7 @@ const loading = ref(false);
 const { router, route } = useGlobalProp();
 const { commonTrackPayload } = useSegement();
 const { getBuPayload } = useState();
-const { openAccount, phone, showProcessing } = usePayBybankSetup();
+const { openAccount, phone, showProcessing, count } = usePayBybankSetup();
 const { getBupayload } = useState();
 const store = useStore();
 
@@ -114,10 +114,6 @@ const handleSetupNow = () => {
     return;
   }
   phone.value = getBupayload.value.phonenumber;
-  store.dispatch("paymentNotification", {
-    type: "error",
-    text: 'Feature implementation in pipeline',
-  });
   openAccount();
 }
 </script>

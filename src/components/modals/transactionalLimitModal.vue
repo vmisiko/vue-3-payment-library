@@ -53,7 +53,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("getSavedPayMethods"),
+    ...mapGetters(["getSavedPayMethods"]),
   },
   mounted() {
     this.show ? this.handleOpen() : this.handleClose();

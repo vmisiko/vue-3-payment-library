@@ -1,48 +1,55 @@
-import Vue from "vue";
-import VueI18n from "vue-i18n";
-import { expect } from "chai";
-import { shallowMount } from "@vue/test-utils";
+import { shallowMount, config } from "@vue/test-utils";
 import ErrorModal from "@/components/modals/ErrorModal";
 import iconView from "@/components/iconView";
 import notification from "@/components/notificationComponent";
 import sendyBtn from "@/components/sendyBtn";
+import { i18n } from "@/plugins/i18n";
 
-Vue.use(VueI18n);
-const i18n = new VueI18n({});
+
+config.global.stubs = {
+  IconView: iconView,
+  Snackbar: notification,
+  "sendy-btn": sendyBtn,
+};
+
+config.global.mocks = {
+  $translate: (key) => i18n.global.t(key)
+};;
+config.global.stubs = {
+  IconView: iconView,
+  Snackbar: notification,
+  "sendy-btn": sendyBtn,
+};
+
+config.global.plugins = [i18n];
 
 describe("ErrorModal", () => {
   const wrapper = shallowMount(ErrorModal, {
-    propsData: {
+    props: {
       show: true,
       text: "An error Occurred!",
       title: "Failed to Charge Card"
     },
-    i18n,
-    stubs: {
-      IconView: iconView,
-      Snackbar: notification,
-      "sendy-btn": sendyBtn,
-    },
   });
   it("renders props when passed", () => {
     const msg = "An error Occurred!";
-    expect(wrapper.props("show")).to.be.true;
-    expect(wrapper.props("text")).to.include(msg);
+    expect(wrapper.props("show")).toBeTruthy();
+    expect(wrapper.props("text")).toContain(msg);
   });
 
   it("Tests handleOpen() function", () => {
     wrapper.vm.handleOpen();
-    expect(wrapper.find(".modal").isVisible()).to.be.true;
+    expect(wrapper.find(".modal").isVisible()).toBeTruthy;
   });
 
   it("Tests handleClose() function", () => {
     wrapper.vm.handleClose();
-    expect(wrapper.find(".modal").isVisible()).to.be.false;
+    expect(wrapper.find(".modal").isVisible()).toBeFalsy();
   });
-  it("Tests props title, text supolied", () => {
-    title = "Failed to Charge Card";
-    text = "Failed to charge card"
-    expect(wrapper.props('title')).to.be.equal(title);
-    expect(wrapper.props('text')).to.be.equal(text);
+  it("Tests props title, text supplied", () => {
+    const title = "Failed to Charge Card";
+    const text = "Failed to charge card"
+    expect(wrapper.props('title')).toEqual(title);
+    expect(wrapper.props('text')).toEqual(text);
   });
 });

@@ -21,9 +21,9 @@ export function usePayBybankSetup() {
   const { router, route } = useGlobalProp();
   const { commonTrackPayload } = useSegement();
 
-  const getBalance = async () => {
+  const getBalance = async (bankCode) => {
     if (getBupayload.value.pay_direction === "PAY_ON_DELIVERY") {
-      return await getPodBalance();
+      return await getPodBalance(bankCode);
     }
 
     const payload = {
@@ -41,14 +41,17 @@ export function usePayBybankSetup() {
     return response.availableBalance;
   }
 
-  const getPodBalance = async () => {
+  const getPodBalance = async (bankCode) => {
     const payload = {
+      user_id: getBupayload.value.user_id,
       first_name: getBupayload.value.firstname,
       surname: getBupayload.value.lastname,
       email: getBupayload.value.email,
-      mobile_number: getBupayload.value.Pphone,
-      customer_red:  getBupayload.phone,
-    }
+      mobile_number: getBupayload.value.phonenumber?.split("+")[1],
+      bank_code: bankCode,
+      entity: getBupayload.value.entity_id,
+      country_code: getBupayload.value.country_code,
+    };
 
     const fullPayload = {
       params: payload,
@@ -58,7 +61,7 @@ export function usePayBybankSetup() {
     const response = await store.dispatch('paymentAxiosPost', fullPayload);
     
     return response.availableBalance;
-  }   
+  };   
 
   const openAccount =  async () => {
     state.showProcessing = true;
@@ -73,7 +76,7 @@ export function usePayBybankSetup() {
       payment_method: 'Pay with Transfer'
     });
 
-    const phone = state.phone || getBupayload.phonenumber?.split("+")[1];
+    const phone = state.phone || getBupayload.value.phonenumber?.split("+")[1];
     const payload = {
       user_id: getBupayload.value.user_id,
       first_name: getBupayload.value.firstname,
@@ -91,6 +94,7 @@ export function usePayBybankSetup() {
 
     const response = await store.dispatch('paymentAxiosPost', fullPayload);
     state.showProcessing = false;
+    state.count = false;
     if (response.status) {
       store.commit('setVirtualAccounts', response.accounts);
       const account = response.accounts.filter(
@@ -118,6 +122,30 @@ export function usePayBybankSetup() {
     datadogRum.addError(new Error(response.message));
   };
 
+  const getAccounts = async () => {
+    const payload = {
+      entityId: getBupayload.value.entity_id,
+      userId: getBupayload.value.user_id,
+      countryCode: getBupayload.value.country_code,
+    };
+
+    const fullPayload = {
+      url: `/api/v3/onepipe/accounts/`,
+      params: payload,
+    };
+
+    const  response = await store.dispatch('paymentAxiosGet', fullPayload);
+    store.commit('setVirtualAccounts', null);
+    store.commit('setSelectedVirtualAccount', null);
+    if (response.status) {
+      store.commit("setVirtualAccounts", response.accounts);
+      const account = response.accounts.filter(
+        (el) => el.is_primary === true
+      );
+      store.commit("setSelectedVirtualAccount", account[0].account_number);
+    }
+  };
+
   const setPhone = (phone) => {
     state.phone =phone;
   }
@@ -127,6 +155,7 @@ export function usePayBybankSetup() {
     openAccount,
     getBalance,
     getPodBalance,
+    getAccounts,
     setPhone,
   }
 }

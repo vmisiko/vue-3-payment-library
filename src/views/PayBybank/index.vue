@@ -85,22 +85,24 @@ import { useGlobalProp } from '../../hooks/globalProperties';
 import { useStore } from 'vuex';
 import { usePayBybankSetup } from '../../hooks/payBybankSetup';
 import { useSegement } from '../../hooks/useSegment';
+import { usePayment } from "../../hooks/payment";
 
-const { getBupayload } = useState();
+const { getBupayload, state } = useState();
 const { t } = useGlobalProp();
 const store = useStore();
 const { commonTrackPayload } = useSegement();
+const { checkout } = usePayment();
 
 const loading =  ref(false);
 const showProcessing=  ref(false);
-const title = t("confirming_transfer");
+const title = ref(t("confirming_transfer"));
 const processingText = ref('');
 const count = ref(false);
 const countDown = ref(600);
 const account = ref("");
 const balance = ref(0);
 const poll_count =  ref(0);
-const poll_limit = ref(600);
+const poll_limit = ref(600); 
 const errorText = ref("");
 const showFailedTransfer = ref(false);
 const showInsufficientTransfer = ref(false);
@@ -128,7 +130,7 @@ onMounted( async () => {
   processingText.value = "Loading ...";
   getBupayload.value.pay_direction !== "PAY_ON_DELIVERY" ? await getAccounts() : null;
   balance.value = await getBalance();
-  account = getSelectedVirtualAccount.value;
+  account.value = getSelectedVirtualAccount.value;
   showProcessing.value = false;
   title.value = t("confirming_transfer");
   processingText.value = "";
@@ -194,10 +196,32 @@ const pollbalance = () => {
 };
 
 const getBalanceP = async ()  => {
-  const bal = await getBalance();
+  const bal = await getBalance(getSelectedVirtualAccount.value.bank_code);
 
   if (getBupayload.amount <= bal) {
     poll_count.value = poll_limit.value;
+    if (getBupayload.value.pay_direction === "PAY_ON_DELIVERY") {
+      const payload = {
+        country: getBupayload.value.country_code,
+        amount: getBupayload.value.amount,
+        txref: getBupayload.value.txref,
+        userid: getBupayload.value.user_id,
+        currency: getBupayload.value.currency,
+        bulk: getBupayload.value.bulk,
+        entity: getBupayload.value.entity_id,
+        company_code: getBupayload.value.company_code,
+        paymethod: state.defaultPaymentMethod.pay_method_id,
+        platform: 'web',
+        pay_direction: getBupayload.value.pay_direction,
+        phonenumber: getBupayload.value?.phonenumber ?? state.defaultPaymentMethod?.phonenumber,
+        test: getBupayload?.value?.test ?? false,
+        pay_detail_id: state.defaultPaymentMethod.pay_detail_id,
+        bank: getSelectedVirtualAccount.value.bank_code,
+        bank_account: getSelectedVirtualAccount.value.account_number,
+      };
+      await checkout(payload)
+      return;
+    }
     window.analytics.track("Payment processed successfully", {
       ...commonTrackPayload(),
       message: t("transfer_successful"),
@@ -234,179 +258,7 @@ const getBalanceP = async ()  => {
   balance.value = bal; 
 };
 
-// export default {
-//   name: "PayByBank",
-//   mixins: [paymentGenMxn],
-//   components: {
-//     AccountsDisplay,
-//     Processing,
-//     FailedTransferModal,
-//     InsufficientTransferModal,
-//   },
-//   data() {
-//     return {
-//       loading: false,
-//       showProcessing: false,
-//       title: this.$translate("confirming_transfer"),
-//       processingText: "",
-//       count: false,
-//       countDown: 600,
-//       account: "",
-//       balance: 0,
-//       poll_count: 0,
-//       poll_limit: 60,
-//       errorText: "",
-//       showFailedTransfer: false,
-//       showInsufficientTransfer: false,
-//       amountDue: 0,
-//       lastTransferAmount: 0,
-//       pendingAmount: 0,
-//     };
-//   },
-//   computed: {
-//     ...mapGetters(["getBupayload"]),
-//     topupAmount() {
-//       const amount = this.getBupayload.amount - this.balance;
-//       return amount < 0 ? 0 : amount;
-//     },
-//   },
-//   watch: {
-//     getSelectedVirtualAccount(val) {
-//       this.account = val;
-//     },
-//   },
-//   async mounted() {
-//     this.showProcessing = true;
-//     this.title = "";
-//     this.processingText = "Loading ...";
-//     await this.getAccounts();
-//     await this.getBalance();
-//     this.account = this.getSelectedVirtualAccount;
-//     this.showProcessing = false;
-//     this.title = this.$translate("confirming_transfer");
-//     this.processingText = "";
-//   },
-//   methods: {
-//     ...mapMutations(["setErrorText"]),
-//     async getBalance() {
-//       const fullPayload = {
-//         url: `/api/v3/onepipe/balance/?entityId=${this.getBupayload.entity_id}&userId=${this.getBupayload.user_id}&countryCode=${this.getBupayload.country_code}`,
-//       };
 
-//       const response = await this.$paymentAxiosGet(fullPayload);
-//       this.balance = response.availableBalance;
-//     },
-//     confirm() {
-//       this.loading = true;
-//       this.showProcessing = true;
-//       this.count = true;
-
-//       window.analytics.track("Tap Confirm Payment",  {
-//         ...this.commonTrackPayload,
-//         payment_method: 'Pay with Transfer',
-//         amount: this.topupAmount,
-//         currency: this.getBupayload.currency,
-//       });
-      
-//       this.pollbalance();
-//     },
-//     async finishProcessing() {
-//       this.showProcessing = false;
-//       this.loading = false;
-//       this.poll_count=this.poll_limit;
-//       this.showFailedTransfer = true;
-//     },
-//     pollbalance() {
-//       this.poll_count = 0;
-//       for (let poll_count = 0; poll_count < this.poll_limit; poll_count++) {
-//         const that = this;
-//         (function (poll_count) {
-//           setTimeout(() => {
-//             if (that.poll_count === that.poll_limit) {
-//               poll_count = that.poll_limit;
-//               that.showProcessing = false;
-//               that.loading = false;
-//               that.showFailedTransfer = true;
-//               window.analytics.track("Pay with Transfer Transfer Failed",  {
-//                 ...that.commonTrackPayload,
-//                 amount: that.topupAmount,
-//                 currency: that.getBupayload.currency,
-//                 payment_method: 'Pay with Transfer'
-//               });
-//               return;
-//             }
-
-//             that.getBalanceP();
-//             if (poll_count === that.poll_limit - 1) {
-//               that.getBalanceP();
-//               that.showProcessing = false;
-//               that.loading = false;
-//               that.showFailedTransfer = true;
-//               window.analytics.track("Pay with Transfer Transfer Failed",  {
-//                 ...that.commonTrackPayload,
-//                 amount: that.topupAmount,
-//                 currency: that.getBupayload.currency,
-//                 payment_method: 'Pay with Transfer'
-//               });
-//               return;
-//             }
-//           }, 30000 * poll_count);
-//         })(poll_count);
-//       }
-//     },
-//     async getBalanceP() {
-//       const payload = {
-//         entityId: this.getBupayload.entity_id,
-//         userId: this.getBupayload.user_id,
-//         countryCode: this.getBupayload.country_code,
-//       }
-
-//       const fullPayload = {
-//         params: payload,
-//         url: `/api/v3/onepipe/balance`,
-//       };
-
-//       const response = await this.$paymentAxiosGet(fullPayload);
-
-//       if (this.getBupayload.amount <= response.availableBalance) {
-//         this.poll_count = this.poll_limit;
-//         window.analytics.track("Payment processed successfully", {
-//           ...this.commonTrackPayload(),
-//           message: this.$translate("transfer_successful"),
-//           payment_method: 'Pay with Transfer'
-//         });
-//         this.$router.push({
-//           name: "SuccessView",
-//           params: {
-//             transferredAmount: this.topupAmount,
-//             title: this.$translate("transfer_successful"),
-//           },
-//         });
-//         return;
-//       }
-
-//       if (this.balance !== response.availableBalance) {
-//         this.poll_count = this.poll_limit;
-//         this.amountDue = this.topupAmount;
-//         this.lastTransferAmount =
-//           parseFloat(response.availableBalance) - parseFloat(this.balance);
-//         this.pendingAmount =
-//           parseFloat(this.topupAmount) - parseFloat(this.lastTransferAmount);
-//         this.showProcessing = false;
-//         this.showInsufficientTransfer = true;
-//         this.loading = false;
-//         window.analytics.track("Pay with Transfer Transfer Insufficient",  {
-//           ...this.commonTrackPayload,
-//           amount: this.amountDue,
-//           currency: this.getBupayload.currency,
-//           transfer_amount: this.lastTransferAmount,
-//           payment_method: 'Pay with Transfer'
-//         });
-//       }
-//       this.balance = response.availableBalance; 
-//     },
-//   },
-// };
 </script>
 
 <style scoped>
