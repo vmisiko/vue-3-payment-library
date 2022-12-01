@@ -6,10 +6,14 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "build-lib": "vue-cli-service build --target lib --name @sendyit/pay src/main.js",
     "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "build-lib": "vue-cli-service build --target lib --name @sendyit/pay src/main.js"
   },
+  "main": "./dist/@sendyit/pay.common.js",
+  "files": [
+    "dist/*"
+  ],
   "dependencies": {
     "@datadog/browser-rum": "^4.19.1",
     "@sentry/tracing": "^7.12.1",
@@ -36,12 +40,18 @@
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
     "@vue/cli-plugin-router": "~5.0.0",
+    "@vue/cli-plugin-unit-jest": "~5.0.0",
     "@vue/cli-plugin-vuex": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
+    "@vue/test-utils": "^2.0.0-0",
+    "@vue/vue3-jest": "^27.0.0-alpha.1",
+    "babel-jest": "^27.0.6",
+    "babel-plugin-transform-require-context": "^0.1.1",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-vue": "^8.0.3",
+    "jest": "^27.0.5",
     "prettier": "^2.4.1",
     "sass": "^1.32.7",
     "sass-loader": "^12.0.0"
@@ -72,12 +82,21 @@
         "env": {
           "mocha": true
         }
+      },
+      {
+        "files": [
+          "**/__tests__/*.{j,t}s?(x)",
+          "**/tests/unit/**/*.spec.{j,t}s?(x)"
+        ],
+        "env": {
+          "jest": true
+        }
       }
     ]
   },
-  "main": "./dist/@sendyit/pay.common.js",
-  "files": [
-    "dist/*"
+  "authors": [
+    "Victor Misiko <misiko@sendyit.com>",
+    "Joyce kemboi <joyce@sendyit.com>"
   ],
   "keywords": [
     "Sendy Pay",
@@ -85,9 +104,5 @@
     "Vue plugins",
     "Vue components",
     "Sendyit"
-  ],
-  "authors": [
-    "Victor Misiko <misiko@sendyit.com>",
-    "Joyce kemboi <joyce@sendyit.com>"
   ]
 }
