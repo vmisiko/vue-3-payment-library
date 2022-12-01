@@ -108,7 +108,6 @@ const handleSetupNow = () => {
     payment_method: "Pay with Transfer",
   });
 
-  console.log(getBupayload.value.pay_direction);
   if (getBupayload.value?.pay_direction !== 'PAY_ON_DELIVERY') {
     router.push('/bank/terms-of-service');
     return;

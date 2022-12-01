@@ -42,7 +42,6 @@ export function usePayBybankSetup() {
   }
 
   const getPodBalance = async (bankAccount) => {
-    console.log(getBupayload.value.phonenumber?.split("+")[1], 'getBupayload.value.phonenumber');
     const phone = getBupayload.value.phonenumber?.includes("+") ? getBupayload.value.phonenumber?.split("+")[1] : getBupayload.value.phonenumber;
     const payload = {
       first_name: getBupayload.value.firstname,

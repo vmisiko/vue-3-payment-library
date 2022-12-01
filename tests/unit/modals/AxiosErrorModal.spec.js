@@ -26,7 +26,6 @@ describe("AxiosErrorModal", () => {
     },
   });
   it("renders props when passed", () => {
-    console.log(wrapper.html())
     const msg = "An error occurred";
     expect(wrapper.props("show")).toBeTruthy()
     expect(wrapper.props("text")).toContain(msg);
