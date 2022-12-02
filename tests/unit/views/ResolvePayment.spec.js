@@ -1,17 +1,15 @@
-import Vue from "vue";
-import Vuex from "vuex";
-import VueI18n from "vue-i18n";
-import { expect } from "chai";
-import { shallowMount, createLocalVue } from "@vue/test-utils";
+import { shallowMount, config } from "@vue/test-utils";
 import ResolvePayment from "@/views/ResolvePayment";
 import iconView from "@/components/iconView";
 import notification from "@/components/notificationComponent";
 import sendyBtn from "@/components/sendyBtn";
 import paymentGenMxn from "@/mixins/paymentGenMxn";
+import AdditionalCardFields from "@/views/AdditionalCardFields";
+import { i18n } from "@/plugins/i18n";
+import { createStore } from "vuex";
 
-Vue.use(VueI18n);
-const i18n = new VueI18n({});
-Vue.use(Vuex);
+
+
 let wrapper;
 let getters;
 let store;
@@ -71,80 +69,84 @@ const bupayload = {
     "We are unable to process your transaction. Your card has insufficient funds.",
 };
 
+getters = {
+  getPaymentMethods: () => paymentMethods,
+  getSavedPayMethods: () => savedPaymentMethods,
+  getBupayload: () => bupayload,
+};
+mutations = {
+  setSelectedMenu() {
+    state.selectedMenu = "";
+  },
+  setErrorText() {
+    state.errorText = "";
+  },
+  setPaymentMethods() {
+    state.paymentMethods = paymentMethods;
+  },
+  setSavedPayMethods() {
+    state.savedpaymethods = savedPaymentMethods;
+  },
+};
+
+actions = {
+  paymentAxiosPost: () => savedPaymentMethods,
+};
+store = createStore({
+  actions,
+  getters,
+  mutations,
+  state,
+});
+
+config.global.mixins = [paymentGenMxn],
+config.global.plugins = [i18n, store];
+
+config.global.stubs = {
+  IconView: iconView,
+  Snackbar: notification,
+  "sendy-btn": sendyBtn,
+  AdditionalCardFields: AdditionalCardFields,
+};
+
+config.global.mocks = {
+  $translate: (key) => i18n.global.t(key),
+  $paymentAxiosPost: () => savedPaymentMethods,
+  $paymentAxiosGet: () => {},
+};
+
 describe("ResolvePayment", () => {
   beforeEach(() => {
-    getters = {
-      getPaymentMethods: () => paymentMethods,
-      getSavedPayMethods: () => savedPaymentMethods,
-      getBupayload: () => bupayload,
-    };
-    mutations = {
-      setSelectedMenu() {
-        state.selectedMenu = "";
-      },
-      setErrorText() {
-        state.errorText = "";
-      },
-      setPaymentMethods() {
-        state.paymentMethods = paymentMethods;
-      },
-      setSavedPayMethods() {
-        state.savedpaymethods = savedPaymentMethods;
-      },
-    };
-    store = new Vuex.Store({
-      actions,
-      getters,
-      mutations,
-      state,
-    });
-
-    const localVue = createLocalVue();
-
-    wrapper = shallowMount(ResolvePayment, {
-      i18n,
-      localVue,
-      store,
-      stubs: {
-        IconView: iconView,
-        Snackbar: notification,
-        "sendy-btn": sendyBtn,
-      },
-      mixins: [paymentGenMxn],
-      methods: {
-        $paymentAxiosPost: () => savedPaymentMethods,
-        $paymentAxiosGet: () => {},
-      },
-    });
+    wrapper = shallowMount(ResolvePayment);
   });
 
   it("Test getDefaultpayMethod()", () => {
     wrapper.vm.getDefaultpayMethod();
-    expect(wrapper.vm.defaultPaymentMethod).to.equal(savedPaymentMethods[0]);
-    expect(wrapper.vm.currency).to.equal(bupayload.currency);
-    expect(wrapper.vm.amount).to.equal(bupayload.amount);
+    expect(wrapper.vm.defaultPaymentMethod).toEqual(savedPaymentMethods[0]);
+    expect(wrapper.vm.currency).toEqual(bupayload.currency);
+    expect(wrapper.vm.amount).toEqual(bupayload.amount);
   });
 
   it("Test retrievePaymentMethods()", async () => {
     await wrapper.vm.retrievePaymentMethods();
-    expect(wrapper.vm.getSavedPayMethods).to.equal(savedPaymentMethods);
+    expect(wrapper.vm.getSavedPayMethods).toEqual(savedPaymentMethods);
   });
 
   it("Test handleContinue()", () => {
     wrapper.vm.handleContinue(true);
-    expect(wrapper.vm.loading).to.equal(true);
+    expect(wrapper.vm.loading).toBeTruthy();
   });
 
   it("Test handleErrorModalClose(", () => {
     wrapper.vm.handleErrorModalClose();
-    expect(wrapper.vm.showErrorModal).to.equal(false);
-    expect(wrapper.vm.showAdditionalCardFields).to.equal(false);
+    expect(wrapper.vm.showErrorModal).toBeFalsy();
+    expect(wrapper.vm.showAdditionalCardFields).toBeFalsy();
   });
 
   it("Test pollCard() if limit is 6", (done) => {
     wrapper.vm.pollCard();
     wrapper.vm.$nextTick(() => {
-      expect(wrapper.vm.loading).to.equal(true);
+      expect(wrapper.vm.loading).toBeTruthy();
       done();
     });
   });

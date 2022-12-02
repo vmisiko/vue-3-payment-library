@@ -78,28 +78,8 @@ export function usePayment() {
       checkAvailableOptions();
     }
   }
-  const checkout = async () =>  {
+  const checkout = async (payload) =>  {
     store.commit("setLoading", true);
-    const payload = {
-      country: getBupayload.value.country_code,
-      amount: getBupayload.value.amount,
-      cardno: state.defaultPaymentMethod.pay_method_details,
-      txref: getBupayload.value.txref,
-      userid: getBupayload.value.user_id,
-      currency: getBupayload.value.currency,
-      bulk: getBupayload.value.bulk,
-      entity: getBupayload.value.entity_id,
-      company_code: getBupayload.value.company_code,
-      paymethod: state.defaultPaymentMethod.pay_method_id,
-      platform: 'web',
-      pay_direction: getBupayload.value.pay_direction,
-      phonenumber: getBupayload.value?.phonenumber ?? state.defaultPaymentMethod?.phonenumber,
-      test: getBupayload?.value?.test ?? false,
-      pay_detail_id: state.defaultPaymentMethod.pay_detail_id,
-      bank: state.defaultPaymentMethod.bank_code,
-      bank_account: state.defaultPaymentMethod.pay_detail_id,
-    };
-
     const version = getBupayload.value?.version ?? 'v3';
     
     const fullPayload = {
@@ -226,7 +206,27 @@ export function usePayment() {
       });
     }
 
-    checkout();
+    const payload = {
+      country: getBupayload.value.country_code,
+      amount: getBupayload.value.amount,
+      cardno: state.defaultPaymentMethod.pay_method_details,
+      txref: getBupayload.value.txref,
+      userid: getBupayload.value.user_id,
+      currency: getBupayload.value.currency,
+      bulk: getBupayload.value.bulk,
+      entity: getBupayload.value.entity_id,
+      company_code: getBupayload.value.company_code,
+      paymethod: state.defaultPaymentMethod.pay_method_id,
+      platform: 'web',
+      pay_direction: getBupayload.value.pay_direction,
+      phonenumber: getBupayload.value?.phonenumber ?? state.defaultPaymentMethod?.phonenumber,
+      test: getBupayload?.value?.test ?? false,
+      pay_detail_id: state.defaultPaymentMethod.pay_detail_id,
+      bank: state.defaultPaymentMethod.bank_code,
+      bank_account: state.defaultPaymentMethod.pay_detail_id,
+    };
+
+    checkout(payload);
     return;
   }
   const processMobiletransactionLimit = () => {
@@ -278,7 +278,28 @@ export function usePayment() {
       // payBybankCollect();
       return;
     }
-    checkout();
+    
+    const payload = {
+      country: getBupayload.value.country_code,
+      amount: getBupayload.value.amount,
+      cardno: state.defaultPaymentMethod.pay_method_details,
+      txref: getBupayload.value.txref,
+      userid: getBupayload.value.user_id,
+      currency: getBupayload.value.currency,
+      bulk: getBupayload.value.bulk,
+      entity: getBupayload.value.entity_id,
+      company_code: getBupayload.value.company_code,
+      paymethod: state.defaultPaymentMethod.pay_method_id,
+      platform: 'web',
+      pay_direction: getBupayload.value.pay_direction,
+      phonenumber: getBupayload.value?.phonenumber ?? state.defaultPaymentMethod?.phonenumber,
+      test: getBupayload?.value?.test ?? false,
+      pay_detail_id: state.defaultPaymentMethod.pay_detail_id,
+      bank: state.defaultPaymentMethod.bank_code,
+      bank_account: state.defaultPaymentMethod.pay_detail_id,
+    };
+
+    checkout(payload);
   }
 
   function pollCard() {
@@ -291,7 +312,7 @@ export function usePayment() {
             poll_count = state.poll_limit;
             return;
           }
-
+          state.poll_count++;
           TransactionIdStatus();
           if (poll_count === state.poll_limit - 1) {
             store.commit("setLoading", false);
@@ -528,5 +549,6 @@ export function usePayment() {
     payBybankCollect,
     getDefaultpayMethod,
     retrievePaymentMethods,
+    checkout,
   };
 }

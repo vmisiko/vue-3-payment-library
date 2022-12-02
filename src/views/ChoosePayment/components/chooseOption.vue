@@ -68,13 +68,7 @@ export default {
       return result;
     },
     isChecked() {
-      console.log(this.paymentOption.default == 1, 'isChecked');
       return this.paymentOption.default == 1;
-    }
-  },
-  watch: {
-    paymentOption(val) {
-      console.log(val);
     }
   },
   mounted() {
