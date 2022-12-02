@@ -88,7 +88,7 @@ import { useSegement } from '../../hooks/useSegment';
 import { usePayment } from "../../hooks/payment";
 
 const { getBupayload, state } = useState();
-const { t } = useGlobalProp();
+const { t, router } = useGlobalProp();
 const store = useStore();
 const { commonTrackPayload } = useSegement();
 const { checkout } = usePayment();
@@ -109,6 +109,7 @@ const showInsufficientTransfer = ref(false);
 const amountDue = ref(0);
 const lastTransferAmount = ref(0);
 const pendingAmount = ref(0);
+var checkPolltimer;
 
 const topupAmount = computed(() => {
   const amount = getBupayload.value.amount - balance.value;
@@ -167,7 +168,7 @@ const pollbalance = () => {
   for (let local_count = 0; local_count < poll_limit.value; local_count++) {
     (function (local_count) {
       setTimeout(() => {
-        if (local_count === poll_limit.value) {
+        if (poll_count.value === poll_limit.value) {
           local_count = poll_limit.value;
           showProcessing.value = false;
           loading.value = false;
@@ -180,14 +181,14 @@ const pollbalance = () => {
           });
           return;
         }
-
+        poll_count.value++;
         getBalanceP();
         if (local_count === poll_limit.value - 1) {
           getBalanceP();
           showProcessing.value = false;
           loading.value = false;
           showFailedTransfer.value = true;
-          window.analytics.track("Pay with Transfer Transfer Failed",  {
+          window.analytics.track("Pay with Transfer Failed",  {
             ...commonTrackPayload(),
             amount: topupAmount.value,
             currency: getBupayload.value.currency,
@@ -200,11 +201,23 @@ const pollbalance = () => {
   }
 };
 
+const pollBalance = () => {
+  const waitCountMax = 600
+  let waitCount = waitCountMax;
+  const checkInterval = 5;
+  let timer = 0;
+  checkPolltimer = setInterval(() => {
+    timer++;
+  }, 1000);
+
+}
 const getBalanceP = async ()  => {
   const bankAccount = getDefaultBankAccount();
   const bal = await getBalance(bankAccount);
 
-  if (getBupayload.amount <= bal) {
+  console.log(bal, balance.value, 'bal vs balance.value');
+  if (bal >= getBupayload.value.amount ) {
+    console.log(bal,  'bal >= getBupayload.amount');
     poll_count.value = poll_limit.value;
     if (getBupayload.value.pay_direction === "PAY_ON_DELIVERY") {
       const payload = {
@@ -222,10 +235,10 @@ const getBalanceP = async ()  => {
         phonenumber: getBupayload.value?.phonenumber ?? state.defaultPaymentMethod?.phonenumber,
         test: getBupayload?.value?.test ?? false,
         pay_detail_id: state.defaultPaymentMethod.pay_detail_id,
-        bank: getSelectedVirtualAccount.value.bank_code,
-        bank_account: getSelectedVirtualAccount.value.account_number,
+        bank: bankAccount.bank_code,
+        bank_account: bankAccount.account_number,
       };
-      await checkout(payload)
+      await checkout(payload);
       return;
     }
     window.analytics.track("Payment processed successfully", {
@@ -243,9 +256,10 @@ const getBalanceP = async ()  => {
     return;
   }
 
-  if (balance.value !== bal) {
+  if (bal < getBupayload.value.amount  && bal > balance.value) {
+    console.log(bal,  'bal < getBupayload.amount  && bal > balance.value');
     poll_count.value = poll_limit.value;
-    amountDue = topupAmount;
+    amountDue.value = topupAmount.value;
     lastTransferAmount.value =
       parseFloat(bal) - parseFloat(balance.value);
     pendingAmount.value =
@@ -261,6 +275,7 @@ const getBalanceP = async ()  => {
       payment_method: 'Pay with Transfer'
     });
   }
+
   balance.value = bal; 
 };
 

@@ -1,4 +1,4 @@
-import { reactive, toRefs } from "vue";
+import { reactive, toRefs, computed } from "vue";
 import { useStore } from "vuex";
 import { useGlobalProp } from "./globalProperties";
 import { useState } from "./useState";
@@ -20,6 +20,9 @@ export function usePayBybankSetup() {
   const store = useStore();
   const { router, route } = useGlobalProp();
   const { commonTrackPayload } = useSegement();
+
+  const getVirtualAccounts = computed(() => store.getters.getVirtualAccounts);
+  const getSelectedVirtualAccount = computed(() => store.getters.getSelectedVirtualAccount);
 
   const getBalance = async (bankAccount) => {
     if (getBupayload.value.pay_direction === "PAY_ON_DELIVERY") {
@@ -160,5 +163,7 @@ export function usePayBybankSetup() {
     getPodBalance,
     getAccounts,
     setPhone,
+    getVirtualAccounts,
+    getSelectedVirtualAccount,
   }
 }

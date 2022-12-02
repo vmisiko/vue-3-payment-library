@@ -34,7 +34,7 @@
             :block="true"
             :loading="loading"
             color="primary"
-            @click="submit"
+            @click="handleRetry"
           >
             {{ $route.params.mpesa ? "Retry" : "Try Again" }}
           </sendy-btn>
@@ -76,6 +76,7 @@ import ErrorModal from "../components/modals/ErrorModal";
 import Processing from "../components/processing";
 import { usePayment } from "../hooks/payment";
 import { useSegement } from '../hooks/useSegment';
+import { usePayBybankSetup } from '../hooks/payBybankSetup';
 
 export default {
   name: "FailedView",
@@ -106,7 +107,9 @@ export default {
       pollCard,
       handleContinue3DS,
       getDefaultpayMethod,
+      checkout
     } = usePayment();
+    const { getVirtualAccounts, getSelectedVirtualAccount } = usePayBybankSetup();
     const { commonTrackPayload } = useSegement();
 
     function handleErrorModalClose() {
@@ -116,6 +119,37 @@ export default {
         ...commonTrackPayload(),
         payment_method: state.defaultPaymentMethod.pay_method_name,
       });
+    }
+    const getDefaultBankAccount = () => {
+      const bankAccount = getVirtualAccounts.value ? getVirtualAccounts.value?.filter((el) => el?.is_primary)[0] : '';
+      return bankAccount;
+    };
+
+    const handleRetry = async () => {
+      const bankAccount = getDefaultBankAccount();
+      if (getBupayload.value.pay_direction === "PAY_ON_DELIVERY" && state.defaultPaymentMethod.pay_method_id === 20) {
+        const payload = {
+          country: getBupayload.value.country_code,
+          amount: getBupayload.value.amount,
+          txref: getBupayload.value.txref,
+          userid: getBupayload.value.user_id,
+          currency: getBupayload.value.currency,
+          bulk: getBupayload.value.bulk,
+          entity: getBupayload.value.entity_id,
+          company_code: getBupayload.value.company_code,
+          paymethod: state.defaultPaymentMethod.pay_method_id,
+          platform: 'web',
+          pay_direction: getBupayload.value.pay_direction,
+          phonenumber: getBupayload.value?.phonenumber ?? state.defaultPaymentMethod?.phonenumber,
+          test: getBupayload?.value?.test ?? false,
+          pay_detail_id: state.defaultPaymentMethod.pay_detail_id,
+          bank: bankAccount.bank_code,
+          bank_account: bankAccount.account_number,
+        };
+        await checkout(payload);
+        return;
+      }
+      submit();
     }
 
     return {
@@ -128,6 +162,7 @@ export default {
       pollCard,
       handleContinue3DS,
       handleErrorModalClose,
+      handleRetry,
     };
   },
 };
