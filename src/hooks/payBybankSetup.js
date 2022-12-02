@@ -50,7 +50,7 @@ export function usePayBybankSetup() {
       mobile_no: phone,
       bank_code: bankAccount.bank_code,
       account_number: bankAccount.account_number,
-      entity: getBupayload.value.entity_id,
+      entity_id: getBupayload.value.entity_id,
       country_code: getBupayload.value.country_code,
     };
 
