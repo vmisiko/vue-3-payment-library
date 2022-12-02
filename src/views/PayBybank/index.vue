@@ -153,7 +153,7 @@ const confirm = () => {
     amount: topupAmount.value,
     currency: getBupayload.value.currency,
   });
-  pollbalance();
+  pollBalance();
 };
 
 const finishProcessing = () => {
@@ -204,21 +204,34 @@ const pollbalance = () => {
 const pollBalance = () => {
   const waitCountMax = 600
   let waitCount = waitCountMax;
-  const checkInterval = 5;
+  const checkInterval = 30;
   let timer = 0;
   checkPolltimer = setInterval(() => {
     timer++;
+    waitCount--;
+    if (timer % checkInterval === 0) {
+      getBalanceP();
+      if (waitCount <=0)  {
+        clearInterval(checkPolltimer);
+        showProcessing.value = false;
+        loading.value = false;
+        showFailedTransfer.value = true;
+        window.analytics.track("Pay with Transfer Failed",  {
+          ...commonTrackPayload(),
+          amount: topupAmount.value,
+          currency: getBupayload.value.currency,
+          payment_method: 'Pay with Transfer'
+        });
+      }
+    }
   }, 1000);
-
 }
 const getBalanceP = async ()  => {
   const bankAccount = getDefaultBankAccount();
   const bal = await getBalance(bankAccount);
 
-  console.log(bal, balance.value, 'bal vs balance.value');
   if (bal >= getBupayload.value.amount ) {
-    console.log(bal,  'bal >= getBupayload.amount');
-    poll_count.value = poll_limit.value;
+    clearInterval(checkPolltimer);
     if (getBupayload.value.pay_direction === "PAY_ON_DELIVERY") {
       const payload = {
         country: getBupayload.value.country_code,
@@ -257,8 +270,7 @@ const getBalanceP = async ()  => {
   }
 
   if (bal < getBupayload.value.amount  && bal > balance.value) {
-    console.log(bal,  'bal < getBupayload.amount  && bal > balance.value');
-    poll_count.value = poll_limit.value;
+    clearInterval(checkPolltimer);
     amountDue.value = topupAmount.value;
     lastTransferAmount.value =
       parseFloat(bal) - parseFloat(balance.value);
