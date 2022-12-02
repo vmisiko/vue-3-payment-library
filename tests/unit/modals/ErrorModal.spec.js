@@ -48,7 +48,7 @@ describe("ErrorModal", () => {
   });
   it("Tests props title, text supplied", () => {
     const title = "Failed to Charge Card";
-    const text = "Failed to charge card"
+    const text = "An error Occurred!"
     expect(wrapper.props('title')).toEqual(title);
     expect(wrapper.props('text')).toEqual(text);
   });
