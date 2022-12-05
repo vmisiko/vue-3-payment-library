@@ -17,7 +17,7 @@
           >
         </div>
 
-        <div class="direction-flex mgt-2">
+        <div class="direction-flex mgt-2" v-if="(topupAmount > 0)">
           <span class="body-2-regular text-gray70">{{
             $translate("amount_to_transfer")
           }}</span>
@@ -30,7 +30,7 @@
 
       <hr class="mgt-7" />
 
-      <div class="mgt-6">
+      <div class="mgt-6" v-if="(topupAmount > 0)">
         <span class="body-2-regular"
           >{{ $translate("complete_your_payment_transfer") }}
           <span class="body-1-semibold text-gray90"
@@ -42,6 +42,15 @@
           >
           {{ $translate("once_done") }}</span
         >
+      </div>
+      <div class="mgt-6" v-else>
+        <span class="body-2-regular"
+          >{{ $translate('account_has_sufficient_balance')}}</span
+        >
+        <span class="body-1-semibold text-gray90"
+            >“{{ $translate("confirm_transfer") }}”</span
+          >
+          <span> {{ $translate("to_complete_payment") }}</span>
       </div>
 
       <AccountsDisplay

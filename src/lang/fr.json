@@ -205,5 +205,7 @@
   "confirmation": "Confirmation",
   "unavailable_withdrawal": "Unavailable. Amount exceeds daily withrawal limit",
   "please_wait_process_request": "Please wait while we process your request",
-  "manage_withdrawal_options": "Manage withdrawal options"
+  "manage_withdrawal_options": "Manage withdrawal options",
+  "account_has_sufficient_balance": "Your account has a sufficient balance. Click",
+  "to_complete_payment": "to complete the payment."
 }
