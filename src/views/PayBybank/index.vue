@@ -152,7 +152,7 @@ const getDefaultBankAccount = () => {
   return bankAccount;
 };
 
-const confirm = () => {
+const confirm = async () => {
   loading.value = true;
   showProcessing.value = true;
   count.value = true;
@@ -162,6 +162,10 @@ const confirm = () => {
     amount: topupAmount.value,
     currency: getBupayload.value.currency,
   });
+  if (topupAmount.value <= 0) {
+    await poDCheckout();
+    return;
+  }
   pollBalance();
 };
 
@@ -235,14 +239,9 @@ const pollBalance = () => {
     }
   }, 1000);
 }
-const getBalanceP = async ()  => {
+const poDCheckout = async () => {
   const bankAccount = getDefaultBankAccount();
-  const bal = await getBalance(bankAccount);
-
-  if (bal >= getBupayload.value.amount ) {
-    clearInterval(checkPolltimer);
-    if (getBupayload.value.pay_direction === "PAY_ON_DELIVERY") {
-      const payload = {
+  const payload = {
         country: getBupayload.value.country_code,
         amount: getBupayload.value.amount,
         txref: getBupayload.value.txref,
@@ -259,8 +258,18 @@ const getBalanceP = async ()  => {
         pay_detail_id: state.defaultPaymentMethod.pay_detail_id,
         bank: bankAccount.bank_code,
         bank_account: bankAccount.account_number,
-      };
-      await checkout(payload);
+  };
+  await checkout(payload);
+}
+
+const getBalanceP = async ()  => {
+  const bankAccount = getDefaultBankAccount();
+  const bal = await getBalance(bankAccount);
+
+  if (bal >= getBupayload.value.amount ) {
+    clearInterval(checkPolltimer);
+    if (getBupayload.value.pay_direction === "PAY_ON_DELIVERY") {
+      await poDCheckout();
       return;
     }
     window.analytics.track("Payment processed successfully", {
