@@ -5,15 +5,14 @@
     <div class="card" v-else>
       <TopInfo :icon="icon" :title="title" />
 
-      <span v-if="creditCards.length !== 0" class="mgt-2 text-overline">{{
+      <span v-if="creditCards?.length !== 0" class="mgt-2 text-overline">{{
         $translate("credit_card_payment")
       }}</span>
-      <div class="" v-if="creditCards.length !== 0">
+      <div class="" v-if="creditCards?.length !== 0">
         <div
           v-for="(card, index) in creditCards"
           :key="index"
-          class="mgt-4 option-border text-caption-1 pda-3"
-          :class="{ 'selected-border': picked === card.pay_detail_id }"
+          class="mgt-4"
         >
           <ChooseOption
             :paymentOption="card"
@@ -24,19 +23,14 @@
         </div>
       </div>
 
-      <span v-if="savedMobile.length !== 0" class="mgt-8 text-overline">{{
+      <span v-if="savedMobile?.length !== 0" class="mgt-8 text-overline">{{
         $translate("mobile_money")
       }}</span>
       <div v-if="savedMobile.length !== 0">
         <div
           v-for="(mobile, index) in savedMobile"
           :key="index"
-          class="mgt-4 option-border text-caption-1 pda-3"
-          :class="{
-            'selected-border': picked === mobile.pay_detail_id,
-            disabled:
-              mobile.daily_limit && getBupayload.amount > mobile.daily_limit,
-          }"
+          class="mgt-4" 
         >
           <ChooseOption
             :paymentOption="mobile"
@@ -47,19 +41,13 @@
         </div>
       </div>
 
-      <div class="mgt-8" v-if="virtualAccounts.length !== 0">
+      <div class="mgt-8" v-if="virtualAccounts?.length">
         <span class="text-overline"> {{ $translate('bank_transfer') }}</span>
         <div>
           <div
             v-for="(vaccount, index) in virtualAccounts"
             :key="index"
-            class="mgt-4 option-border text-caption-1 pda-3"
-            :class="{
-              'selected-border': picked === vaccount.pay_detail_id,
-              disabled:
-                vaccount.daily_limit &&
-                getBupayload.amount > vaccount.daily_limit,
-            }"
+            class="mgt-4"
           >
             <ChooseOption
               :paymentOption="vaccount"

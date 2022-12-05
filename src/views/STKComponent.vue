@@ -300,7 +300,7 @@ const pollMpesa = () => {
           poll_count = state.poll_limit;
           return;
         }
-
+        state.poll_count++;
         TransactionIdStatus();
         if (poll_count === state.poll_limit - 1) {
           state.loading = false;

@@ -22,8 +22,7 @@
           <div
             v-for="(card, index) in creditCards"
             :key="index"
-            class="mgt-4 option-border text-caption-1 pda-3"
-            :class="{ 'selected-border': picked === card.pay_detail_id }"
+            class="mgt-4"
           >
             <ChooseOption
               :paymentOption="card"
@@ -41,13 +40,7 @@
           <div
             v-for="(mobile, index) in savedMobile"
             :key="index"
-            class="mgt-4 option-border text-caption-1 pda-3"
-            :class="{
-              'selected-border': picked === mobile.pay_detail_id,
-              disabled:
-                mobile.daily_limit &&
-                getBupayload.amount > mobile.daily_limit,
-            }"
+            class="mgt-4"
           >
             <ChooseOption
               :paymentOption="mobile"
@@ -64,13 +57,7 @@
             <div
               v-for="(vaccount, index) in virtualAccounts"
               :key="index"
-              class="mgt-4 option-border text-caption-1 pda-3"
-              :class="{
-                'selected-border': picked === vaccount.pay_detail_id,
-                disabled:
-                  vaccount.daily_limit &&
-                  getBupayload.amount > vaccount.daily_limit,
-              }"
+              class="mgt-4"
             >
               <ChooseOption
                 :paymentOption="vaccount"
@@ -98,7 +85,7 @@
           <sendy-btn
             color="primary"
             class="mgt-2"
-            @click="submit"
+            @click="handleSubmit"
             :loading="getLoading"
             :disabled="!picked"
           >
@@ -133,6 +120,7 @@ import { useChoosePayment } from "../../hooks/useChoosePayment";
 import { usePayment } from "../../hooks/payment";
 import { useState } from "../../hooks/useState";
 import { useSegement } from '../../hooks/useSegment';
+import { useGlobalProp } from '@/hooks/globalProperties';
 
 export default {
   name: "ChoosePaymentCheckout",
@@ -152,6 +140,7 @@ export default {
   },
   setup() {
     const { state } = useState();
+    const { router } = useGlobalProp();
     const { retrievePaymentMethods, getDefaultpayMethod, submit } =
       usePayment();
     const store = useStore();
@@ -191,6 +180,10 @@ export default {
       state.showAdditionalCardFields = false;
     }
 
+    const handleSubmit = () => {
+      getBupayload.value.pay_direction=== "PAY_ON_DELIVERY" ? router.push({name: "HowitWorks"}) : submit();
+    }
+
     return {
       ...toRefs(state),
       creditCards,
@@ -202,7 +195,7 @@ export default {
       handleRouting,
       addPaymentOption,
       handleErrorModalClose,
-      submit,
+      handleSubmit,
     };
   },
 };

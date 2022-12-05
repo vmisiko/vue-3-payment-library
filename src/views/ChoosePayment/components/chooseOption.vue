@@ -1,55 +1,25 @@
 <template>
-  <div>
+  <div 
+    class="option-border text-caption-1 pda-3" 
+    :class="{
+      'selected-border': isChecked,
+      'disabled':
+        paymentOption.daily_limit &&
+        getBupayload.amount > paymentOption.daily_limit,
+      }"
+    >
     <div class="direction-flex">
-      <div
-        v-if="paymentOption.category === 'Mobile Money'"
-        class="direction-flex"
-      >
-        <img
-          :src="`${iconUrl}/${paymentOption.pay_method_name.toLowerCase()}.svg`"
-          alt=""
-        />
-        <span class="mgl-2">{{ paymentOption.pay_method_name }}</span>
-      </div>
-      <div v-if="paymentOption.pay_method_id === 2" class="direction-flex">
-        <IconView
-          :icon="
-            $cardIconValidator(paymentOption.psp.toLowerCase())
-              ? paymentOption.psp.toLowerCase()
-              : 'card'
-          "
-        />
-        <span class="mgl-2">{{ paymentOption.psp }}</span>
-        <span class="gray80-text mgl-2">
-          {{ $formatLastFour(paymentOption.pay_method_details) }}</span
-        >
-      </div>
-
-      <div v-if="paymentOption.pay_method_id === 20" class="direction-flex">
-        <IconView icon="pay-bank" class="mgt-1" />
-        <div class="mgl-2 mgy-auto">
-          <span> {{ $translate('pay_by_bank') }}</span>
-          <div class="caption-2-semibold text-gray70 direction-flex">
-            <span> {{  $translate('available_balance') }}</span>
-
-            <IconView
-              class="mgl-2"
-              icon="loading1"
-              width="1.5em"
-              height="1.5em"
-              v-if="loading"
-            />
-            <span class="mgl-2" v-else>
-              {{ getBupayload.currency }} {{ balance }}</span
-            >
-          </div>
-        </div>
-      </div>
-
+      <PaymentIcon class="icon-size" :paymentOption="paymentOption" />
+      <PaymentOptionTypeText  
+        :paymentOption="paymentOption"
+        :loading="loading" 
+        :balance="balance" 
+      />
       <span class="spacer"></span>
-      <div :class="{ 'mgt-2': paymentOption.pay_method_id === 20 }">
+
+      <div :class="{'mgt-2': paymentOption.pay_method_id === 20}">
         <input
-          class="float-right payment-input"
+          class="float-right payment-input mgy-auto"
           name="paymentoption"
           type="radio"
           :value="value"
@@ -67,10 +37,16 @@
 
 <script>
 import { mapGetters } from "vuex";
+import PaymentIcon from "./PaymentIcon.vue";
+import PaymentOptionTypeText from "./PaymentOptionTypeText.vue";
 
 export default {
   name: "PaymentOptionItem",
   props: ["modelValue", "paymentOption", "value"],
+  components: {
+    PaymentIcon,
+    PaymentOptionTypeText
+  },
   data() {
     return {
       picked: this.modelValue,
@@ -92,11 +68,11 @@ export default {
       return result;
     },
     isChecked() {
-      return this.modelValue == this.value
+      return this.paymentOption.default == 1;
     }
   },
   mounted() {
-    if (this.paymentOption.pay_method_id === 20) {
+    if (this.paymentOption.pay_method_id === 20 && this.getBupayload.pay_direction !== "PAY_ON_DELIVERY") {
       this.getBalance();
     }
   },
@@ -114,3 +90,25 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+@import '../../../assets/styles/variables';
+
+.radio-custom {
+    border-radius: 50%;
+    opacity: 0;
+    position: absolute;  
+    display: inline-block;
+    vertical-align: middle;
+    margin: 5px;
+    cursor: pointer; 
+    .radio-custom:checked {
+      content: "\f00c";
+      font-family: 'FontAwesome';
+      background: $linkColor;
+      color: #bbb;
+    }
+}
+
+
+</style>

@@ -26,46 +26,8 @@
       >
 
       <div class="direction-flex float-right">
-        <img
-          v-if="paymentMethod.category === 'Mobile Money'"
-          :src="`${iconUrl}/${paymentMethod.pay_method_name.toLowerCase()}.svg`"
-          alt=""
-        />
-        <IconView
-          v-if="paymentMethod.pay_method_id === 2"
-          :icon="
-            $cardIconValidator(paymentMethod.psp.toLowerCase())
-              ? paymentMethod.psp.toLowerCase()
-              : 'card'
-          "
-          width="34"
-          height="24"
-        />
-        <IconView
-          class="mgt-n2"
-          v-if="paymentMethod.pay_method_id === 20"
-          icon="pay-bank"
-          width="34"
-          height="24"
-        />
-        <span
-          class="mgl-2 text-caption-1"
-          v-if="paymentMethod.category === 'Mobile Money'"
-        >
-          {{ paymentMethod.pay_method_name }}</span
-        >
-        <span
-          class="mgl-2 text-caption-1"
-          v-if="paymentMethod.pay_method_id === 2"
-        >
-          {{ formatLastFour(paymentMethod.pay_method_details) }}
-        </span>
-        <span
-          class="mgl-2 text-caption-1"
-          v-if="paymentMethod.pay_method_id === 20"
-        >
-          Pay by Bank
-        </span>
+        <PaymentIcon :paymentOption="paymentMethod" />
+        <PaymentOptionTypeText  :paymentOption="paymentMethod" />
       </div>
     </div>
 
@@ -99,10 +61,16 @@
 
 <script>
 import { mapGetters } from "vuex";
+import PaymentIcon from "../views/ChoosePayment/components/PaymentIcon.vue";
+import PaymentOptionTypeText from "../views/ChoosePayment/components/PaymentOptionTypeText.vue";
 
 export default {
   name: "PaymentDetail",
   props: ["currency", "amount", "paymentMethod", "paymentStatus"],
+  components: {
+    PaymentIcon,
+    PaymentOptionTypeText,
+  },
   data() {
     return {
       iconUrl:

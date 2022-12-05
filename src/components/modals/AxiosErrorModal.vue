@@ -14,7 +14,7 @@
         </div>
       </div>
 
-      <sendy-btn :block="true" color="info" class="mgt-8" @click="close">
+      <sendy-btn id="close" :block="true" color="info" class="mgt-8" @click="close">
         {{ $translate("close") }}
       </sendy-btn>
     </div>

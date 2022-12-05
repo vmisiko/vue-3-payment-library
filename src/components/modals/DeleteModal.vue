@@ -50,7 +50,7 @@ export default {
       let result = '';
       switch (this.getSelectedPayOption.category) {
         case 'bank':
-          result = 'Pay by bank';
+          result = 'Pay with Transfer';
           break;
         case 'Mobile Money':
           result = 'Mobile Money';
