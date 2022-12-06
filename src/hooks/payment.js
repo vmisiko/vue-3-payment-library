@@ -224,6 +224,9 @@ export function usePayment() {
       pay_detail_id: state.defaultPaymentMethod.pay_detail_id,
       bank: state.defaultPaymentMethod.bank_code,
       bank_account: state.defaultPaymentMethod.pay_detail_id,
+      email: getBupayload.value.email,
+      firstname: getBupayload.value.firstname,
+      lastname: getBupayload.value.lastname,
     };
 
     checkout(payload);
@@ -297,6 +300,9 @@ export function usePayment() {
       pay_detail_id: state.defaultPaymentMethod.pay_detail_id,
       bank: state.defaultPaymentMethod.bank_code,
       bank_account: state.defaultPaymentMethod.pay_detail_id,
+      email: getBupayload.value.email,
+      firstname: getBupayload.value.firstname,
+      lastname: getBupayload.value.lastname,
     };
 
     checkout(payload);

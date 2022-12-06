@@ -161,6 +161,9 @@ const submit = async () => {
     platform: 'web',
     pay_direction: getBupayload.value.pay_direction,
     test: getBupayload.value?.test ?? false,
+    email: getBupayload.value.email,
+    firstname: getBupayload.value.firstname,
+    lastname: getBupayload.value.lastname,
   };
 
   const version = getBupayload.value.version ?? 'v3';

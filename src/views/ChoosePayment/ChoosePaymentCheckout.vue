@@ -85,7 +85,7 @@
           <sendy-btn
             color="primary"
             class="mgt-2"
-            @click="handleSubmit"
+            @click="submit"
             :loading="getLoading"
             :disabled="!picked"
           >
@@ -181,7 +181,7 @@ export default {
     }
 
     const handleSubmit = () => {
-      getBupayload.value.pay_direction=== "PAY_ON_DELIVERY" ? router.push({name: "HowitWorks"}) : submit();
+      getBupayload.value.pay_direction=== "PAY_ON_DELIVERY" && state.defaultPaymentMethod.pay_method_id=== 20 ? router.push({name: "HowitWorks"}) : submit();
     }
 
     return {
@@ -195,7 +195,7 @@ export default {
       handleRouting,
       addPaymentOption,
       handleErrorModalClose,
-      handleSubmit,
+      submit,
     };
   },
 };
