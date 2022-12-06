@@ -9,7 +9,7 @@
     <div v-if="paymentOption.pay_method_id === 20" >
         <div class="mgy-auto">
           <span> {{ $translate('pay_by_bank') }}</span>
-          <div class="caption-2-semibold text-gray70 direction-flex" v-if="getBupayload.pay_direction !== 'PAY_ON_DELIVERY' && !isCheckout">
+          <div class="caption-2-semibold text-gray70 direction-flex" v-if="(getBupayload.pay_direction !== 'PAY_ON_DELIVERY' && hideAvalailablebalance)">
             <span> {{  $translate('available_balance') }}</span>
 
             <IconView
@@ -43,5 +43,9 @@ const { route } = useGlobalProp();
 const { getBupayload } = useState();
 
 const isCheckout = computed(() =>  route.name === 'Entry');
+
+const hideAvalailablebalance = computed(() => {
+  return route.name === 'Entry' || route.name === 'FailedView' || route.name === 'SuccessView';
+} );
 
 </script>
