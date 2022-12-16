@@ -11,7 +11,7 @@
         <span>{{ failureReason || $translate('sorry_experiencing_technical_issues')}}
         </span> 
 
-        <div class="mgt-5">
+        <div class="mgt-5" v-if="!failureReason">
           <span>         
             {{ $translate('please_try_again_later') }}
           </span>
