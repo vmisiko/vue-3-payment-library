@@ -45,7 +45,6 @@ const { getBupayload } = useState();
 const isCheckout = computed(() =>  route.name === 'Entry');
 
 const hideAvalailablebalance = computed(() => {
-  console.log(route.name);
   return route.name === 'Entry' || route.name === 'FailedView' || route.name === 'SuccessView';
 } );
 
