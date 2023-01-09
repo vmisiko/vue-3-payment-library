@@ -1,3 +1,4 @@
+import BuPayload from "../Models/BuPayload";
 import actions from "./actions";
 
 const store = {
@@ -46,7 +47,10 @@ const store = {
   getters: {
     getPaymentMethods: (state) => state.paymentMethods,
     getSavedPayMethods: (state) => state.savedPayMethods,
-    getBupayload: (state) => state.bupayload,
+    getBupayload: (state) => {
+      const buPayload = new BuPayload(state.bupayload);
+      return buPayload;
+    },
     getErrorText: (state) => state.errorText,
     getTwoFACompleted: (state) => state.twoFACompleted,
     getVirtualAccounts: (state) => state.virtualAccounts,

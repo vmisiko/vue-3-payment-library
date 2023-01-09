@@ -19,7 +19,6 @@ export function usePayment() {
   const getErrorText = computed(() => store.getters.getErrorText);
   const getLoading = computed(() => store.getters.getLoading);
 
-  const buPayload = new BuPayload(getBupayload.value);
 
   async function retrievePaymentMethods() {
     const payload = {
@@ -326,7 +325,7 @@ export function usePayment() {
           if (poll_count === state.poll_limit - 1) {
             store.commit("setLoading", false);
             if (route.name === "AddCard") {
-              if (buPayload.isPayOnDelivery) {
+              if (getBupayload.value.isPayOnDelivery) {
                 state.errorText = "The request to charge the card has not been completed. Please wait for about a minute before retrying. If this error persists, please reach out to our customer support team for assistance.";
                 store.commit("setErrorText", state.errorText);
                 router.push({ name: "FailedView" });
@@ -362,7 +361,7 @@ export function usePayment() {
 
   async function TransactionIdStatus() {
     const payload = {
-      url: buPayload.isPayOnDelivery ? `/api/v2/process/pod/status/${state.transaction_id}` : `/api/v2/process/status/${state.transaction_id}`,
+      url: getBupayload.value.isPayOnDelivery ? `/api/v2/process/pod/status/${state.transaction_id}` : `/api/v2/process/status/${state.transaction_id}`,
     };
 
     const res = await store.dispatch("paymentAxiosGet", payload);
@@ -379,7 +378,7 @@ export function usePayment() {
           store.commit("setLoading", false);
           state.loading = false;
           if (route.name === "AddCard") {
-            if (buPayload.isPayOnDelivery) {
+            if (getBupayload.value.isPayOnDelivery) {
               router.push({
                 name: "SuccessView",
                 duration: duration,
@@ -413,7 +412,7 @@ export function usePayment() {
           state.loading = false;
           if (route.name === "AddCard") {
              
-            if (buPayload.isPayOnDelivery) {
+            if (getBupayload.value.isPayOnDelivery) {
               router.push({ name: "FailedView" });
               return
             }

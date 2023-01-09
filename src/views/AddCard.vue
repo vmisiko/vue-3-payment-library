@@ -68,14 +68,14 @@
           </div>
           <hr class="mgt-2">
 
-          <div class="mgt-4 direction-flex pda-3" v-if="buPayload.isPayOnDelivery">
+          <div class="mgt-4 direction-flex pda-3" v-if="getBupayload.isPayOnDelivery">
             <div class="">
               <span class="text-caption text-gray70">{{
                 $translate("amount_to_pay")
               }}</span>
               <div class="payment-text-secondary">
-                {{ buPayload.currency }}
-                {{ $formatCurrency(buPayload.amount) }}
+                {{ getBupayload.currency }}
+                {{ $formatCurrency(getBupayload.amount) }}
               </div>
             </div>
             <span class="spacer"></span>
@@ -91,7 +91,7 @@
 
           <div v-else >
             <div class="text-center">
-              <span class="charge-text"> {{ $translate("in_order_to_verify") }} {{ buPayload.currency }} {{ addCardAmount }} {{ $translate("and_refund_your_card") }} </span>
+              <span class="charge-text"> {{ $translate("in_order_to_verify") }} {{ getBupayload.currency }} {{ addCardAmount }} {{ $translate("and_refund_your_card") }} </span>
             </div>
             <sendy-btn
               :block="true"
@@ -143,7 +143,7 @@ export default {
   data() {
     return {
       icon: "back",
-      title: this.buPayload.isPayOnDelivery ? this.$translate("add_a_card") : this.$translate("enter_card_details"), 
+      title: this.getBupayload.isPayOnDelivery ? this.$translate("add_a_card") : this.$translate("enter_card_details"), 
       showModal: false,
     };
   },
@@ -155,7 +155,6 @@ export default {
       init3DS,
     } = usePayment();
 
-    const buPayload = new BuPayload(getBupayload.value);
 
     const store = useStore();
 
@@ -368,7 +367,7 @@ export default {
               payment_method: "card",
             });
             
-            buPayload.isPayOnDelivery ? 
+            getBupayload.value.isPayOnDelivery ? 
             router.push({
               name: "SuccessView",
               duration: duration,
@@ -441,7 +440,7 @@ export default {
               message: res.message,
               payment_method: "card",
             });
-            buPayload.isPayOnDelivery ? 
+            getBupayload.value.isPayOnDelivery ? 
             router.push({
               name: "SuccessView",
               duration: duration,
@@ -503,7 +502,7 @@ export default {
       state.showErrorModal = false;
       state.showAdditionalCardFields = false;
      
-      buPayload.isPayOnDelivery ? setForm() : router.push({ name: "ChoosePayment" })
+      getBupayload.value.isPayOnDelivery ? setForm() : router.push({ name: "ChoosePayment" })
     }
 
    
@@ -511,7 +510,7 @@ export default {
       ...toRefs(cardState),
       ...toRefs(state),
       getLoading,
-      buPayload,
+      getBupayload,
       addCardAmount,
       onsubmit,
       handleErrorClose,

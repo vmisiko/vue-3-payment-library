@@ -29,65 +29,6 @@ const mixin = {
       $paymentAxiosGet: "paymentAxiosGet",
       $paymentAxiosPut: "paymentAxiosPut",
     }),
-    $handlePaymentMethod(paymentMethod) {
-      const entry = localStorage.getItem("entry");
-
-      switch (paymentMethod.payment_method_id) {
-        case 1:
-          if (entry === "resolve-payment-checkout") {
-            this.getBupayload.amount > paymentMethod.stk_limit
-              ? this.$router.push("/mpesa-c2b")
-              : this.$router.push("/mpesa-stk");
-          } else {
-            this.$router.push("/add-mpesa");
-          }
-          break;
-        case 2:
-          this.$router.push("/add-card");
-          break;
-        default:
-          this.$router.push("/add-card");
-          break;
-      }
-    },
-    $paymentNotification(payload) {
-      this.emitter.emit("payment-notification", payload);
-    },
-    $initAxiosErrorNotif(payload) {
-      this.emitter.emit("axios-notification", payload);
-    },
-    paymentCustomHeaders() {
-      const authToken = this.getBupayload.authToken;
-      const param = {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: authToken,
-          "Accept-Language": this.getBupayload.locale
-            ? this.getBupayload.locale
-            : "en-US,en;q=0.5",
-        },
-      };
-      return param;
-    },
-
-    $formatCurrency(amount) {
-      const result = parseFloat(amount);
-      return result.toLocaleString();
-    },
-    $formatLastFour(cardno) {
-      const result = cardno.substr(-4);
-      return `**** ${result}`;
-    },
-    $cardIconValidator(icon) {
-      const icons = ["mastercard", "visa", "union-pay"];
-      return icons.includes(icon);
-    },
-    $formatCardno(card) {
-      const first = card.substr(0, 4);
-      const last = card.substr(-4);
-      return `${first} **** ${last}`;
-    },
     $paymentInit(payload, entry) {
       localStorage.setItem("buPayload", JSON.stringify(payload));
       this.setBupayload(payload);
@@ -172,7 +113,65 @@ const mixin = {
         i18n.global.locale = lang;
       }
     },
+    $handlePaymentMethod(paymentMethod) {
+      const entry = localStorage.getItem("entry");
 
+      switch (paymentMethod.payment_method_id) {
+        case 1:
+          if (entry === "resolve-payment-checkout") {
+            this.getBupayload.amount > paymentMethod.stk_limit
+              ? this.$router.push("/mpesa-c2b")
+              : this.$router.push("/mpesa-stk");
+          } else {
+            this.$router.push("/add-mpesa");
+          }
+          break;
+        case 2:
+          this.$router.push("/add-card");
+          break;
+        default:
+          this.$router.push("/add-card");
+          break;
+      }
+    },
+    $paymentNotification(payload) {
+      this.emitter.emit("payment-notification", payload);
+    },
+    $initAxiosErrorNotif(payload) {
+      this.emitter.emit("axios-notification", payload);
+    },
+    paymentCustomHeaders() {
+      const authToken = this.getBupayload.authToken;
+      const param = {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: authToken,
+          "Accept-Language": this.getBupayload.locale
+            ? this.getBupayload.locale
+            : "en-US,en;q=0.5",
+        },
+      };
+      return param;
+    },
+
+    $formatCurrency(amount) {
+      const result = parseFloat(amount);
+      return result.toLocaleString();
+    },
+    $formatLastFour(cardno) {
+      const result = cardno.substr(-4);
+      return `**** ${result}`;
+    },
+    $cardIconValidator(icon) {
+      const icons = ["mastercard", "visa", "union-pay"];
+      return icons.includes(icon);
+    },
+    $formatCardno(card) {
+      const first = card.substr(0, 4);
+      const last = card.substr(-4);
+      return `${first} **** ${last}`;
+    },
     $handlePaymentRouting() {
       const entryRoute = localStorage.entry_route;
       const entryPoint = localStorage.entry;
