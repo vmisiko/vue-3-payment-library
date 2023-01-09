@@ -39,6 +39,7 @@
   "enter_business_no": "Saisissez le numéro de référence de l'entreprise.",
   "enter_full_name": "Saisissez le nom complet",
   "enter_mpesa_pin": "Saisissez votre code NIP Mobile Money et valider",
+  "enter_card_details": "FR_Enter card details",
   "error_alert": "Alerte d'erreur",
   "expiry": "Expiration",
   "expiry_date": "Date d'expiration",

@@ -69,7 +69,11 @@
           </div>
         </div>
 
-        <hr class="mgt-5" />
+        <div class="mgt-11">
+          <VgsSecure  />
+        </div>
+        
+        <hr class="mgt-2" />
 
         <div class="mgt-4 direction-flex pda-3">
           <div class="">
@@ -121,6 +125,7 @@ import { usePayment } from "../../hooks/payment";
 import { useState } from "../../hooks/useState";
 import { useSegement } from '../../hooks/useSegment';
 import { useGlobalProp } from '@/hooks/globalProperties';
+import VgsSecure from "../../components/vgsSecure.vue";
 
 export default {
   name: "ChoosePaymentCheckout",
@@ -131,6 +136,7 @@ export default {
     AdditionalCardFields,
     ErrorModal,
     ChooseOption,
+    VgsSecure
   },
   data() {
     return {
@@ -178,10 +184,6 @@ export default {
     function handleErrorModalClose() {
       state.showErrorModal = false;
       state.showAdditionalCardFields = false;
-    }
-
-    const handleSubmit = () => {
-      getBupayload.value.pay_direction=== "PAY_ON_DELIVERY" && state.defaultPaymentMethod.pay_method_id=== 20 ? router.push({name: "HowitWorks"}) : submit();
     }
 
     return {

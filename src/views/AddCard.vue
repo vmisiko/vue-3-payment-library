@@ -63,18 +63,46 @@
             </div>
           </div>
 
-          <div class="mgt-10 text-center">
-            <span class="charge-text"> {{ $translate("in_order_to_verify") }} {{ getBupayload.currency }} {{ addCardAmount }} {{ $translate("and_refund_your_card") }} </span>
+          <div class="mgt-11">
+            <VgsSecure  />
           </div>
-          <sendy-btn
-            :block="true"
-            :loading="loading"
-            color="primary"
-            class="mgt-3"
-            type="submit"
-          >
-            {{ $translate("add_card") }}
-          </sendy-btn>
+          <hr class="mgt-2">
+
+          <div class="mgt-4 direction-flex pda-3" v-if="buPayload.isPayOnDelivery">
+            <div class="">
+              <span class="text-caption text-gray70">{{
+                $translate("amount_to_pay")
+              }}</span>
+              <div class="payment-text-secondary">
+                {{ buPayload.currency }}
+                {{ $formatCurrency(buPayload.amount) }}
+              </div>
+            </div>
+            <span class="spacer"></span>
+            <sendy-btn
+              color="primary"
+              class="mgt-2"
+              type="submit"
+              :loading="loading"
+            >
+              {{ $translate("confirm_and_pay") }}
+            </sendy-btn>
+          </div>
+
+          <div v-else >
+            <div class="text-center">
+              <span class="charge-text"> {{ $translate("in_order_to_verify") }} {{ buPayload.currency }} {{ addCardAmount }} {{ $translate("and_refund_your_card") }} </span>
+            </div>
+            <sendy-btn
+              :block="true"
+              :loading="loading"
+              color="primary"
+              class="mgt-3"
+              type="submit"
+            >
+              {{ $translate("add_card") }}
+            </sendy-btn>
+          </div>
         </form>
       </div>
     </div>
@@ -99,6 +127,8 @@ import { usePayment } from '../hooks/payment';
 import { useStore } from 'vuex';
 import { datadogRum } from "@datadog/browser-rum";
 import { useSegement } from '../hooks/useSegment';
+import VgsSecure from "../components/vgsSecure.vue";
+import BuPayload from "../Models/BuPayload";
 
 export default {
   name: "AddCard",
@@ -108,11 +138,12 @@ export default {
     ErrorModal,
     Processing,
     AdditionalCardFields,
+    VgsSecure,
   },
   data() {
     return {
       icon: "back",
-      title: this.$translate("add_a_card"), 
+      title: this.buPayload.isPayOnDelivery ? this.$translate("add_a_card") : this.$translate("enter_card_details"), 
       showModal: false,
     };
   },
@@ -123,6 +154,8 @@ export default {
       pollCard,
       init3DS,
     } = usePayment();
+
+    const buPayload = new BuPayload(getBupayload.value);
 
     const store = useStore();
 
@@ -334,7 +367,13 @@ export default {
               message: res.message,
               payment_method: "card",
             });
-            router.push("/choose-payment");
+            
+            buPayload.isPayOnDelivery ? 
+            router.push({
+              name: "SuccessView",
+              duration: duration,
+            }) 
+            : router.push("/choose-payment");
             state.loading = false;
             break;
           default:
@@ -402,7 +441,12 @@ export default {
               message: res.message,
               payment_method: "card",
             });
-            router.push("/choose-payment");
+            buPayload.isPayOnDelivery ? 
+            router.push({
+              name: "SuccessView",
+              duration: duration,
+            }) 
+            : router.push("/choose-payment");
             state.loading = false;
             break;
           default:
@@ -458,17 +502,21 @@ export default {
     function handleErrorClose() {
       state.showErrorModal = false;
       state.showAdditionalCardFields = false;
-      router.push({ name: "ChoosePayment" });
+     
+      buPayload.isPayOnDelivery ? setForm() : router.push({ name: "ChoosePayment" })
     }
 
+   
     return {
       ...toRefs(cardState),
       ...toRefs(state),
       getLoading,
+      buPayload,
       addCardAmount,
       onsubmit,
       handleErrorClose,
       handleContinue,
+      
     }
   },
 };

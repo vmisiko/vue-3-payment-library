@@ -41,6 +41,7 @@
   "add_card": "Add Card",
   "card_declined": "Your card issuer has declined this transaction. Contact your bank or card issuer for more information.",
   "add_a_card": "Add a Card",
+  "enter_card_details": "Enter card details",
   "card_details_added": "Card details added and selected for payment.",
   "failed_to_collect_card_details": "Failed to collect card details. Please try again",
 

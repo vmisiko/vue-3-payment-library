@@ -1,0 +1,6 @@
+
+class PaymentMethod {
+  constructor() {
+    
+  }
+}

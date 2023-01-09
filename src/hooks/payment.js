@@ -5,6 +5,7 @@ import { useGlobalProp } from "./globalProperties";
 import { useSegement } from "./useSegment";
 import { usePayBybankSetup } from './payBybankSetup';
 import { datadogRum } from "@datadog/browser-rum";
+import BuPayload from "../Models/BuPayload";
 
 export function usePayment() {
   const store = useStore();
@@ -17,6 +18,8 @@ export function usePayment() {
   const getBupayload = computed(() => store.getters.getBupayload);
   const getErrorText = computed(() => store.getters.getErrorText);
   const getLoading = computed(() => store.getters.getLoading);
+
+  const buPayload = new BuPayload(getBupayload.value);
 
   async function retrievePaymentMethods() {
     const payload = {
@@ -323,6 +326,11 @@ export function usePayment() {
           if (poll_count === state.poll_limit - 1) {
             store.commit("setLoading", false);
             if (route.name === "AddCard") {
+              if (buPayload.isPayOnDelivery) {
+                state.errorText = "The request to charge the card has not been completed. Please wait for about a minute before retrying. If this error persists, please reach out to our customer support team for assistance.";
+                store.commit("setErrorText", state.errorText);
+                router.push({ name: "FailedView" });
+              }
               state.errorText = "The request to add the card has not been completed. Please wait for about a minute before retrying. If this error persists, please reach out to our customer support team for assistance.";
               store.commit("setErrorText", state.errorText);
               state.showErrorModal = true;
@@ -354,7 +362,7 @@ export function usePayment() {
 
   async function TransactionIdStatus() {
     const payload = {
-      url: getBupayload.value.pay_direction === "PAY_ON_DELIVERY" ? `/api/v2/process/pod/status/${state.transaction_id}` : `/api/v2/process/status/${state.transaction_id}`,
+      url: buPayload.isPayOnDelivery ? `/api/v2/process/pod/status/${state.transaction_id}` : `/api/v2/process/status/${state.transaction_id}`,
     };
 
     const res = await store.dispatch("paymentAxiosGet", payload);
@@ -369,8 +377,15 @@ export function usePayment() {
           
           store.commit("setLoading", false);
           store.commit("setLoading", false);
+          state.loading = false;
           if (route.name === "AddCard") {
-            state.loading = false;
+            if (buPayload.isPayOnDelivery) {
+              router.push({
+                name: "SuccessView",
+                duration: duration,
+              });
+              return;
+            }
             window.analytics.track("Payment option saved successfully", {
               ...commonTrackPayload(),
               message: res.message,
@@ -382,7 +397,6 @@ export function usePayment() {
             return;
           } else {
             router.push("/choose-payment");
-            state.loading = false;
             const duration = Date.now() - state.startResponseTime;
             router.push({
               name: "SuccessView",
@@ -396,8 +410,13 @@ export function usePayment() {
           store.commit("setLoading", false);
           state.errorText = res.message;
           store.commit("setErrorText", res.message);
+          state.loading = false;
           if (route.name === "AddCard") {
-            state.loading = false;
+             
+            if (buPayload.isPayOnDelivery) {
+              router.push({ name: "FailedView" });
+              return
+            }
             state.showErrorModal = true;
             window.analytics.track("Payment option not saved successfully", {
               ...commonTrackPayload(),
@@ -412,7 +431,6 @@ export function usePayment() {
             router.push({ name: "FailedView" });
           }
           datadogRum.addError(new Error(res.message));
-
           break;
         }
         case "pending":
