@@ -2,7 +2,7 @@
   <div class="">
     <img
       width="34"
-      :src="`${iconUrl}/${name?.toLowerCase()}.png`"
+      :src="`${iconUrl}/${name?.toLowerCase()}.svg`"
       alt=""
     />
   </div>

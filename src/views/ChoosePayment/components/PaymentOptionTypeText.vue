@@ -3,7 +3,7 @@
     <div v-if="paymentOption.pay_method_id === 2" class="direction-flex">
         <span>{{ paymentOption.psp }} </span>
         <span class="gray80-text mgl-2">
-          {{ $formatLastFour(paymentOption.pay_method_details) }}</span
+          {{ paymentOption.pay_method_details ? $formatLastFour(paymentOption.pay_method_details)  : $translate('credit_stroke_debit_card')}}</span
         >
     </div>
     <div v-if="paymentOption.pay_method_id === 20" >
@@ -19,6 +19,7 @@
               height="1.5em"
               v-if="loading"
             />
+            
             <span class="mgl-2" v-else>
               {{ getBupayload.currency }} {{ balance }}</span
             >
@@ -41,8 +42,6 @@ const props = defineProps([ 'paymentOption', 'loading', 'balance']);
 const { route } = useGlobalProp();
 
 const { getBupayload } = useState();
-
-const isCheckout = computed(() =>  route.name === 'Entry');
 
 const hideAvalailablebalance = computed(() => {
   return route.name === 'Entry' || route.name === 'FailedView' || route.name === 'SuccessView';
