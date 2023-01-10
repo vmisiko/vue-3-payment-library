@@ -2,10 +2,9 @@
   <div 
     class="option-border text-caption-1 pda-3" 
     :class="{
-      'selected-border': isChecked,
+      'selected-border': paymentOption.isDefault(),
       'disabled':
-        paymentOption.daily_limit &&
-        getBupayload.amount > paymentOption.daily_limit,
+        disableLogic
       }"
     >
     <div class="direction-flex">
@@ -60,7 +59,7 @@ export default {
     ...mapGetters(["getBupayload"]),
     disableLogic() {
       let result = false;
-      if (this.paymentOption.pay_method_id === 1) {
+      if (this.paymentOption.isMpesa()) {
         result =
           this.paymentOption.daily_limit &&
           this.getBupayload.amount > this.paymentOption.daily_limit;
