@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="text-caption-1 direction-flex pda-3" @click="handleSelect">
-      <div class="direction-flex" v-if="payMethod.pay_method_id === 2">
+      <div class="direction-flex" v-if="payMethod.isCard">
         <IconView
           :icon="
             $cardIconValidator(payMethod.psp.toLowerCase())
@@ -14,14 +14,14 @@
           {{ $formatLastFour(payMethod.pay_method_details) }}</span
         >
       </div>
-      <div v-if="payMethod.category === 'Mobile Money'" class="direction-flex">
+      <div v-if="payMethod.isMobileMoney" class="direction-flex">
         <img
           :src="`${iconUrl}/${payMethod.pay_method_name.toLowerCase()}.svg`"
           alt=""
         />
         <span class="mgl-2">{{ payMethod.pay_method_name }}</span>
       </div>
-      <div class="direction-flex" v-if="payMethod.pay_method_id === 20">
+      <div class="direction-flex" v-if="payMethod.isPayWithBankTransfer">
         <IconView icon="pay-bank" />
         <span class="mgl-2"> {{$translate('pay_by_bank')}}</span>
       </div>

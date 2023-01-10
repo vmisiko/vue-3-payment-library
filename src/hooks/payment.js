@@ -5,7 +5,8 @@ import { useGlobalProp } from "./globalProperties";
 import { useSegement } from "./useSegment";
 import { usePayBybankSetup } from './payBybankSetup';
 import { datadogRum } from "@datadog/browser-rum";
-import BuPayload from "../Models/BuPayload";
+import PaymentMethod from "../Models/paymentMethod";
+import PaymentOption from "../Models/PaymentOptions";
 
 export function usePayment() {
   const store = useStore();
@@ -27,8 +28,6 @@ export function usePayment() {
       user_id: getBupayload.value.user_id,
       pay_direction: getBupayload.value.pay_direction ? getBupayload.value.pay_direction :'PAY_IN',
     };
-
-    const paymentOptions = getBupayload.value.payment_options;
         
     const fullPayload = {
       url: getBupayload.value.pay_direction !== "PAY_ON_DELIVERY" ? "/payment_methods" : "/pod/pay_methods",
@@ -47,8 +46,11 @@ export function usePayment() {
             paymentOptions.includes(option.pay_method_id)
           )
         : response.saved_payment_methods;
-      store.commit("setPaymentMethods", paymentMethods);
-      store.commit("setSavedPayMethods", savedMethods);
+
+      const paymentMethodsModel = paymentMethods.map((paymentMethod) => new PaymentMethod(paymentMethod));
+      const paymentOptions = savedMethods.map((paymentOption) => new PaymentOption(paymentOption));
+      store.commit("setPaymentMethods", paymentMethodsModel);
+      store.commit("setSavedPayMethods", paymentOptions);
     }
   }
 
