@@ -87,7 +87,7 @@ export function usePayment() {
     const version = getBupayload.value?.version ?? 'v3';
     
     const fullPayload = {
-      url: getBupayload.value.pay_direction !== 'PAY_ON_DELIVERY' ? `/api/${version}/process` : '/api/v3/pod/process',
+      url: !getBupayload.value.isPayOnDelivery() ? `/api/${version}/process` : '/api/v3/pod/process',
       params: payload,
     };
 
