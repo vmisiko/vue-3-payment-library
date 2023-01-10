@@ -34,8 +34,11 @@ class PaymentOption {
   exceedsDailyLimit = (orderAmount) => this.daily_limit > 0 && orderAmount > this.daily_limit;
   exceedsTransactionLimit = (orderAmount) => this.transaction_limit > 0 && orderAmount > this.transaction_limit;
 
-  setDefualt = () => {
+  setDefault = () => {
     this.default = 1;
+  }
+  unSetDefault = () => {
+    this.default = 0;
   }
 }
 

@@ -42,12 +42,8 @@ const { route } = useGlobalProp();
 
 const { getBupayload } = useState();
 
-const isCheckout = computed(() =>  route.name === 'Entry');
-
 const hideAvalailablebalance = computed(() => {
   return route.name === 'Entry' || route.name === 'FailedView' || route.name === 'SuccessView';
 } );
-
-console.log(props.paymentOption, props.paymentOption.isCard() );
 
 </script>

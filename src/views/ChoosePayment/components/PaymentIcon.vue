@@ -18,5 +18,4 @@ const name = computed(() => {
   return props?.paymentOption?.isCard() ? cardName : props.paymentOption.pay_method_name;
 }); 
 
-console.log(name.value);
 </script>

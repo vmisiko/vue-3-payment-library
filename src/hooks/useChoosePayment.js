@@ -55,12 +55,12 @@ export function useChoosePayment() {
       savedMethods[index].default = 0;
       if (el.pay_detail_id === method.pay_detail_id) {
         selectedSavedMethod =  el 
-        selectedSavedMethod.default = 1;
+        selectedSavedMethod.setDefault();
         savedMethods[index] = selectedSavedMethod;
       }
     });      
     store.commit('setSavedPayMethods', savedMethods);
-    if (getBupayload.value.pay_direction === 'PAY_ON_DELIVERY') { 
+    if (getBupayload.value.isPayOnDelivery()) { 
       return;
     } 
 
