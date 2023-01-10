@@ -271,7 +271,7 @@ const getBalanceP = async ()  => {
 
   if (bal >= getBupayload.value.amount ) {
     clearInterval(checkPolltimer);
-    if (getBupayload.value.pay_direction === "PAY_ON_DELIVERY") {
+    if (getBupayload.value.isPayOnDelivery) {
       await poDCheckout();
       return;
     }

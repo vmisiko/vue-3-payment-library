@@ -194,7 +194,7 @@ export function usePayment() {
   }
   async function processPaybybank() {
     store.commit('setLoading', true);
-    if (getBupayload.value.pay_direction === "PAY_ON_DELIVERY") {
+    if (getBupayload.value.isPayOnDelivery) {
       router.push({name: "HowitWorks"});
       return;
     };
