@@ -74,7 +74,7 @@ export function usePayment() {
 
   function getDefaultpayMethod() {
     state.defaultPaymentMethod = getSavedPayMethods.value
-      ? getSavedPayMethods.value.filter((method) => method.default === 1)[0]
+      ? getSavedPayMethods.value.filter((method) => method.isDefault())[0]
       : null;
     state.currency = getBupayload.value.currency;
     state.amount = getBupayload.value.amount;
