@@ -13,5 +13,10 @@ import { computed } from "vue";
 const props = defineProps([ 'paymentOption']);
 const iconUrl = 'https://sendy-web-apps-assets.s3.eu-west-1.amazonaws.com/payment-method-icons';
 
-const name = computed(() => props?.paymentOption?.pay_method_id === 2 ? props.paymentOption?.psp : props.paymentOption.pay_method_name);
+const name = computed(() => {
+  const cardName = props.paymentOption?.psp || 'card';
+  return props?.paymentOption?.isCard() ? cardName : props.paymentOption.pay_method_name;
+}); 
+
+console.log(name.value);
 </script>

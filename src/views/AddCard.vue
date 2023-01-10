@@ -68,7 +68,7 @@
           </div>
           <hr class="mgt-2">
 
-          <div class="mgt-4 direction-flex pda-3" v-if="getBupayload.isPayOnDelivery">
+          <div class="mgt-4 direction-flex pda-3" v-if="getBupayload.isPayOnDelivery()">
             <div class="">
               <span class="text-caption text-gray70">{{
                 $translate("amount_to_pay")
@@ -143,7 +143,7 @@ export default {
   data() {
     return {
       icon: "back",
-      title: this.getBupayload.isPayOnDelivery ? this.$translate("add_a_card") : this.$translate("enter_card_details"), 
+      title: this.getBupayload.isPayOnDelivery() ? this.$translate("add_a_card") : this.$translate("enter_card_details"), 
       showModal: false,
     };
   },
@@ -367,7 +367,7 @@ export default {
               payment_method: "card",
             });
             
-            getBupayload.value.isPayOnDelivery ? 
+            getBupayload.value.isPayOnDelivery() ? 
             router.push({
               name: "SuccessView",
               duration: duration,
@@ -440,7 +440,7 @@ export default {
               message: res.message,
               payment_method: "card",
             });
-            getBupayload.value.isPayOnDelivery ? 
+            getBupayload.value.isPayOnDelivery() ? 
             router.push({
               name: "SuccessView",
               duration: duration,
@@ -502,7 +502,7 @@ export default {
       state.showErrorModal = false;
       state.showAdditionalCardFields = false;
      
-      getBupayload.value.isPayOnDelivery ? setForm() : router.push({ name: "ChoosePayment" })
+      getBupayload.value.isPayOnDelivery() ? setForm() : router.push({ name: "ChoosePayment" })
     }
 
    

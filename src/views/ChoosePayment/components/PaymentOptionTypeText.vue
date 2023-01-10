@@ -1,15 +1,15 @@
 <template>
   <div class="mgl-2">
-    <div v-if="paymentOption.pay_method_id === 2" class="direction-flex">
+    <div v-if="paymentOption.isCard()" class="direction-flex">
         <span>{{ paymentOption.psp }} </span>
         <span class="gray80-text mgl-2">
-          {{ $formatLastFour(paymentOption.pay_method_details) }}</span
+          {{ paymentOption.pay_method_details ? $formatLastFour(paymentOption.pay_method_details)  : $translate('credit_stroke_debit_card')}}</span
         >
     </div>
-    <div v-if="paymentOption.pay_method_id === 20" >
+    <div v-if="paymentOption.isPayWithTransfer" >
         <div class="mgy-auto">
           <span> {{ $translate('pay_by_bank') }}</span>
-          <div class="caption-2-semibold text-gray70 direction-flex" v-if="(getBupayload.pay_direction !== 'PAY_ON_DELIVERY' && !hideAvalailablebalance)">
+          <div class="caption-2-semibold text-gray70 direction-flex" v-if="(getBupayload.isPayOnDelivery() && !hideAvalailablebalance)">
             <span> {{  $translate('available_balance') }}</span>
 
             <IconView
@@ -25,7 +25,7 @@
           </div>
         </div>
     </div>
-    <div v-if="paymentOption.pay_method_id !== 2 && paymentOption.pay_method_id !== 20">
+    <div v-if="!paymentOption.isCard() && !paymentOption.isPayWithTransfer">
       <span>{{ paymentOption.pay_method_name }}</span>
     </div>
    
@@ -47,5 +47,7 @@ const isCheckout = computed(() =>  route.name === 'Entry');
 const hideAvalailablebalance = computed(() => {
   return route.name === 'Entry' || route.name === 'FailedView' || route.name === 'SuccessView';
 } );
+
+console.log(props.paymentOption, props.paymentOption.isCard() );
 
 </script>

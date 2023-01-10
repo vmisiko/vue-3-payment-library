@@ -17,7 +17,7 @@
       />
       <span class="spacer"></span>
 
-      <div :class="{'mgt-2': paymentOption.pay_method_id === 20}">
+      <div :class="{'mgt-2': paymentOption.isPayWithBankTransfer()}">
         <input
           class="float-right payment-input mgy-auto"
           name="paymentoption"

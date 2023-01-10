@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="text-caption-1 direction-flex pda-3" @click="handleSelect">
-      <div class="direction-flex" v-if="payMethod.isCard">
+      <div class="direction-flex" v-if="payMethod.isCard()">
         <IconView
           :icon="
             $cardIconValidator(payMethod.psp.toLowerCase())

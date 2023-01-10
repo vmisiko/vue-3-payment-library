@@ -30,6 +30,7 @@
   "transaction_id": "Transaction Id",
 
   "credit_card_payment_small": "Credit or Debit Card",
+  "credit_stroke_debit_card": "Credit/Debit Card",
 
   "cardholder_name": "Cardholder name",
   "enter_full_name": "Enter full name",
