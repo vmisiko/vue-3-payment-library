@@ -30,7 +30,7 @@ export function usePayment() {
     };
         
     const fullPayload = {
-      url: getBupayload.value.pay_direction !== "PAY_ON_DELIVERY" ? "/payment_methods" : "/pod/pay_methods",
+      url: !getBupayload.value.isPayOnDelivery() ? "/payment_methods" : "/pod/pay_methods",
       params: payload,
     };
 
@@ -270,24 +270,27 @@ export function usePayment() {
     }
 
     if (
-      state.defaultPaymentMethod.daily_limit &&
-      state.amount > state.defaultPaymentMethod.daily_limit
+      state.defaultPaymentMethod.exceedsDailyLimit(state.amount)
     ) {
       state.showTransactionLimit = true;
       return;
     }
 
-    if (state.defaultPaymentMethod.category === "Mobile Money") {
+    if (state.defaultPaymentMethod.isMobileMoney()) {
       processMobiletransactionLimit();
       return;
     }
 
-    if (state.defaultPaymentMethod.pay_method_id === 20) {
+    if (state.defaultPaymentMethod.isPayWithBankTransfer()) {
       processPaybybank() 
-      // payBybankCollect();
       return;
     }
-    
+
+    if (getBupayload.value.isPayOnDelivery() && state.defaultPaymentMethod.isCard()) {
+      router.push({name: 'AddCard'});
+      return
+    }
+
     const payload = {
       country: getBupayload.value.country_code,
       amount: getBupayload.value.amount,
@@ -332,7 +335,7 @@ export function usePayment() {
               if (getBupayload.value.isPayOnDelivery()) {
                 state.errorText = "The request to charge the card has not been completed. Please wait for about a minute before retrying. If this error persists, please reach out to our customer support team for assistance.";
                 store.commit("setErrorText", state.errorText);
-                router.push({ name: "FailedView" });
+                state.errorTitle = t("unable_to_confirm_payment");
               }
               state.errorText = "The request to add the card has not been completed. Please wait for about a minute before retrying. If this error persists, please reach out to our customer support team for assistance.";
               store.commit("setErrorText", state.errorText);
@@ -415,12 +418,9 @@ export function usePayment() {
           store.commit("setErrorText", res.message);
           state.loading = false;
           if (route.name === "AddCard") {
-             
-            if (getBupayload.value.isPayOnDelivery()) {
-              router.push({ name: "FailedView" });
-              return
-            }
+
             state.showErrorModal = true;
+            state.errorTitle = t("unable_to_confirm_payment");
             window.analytics.track("Payment option not saved successfully", {
               ...commonTrackPayload(),
               message: res.message,

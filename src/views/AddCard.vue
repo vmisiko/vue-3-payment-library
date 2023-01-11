@@ -110,12 +110,13 @@
     <ErrorModal
       :show="showErrorModal"
       :text="errorText"
+      :title="errorTitle"
       @close="handleErrorClose"
     />
   </div>
 </template>
 <script>
-import { onMounted, toRefs, reactive, computed} from "vue";
+import { onMounted, toRefs, reactive, computed, ref} from "vue";
 import TopInfo from "../components/topInfo";
 import CvvModal from "../components/modals/cvvModal";
 import ErrorModal from "../components/modals/ErrorModal";
@@ -128,7 +129,6 @@ import { useStore } from 'vuex';
 import { datadogRum } from "@datadog/browser-rum";
 import { useSegement } from '../hooks/useSegment';
 import VgsSecure from "../components/vgsSecure.vue";
-import BuPayload from "../Models/BuPayload";
 
 export default {
   name: "AddCard",
@@ -154,7 +154,6 @@ export default {
       pollCard,
       init3DS,
     } = usePayment();
-
 
     const store = useStore();
 
@@ -272,13 +271,15 @@ export default {
         return;
       }
 
-
+      const cardname = cardState.card_name?.split(" ");
+      const firstname = cardname[0] ?? getBupayload.value.firstname;
+      const lastname = cardname[1] ?? getBupayload.value.lastname;
       const newCardPayload = {
         country: getBupayload.value.country_code,
         currency: getBupayload.value.currency,
         email: getBupayload.value.email,
-        firstname: getBupayload.value.firstname,
-        lastname: getBupayload.value.lastname,
+        firstname: firstname,
+        lastname: lastname,
         phonenumber: getBupayload.value.phonenumber,
         userid: getBupayload.value.user_id,
         company_code: getBupayload.value.company_code,
@@ -317,10 +318,10 @@ export default {
         payment_method: "card",
       });
       const additionalPayload = {
-        amount: addCardAmount.value,
+        amount: getBupayload.value.isPayOnDelivery() ? getBupayload.value.amount : addCardAmount.value,
         bulk: false,
-        entity: 1,
-        pay_direction: 'PAY_IN',
+        entity: getBupayload.value.isPayOnDelivery() ? getBupayload.value.entity_id : 1,
+        pay_direction: getBupayload.value.pay_direction,
         paymethod: 2,
         save: true,
         txref: `AC_${new Date().getTime()}`,
@@ -329,8 +330,9 @@ export default {
       };
 
       reponseData = {...reponseData, ...additionalPayload};
+      
       const payload = {
-        url: "/api/v3/process",
+        url: getBupayload.value.isPayOnDelivery()  ? "/api/v3/pod/process" :"/api/v3/process",
         params: reponseData,
       };
 
@@ -390,80 +392,8 @@ export default {
         message: res.message,
         payment_method: "card",
       });
-      state.errorText = res.message;
-      state.showErrorModal = true;
-      datadogRum.addError(new Error(res.message));
-      return;
-    }
-
-    async function saveNewCard(reponseData) {
-      store.commit('setLoading', true);
-      window.analytics.track("Processing your card", {
-        ...commonTrackPayload(),
-        payment_method: "card",
-      });
-      reponseData.platform = 'web';
-      const payload = {
-        url: "/api/v2/save",
-        params: reponseData,
-      };
-
-      const res = await store.dispatch('paymentAxiosPost', payload);
-      state.transaction_id = res.transaction_id;
-
-      if (res.status) {
-        state.transactionStatus = res.transaction_status.toLowerCase();
-
-        if (res.additional_data) {
-          state.additionalData = res.additional_data;
-          state.is3DS = res.redirect;
-          if (res.redirect) {
-            init3DS();
-            return;
-          }
-          state.showAdditionalCardFields = true;
-          store.commit('setLoading', false);
-          return;
-        }
-
-        switch (res.transaction_status.toLowerCase()) {
-          case "pending":
-            pollCard();
-            break;
-          case "success":
-            store.commit('setLoading', false);
-            store.dispatch('paymentNotification', {
-              text: t("card_details_added"),
-            });
-            window.analytics.track("Payment option saved successfully", {
-              ...commonTrackPayload(),
-              message: res.message,
-              payment_method: "card",
-            });
-            getBupayload.value.isPayOnDelivery() ? 
-            router.push({
-              name: "SuccessView",
-              duration: duration,
-            }) 
-            : router.push("/choose-payment");
-            state.loading = false;
-            break;
-          default:
-            break;
-        }
-        return;
-      }
-
-      state.showProcessing = false;
-      store.commit('setLoading', false);
-      window.analytics.track("Payment option not saved successfully", {
-        ...commonTrackPayload(),
-        reason: res.message,
-        sendy_error_code: "",
-        message: res.message,
-        payment_method: "card",
-      });
-      state.errorText = res.message;
+      state.errorText = res?.message ?? t('unabled_to_confirm_payment_text');
+      state.errorTitle = t('unable_to_confirm_payment');
       state.showErrorModal = true;
       datadogRum.addError(new Error(res.message));
       return;

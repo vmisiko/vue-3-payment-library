@@ -9,6 +9,7 @@ const state = reactive({
   transaction_id: null,
   poll_count: 0,
   poll_limit: 30,
+  errorTitle: "",
   errorText: "",
   mpesaCode: "",
   startResponseTime: null,

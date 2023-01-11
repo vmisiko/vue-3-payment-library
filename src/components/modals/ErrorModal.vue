@@ -14,7 +14,27 @@
         </div>
       </div>
 
+      <div v-if="$route.name ==='AddCard'">
+
+        <sendy-btn
+          :block="true"
+          color="info"
+          class="mgt-8"
+          :outline="true"
+          @click="$emit('close')"
+        >
+          {{ $translate("retry") }}
+        </sendy-btn>
+        
+        <div class="text-center mgt-7">
+          <span class="link" @click="handleChange">
+            {{ $translate("change_payment_method") }}
+          </span>
+        </div>
+      </div>
+
       <sendy-btn
+        v-else
         :block="true"
         color="info"
         class="mgt-8"
@@ -22,6 +42,7 @@
       >
         {{ $translate("close") }}
       </sendy-btn>
+
     </div>
   </div>
 </template>
@@ -50,6 +71,10 @@ export default {
       let el = this.$refs.errorModal;
       el.style.display = "none";
     },
+    handleChange() {
+      this.$router.push({ name: 'ChoosePaymentCheckout' });
+      this.$emit('close');
+    }
   },
 };
 </script>
