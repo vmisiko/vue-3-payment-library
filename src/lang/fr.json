@@ -30,6 +30,7 @@
   "country_code": "Code du pays",
   "credit_card_payment": "CARTE DE CRÉDIT",
   "credit_card_payment_small": "Carte de crédit ou de débit",
+  "credit_stroke_debit_card": "Carte de crédit ou de débit",
   "cvc": "Cryptogramme Visuel",
   "cvv_info": "Il s'agit d'un code de sécurité à 3 ou 4 chiffres qui se trouve au derrière de votre carte.",
   "delete": "Supprimer",

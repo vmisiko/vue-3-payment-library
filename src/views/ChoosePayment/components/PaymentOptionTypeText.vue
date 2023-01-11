@@ -19,6 +19,7 @@
               height="1.5em"
               v-if="loading"
             />
+            
             <span class="mgl-2" v-else>
               {{ getBupayload.currency }} {{ balance }}</span
             >

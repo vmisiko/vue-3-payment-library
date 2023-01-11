@@ -78,6 +78,8 @@ export function usePayment() {
       : null;
     state.currency = getBupayload.value.currency;
     state.amount = getBupayload.value.amount;
+    state.picked = state.defaultPaymentMethod ? state.defaultPaymentMethod.pay_detail_id : "";
+
     if (!state.defaultPaymentMethod) {
       checkAvailableOptions();
     }
