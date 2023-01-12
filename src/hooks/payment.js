@@ -368,7 +368,7 @@ export function usePayment() {
 
   async function TransactionIdStatus() {
     const payload = {
-      url: getBupayload.value.isPayOnDelivery() ? `/api/v2/process/pod/status/${state.transaction_id}` : `/api/v2/process/status/${state.transaction_id}`,
+      url: getBupayload.value.isPayOnDelivery() ? `/api/v1/process/pod/status/${state.transaction_id}` : `/api/v2/process/status/${state.transaction_id}`,
     };
 
     const res = await store.dispatch("paymentAxiosGet", payload);
