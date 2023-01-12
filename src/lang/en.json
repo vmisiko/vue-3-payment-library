@@ -37,6 +37,8 @@
 
   "cardholder_name": "Cardholder name",
   "enter_full_name": "Enter full name",
+  "email": "Email",
+  "enter_email": "Enter email",
   "card_number": "Card number",
   "expiry": "Expiry",
   "cvc": "CVC",

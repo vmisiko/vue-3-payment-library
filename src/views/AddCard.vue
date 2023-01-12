@@ -27,6 +27,17 @@
             />
           </div>
 
+          <div class="form-group mgt-4" v-if="getBupayload.isPayOnDelivery()">
+            <label class="text-caption-2">{{ $translate("email") }}</label>
+            <input
+              type="text"
+              v-model="email"
+              class="form-field payment-input"
+              :placeholder="$translate('enter_email')"
+              required
+            />
+          </div>
+
           <div class="form-group mgt-4">
             <label for="cc-number" class="mgt-2 text-caption-2">{{
               $translate("card_number")
@@ -161,6 +172,7 @@ export default {
     const cardState = reactive({
       cardno: "",
       card_name: "",
+      email: "",
       expirydate: "",
       cvv: "",
     })
@@ -277,7 +289,7 @@ export default {
       const newCardPayload = {
         country: getBupayload.value.country_code,
         currency: getBupayload.value.currency,
-        email: getBupayload.value.email,
+        email: getBupayload.value.isPayOnDelivery() ? cardState.email : getBupayload.value.email,
         firstname: firstname,
         lastname: lastname,
         phonenumber: getBupayload.value.phonenumber,

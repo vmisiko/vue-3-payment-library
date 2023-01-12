@@ -6,7 +6,7 @@
           {{ paymentOption.pay_method_details ? $formatLastFour(paymentOption.pay_method_details)  : $translate('credit_stroke_debit_card')}}</span
         >
     </div>
-    <div v-if="paymentOption.isPayWithTransfer" >
+    <div v-if="paymentOption.isPayWithTransfer()" >
         <div class="mgy-auto">
           <span> {{ $translate('pay_by_bank') }}</span>
           <div class="caption-2-semibold text-gray70 direction-flex" v-if="(getBupayload.isPayOnDelivery() && !hideAvalailablebalance)">
@@ -26,7 +26,7 @@
           </div>
         </div>
     </div>
-    <div v-if="!paymentOption.isCard() && !paymentOption.isPayWithTransfer">
+    <div v-if="!paymentOption.isCard() && !paymentOption.isPayWithTransfer()">
       <span>{{ paymentOption.pay_method_name }}</span>
     </div>
    
