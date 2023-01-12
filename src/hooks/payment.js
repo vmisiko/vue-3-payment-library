@@ -388,7 +388,7 @@ export function usePayment() {
             if (getBupayload.value.isPayOnDelivery()) {
               router.push({
                 name: "SuccessView",
-                duration: duration,
+                duration: '',
               });
               return;
             }
@@ -420,7 +420,6 @@ export function usePayment() {
           if (route.name === "AddCard") {
 
             state.showErrorModal = true;
-            state.errorTitle = t("unable_to_confirm_payment");
             window.analytics.track("Payment option not saved successfully", {
               ...commonTrackPayload(),
               message: res.message,
@@ -428,6 +427,7 @@ export function usePayment() {
               sendy_error_code: "",
               payment_method: state.defaultPaymentMethod.pay_method_name,
             });
+            state.errorTitle = getBupayload.value.isPayOnDelivery() ? t("unable_to_confirm_payment") : "";
             return;
           }
           if (route.name !== "FailedView" && route.name !== "AddCard") {
@@ -446,6 +446,7 @@ export function usePayment() {
     state.poll_count = state.poll_limit;
     store.commit("setLoading", false);
     state.errorText = res.message;
+    state.errorTitle = getBupayload.value.isPayOnDelivery() ? state.errorTitle = t("unable_to_confirm_payment") : "";
     state.loading = false;
     state.showErrorModal = true;
     window.analytics.track("Payment option not saved successfully", {

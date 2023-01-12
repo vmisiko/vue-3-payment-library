@@ -154,7 +154,7 @@ export default {
   data() {
     return {
       icon: "back",
-      title: this.getBupayload.isPayOnDelivery() ? this.$translate("add_a_card") : this.$translate("enter_card_details"), 
+      title: this.getBupayload.isPayOnDelivery() ? this.$translate("enter_card_details") : this.$translate("add_a_card"), 
       showModal: false,
     };
   },
@@ -336,7 +336,7 @@ export default {
         pay_direction: getBupayload.value.pay_direction,
         paymethod: 2,
         save: true,
-        txref: `AC_${new Date().getTime()}`,
+        txref: getBupayload.value.isPayOnDelivery() ? getBupayload.value.txref : `AC_${new Date().getTime()}`,
         platform: 'web',
         test: getBupayload.value.test ?? false,
       };
