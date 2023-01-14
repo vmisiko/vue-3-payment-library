@@ -7,10 +7,10 @@
       />
 
       <div class="mgt-10">
-        <span class="text-subtitle-1">{{ paymentOption }}</span>
+        <span class="text-subtitle-1">{{ getSelectedPayOption.getDisplayName($translate) }}</span>
         
         <div class="float-right mgt-n2">
-         <img
+         <!-- <img
             v-if="getSelectedPayOption.category === 'Credit or Debit Card'"
             :src="`${iconUrl}/${getSelectedPayOption.psp.toLowerCase()}.svg`"
             alt=""
@@ -19,7 +19,7 @@
           />
 
           <img
-            v-if="getSelectedPayOption.isMobileMoney"
+            v-if="getSelectedPayOption.isMobileMoney()"
             :src="`${iconUrl}/${getSelectedPayOption.pay_method_name.toLowerCase()}.svg`"
             alt=""
             width="68"
@@ -27,11 +27,16 @@
           />
 
           <img
-            v-if="getSelectedPayOption.isBank"
+            v-if="getSelectedPayOption.isBank()"
             :src="`${iconUrl}/pay_by_bank.svg`"
             alt=""
             width="68"
             height="48"
+          /> -->
+          <PaymentIcon 
+            width="68"
+            height="48"
+            :paymentOption="getSelectedPayOption"
           />
         </div>
         
@@ -45,11 +50,10 @@
       </div>
 
       <hr class="mgt-10" />
-
-      <div v-if="getSelectedPayOption.category !=='Mobile Money'" class="mgt-8"></div>
-      <div v-if="getSelectedPayOption.category !=='Mobile Money'" class="mgt-8 text-btn direction-flex pointer" @click="removeCard">
+      <div v-if="!getSelectedPayOption.isMobileMoney()" class="mgt-8"></div>
+      <div v-if="!getSelectedPayOption.isMobileMoney()" class="mgt-8 text-btn direction-flex pointer" @click="removeCard">
         <IconView icon="delete" />
-        <span class="text-btn">{{ `Remove ${paymentOption}` }}</span>
+        <span class="text-btn">{{ `Remove ${getSelectedPayOption.getDisplayName($translate)}` }}</span>
       </div>
     </div>
     <DeletModal
@@ -64,12 +68,14 @@ import TopInfo from "../components/topInfo";
 import DeletModal from "../components/modals/DeleteModal";
 import paymentGenMxn from "../mixins/paymentGenMxn";
 import { mapGetters } from "vuex";
+import PaymentIcon from "./ChoosePayment/components/PaymentIcon";
 
 export default {
   name: "paymentOptionDetail",
   components: {
     TopInfo,
     DeletModal,
+    PaymentIcon
   },
   mixins: [paymentGenMxn],
   data() {
@@ -118,7 +124,7 @@ export default {
     }
   },
   async mounted() {
-    if (this.getSelectedPayOption.category === 'Credit or Debit Card') {
+    if (this.getSelectedPayOption.isCard()) {
       await this.fetchCardDetails();
     }
     window.analytics.track("View Payment Option", {
@@ -128,9 +134,9 @@ export default {
   },
   methods: {
     removeCard() {
-      window.analytics.track(`Remove ${this.paymentOption}`, {
+      window.analytics.track(`Remove ${this.getSelectedPayOption.getDisplayName(this.$translate)}`, {
         ...this.commonTrackPayload(),
-        payment_method: this.getSelectedPayOption.pay_method_name,
+        payment_method: this.getSelectedPayOption.getDisplayName(this.$translate),
 
       });
       this.showDeleteModal = true;

@@ -27,7 +27,7 @@
             />
           </div>
 
-          <div class="form-group mgt-4" v-if="getBupayload.isPayOnDelivery">
+          <div class="form-group mgt-4" v-if="getBupayload.isPayOnDelivery()">
             <label class="text-caption-2">{{ $translate("email") }}</label>
             <input
               type="text"
@@ -79,7 +79,7 @@
           </div>
           <hr class="mgt-2">
 
-          <div class="mgt-4 direction-flex pda-3" v-if="getBupayload.isPayOnDelivery">
+          <div class="mgt-4 direction-flex pda-3" v-if="getBupayload.isPayOnDelivery()">
             <div class="">
               <span class="text-caption text-gray70">{{
                 $translate("amount_to_pay")
@@ -154,7 +154,7 @@ export default {
   data() {
     return {
       icon: "back",
-      title: this.getBupayload.isPayOnDelivery ? this.$translate("enter_card_details") : this.$translate("add_a_card"), 
+      title: this.getBupayload.isPayOnDelivery() ? this.$translate("enter_card_details") : this.$translate("add_a_card"), 
       showModal: false,
     };
   },
@@ -289,7 +289,7 @@ export default {
       const newCardPayload = {
         country: getBupayload.value.country_code,
         currency: getBupayload.value.currency,
-        email: getBupayload.value.isPayOnDelivery ? cardState.email : getBupayload.value.email,
+        email: getBupayload.value.isPayOnDelivery() ? cardState.email : getBupayload.value.email,
         firstname: firstname,
         lastname: lastname,
         phonenumber: getBupayload.value.phonenumber,
@@ -330,13 +330,13 @@ export default {
         payment_method: "card",
       });
       const additionalPayload = {
-        amount: getBupayload.value.isPayOnDelivery ? getBupayload.value.amount : addCardAmount.value,
+        amount: getBupayload.value.isPayOnDelivery() ? getBupayload.value.amount : addCardAmount.value,
         bulk: false,
-        entity: getBupayload.value.isPayOnDelivery ? getBupayload.value.entity_id : 1,
+        entity: getBupayload.value.isPayOnDelivery() ? getBupayload.value.entity_id : 1,
         pay_direction: getBupayload.value.pay_direction,
         paymethod: 2,
         save: true,
-        txref: getBupayload.value.isPayOnDelivery ? getBupayload.value.txref : `AC_${new Date().getTime()}`,
+        txref: getBupayload.value.isPayOnDelivery() ? getBupayload.value.txref : `AC_${new Date().getTime()}`,
         platform: 'web',
         test: getBupayload.value.test ?? false,
       };
@@ -344,7 +344,7 @@ export default {
       reponseData = {...reponseData, ...additionalPayload};
       
       const payload = {
-        url: getBupayload.value.isPayOnDelivery  ? "/api/v3/pod/process" :"/api/v3/process",
+        url: getBupayload.value.isPayOnDelivery()  ? "/api/v3/pod/process" :"/api/v3/process",
         params: reponseData,
       };
 
@@ -381,7 +381,7 @@ export default {
               payment_method: "card",
             });
             
-            getBupayload.value.isPayOnDelivery ? 
+            getBupayload.value.isPayOnDelivery() ? 
             router.push({
               name: "SuccessView",
               duration: duration,
@@ -444,7 +444,7 @@ export default {
       state.showErrorModal = false;
       state.showAdditionalCardFields = false;
      
-      getBupayload.value.isPayOnDelivery ? setForm() : router.push({ name: "ChoosePayment" })
+      getBupayload.value.isPayOnDelivery() ? setForm() : router.push({ name: "ChoosePayment" })
     }
 
    

@@ -23,15 +23,15 @@ class PaymentOption {
     this.phonenumber = payload.phonenumber;
   }
 
-  isMpesa = this.pay_method_id === PaymentMethod.PAYMENT_METHOD_ID_MPESA;
-  isCard  = this.pay_method_id === PaymentMethod.PAYMENT_METHOD_ID_CARD;
-  isPayWithBankTransfer = this.pay_method_id === PaymentMethod.PAYMENT_METHOD_ID_PAY_WITH_TRANSFER;
-  isMtnMomo = this.pay_method_id === PaymentMethod.PAYMENT_METHOD_ID_MTN_MOMO;
-  isAirtelMoney = this.pay_method_id === PaymentMethod.PAYMENT_METHOD_ID_AIRTEL_MONEY;
-  isOrangeMoney =  this.pay_method_id === PaymentMethod.PAYMENT_METHOD_NAME_ORANGE_MONEY;
-  isDefault =  this.default === 1;
-  isMobileMoney =  PaymentMethod.mobileMoneyPaymentMethods.includes(this.pay_method_id);
-  isBank = this.category === 'Bank';
+  isMpesa = () => parseInt(this.pay_method_id) === parseInt(PaymentMethod.PAYMENT_METHOD_ID_MPESA);
+  isCard = () => this.pay_method_id === PaymentMethod.PAYMENT_METHOD_ID_CARD;
+  isPayWithBankTransfer = () => this.pay_method_id === PaymentMethod.PAYMENT_METHOD_ID_PAY_WITH_TRANSFER;
+  isMtnMomo = () => this.pay_method_id === PaymentMethod.PAYMENT_METHOD_ID_MTN_MOMO;
+  isAirtelMoney =  () => this.pay_method_id === PaymentMethod.PAYMENT_METHOD_ID_AIRTEL_MONEY;
+  isOrangeMoney =  () => this.pay_method_id === PaymentMethod.PAYMENT_METHOD_NAME_ORANGE_MONEY;
+  isDefault =  () => this.default === 1;
+  isMobileMoney = () =>  PaymentMethod.mobileMoneyPaymentMethods.includes(this.pay_method_id);
+  isBank = () => this.category === 'Bank';
   exceedsDailyLimit = (orderAmount) => this.daily_limit > 0 && orderAmount > this.daily_limit;
   exceedsTransactionLimit = (orderAmount) => this.transaction_limit > 0 && orderAmount > this.transaction_limit;
 
@@ -40,6 +40,22 @@ class PaymentOption {
   }
   unSetDefault = () => {
     this.default = 0;
+  }
+
+  getDisplayName = (translate) => {
+    let result = '';
+    switch (true) {
+      case this.isCard(): 
+        result = this.psp ?? 'Card';
+        break;
+      case this.isPayWithBankTransfer():
+        result = translate('pay_by_bank');
+        break;
+      default:
+        result = this.pay_method_name;
+        break;
+    }
+    return result;
   }
 }
 

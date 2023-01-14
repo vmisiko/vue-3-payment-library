@@ -5,7 +5,7 @@
         :icon="icon"
         :title="title"
         :mpesaCode="mpesaCode"
-        isMpesa=""
+        isMpesa()=""
       />
 
       <PaymentDetail

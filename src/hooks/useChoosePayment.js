@@ -60,7 +60,7 @@ export function useChoosePayment() {
       }
     });      
     store.commit('setSavedPayMethods', savedMethods);
-    if (getBupayload.value.isPayOnDelivery) { 
+    if (getBupayload.value.isPayOnDelivery()) { 
       return;
     } 
 
