@@ -1,15 +1,15 @@
 <template>
   <div class="mgl-2">
-    <div v-if="paymentOption.isCard()" class="direction-flex">
+    <div v-if="paymentOption.isCard" class="direction-flex">
         <span>{{ paymentOption.psp }} </span>
         <span class="gray80-text mgl-2">
           {{ paymentOption.pay_method_details ? $formatLastFour(paymentOption.pay_method_details)  : $translate('credit_stroke_debit_card')}}</span
         >
     </div>
-    <div v-if="paymentOption.isPayWithBankTransfer()" >
+    <div v-if="paymentOption.isPayWithBankTransfer" >
         <div class="mgy-auto">
           <span> {{ $translate('pay_by_bank') }}</span>
-          <div class="caption-2-semibold text-gray70 direction-flex" v-if="(getBupayload.isPayOnDelivery() && !hideAvalailablebalance)">
+          <div class="caption-2-semibold text-gray70 direction-flex" v-if="(getBupayload.isPayOnDelivery && !hideAvalailablebalance)">
             <span> {{  $translate('available_balance') }}</span>
 
             <IconView
@@ -26,7 +26,7 @@
           </div>
         </div>
     </div>
-    <div v-if="!paymentOption.isCard() && !paymentOption.isPayWithBankTransfer()">
+    <div v-if="!paymentOption.isCard && !paymentOption.isPayWithBankTransfer">
       <span>{{ paymentOption.pay_method_name }}</span>
     </div>
    
@@ -44,7 +44,13 @@ const { route } = useGlobalProp();
 const { getBupayload } = useState();
 
 const hideAvalailablebalance = computed(() => {
-  return route.name === 'Entry' || route.name === 'FailedView' || route.name === 'SuccessView';
+  const routeNames = [
+    'Entry',
+    'FailedView',
+    'SuccessView',
+    'PaymentOptionsPage',
+  ]
+  return routeNames.includes(route.name);
 } );
 
 </script>

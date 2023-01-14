@@ -2,7 +2,7 @@
   <div 
     class="option-border text-caption-1 pda-3" 
     :class="{
-      'selected-border': paymentOption.isDefault(),
+      'selected-border': paymentOption.isDefault,
       'disabled':
         disableLogic
       }"
@@ -16,7 +16,7 @@
       />
       <span class="spacer"></span>
 
-      <div :class="{'mgt-2': paymentOption.isPayWithBankTransfer()}">
+      <div :class="{'mgt-2': paymentOption.isPayWithBankTransfer}">
         <input
           class="float-right payment-input mgy-auto"
           name="paymentoption"
@@ -59,7 +59,7 @@ export default {
     ...mapGetters(["getBupayload"]),
     disableLogic() {
       let result = false;
-      if (this.paymentOption.isMpesa()) {
+      if (this.paymentOption.isMpesa) {
         result =
           this.paymentOption.daily_limit &&
           this.getBupayload.amount > this.paymentOption.daily_limit;
@@ -71,7 +71,7 @@ export default {
     }
   },
   mounted() {
-    if (this.paymentOption.pay_method_id === 20 && this.getBupayload.pay_direction !== "PAY_ON_DELIVERY") {
+    if (this.paymentOption.isPayWithBankTransfer && !this.getBupayload.isPayOnDelivery) {
       this.getBalance();
     }
   },

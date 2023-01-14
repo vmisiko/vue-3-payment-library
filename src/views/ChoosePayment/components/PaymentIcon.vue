@@ -15,7 +15,7 @@ const iconUrl = 'https://sendy-web-apps-assets.s3.eu-west-1.amazonaws.com/paymen
 
 const name = computed(() => {
   const cardName = props.paymentOption?.psp || 'card';
-  return props?.paymentOption?.isCard() ? cardName : props.paymentOption.pay_method_name;
+  return props?.paymentOption?.isCard ? cardName : props.paymentOption.pay_method_name;
 }); 
 
 </script>
