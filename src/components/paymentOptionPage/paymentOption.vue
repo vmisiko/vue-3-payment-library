@@ -1,30 +1,10 @@
 <template>
   <div>
     <div class="text-caption-1 direction-flex pda-3" @click="handleSelect">
-      <div class="direction-flex" v-if="payMethod.isCard()">
-        <IconView
-          :icon="
-            $cardIconValidator(payMethod.psp.toLowerCase())
-              ? payMethod.psp.toLowerCase()
-              : 'card'
-          "
-        />
-        <span class="mgl-2">{{ payMethod.psp }}</span>
-        <span class="gray80-text mgl-2">
-          {{ $formatLastFour(payMethod.pay_method_details) }}</span
-        >
-      </div>
-      <div v-if="payMethod.isMobileMoney" class="direction-flex">
-        <img
-          :src="`${iconUrl}/${payMethod.pay_method_name.toLowerCase()}.svg`"
-          alt=""
-        />
-        <span class="mgl-2">{{ payMethod.pay_method_name }}</span>
-      </div>
-      <div class="direction-flex" v-if="payMethod.isPayWithBankTransfer">
-        <IconView icon="pay-bank" />
-        <span class="mgl-2"> {{$translate('pay_by_bank')}}</span>
-      </div>
+      <PaymentIcon class="icon-size" :paymentOption="payMethod" />
+      <PaymentOptionTypeText  
+        :paymentOption="payMethod"
+      />
       <span class="spacer"></span>
       <div class="">
         <IconView icon="greator" />
@@ -36,9 +16,15 @@
 <script>
 import { mapMutations } from "vuex";
 import paymentGenMxn from "../../mixins/paymentGenMxn";
+import PaymentIcon from "../../views/ChoosePayment/components/PaymentIcon";
+import PaymentOptionTypeText from "../../views/ChoosePayment/components/PaymentOptionTypeText";
 
 export default {
   name: "PaymentOption",
+  components:{
+    PaymentIcon,
+    PaymentOptionTypeText,
+  },
   mixins: [paymentGenMxn],
   props: ["payMethod"],
   data() {

@@ -120,7 +120,7 @@ watch(phone, (val) => {
 
 onMounted(()=> {
   getDefaultpayMethod();
-  title.value = state.defaultPaymentMethod?.isMpesa() ? t("pay_with_mpesa")
+  title.value = state.defaultPaymentMethod?.isMpesa ? t("pay_with_mpesa")
           : `Pay with ${state.defaultPaymentMethod?.pay_method_name} Money`;
   state.errorText = t("unable_to_send_mpesa_request");
 

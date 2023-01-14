@@ -19,7 +19,7 @@
           />
 
           <img
-            v-if="getSelectedPayOption.category ==='Mobile Money'"
+            v-if="getSelectedPayOption.isMobileMoney"
             :src="`${iconUrl}/${getSelectedPayOption.pay_method_name.toLowerCase()}.svg`"
             alt=""
             width="68"
@@ -27,7 +27,7 @@
           />
 
           <img
-            v-if="getSelectedPayOption.category === 'Bank'"
+            v-if="getSelectedPayOption.isBank'"
             :src="`${iconUrl}/pay_by_bank.svg`"
             alt=""
             width="68"

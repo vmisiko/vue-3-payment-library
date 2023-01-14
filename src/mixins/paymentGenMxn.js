@@ -1,5 +1,7 @@
 import moment from "moment-timezone";
 import { mapActions, mapGetters, mapMutations } from "vuex";
+import PaymentMethod from "../Models/paymentMethod";
+import PaymentOption from "../Models/PaymentOptions";
 
 const mixin = {
   data() {
@@ -76,8 +78,10 @@ const mixin = {
               paymentOptions.includes(option.pay_method_id)
             )
           : response.saved_payment_methods;
-        this.setPaymentMethods(paymentMethods);
-        this.setSavedPayMethods(savedMethods);
+        const paymentMethodsModel = paymentMethods.map((paymentMethod) => new PaymentMethod(paymentMethod));
+        const paymentOptions = savedMethods.map((paymentOption) => new PaymentOption(paymentOption));
+        this.setPaymentMethods(paymentMethodsModel);
+        this.setSavedPayMethods(paymentOptions);
       }
     },
     checkAvailableOptions(defaultPaymentMethod) {
