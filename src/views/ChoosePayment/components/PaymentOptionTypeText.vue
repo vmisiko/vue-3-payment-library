@@ -9,7 +9,7 @@
     <div v-if="paymentOption.isPayWithBankTransfer()" >
         <div class="mgy-auto">
           <span> {{ $translate('pay_by_bank') }}</span>
-          <div class="caption-2-semibold text-gray70 direction-flex" v-if="(getBupayload.isPayOnDelivery() && !hideAvalailablebalance)">
+          <div class="caption-2-semibold text-gray70 direction-flex" v-if="(!getBupayload.isPayOnDelivery() && !hideAvalailablebalance)">
             <span> {{  $translate('available_balance') }}</span>
 
             <IconView
