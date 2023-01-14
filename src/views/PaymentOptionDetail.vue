@@ -27,7 +27,7 @@
           />
 
           <img
-            v-if="getSelectedPayOption.isBank'"
+            v-if="getSelectedPayOption.isBank"
             :src="`${iconUrl}/pay_by_bank.svg`"
             alt=""
             width="68"
