@@ -10,29 +10,6 @@
         <span class="text-subtitle-1">{{ getSelectedPayOption.getDisplayName($translate) }}</span>
         
         <div class="float-right mgt-n2">
-         <!-- <img
-            v-if="getSelectedPayOption.category === 'Credit or Debit Card'"
-            :src="`${iconUrl}/${getSelectedPayOption.psp.toLowerCase()}.svg`"
-            alt=""
-            width="68"
-            height="48"
-          />
-
-          <img
-            v-if="getSelectedPayOption.isMobileMoney()"
-            :src="`${iconUrl}/${getSelectedPayOption.pay_method_name.toLowerCase()}.svg`"
-            alt=""
-            width="68"
-            height="48"
-          />
-
-          <img
-            v-if="getSelectedPayOption.isBank()"
-            :src="`${iconUrl}/pay_by_bank.svg`"
-            alt=""
-            width="68"
-            height="48"
-          /> -->
           <PaymentIcon 
             width="68"
             height="48"
@@ -42,8 +19,8 @@
         
       </div>
 
-      <div class="text-body-2 text-gray70" v-if="card_expiry">
-        <span>{{ $formatCardno(getSelectedPayOption.pay_method_details) }}</span>
+      <div class="text-body-2 text-gray70" v-if="getSelectedPayOption.isCard()">
+        <span >{{ $formatCardno(getSelectedPayOption.pay_method_details) }}</span>
         <div>
           <span>{{ $translate("expiry_date") }} {{ card_expiry || "N/A" }}</span>
         </div>
