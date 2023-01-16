@@ -14,7 +14,7 @@
         </div>
       </div>
 
-      <div v-if="$route.name ==='AddCard'">
+      <div v-if="$route.name ==='AddCard' && getBupayload.isPayOnDelivery() ">
 
         <sendy-btn
           :block="true"
@@ -48,6 +48,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: "ErrorModal",
   props: ["show", "text" , "title"],
@@ -58,6 +60,9 @@ export default {
     show(val) {
       val ? this.handleOpen() : this.handleClose();
     },
+  },
+  computed: {
+    ...mapGetters('getBupayload')
   },
   mounted() {
     this.show ? this.handleOpen() : this.handleClose();
