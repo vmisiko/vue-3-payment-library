@@ -7,7 +7,7 @@
       />
       <span class="spacer"></span>
       <div class="">
-        <IconView icon="greator" />
+        <IconView class="mgy-auto" icon="greator" />
       </div>
     </div>
   </div>

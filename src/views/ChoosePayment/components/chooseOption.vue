@@ -10,13 +10,14 @@
     <div class="direction-flex">
       <PaymentIcon class="icon-size" :paymentOption="paymentOption" />
       <PaymentOptionTypeText  
+        class="mgy-auto"
         :paymentOption="paymentOption"
         :loading="loading" 
         :balance="balance" 
       />
       <span class="spacer"></span>
 
-      <div :class="{'mgt-2': paymentOption.isPayWithBankTransfer()}">
+      <div class="mgt-2">
         <input
           class="float-right payment-input mgy-auto"
           name="paymentoption"
@@ -67,7 +68,7 @@ export default {
       return result;
     },
     isChecked() {
-      return this.paymentOption.default == 1;
+      return this.paymentOption.default === 1;
     }
   },
   mounted() {
