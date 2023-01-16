@@ -23,7 +23,7 @@
     </slot>
     <div class="mgt-1 text-caption-1 text-gray80" v-if="mpesaCode">
       <span
-        >{{ isMpesa() ? $translate("mpesa_code") : $translate("transaction_id") }}:
+        >{{ isMpesa ? $translate("mpesa_code") : $translate("transaction_id") }}:
         {{ mpesaCode }}
       </span>
     </div>
