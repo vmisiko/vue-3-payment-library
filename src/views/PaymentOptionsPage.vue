@@ -75,7 +75,6 @@ export default {
             (element) => element.pay_method_id === 2
           )
         : [];
-      conso
       return result;
     },
     savedMobile() {
