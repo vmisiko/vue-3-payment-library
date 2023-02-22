@@ -143,6 +143,25 @@ export function useChoosePayment() {
     router.push("/add-payment");
   }
 
+  const getPaybill = async () => {
+
+    const payload = {
+      currency: getBupayload.value.currency,
+      entity: getBupayload.value.entity_id,
+      pay_direction: getBupayload.value.pay_direction,
+      reason: getBupayload.value.isPayOnDelivery() ? "INCOME" : null,
+    }
+
+    const fullPayload = {
+      params: payload,
+      url: "/payments/api/v2/config/psp/safaricom/mpesa/pay_bill_config"
+    }
+
+    const response = await store.dispatch('paymentAxiosGet', fullPayload);
+    console.log(response);
+    return response;    
+
+  }
   return {
     creditCards,
     savedMobile,
@@ -153,5 +172,6 @@ export function useChoosePayment() {
     update,
     handleRouting,
     addPaymentOption,
+    getPaybill,
   };
 }

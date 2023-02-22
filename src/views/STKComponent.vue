@@ -71,7 +71,7 @@
         </div>
       </div>
       <TimerModal :show="showTimer" @close="closeTimer" />
-      <MpesaErrorModal :show="state.showErrorModal" :text="state.errorText" @close="state.showErrorModal=false" />
+      <MpesaErrorModal :show="state.showErrorModal" :pay-method="state.defaultPaymentMethod" :text="state.errorText" @close="state.showErrorModal=false" />
     </div>
   </div>
 </template>

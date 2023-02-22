@@ -21,6 +21,16 @@
       </div>
 
       <sendy-btn
+        v-if="payMethod.isMpesa()"
+        :block="true"
+        color="info"
+        class="mgt-8"
+        @click="handleC2B"
+      >
+        {{ $translate("pay_with_mpesa_pay_bill") }}
+      </sendy-btn>
+      <sendy-btn
+        v-else
         :block="true"
         color="info"
         class="mgt-8"
@@ -35,7 +45,7 @@
 <script>
 export default {
   name: "MpesaErrorModal",
-  props: ["show", "text"],
+  props: ["show", "text", "payMethod"],
   data() {
     return {};
   },
@@ -56,6 +66,12 @@ export default {
       let el = this.$refs.mpesaErrorModal;
       el.style.display = "none";
     },
+    handleC2B() {
+      this.$emit('close');
+      this.$router.push({
+        name: 'MpesaC2B',
+      });
+    }
   },
 };
 </script>

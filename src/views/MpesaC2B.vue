@@ -70,10 +70,12 @@
 </template>
 
 <script>
+import { onMounted, reactive } from 'vue';
 import { mapGetters, mapMutations } from "vuex";
 import TopInfo from "../components/topInfo";
 import TimerModal from "../components/modals/timerModal";
 import paymentGenMxn from "../mixins/paymentGenMxn";
+import { useChoosePayment } from "../hooks/useChoosePayment";
 
 export default {
   name: "MpesaC2B",
@@ -82,6 +84,19 @@ export default {
     TimerModal,
   },
   mixins: [paymentGenMxn],
+  setup() {
+
+    const { getPaybill } = useChoosePayment();
+    
+    onMounted( async ()=>{
+      const res = await getPaybill();
+      console.log(res, 'Moutned response');
+    });
+
+    return {
+      getPaybill,
+    }
+  },
   data() {
     return {
       icon: "back",
