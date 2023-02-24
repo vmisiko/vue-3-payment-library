@@ -27,7 +27,7 @@
               </li>
               <li class="text-body-2 mgt-2">
                 {{ $translate("enter_business_no") }}
-                <span class="text-bold"> {{ getBupayload.paybill_no }} </span>
+                <span class="text-bold"> {{ shortCode ?? getBupayload.paybill_no }} </span>
               </li>
               <li class="text-body-2 mgt-2">
                 {{ $translate("enter_account_no") }}
@@ -70,10 +70,12 @@
 </template>
 
 <script>
+import { onMounted, ref } from 'vue';
 import { mapGetters, mapMutations } from "vuex";
 import TopInfo from "../components/topInfo";
 import TimerModal from "../components/modals/timerModal";
 import paymentGenMxn from "../mixins/paymentGenMxn";
+import { useChoosePayment } from "../hooks/useChoosePayment";
 
 export default {
   name: "MpesaC2B",
@@ -82,6 +84,20 @@ export default {
     TimerModal,
   },
   mixins: [paymentGenMxn],
+  setup() {
+    const shortCode = ref(null);
+    const { getPaybill } = useChoosePayment();
+    
+    onMounted(async () => {
+      const res = await getPaybill();
+      shortCode.value = res.short_code;
+    });
+
+    return {
+      getPaybill,
+      shortCode
+    }
+  },
   data() {
     return {
       icon: "back",
@@ -149,7 +165,7 @@ export default {
               (this.promptInfo = false),
                 this.$router.push({
                   name: "SuccessView",
-                  params: { mpesaCode: res.receipt_no },
+                  params: { reciept: res.receipt_no },
                 });
               break;
             case "failed":

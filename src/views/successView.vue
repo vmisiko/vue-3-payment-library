@@ -4,8 +4,8 @@
       <TopInfo
         :icon="icon"
         :title="title"
-        :mpesaCode="mpesaCode"
-        isMpesa()=""
+        :mpesaCode="$route.params.reciept"
+        isMpesa=""
       />
 
       <PaymentDetail

@@ -110,7 +110,10 @@ export function usePayment() {
             store.commit("setLoading", false);
             router.push({
               name: "SuccessView",
-              duration: duration,
+              params:{
+                duration: duration,
+                receipt: response.receipt_no,
+              }
             });
             return;
           }
@@ -127,7 +130,10 @@ export function usePayment() {
           })
           router.push({
             name: "SuccessView",
-            duration: duration,
+            params:{
+              duration: duration,
+              receipt: response.receipt_no,
+            }
           });
           break;
         }
@@ -187,6 +193,9 @@ export function usePayment() {
       });
       router.push({
         name: "SuccessView",
+        params:{
+          receipt: response.receipt_no,
+        }
       });
       return;
     }
@@ -388,7 +397,10 @@ export function usePayment() {
             if (getBupayload.value.isPayOnDelivery()) {
               router.push({
                 name: "SuccessView",
-                duration: '',
+                params:{
+                  duration: "",
+                  receipt: res.receipt_no,
+                }
               });
               return;
             }
@@ -406,7 +418,10 @@ export function usePayment() {
             const duration = Date.now() - state.startResponseTime;
             router.push({
               name: "SuccessView",
-              duration: duration,
+              params:{
+                duration: duration,
+                receipt: res.receipt_no,
+              }
             });
           }
           break;
@@ -514,7 +529,10 @@ export function usePayment() {
 
           router.push({
             name: "SuccessView",
-            duration: duration,
+            params: {
+              receipt: response.receipt_no,
+              duration: duration,
+            }
           });
           break;
         }

@@ -33,7 +33,7 @@
 <script>
 export default {
   name: "TopInfo",
-  props: ["icon", "title", "subtitle", "mpesaCode", "isMpesa()"],
+  props: ["icon", "title", "subtitle", "mpesaCode", "isMpesa"],
   data() {
     return {
       text: "",
