@@ -180,7 +180,10 @@ const submit = async () => {
       state.loading = false;
       router.push({
         name: "SuccessView",
-        duration: "",
+        params:{
+                duration: "",
+                receipt: response.receipt_no,
+              }
       });
       return;
     }
@@ -354,7 +357,7 @@ const TransactionIdStatus = async () => {
         });
         router.push({
           name: "SuccessView",
-          params: { mpesaCode: res.receipt_no },
+          params: { receipt: res.receipt_no },
         });
         break;
       case "failed":
