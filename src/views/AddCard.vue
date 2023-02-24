@@ -27,6 +27,17 @@
             />
           </div>
 
+          <div class="form-group mgt-4" v-if="getBupayload.isPayOnDelivery()">
+            <label class="text-caption-2">{{ $translate("email") }}</label>
+            <input
+              type="text"
+              v-model="email"
+              class="form-field payment-input"
+              :placeholder="$translate('enter_email')"
+              required
+            />
+          </div>
+
           <div class="form-group mgt-4">
             <label for="cc-number" class="mgt-2 text-caption-2">{{
               $translate("card_number")
@@ -63,18 +74,46 @@
             </div>
           </div>
 
-          <div class="mgt-10 text-center">
-            <span class="charge-text"> {{ $translate("in_order_to_verify") }} {{ getBupayload.currency }} {{ addCardAmount }} {{ $translate("and_refund_your_card") }} </span>
+          <div class="mgt-11">
+            <VgsSecure  />
           </div>
-          <sendy-btn
-            :block="true"
-            :loading="loading"
-            color="primary"
-            class="mgt-3"
-            type="submit"
-          >
-            {{ $translate("add_card") }}
-          </sendy-btn>
+          <hr class="mgt-2">
+
+          <div class="mgt-4 direction-flex pda-3" v-if="getBupayload.isPayOnDelivery()">
+            <div class="">
+              <span class="text-caption text-gray70">{{
+                $translate("amount_to_pay")
+              }}</span>
+              <div class="payment-text-secondary">
+                {{ getBupayload.currency }}
+                {{ $formatCurrency(getBupayload.amount) }}
+              </div>
+            </div>
+            <span class="spacer"></span>
+            <sendy-btn
+              color="primary"
+              class="mgt-2"
+              type="submit"
+              :loading="loading"
+            >
+              {{ $translate("confirm_and_pay") }}
+            </sendy-btn>
+          </div>
+
+          <div v-else >
+            <div class="text-center">
+              <span class="charge-text"> {{ $translate("in_order_to_verify") }} {{ getBupayload.currency }} {{ addCardAmount }} {{ $translate("and_refund_your_card") }} </span>
+            </div>
+            <sendy-btn
+              :block="true"
+              :loading="loading"
+              color="primary"
+              class="mgt-3"
+              type="submit"
+            >
+              {{ $translate("add_card") }}
+            </sendy-btn>
+          </div>
         </form>
       </div>
     </div>
@@ -82,12 +121,13 @@
     <ErrorModal
       :show="showErrorModal"
       :text="errorText"
+      :title="errorTitle"
       @close="handleErrorClose"
     />
   </div>
 </template>
 <script>
-import { onMounted, toRefs, reactive, computed} from "vue";
+import { onMounted, toRefs, reactive, computed, ref} from "vue";
 import TopInfo from "../components/topInfo";
 import CvvModal from "../components/modals/cvvModal";
 import ErrorModal from "../components/modals/ErrorModal";
@@ -99,6 +139,7 @@ import { usePayment } from '../hooks/payment';
 import { useStore } from 'vuex';
 import { datadogRum } from "@datadog/browser-rum";
 import { useSegement } from '../hooks/useSegment';
+import VgsSecure from "../components/vgsSecure.vue";
 
 export default {
   name: "AddCard",
@@ -108,11 +149,12 @@ export default {
     ErrorModal,
     Processing,
     AdditionalCardFields,
+    VgsSecure,
   },
   data() {
     return {
       icon: "back",
-      title: this.$translate("add_a_card"), 
+      title: this.getBupayload.isPayOnDelivery() ? this.$translate("enter_card_details") : this.$translate("add_a_card"), 
       showModal: false,
     };
   },
@@ -130,6 +172,7 @@ export default {
     const cardState = reactive({
       cardno: "",
       card_name: "",
+      email: "",
       expirydate: "",
       cvv: "",
     })
@@ -240,13 +283,15 @@ export default {
         return;
       }
 
-
+      const cardname = cardState.card_name?.split(" ");
+      const firstname = cardname[0] ?? getBupayload.value.firstname;
+      const lastname = cardname[1] ?? getBupayload.value.lastname;
       const newCardPayload = {
         country: getBupayload.value.country_code,
         currency: getBupayload.value.currency,
-        email: getBupayload.value.email,
-        firstname: getBupayload.value.firstname,
-        lastname: getBupayload.value.lastname,
+        email: getBupayload.value.isPayOnDelivery() ? cardState.email : getBupayload.value.email,
+        firstname: firstname,
+        lastname: lastname,
         phonenumber: getBupayload.value.phonenumber,
         userid: getBupayload.value.user_id,
         company_code: getBupayload.value.company_code,
@@ -285,20 +330,21 @@ export default {
         payment_method: "card",
       });
       const additionalPayload = {
-        amount: addCardAmount.value,
+        amount: getBupayload.value.isPayOnDelivery() ? getBupayload.value.amount : addCardAmount.value,
         bulk: false,
-        entity: 1,
-        pay_direction: 'PAY_IN',
+        entity: getBupayload.value.isPayOnDelivery() ? getBupayload.value.entity_id : 1,
+        pay_direction: getBupayload.value.pay_direction,
         paymethod: 2,
         save: true,
-        txref: `AC_${new Date().getTime()}`,
+        txref: getBupayload.value.isPayOnDelivery() ? getBupayload.value.txref : `AC_${new Date().getTime()}`,
         platform: 'web',
         test: getBupayload.value.test ?? false,
       };
 
       reponseData = {...reponseData, ...additionalPayload};
+      
       const payload = {
-        url: "/api/v3/process",
+        url: getBupayload.value.isPayOnDelivery()  ? "/api/v3/pod/process" :"/api/v3/process",
         params: reponseData,
       };
 
@@ -334,7 +380,13 @@ export default {
               message: res.message,
               payment_method: "card",
             });
-            router.push("/choose-payment");
+            
+            getBupayload.value.isPayOnDelivery() ? 
+            router.push({
+              name: "SuccessView",
+              duration: duration,
+            }) 
+            : router.push("/choose-payment");
             state.loading = false;
             break;
           default:
@@ -352,75 +404,8 @@ export default {
         message: res.message,
         payment_method: "card",
       });
-      state.errorText = res.message;
-      state.showErrorModal = true;
-      datadogRum.addError(new Error(res.message));
-      return;
-    }
-
-    async function saveNewCard(reponseData) {
-      store.commit('setLoading', true);
-      window.analytics.track("Processing your card", {
-        ...commonTrackPayload(),
-        payment_method: "card",
-      });
-      reponseData.platform = 'web';
-      const payload = {
-        url: "/api/v2/save",
-        params: reponseData,
-      };
-
-      const res = await store.dispatch('paymentAxiosPost', payload);
-      state.transaction_id = res.transaction_id;
-
-      if (res.status) {
-        state.transactionStatus = res.transaction_status.toLowerCase();
-
-        if (res.additional_data) {
-          state.additionalData = res.additional_data;
-          state.is3DS = res.redirect;
-          if (res.redirect) {
-            init3DS();
-            return;
-          }
-          state.showAdditionalCardFields = true;
-          store.commit('setLoading', false);
-          return;
-        }
-
-        switch (res.transaction_status.toLowerCase()) {
-          case "pending":
-            pollCard();
-            break;
-          case "success":
-            store.commit('setLoading', false);
-            store.dispatch('paymentNotification', {
-              text: t("card_details_added"),
-            });
-            window.analytics.track("Payment option saved successfully", {
-              ...commonTrackPayload(),
-              message: res.message,
-              payment_method: "card",
-            });
-            router.push("/choose-payment");
-            state.loading = false;
-            break;
-          default:
-            break;
-        }
-        return;
-      }
-
-      state.showProcessing = false;
-      store.commit('setLoading', false);
-      window.analytics.track("Payment option not saved successfully", {
-        ...commonTrackPayload(),
-        reason: res.message,
-        sendy_error_code: "",
-        message: res.message,
-        payment_method: "card",
-      });
-      state.errorText = res.message;
+      state.errorText = res?.message ?? t('unabled_to_confirm_payment_text');
+      state.errorTitle = t('unable_to_confirm_payment');
       state.showErrorModal = true;
       datadogRum.addError(new Error(res.message));
       return;
@@ -458,17 +443,21 @@ export default {
     function handleErrorClose() {
       state.showErrorModal = false;
       state.showAdditionalCardFields = false;
-      router.push({ name: "ChoosePayment" });
+     
+      getBupayload.value.isPayOnDelivery() ? setForm() : router.push({ name: "ChoosePayment" })
     }
 
+   
     return {
       ...toRefs(cardState),
       ...toRefs(state),
       getLoading,
+      getBupayload,
       addCardAmount,
       onsubmit,
       handleErrorClose,
       handleContinue,
+      
     }
   },
 };

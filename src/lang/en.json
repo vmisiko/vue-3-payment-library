@@ -10,6 +10,8 @@
   "cancel": "Cancel",
   "card_details_removed": "Card details removed",
   "could_not_add_card": "Could not add card",
+  "unable_to_confirm_payment": "Unable to confirm payment",
+  "unabled_to_confirm_payment_text": "We are unable to confirm your payment. Please retry again after a couple of minutes.", 
   "unable_pay_request": "Unable to send payment request",
   "pay_with_mpesa_pay_bill": "Pay with M-PESA Pay Bill",
   "payment_option_missing": "Payment option missing",
@@ -21,6 +23,7 @@
   "amount_exceeds_limit_title": "Amount exceeds transaction limit",
   "amount_exceeds_limit_text":" The amount to pay exceeds the daily transaction limit for {mobile}. You can choose another payment option to continue.",
   "change_payment_option": "Change payment option",
+  "change_payment_method": "Change payment method",
   "cancel_payment": "Cancel Payment",
 
   "amount_to_pay": "Amount to pay",
@@ -30,9 +33,12 @@
   "transaction_id": "Transaction Id",
 
   "credit_card_payment_small": "Credit or Debit Card",
+  "credit_stroke_debit_card": "Credit/Debit Card",
 
   "cardholder_name": "Cardholder name",
   "enter_full_name": "Enter full name",
+  "email": "Email",
+  "enter_email": "Enter email",
   "card_number": "Card number",
   "expiry": "Expiry",
   "cvc": "CVC",
@@ -41,6 +47,7 @@
   "add_card": "Add Card",
   "card_declined": "Your card issuer has declined this transaction. Contact your bank or card issuer for more information.",
   "add_a_card": "Add a Card",
+  "enter_card_details": "Enter card details",
   "card_details_added": "Card details added and selected for payment.",
   "failed_to_collect_card_details": "Failed to collect card details. Please try again",
 

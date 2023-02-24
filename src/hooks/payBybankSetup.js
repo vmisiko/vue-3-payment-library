@@ -25,7 +25,7 @@ export function usePayBybankSetup() {
   const getSelectedVirtualAccount = computed(() => store.getters.getSelectedVirtualAccount);
 
   const getBalance = async (bankAccount) => {
-    if (getBupayload.value.pay_direction === "PAY_ON_DELIVERY") {
+    if (getBupayload.value.isPayOnDelivery()) {
       return await getPodBalance(bankAccount);
     }
 

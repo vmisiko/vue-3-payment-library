@@ -4,20 +4,20 @@
     :class="{
       'selected-border': isChecked,
       'disabled':
-        paymentOption.daily_limit &&
-        getBupayload.amount > paymentOption.daily_limit,
+        disableLogic
       }"
     >
     <div class="direction-flex">
       <PaymentIcon class="icon-size" :paymentOption="paymentOption" />
       <PaymentOptionTypeText  
+        class="mgy-auto"
         :paymentOption="paymentOption"
         :loading="loading" 
         :balance="balance" 
       />
       <span class="spacer"></span>
 
-      <div :class="{'mgt-2': paymentOption.pay_method_id === 20}">
+      <div class="mgt-2">
         <input
           class="float-right payment-input mgy-auto"
           name="paymentoption"
@@ -60,7 +60,7 @@ export default {
     ...mapGetters(["getBupayload"]),
     disableLogic() {
       let result = false;
-      if (this.paymentOption.pay_method_id === 1) {
+      if (this.paymentOption.isMpesa()) {
         result =
           this.paymentOption.daily_limit &&
           this.getBupayload.amount > this.paymentOption.daily_limit;
@@ -68,11 +68,12 @@ export default {
       return result;
     },
     isChecked() {
-      return this.paymentOption.default == 1;
+      return this.paymentOption.default === 1;
     }
   },
   mounted() {
-    if (this.paymentOption.pay_method_id === 20 && this.getBupayload.pay_direction !== "PAY_ON_DELIVERY") {
+
+    if (this.paymentOption.isPayWithBankTransfer() && !this.getBupayload.isPayOnDelivery()) {
       this.getBalance();
     }
   },

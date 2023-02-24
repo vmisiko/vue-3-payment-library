@@ -5,7 +5,7 @@
         :icon="icon"
         :title="title"
         :mpesaCode="mpesaCode"
-        :isMpesa="isMpesa"
+        isMpesa()=""
       />
 
       <PaymentDetail
@@ -13,7 +13,6 @@
         :currency="currency"
         :amount="amount"
         :paymentMethod="defaultPaymentMethod"
-        :paymentStatus="paymentStatus"
       />
 
       <div class="mgt-8 text-right">

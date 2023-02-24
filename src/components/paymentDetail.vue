@@ -26,8 +26,8 @@
       >
 
       <div class="direction-flex float-right">
-        <PaymentIcon :paymentOption="paymentMethod" />
-        <PaymentOptionTypeText  :paymentOption="paymentMethod" />
+        <PaymentIcon class="mgy-auto" :paymentOption="paymentMethod" />
+        <PaymentOptionTypeText class="mgy-auto"  :paymentOption="paymentMethod" />
       </div>
     </div>
 

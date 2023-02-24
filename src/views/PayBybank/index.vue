@@ -258,6 +258,9 @@ const poDCheckout = async () => {
         pay_detail_id: state.defaultPaymentMethod.pay_detail_id,
         bank: bankAccount.bank_code,
         bank_account: bankAccount.account_number,
+        email: getBupayload.value.email,
+        firstname: getBupayload.value.firstname,
+        lastname: getBupayload.value.lastname,
   };
   await checkout(payload);
 }
@@ -268,7 +271,7 @@ const getBalanceP = async ()  => {
 
   if (bal >= getBupayload.value.amount ) {
     clearInterval(checkPolltimer);
-    if (getBupayload.value.pay_direction === "PAY_ON_DELIVERY") {
+    if (getBupayload.value.isPayOnDelivery()) {
       await poDCheckout();
       return;
     }

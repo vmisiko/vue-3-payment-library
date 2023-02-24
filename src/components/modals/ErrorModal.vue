@@ -14,7 +14,27 @@
         </div>
       </div>
 
+      <div v-if="$route.name ==='AddCard' && getBupayload.isPayOnDelivery() ">
+
+        <sendy-btn
+          :block="true"
+          color="info"
+          class="mgt-8"
+          :outline="true"
+          @click="$emit('close')"
+        >
+          {{ $translate("retry") }}
+        </sendy-btn>
+        
+        <div class="text-center mgt-7">
+          <span class="link" @click="handleChange">
+            {{ $translate("change_payment_method") }}
+          </span>
+        </div>
+      </div>
+
       <sendy-btn
+        v-else
         :block="true"
         color="info"
         class="mgt-8"
@@ -22,11 +42,14 @@
       >
         {{ $translate("close") }}
       </sendy-btn>
+
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: "ErrorModal",
   props: ["show", "text" , "title"],
@@ -37,6 +60,9 @@ export default {
     show(val) {
       val ? this.handleOpen() : this.handleClose();
     },
+  },
+  computed: {
+    ...mapGetters('getBupayload')
   },
   mounted() {
     this.show ? this.handleOpen() : this.handleClose();
@@ -50,6 +76,10 @@ export default {
       let el = this.$refs.errorModal;
       el.style.display = "none";
     },
+    handleChange() {
+      this.$router.push({ name: 'ChoosePaymentCheckout' });
+      this.$emit('close');
+    }
   },
 };
 </script>

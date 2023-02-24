@@ -69,7 +69,11 @@
           </div>
         </div>
 
-        <hr class="mgt-5" />
+        <div class="mgt-11">
+          <VgsSecure  />
+        </div>
+        
+        <hr class="mgt-2" />
 
         <div class="mgt-4 direction-flex pda-3">
           <div class="">
@@ -85,7 +89,7 @@
           <sendy-btn
             color="primary"
             class="mgt-2"
-            @click="handleSubmit"
+            @click="submit"
             :loading="getLoading"
             :disabled="!picked"
           >
@@ -121,6 +125,7 @@ import { usePayment } from "../../hooks/payment";
 import { useState } from "../../hooks/useState";
 import { useSegement } from '../../hooks/useSegment';
 import { useGlobalProp } from '@/hooks/globalProperties';
+import VgsSecure from "../../components/vgsSecure.vue";
 
 export default {
   name: "ChoosePaymentCheckout",
@@ -131,6 +136,7 @@ export default {
     AdditionalCardFields,
     ErrorModal,
     ChooseOption,
+    VgsSecure
   },
   data() {
     return {
@@ -171,17 +177,13 @@ export default {
       getDefaultpayMethod();
       window.analytics.track("View choose checkout payment option", {
         ...commonTrackPayload(),
-        defaulted_payment_option: state.defaultPaymentMethod.pay_method_name,
+        defaulted_payment_option: state.defaultPaymentMethod?.pay_method_name,
       });
     });
 
     function handleErrorModalClose() {
       state.showErrorModal = false;
       state.showAdditionalCardFields = false;
-    }
-
-    const handleSubmit = () => {
-      getBupayload.value.pay_direction=== "PAY_ON_DELIVERY" ? router.push({name: "HowitWorks"}) : submit();
     }
 
     return {
@@ -195,7 +197,7 @@ export default {
       handleRouting,
       addPaymentOption,
       handleErrorModalClose,
-      handleSubmit,
+      submit,
     };
   },
 };
