@@ -169,7 +169,6 @@ export function useChoosePayment() {
       `${url}${endpoint}`,
       values
     );
-    console.log(data);
     return data;    
 
   }
