@@ -28,10 +28,49 @@
               <li class="text-body-2 mgt-2">
                 {{ $translate("enter_business_no") }}
                 <span class="text-bold"> {{ shortCode ?? getBupayload.paybill_no }} </span>
+                
+                <span>
+                  <svg
+                    v-if="loadingShortCode"
+                    width="10px"
+                    height="10px"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    style="
+                      margin: auto;
+                      background: #ffff;
+                      display: block;
+                      shape-rendering: auto;
+                    "
+                    viewBox="0 0 100 100"
+                    preserveAspectRatio="xMidYMid"
+                  >
+                    <circle
+                      cx="50"
+                      cy="50"
+                      fill="none"
+                      stroke="#868686"
+                      stroke-width="10"
+                      r="35"
+                      stroke-dasharray="164.93361431346415 56.97787143782138"
+                    >
+                      <animateTransform
+                        attributeName="transform"
+                        type="rotate"
+                        repeatCount="indefinite"
+                        dur="1s"
+                        values="0 50 50;360 50 50"
+                        keyTimes="0;1"
+                      ></animateTransform>
+                    </circle>
+                  </svg>
+                  <CopyWidget v-else class="mgl-3" :text="shortCode || getBupayload.paybill_no" /> 
+                </span>
               </li>
-              <li class="text-body-2 mgt-2">
+              <li class="text-body-2 mgt-2 ">
                 {{ $translate("enter_account_no") }}
                 <span class="text-bold"> {{ getBupayload.txref }} </span>
+                <CopyWidget class="mgl-3" :text="getBupayload.txref" />
               </li>
               <li class="text-body-2 mgt-2">
                 {{ $translate("enter_amount_no") }}
@@ -39,6 +78,7 @@
                   {{ getBupayload.currency }}
                   {{ $formatCurrency(getBupayload.amount) }}
                 </span>
+                <CopyWidget class="mgl-3" :text="getBupayload.amount" />
               </li>
               <li class="text-body-2 mgt-2">
                 {{ $translate("enter_mpesa_pin") }}
@@ -76,26 +116,32 @@ import TopInfo from "../components/topInfo";
 import TimerModal from "../components/modals/timerModal";
 import paymentGenMxn from "../mixins/paymentGenMxn";
 import { useChoosePayment } from "../hooks/useChoosePayment";
+import CopyWidget from "../components/CopyWIdget";
 
 export default {
   name: "MpesaC2B",
   components: {
     TopInfo,
     TimerModal,
+    CopyWidget,
   },
   mixins: [paymentGenMxn],
   setup() {
     const shortCode = ref(null);
+    const loadingShortCode = ref(false);
     const { getPaybill } = useChoosePayment();
     
     onMounted(async () => {
+      loadingShortCode.value= true;
       const res = await getPaybill();
+      loadingShortCode.value = false;
       shortCode.value = res.short_code;
     });
 
     return {
       getPaybill,
-      shortCode
+      shortCode,
+      loadingShortCode,
     }
   },
   data() {

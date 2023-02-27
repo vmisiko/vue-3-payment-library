@@ -151,7 +151,8 @@ export function useChoosePayment() {
     const payload = {
       currency: getBupayload.value.currency,
       entity: getBupayload.value.entity_id,
-      pay_direction: getBupayload.value.pay_direction
+      pay_direction: getBupayload.value.isPayOnDelivery() ? "PAY_IN" : getBupayload.value.pay_direction,
+      reason: getBupayload.value.isPayOnDelivery() ? "POD" : "INCOME",
     }
 
     const endpoint = "/api/v2/config/psp/safaricom/mpesa/pay_bill_config";
@@ -168,7 +169,6 @@ export function useChoosePayment() {
       `${url}${endpoint}`,
       values
     );
-    console.log(data);
     return data;    
 
   }
