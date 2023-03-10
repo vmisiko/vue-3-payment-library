@@ -27,7 +27,7 @@
             />
           </div>
 
-          <div class="form-group mgt-4" v-if="getBupayload.isPayOnDelivery()">
+          <div class="form-group mgt-4" v-if="getBupayload.isPayOnDelivery">
             <label class="text-caption-2">{{ $translate("email") }}</label>
             <input
               type="text"
@@ -79,7 +79,7 @@
           </div>
           <hr class="mgt-2">
 
-          <div class="mgt-4 direction-flex pda-3" v-if="getBupayload.isPayOnDelivery()">
+          <div class="mgt-4 direction-flex pda-3" v-if="getBupayload.isPayOnDelivery">
             <div class="">
               <span class="text-caption text-gray70">{{
                 $translate("amount_to_pay")
@@ -154,7 +154,7 @@ export default {
   data() {
     return {
       icon: "back",
-      title: this.getBupayload.isPayOnDelivery() ? this.$translate("enter_card_details") : this.$translate("add_a_card"), 
+      title: this.getBupayload.isPayOnDelivery ? this.$translate("enter_card_details") : this.$translate("add_a_card"), 
       showModal: false,
     };
   },
