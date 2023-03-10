@@ -28,11 +28,17 @@ class BuPayload {
     this.version = payload.version;
   }
 
-  isPayOnDelivery = () => this.pay_direction === "PAY_ON_DELIVERY";
+  get isPayOnDelivery() {
+    return this.pay_direction === "PAY_ON_DELIVERY";
+  }
 
-  isPayout = () => this.pay_direction === "PAY_OUT";
+  get isPayout() {
+    return this.pay_direction === "PAY_OUT";
+  }
 
-  isPayIn = () => this.pay_direction === "PAY_IN";
+  get isPayIn() { 
+    return this.pay_direction === "PAY_IN";
+  }
 
 }
 

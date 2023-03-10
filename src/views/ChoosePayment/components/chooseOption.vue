@@ -73,7 +73,7 @@ export default {
   },
   mounted() {
 
-    if (this.paymentOption.isPayWithBankTransfer() && !this.getBupayload.isPayOnDelivery()) {
+    if (this.paymentOption.isPayWithBankTransfer() && !this.getBupayload.isPayOnDelivery) {
       this.getBalance();
     }
   },

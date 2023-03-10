@@ -14,7 +14,7 @@
         </div>
       </div>
 
-      <div v-if="$route.name ==='AddCard' && getBupayload.isPayOnDelivery() ">
+      <div v-if="$route.name ==='AddCard' && getBupayload.isPayOnDelivery ">
 
         <sendy-btn
           :block="true"
