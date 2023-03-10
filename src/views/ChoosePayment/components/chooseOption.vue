@@ -60,7 +60,7 @@ export default {
     ...mapGetters(["getBupayload"]),
     disableLogic() {
       let result = false;
-      if (this.paymentOption.isMpesa()) {
+      if (this.paymentOption.isMpesa) {
         result =
           this.paymentOption.daily_limit &&
           this.getBupayload.amount > this.paymentOption.daily_limit;
@@ -73,7 +73,7 @@ export default {
   },
   mounted() {
 
-    if (this.paymentOption.isPayWithBankTransfer() && !this.getBupayload.isPayOnDelivery) {
+    if (this.paymentOption.isPayWithBankTransfer && !this.getBupayload.isPayOnDelivery) {
       this.getBalance();
     }
   },
