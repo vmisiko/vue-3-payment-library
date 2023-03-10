@@ -27,8 +27,8 @@
       </div>
 
       <hr class="mgt-10" />
-      <div v-if="!getSelectedPayOption.isMobileMoney()" class="mgt-8"></div>
-      <div v-if="!getSelectedPayOption.isMobileMoney()" class="mgt-8 text-btn direction-flex pointer" @click="removeCard">
+      <div v-if="!getSelectedPayOption.isMobileMoney" class="mgt-8"></div>
+      <div v-if="!getSelectedPayOption.isMobileMoney" class="mgt-8 text-btn direction-flex pointer" @click="removeCard">
         <IconView icon="delete" />
         <span class="text-btn">{{ `Remove ${getSelectedPayOption.getDisplayName($translate)}` }}</span>
       </div>

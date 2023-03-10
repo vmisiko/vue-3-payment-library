@@ -63,7 +63,7 @@ export function useChoosePayment() {
       }
     });      
     store.commit('setSavedPayMethods', savedMethods);
-    if (getBupayload.value.isPayOnDelivery()) { 
+    if (getBupayload.value.isPayOnDelivery) { 
       return;
     } 
 
@@ -151,8 +151,8 @@ export function useChoosePayment() {
     const payload = {
       currency: getBupayload.value.currency,
       entity: getBupayload.value.entity_id,
-      pay_direction: getBupayload.value.isPayOnDelivery() ? "PAY_IN" : getBupayload.value.pay_direction,
-      reason: getBupayload.value.isPayOnDelivery() ? "POD" : "INCOME",
+      pay_direction: getBupayload.value.isPayOnDelivery ? "PAY_IN" : getBupayload.value.pay_direction,
+      reason: getBupayload.value.isPayOnDelivery ? "POD" : "INCOME",
     }
 
     const endpoint = "/api/v2/config/psp/safaricom/mpesa/pay_bill_config";
