@@ -88,6 +88,7 @@ import { useSegement } from '../hooks/useSegment';
 import { usePayment } from '../hooks/payment';
 import { useState } from '../hooks/useState';
 import { useGlobalProp } from '../hooks/globalProperties';
+import PaymentStatus from "../Models/payment/paymentStatus";
 
 const dropdownOptions = ref({
     disabled: true,
@@ -173,7 +174,8 @@ const submit = async () => {
     params: payload,
   };
 
-  const response = await store.dispatch('paymentAxiosPost', fullPayload);
+  const res = await store.dispatch('paymentAxiosPost', fullPayload);
+  const response = new PaymentStatus(res);
   state.transaction_id = response.transaction_id;
   if (response.status) {
     if (getBupayload.bulk) {
@@ -338,7 +340,9 @@ const TransactionIdStatus = async () => {
     url: getBupayload.value.pay_direction === "PAY_ON_DELIVERY" ? `/api/v1/process/pod/status/${state.transaction_id}` : `/api/v1/process/status/${state.transaction_id}`,
   };
 
-  const res = await store.dispatch('paymentAxiosGet', payload);
+  const response = await store.dispatch('paymentAxiosGet', payload);
+  const res = new PaymentStatus(response);
+
   if (res.status) {
     switch (res.transaction_status) {
       case "success":
@@ -366,6 +370,7 @@ const TransactionIdStatus = async () => {
         store.commit('setErrorText', res.message);
         showTimer.value = false;
         promptInfo.value = false;
+
         window.analytics.track('Payment processing failed', {
           ...commonTrackPayload(),
           reason: res.message,
@@ -373,10 +378,14 @@ const TransactionIdStatus = async () => {
           message: res.message,
           payment_method: state.defaultPaymentMethod?.pay_method_name,
         });
-        router.push({
-          name: "FailedView",
-          params: { mpesa: "mpesa" },
-        });
+        if (res.isDstimeout) {
+          state.showErrorModal = true;
+        } else {
+          router.push({
+            name: "FailedView",
+            params: { mpesa: "mpesa" },
+          });
+        }
         datadogRum.addError(new Error(res.message));
         break;
       case "pending":
@@ -400,7 +409,11 @@ const TransactionIdStatus = async () => {
     message: res.message,
     payment_method: state.defaultPaymentMethod?.pay_method_name,
   });
-  router.push({ name: "FailedView", params: { mpesa: "M-PESA" } });
+  if (res.isDstimeout) {
+    state.showErrorModal = true;
+  }  else {
+    router.push({ name: "FailedView", params: { mpesa: "M-PESA" } });
+  }
   datadogRum.addError(new Error(res.message));
 };
 
