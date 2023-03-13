@@ -295,7 +295,7 @@ export function usePayment() {
       return;
     }
 
-    if (getBupayload.value.isPayOnDelivery && state.defaultPaymentMethod.isCard()) {
+    if (getBupayload.value.isPayOnDelivery && state.defaultPaymentMethod.isCard) {
       router.push({name: 'AddCard'});
       return
     }

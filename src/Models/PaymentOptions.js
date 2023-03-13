@@ -69,7 +69,7 @@ class PaymentOption {
   getDisplayName = (translate) => {
     let result = '';
     switch (true) {
-      case this.isCard(): 
+      case this.isCard: 
         result = this.psp ?? 'Card';
         break;
       case this.isPayWithBankTransfer:

@@ -19,7 +19,7 @@
         
       </div>
 
-      <div class="text-body-2 text-gray70" v-if="getSelectedPayOption.isCard()">
+      <div class="text-body-2 text-gray70" v-if="getSelectedPayOption.isCard">
         <span >{{ $formatCardno(getSelectedPayOption.pay_method_details) }}</span>
         <div>
           <span>{{ $translate("expiry_date") }} {{ card_expiry || "N/A" }}</span>
@@ -101,7 +101,7 @@ export default {
     }
   },
   async mounted() {
-    if (this.getSelectedPayOption.isCard()) {
+    if (this.getSelectedPayOption.isCard) {
       await this.fetchCardDetails();
     }
     window.analytics.track("View Payment Option", {

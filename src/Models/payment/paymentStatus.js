@@ -15,7 +15,7 @@ class PaymentStatus {
   ];
   
   get isDstimeout() {
-    return this.DS_TIMEOUT_ERRORS.includes(this.sendy_error_code);
+    return PaymentStatus.DS_TIMEOUT_ERRORS.includes(this.sendy_error_code);
   }
 
 }

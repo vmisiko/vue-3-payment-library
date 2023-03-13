@@ -48,8 +48,11 @@ const store = {
     getPaymentMethods: (state) => state.paymentMethods,
     getSavedPayMethods: (state) => state.savedPayMethods,
     getBupayload: (state) => {
-      const buPayload = new BuPayload(state.bupayload);
-      return buPayload;
+      if (state.bupayload) {
+        const buPayload = new BuPayload(state.bupayload);
+        return buPayload;
+      }
+      return state.bupayload;
     },
     getErrorText: (state) => state.errorText,
     getTwoFACompleted: (state) => state.twoFACompleted,
