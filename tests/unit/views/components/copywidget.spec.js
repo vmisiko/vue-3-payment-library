@@ -1,5 +1,5 @@
 import { shallowMount, config } from '@vue/test-utils';
-import CopyWidget from '@/components/CopyWidget';
+import CopyWidget from '@/components/CopyWIdget';
 import { i18n } from "@/plugins/i18n";
 import { createStore } from "vuex";
 
