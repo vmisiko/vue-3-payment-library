@@ -28,7 +28,7 @@ const props = defineProps(['text'])
 const handleCopy = () => {
   const cb = navigator.clipboard;
   cb.writeText(props.text).then(() => {
-    store.dispatch('paymentNotification', { text: t("copied") });
+    store.dispatch('paymentNotification', { text: "Copied!" });
   });
 }
 

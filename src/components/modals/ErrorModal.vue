@@ -62,7 +62,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters('getBupayload')
+    ...mapGetters(['getBupayload'])
   },
   mounted() {
     this.show ? this.handleOpen() : this.handleClose();
