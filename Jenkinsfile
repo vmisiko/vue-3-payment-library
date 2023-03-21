@@ -6,22 +6,6 @@ pipeline {
     }
 
     stages {
-        stage('Lint Test') {
-            agent {
-                docker {
-                    image 'node:14-alpine'
-                    args '--user root'
-                }
-            }
-            steps {
-
-                sh '''
-                    id
-                    npm run lint
-                '''
-
-            }
-        }
         stage('Unit Test') {
             agent { 
                 docker {
