@@ -16,7 +16,7 @@ pipeline {
             steps {
                 cache(maxCacheSize: 900, caches: [
                 ]) {
-                    sh 'npm run test:coverage'
+                    sh 'npm run test-coverage'
                 }    
             }
             post {
