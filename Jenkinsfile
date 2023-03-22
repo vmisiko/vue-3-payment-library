@@ -33,7 +33,11 @@ pipeline {
             steps {
                 cache(maxCacheSize: 900, caches: [
                 ]) {
-                    sh 'npm run test-coverage'
+                    sh '''
+                        npm i @vue/cli-plugin-unit-jest
+                        npm i vue3-jest
+                        npm run test-coverage
+                    '''
                 }    
             }
             post {
