@@ -49,8 +49,7 @@ export function useChoosePayment() {
       ...commonTrackPayload(),
       previous_payment_option: state.defaultPaymentMethod?.pay_method_name,
       new_payment_option: method.pay_method_name,
-    });
-
+    }); 
     state.defaultPaymentMethod = method;
     const savedMethods = getSavedPayMethods.value;
     let selectedSavedMethod = {};

@@ -4,9 +4,9 @@
       <img :src="`${imageBaseUrl}/vgs.svg`" alt="">
     </div>
     <div class="mgl-2">
-      <img class="mgt-1" :src="`${imageBaseUrl}/padlock.svg`" alt="">
+      <img class="padlock" :src="`${imageBaseUrl}/padlock.svg`" alt="">
     </div>
-    <span class="text-secure mgl-2 mgt-1 ">This is a secure 128-bit SSL encrypted payment</span>
+    <span class="text-secure mgl-2 mgt-2">This is a secure 128-bit SSL encrypted payment</span>
   </div>
 
 </template>
@@ -16,3 +16,9 @@
 const imageBaseUrl = `https://sendy-payments.s3.eu-west-1.amazonaws.com/payment-icons`;
 
 </script>
+
+<style scoped>
+.padlock {
+  margin-top: 6px;
+}
+</style>

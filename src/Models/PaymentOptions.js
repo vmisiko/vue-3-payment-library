@@ -28,7 +28,7 @@ class PaymentOption {
   };
 
   get isCard() {
-    this.pay_method_id === PaymentMethod.PAYMENT_METHOD_ID_CARD;
+    return this.pay_method_id === PaymentMethod.PAYMENT_METHOD_ID_CARD;
   }
 
   get isPayWithBankTransfer() { 

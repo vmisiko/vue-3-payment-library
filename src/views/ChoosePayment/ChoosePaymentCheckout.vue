@@ -69,8 +69,8 @@
           </div>
         </div>
 
-        <div class="mgt-11">
-          <VgsSecure  />
+        <div class="mgt-11" v-if="defaultPaymentMethod.isCard" >
+          <VgsSecure />
         </div>
         
         <hr class="mgt-2" />
