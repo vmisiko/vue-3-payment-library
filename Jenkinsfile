@@ -4,14 +4,13 @@ pipeline {
         APP_NAME = "vue-3-payment-lib"
     }
     stages {
-        agent { 
-            docker {
-                image 'node:14-alpine'
-                args '--user root'
-            }
-        
         stage('Unit Test') {
-            
+            agent { 
+                docker {
+                    image 'node:14-alpine'
+                    args '--user root'
+                }
+            }
             steps {
                 cache(maxCacheSize: 900, caches: [
                 ]) {
@@ -71,6 +70,5 @@ pipeline {
               }
            }
         }       
-    }
     }
 }
