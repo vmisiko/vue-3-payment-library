@@ -1,16 +1,15 @@
 pipeline {
-    agent { 
-        docker {
-            image 'node:14-alpine'
-            args '--user root'
-        }
-    } 
+    agent: any
     environment {
         APP_NAME = "vue-3-payment-lib"
-        IMAGE_BASE_NAME = "${CI_REGISTRY}/${APP_NAME}"
     }
-
     stages {
+        agent { 
+            docker {
+                image 'node:14-alpine'
+                args '--user root'
+            }
+        
         stage('Unit Test') {
             
             steps {
@@ -43,6 +42,12 @@ pipeline {
         }
 
         stage('Code coverage') {
+            agent { 
+                docker {
+                    image 'node:14-alpine'
+                    args '--user root'
+                }
+            }
             steps {
                 cache(maxCacheSize: 900, caches: [
                 ]) {
