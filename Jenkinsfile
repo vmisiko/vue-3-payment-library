@@ -22,22 +22,6 @@ pipeline {
                     '''
                 }    
             }
-            post {
-                always {
-                  publishHTML target: [
-                    allowMissing         : false,
-                    alwaysLinkToLastBuild: false,
-                    keepAll             : true,
-                    reportDir            : 'coverage/lcov-report',
-                    reportFiles          : 'index.html',
-                    reportName           : 'Coverage Report - HTML'
-                  ]
-                  publishCoverage adapters: [cobertura(path: 'coverage/**.xml', mergeToOneReport: true)]
-                  catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
-                    junit "test-results/**.xml"  
-                }
-              }
-           }
         }
 
         stage('Code coverage') {
