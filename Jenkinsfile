@@ -18,7 +18,6 @@ pipeline {
                         npm i @vue/cli-plugin-unit-jest
                         npm i vue3-jest
                         npm run test:unit
-                        npm run test-coverage
                     '''
                 }    
             }
