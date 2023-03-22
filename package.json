@@ -9,7 +9,7 @@
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
     "build-lib": "vue-cli-service build --target lib --name @sendyit/pay src/main.js",
-    "test-coverage": "npx jest --coverage"
+    "test-coverage": "npx jest --coverage --reporter=cobertura"
   },
   "main": "./dist/@sendyit/pay.common.js",
   "files": [
@@ -21,6 +21,7 @@
     "@sentry/vue": "^7.12.1",
     "axios": "^0.27.2",
     "core-js": "^3.22.4",
+    "jest-junit": "^15.0.0",
     "mitt": "^3.0.0",
     "moment-duration-format": "^2.3.2",
     "moment-timezone": "^0.5.34",
