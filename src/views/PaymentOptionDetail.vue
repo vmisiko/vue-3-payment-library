@@ -19,7 +19,7 @@
         
       </div>
 
-      <div class="text-body-2 text-gray70" v-if="getSelectedPayOption.isCard()">
+      <div class="text-body-2 text-gray70" v-if="getSelectedPayOption.isCard">
         <span >{{ $formatCardno(getSelectedPayOption.pay_method_details) }}</span>
         <div>
           <span>{{ $translate("expiry_date") }} {{ card_expiry || "N/A" }}</span>
@@ -27,8 +27,8 @@
       </div>
 
       <hr class="mgt-10" />
-      <div v-if="!getSelectedPayOption.isMobileMoney()" class="mgt-8"></div>
-      <div v-if="!getSelectedPayOption.isMobileMoney()" class="mgt-8 text-btn direction-flex pointer" @click="removeCard">
+      <div v-if="!getSelectedPayOption.isMobileMoney" class="mgt-8"></div>
+      <div v-if="!getSelectedPayOption.isMobileMoney" class="mgt-8 text-btn direction-flex pointer" @click="removeCard">
         <IconView icon="delete" />
         <span class="text-btn">{{ `Remove ${getSelectedPayOption.getDisplayName($translate)}` }}</span>
       </div>
@@ -101,7 +101,7 @@ export default {
     }
   },
   async mounted() {
-    if (this.getSelectedPayOption.isCard()) {
+    if (this.getSelectedPayOption.isCard) {
       await this.fetchCardDetails();
     }
     window.analytics.track("View Payment Option", {

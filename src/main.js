@@ -5,9 +5,8 @@ import notification from "./components/notificationComponent";
 import sendyBtn from "./components/sendyBtn";
 import paymentLibraryMxn from "./mixins/paymentLibraryMxn";
 import "vue-tel-input/dist/vue-tel-input.css";
-import { i18n, messages  } from "./plugins/i18n";
+import { i18n } from "./plugins/i18n";
 import mitt from "mitt";
-import { createRouter , createWebHistory } from "vue-router";
 import { datadogRum } from '@datadog/browser-rum';
 export { useWithdrawals } from "./hooks/useWithdrawals";
 
@@ -40,11 +39,6 @@ export default {
     app.component("sendy-btn", sendyBtn);
 
     app.mixin(paymentLibraryMxn);
-
-    const libRouter = createRouter({
-      history: createWebHistory(),
-      routes: router,
-    });
 
     datadogRum.init({
       applicationId: '88cc1abf-0a01-43bc-abed-90244f9c14e1',

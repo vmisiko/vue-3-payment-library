@@ -21,7 +21,7 @@
       </div>
 
       <sendy-btn
-        v-if="payMethod.isMpesa()"
+        v-if="payMethod.isMpesa"
         :block="true"
         color="info"
         class="mgt-8"

@@ -34,10 +34,10 @@ class PaymentMethod {
   static PAYMENT_METHOD_CATEGORY_BANK = "Bank";
 
   static mobileMoneyPaymentMethods = [
-    this.PAYMENT_METHOD_ID_MPESA,
-    this.PAYMENT_METHOD_ID_MTN_MOMO,
-    this.PAYMENT_METHOD_ID_AIRTEL_MONEY,
-    this.PAYMENT_METHOD_ID_ORANGE_MONEY,
+    PaymentMethod.PAYMENT_METHOD_ID_MPESA,
+    PaymentMethod.PAYMENT_METHOD_ID_MTN_MOMO,
+    PaymentMethod.PAYMENT_METHOD_ID_AIRTEL_MONEY,
+    PaymentMethod.PAYMENT_METHOD_ID_ORANGE_MONEY,
   ];
 
 }

@@ -1,6 +1,6 @@
 {
   "name": "@sendyit/pay",
-  "version": "0.1.69",
+  "version": "0.1.70",
   "private": false,
   "description": "vue plugin library to facilitate payment",
   "scripts": {
@@ -8,7 +8,8 @@
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
-    "build-lib": "vue-cli-service build --target lib --name @sendyit/pay src/main.js"
+    "build-lib": "vue-cli-service build --target lib --name @sendyit/pay src/main.js",
+    "test-coverage": "npx jest --coverage --reporter=cobertura"
   },
   "main": "./dist/@sendyit/pay.common.js",
   "files": [
@@ -20,6 +21,7 @@
     "@sentry/vue": "^7.12.1",
     "axios": "^0.27.2",
     "core-js": "^3.22.4",
+    "jest-junit": "^15.0.0",
     "mitt": "^3.0.0",
     "moment-duration-format": "^2.3.2",
     "moment-timezone": "^0.5.34",
@@ -50,7 +52,7 @@
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-vue": "^8.0.3",
+    "eslint-plugin-vue": "^8.7.1",
     "jest": "^27.0.5",
     "prettier": "^2.4.1",
     "sass": "^1.32.7",
