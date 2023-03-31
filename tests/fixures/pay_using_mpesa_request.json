@@ -1,0 +1,19 @@
+{
+  "entity": 1,
+  "userid": "10249",      
+  "paymethod": 1,
+  "amount": 1,
+  "bulk": false,
+  "country": "KE",
+  "currency": "KES",
+  "firstname": "John",
+  "lastname": "Doe",
+  "email": "johndoe@gmail.com",
+  "txref":"1614657834009",
+  "bulkrefno": null,
+  "phonenumber": "0722000000",
+  "company_code":"FFKE",
+  "platform": "mobile",
+  "pay_direction": "PAY_IN",
+  "withdrawal_limit": null
+}

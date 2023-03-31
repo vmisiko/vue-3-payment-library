@@ -1,0 +1,13 @@
+{
+    "id": 275,
+    "user_id": "3435",
+    "pay_method_id": 1,
+    "pay_method_details": null,
+    "pay_detail_id": "0f07e7eb-dccc-4b99-9366-1f298ee5d0bf",
+    "pay_method_name": "M-PESA",
+    "default": 1,
+    "psp": null,
+    "category": "Mobile Money",
+    "stk_limit": 20,
+    "daily_limit": 30
+}

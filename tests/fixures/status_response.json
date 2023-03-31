@@ -1,0 +1,6 @@
+{
+    "transaction_status": "success",
+    "code": 200,
+    "status": true,
+    "message": "Card deleted successfully"
+}

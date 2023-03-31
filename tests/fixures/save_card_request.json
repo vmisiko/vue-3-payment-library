@@ -1,0 +1,13 @@
+{
+  "cardno": "1234123412341234",
+  "cvv": "123",
+  "expirydate":"07/35",
+  "country": "KE",
+  "currency": "KES",
+  "email": "jamesdoes@gmail.com",
+  "firstname": "James",
+  "lastname": "Doe",
+  "phonenumber": "0722000000",
+  "userid":"123456",
+  "company_code":"FFKE"
+}

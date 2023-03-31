@@ -1,0 +1,16 @@
+{
+    "transaction_status": "pending",
+    "code": 200,
+    "status": true,
+    "message": "Processing card save request",
+    "receipt_no": "073a8438-cee1-411d-8ebf-59ac34c2758e",
+    "transaction_id": "7df70801-dad6-4c0f-a003-fd086c24ba39",
+    "redirect": false,
+    "additional_data": [
+        {
+            "field_id": "cvv",
+            "field": "Enter cvv",
+            "type": "text"
+        }
+    ]
+}

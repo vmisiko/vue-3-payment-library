@@ -18,10 +18,9 @@ class PaymentOptionDataSource {
     };
 
 		try {
-			const response =  await store.dispatch("paymentAxiosPost", fullPayload);
+			const response =  await this.store.dispatch("paymentAxiosPost", fullPayload);
 			const res = new PaymentOptionReponseModel(response);
-			console.log(res.toDomain());
-			return  res.toDomain();
+			return  await res.toDomain();
 		} catch(err) {
 			return err;
 		}
@@ -47,7 +46,7 @@ class PaymentOptionDataSource {
       params: payload,
     };
 		try{
-			const response = await store.dispatch("paymentAxiosPost", fullPayload);
+			const response = await this.store.dispatch("paymentAxiosPost", fullPayload);
 			return response;
 		} catch(err) {
 			return err;
@@ -59,7 +58,7 @@ class PaymentOptionDataSource {
     const endpoint = "/api/v2/config/psp/safaricom/mpesa/pay_bill_config";
 
     const url = isSandbox ?  NetworkConstants.paymentServiceBaseStagingurl : NetworkConstants.paymentServiceBaseurl;
-    const headers = await store.dispatch("paymentCustomHeaders");
+    const headers = await this.store.dispatch("paymentCustomHeaders");
 
     const values = {
       params: payload,
@@ -85,7 +84,7 @@ class PaymentOptionDataSource {
         params: payload,
       };
 
-      const response = await store.dispatch('paymentAxiosPost', fullPayload);
+      const response = await this.store.dispatch('paymentAxiosPost', fullPayload);
 			return response;
 		} catch (error) {
 			return error;
@@ -98,7 +97,7 @@ class PaymentOptionDataSource {
 		};
 
 		try {
-			const response = await store.dispatch('paymentAxiosPost',fullPayload); 
+			const response = await this.store.dispatch('paymentAxiosPost',fullPayload); 
 			return response;
 		} catch(err) {
 			return err;
@@ -110,7 +109,7 @@ class PaymentOptionDataSource {
 			params: payload,
 		};
 		try {
-			const response = await store.dispatch('paymentAxiosPost', fullPayload);
+			const response = await this.store.dispatch('paymentAxiosPost', fullPayload);
 			return response;
 		} catch(err) {
 			return err;
@@ -123,7 +122,7 @@ class PaymentOptionDataSource {
 		};
 
 		try {
-			const response = await store.dispatch('paymentAxiosPost',fullPayload);
+			const response = await this.store.dispatch('paymentAxiosPost',fullPayload);
 			return response;
 		} catch(err) {
 			return err;
@@ -138,7 +137,7 @@ class PaymentOptionDataSource {
     };
 
 		try {
-			const response = await store.dispatch('paymentAxiosPost', fullPayload);
+			const response = await this.store.dispatch('paymentAxiosPost', fullPayload);
 			return response;
 		} catch (error) {
 			return error;
@@ -152,7 +151,7 @@ class PaymentOptionDataSource {
     };
 
 		try {
-			const response = await store.dispatch('paymentAxiosPost', fullPayload);
+			const response = await this.store.dispatch('paymentAxiosPost', fullPayload);
 			return response;
 		} catch (error) {
 			return error;
@@ -165,7 +164,7 @@ class PaymentOptionDataSource {
       url: "/api/v1/otp/get"
     }
 		try {
-			const result = await store.dispatch('paymentAxiosPost', fullPayload);
+			const result = await this.store.dispatch('paymentAxiosPost', fullPayload);
 			return result;
 		} catch (error) {
 			return error;
@@ -178,7 +177,7 @@ class PaymentOptionDataSource {
       params: payload
     }
 		try {
-			const result = await store.dispatch('paymentAxiosPost', fullPayload);
+			const result = await this.store.dispatch('paymentAxiosPost', fullPayload);
 			return result;
 		} catch (error) {
 			return error;
@@ -191,7 +190,7 @@ class PaymentOptionDataSource {
     };
 
 		try {
-			const response = await store.dispatch('paymentAxiosGet', fullPayload);
+			const response = await this.store.dispatch('paymentAxiosGet', fullPayload);
 			return response;
 		} catch (error) {
 			return error;
@@ -205,7 +204,7 @@ class PaymentOptionDataSource {
     };
 
 		try {
-			const response = await store.dispatch('paymentAxiosPost', fullPayload);
+			const response = await this.store.dispatch('paymentAxiosPost', fullPayload);
 			return response;
 		} catch (error) {
 			return error;
@@ -219,7 +218,7 @@ class PaymentOptionDataSource {
     };
 
 		try {
-			const response = await store.dispatch('paymentAxiosGet', fullPayload);
+			const response = await this.store.dispatch('paymentAxiosGet', fullPayload);
 			return response;
 		} catch (error) {
 			return error;

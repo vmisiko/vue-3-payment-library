@@ -1,0 +1,14 @@
+{
+    "user_id": "1",
+    "entity": 6,
+    "accounts": [
+        {
+            "bank_name": "bankName",
+            "account_number": "1",
+            "is_primary": true
+        }
+    ],
+    "status": true,
+    "message": "",
+    "account_status": ""
+}

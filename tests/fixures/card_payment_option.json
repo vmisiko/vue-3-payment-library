@@ -1,0 +1,20 @@
+{
+    "id": 223,
+    "user_id": "3435",
+    "pay_method_id": 2,
+    "pay_method_details": "5367-74XX-XXXX-3932",
+    "pay_detail_id": "2ca31774-a9f8-4112-861e-cd0377ea6cb1",
+    "pay_method_name": "Card",
+    "default": 0,
+    "transaction_limit": null,
+    "daily_limit": null,
+    "category": "Credit or Debit Card",
+    "psp": "MASTERCARD",
+    "withdrawal_limit": null,
+    "minimum_limit": null,
+    "bank": null,
+    "bank_account": null,
+    "phonenumber": null,
+    "bank_code": null,
+    "bank_name": null
+}

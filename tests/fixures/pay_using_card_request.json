@@ -1,0 +1,21 @@
+{
+    "country": "KE",
+    "amount": 1,
+    "paymethod": 2,
+    "cardno": "1234-12XX-XXXX-1234",
+    "phonenumber": null,
+    "txref": "RRRIIIAAAAKK",
+    "userid": "103728",
+    "currency": "KES",
+    "bulk": false,
+    "entity": 1,
+    "company_code":"FFKE",
+    "firstname": "John",
+    "lastname": "Doe",
+    "email": "johndoe@gmail.com",
+    "platform": "mobile",
+    "pay_direction": "PAY_IN",
+    "bank": null,
+    "bank_account": null,
+    "pay_detail_id": "0721649416"
+}

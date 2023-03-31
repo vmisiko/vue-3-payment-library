@@ -1,0 +1,17 @@
+{
+    "transaction_status": "success",
+    "code": 200,
+    "status": true,
+    "message": "Payment was successful",
+    "receipt_no": "073a8438-cee1-411d-8ebf-59ac34c2758e",
+    "transaction_id": "073a8438-cee1-411d-8ebf-59ac34c2758e",
+    "redirect": false,
+    "additional_data": [
+        {
+            "field_id": "cvv",
+            "field": "Enter cvv",
+            "type": "text"
+        }
+    ],
+    "sendy_error_code": ""
+}

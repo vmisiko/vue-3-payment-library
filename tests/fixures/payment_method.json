@@ -1,0 +1,9 @@
+ {
+    "payment_method_id": 1,
+    "name": "M-PESA",
+    "daily_limit": 30,
+    "transaction_limit": 20,
+    "minimum_amount": null,
+    "withdrawal_limit": null,
+    "minimum_limit": null
+}

@@ -1,0 +1,8 @@
+{
+    "user_id": "1",
+    "company_code": "FFKE",
+    "entity": 6,
+    "pay_detail_id": "1",
+    "payment_method": 2,
+    "references": ["REF-1", "REF-2"]
+}

@@ -1,0 +1,9 @@
+{
+    "user_id": "1",
+    "first_name": "John",
+    "surname": "Doe",
+    "email": "johndoe@example.com",
+    "mobile_number": "1",
+    "entity": 6,
+    "country_code": "NG"
+}

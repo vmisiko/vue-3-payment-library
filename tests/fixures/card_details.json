@@ -1,0 +1,8 @@
+{
+  "message": "Fetched card details",
+  "transaction_status": "success",
+  "cardno": "1234-12XX-XXXX-1234",
+  "expirydate": "01/35",
+  "status": true,
+  "code": 200
+}
