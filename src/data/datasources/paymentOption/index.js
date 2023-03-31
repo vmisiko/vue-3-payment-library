@@ -76,18 +76,155 @@ class PaymentOptionDataSource {
 			return err;
 		}
   }
+	
+	async savePaymentOption(payload) {
 
-	async getSaveCardStatus() {}
-  async saveCard() {}
-	async savePaymentOption() {}
-	async deletePaymentOption() {}
-	async deleteCard() {}
-	async fetchCardDetails() {}
-	async setUpPayByBank() {}
-	async payByBankOtp() {}
-	async validateOtp() {}
-	async getVirtualAccountBalance() {}
-	async listVirtualAccounts() {}
+		try {
+			const fullPayload = {
+        url: "/save_payment_method",
+        params: payload,
+      };
+
+      const response = await store.dispatch('paymentAxiosPost', fullPayload);
+			return response;
+		} catch (error) {
+			return error;
+		}
+	}
+	async deletePaymentOption(payload) {
+		const fullPayload = {
+			url: "/delete_payment_method",
+			params: payload,
+		};
+
+		try {
+			const response = await store.dispatch('paymentAxiosPost',fullPayload); 
+			return response;
+		} catch(err) {
+			return err;
+		}
+	}
+	async deleteCard(payload) {
+		const fullPayload = {
+			url: "/api/v1/card/delete",
+			params: payload,
+		};
+		try {
+			const response = await store.dispatch('paymentAxiosPost', fullPayload);
+			return response;
+		} catch(err) {
+			return err;
+		}
+	}
+	async fetchCardDetails(payload) {
+		const fullPayload = {
+			url: "/api/v1/card/fetch",
+			params: payload,
+		};
+
+		try {
+			const response = await store.dispatch('paymentAxiosPost',fullPayload);
+			return response;
+		} catch(err) {
+			return err;
+		}
+		
+	}
+
+	async openAccount(payload) {
+		const fullPayload = {
+      url:  "/api/v3/onepipe/open_account",
+      params: payload,
+    };
+
+		try {
+			const response = await store.dispatch('paymentAxiosPost', fullPayload);
+			return response;
+		} catch (error) {
+			return error;
+		}
+	}
+
+	async openAccountPOD(payload) {
+		const fullPayload = {
+      url:  "/api/v3/pod/pwt/open_account",
+      params: payload,
+    };
+
+		try {
+			const response = await store.dispatch('paymentAxiosPost', fullPayload);
+			return response;
+		} catch (error) {
+			return error;
+		}
+	}
+
+	async getOtp() {
+		const fullPayload = {
+      params: payload,
+      url: "/api/v1/otp/get"
+    }
+		try {
+			const result = await store.dispatch('paymentAxiosPost', fullPayload);
+			return result;
+		} catch (error) {
+			return error;
+		}
+	}
+
+	async validateOtp(payload) {
+		const fullPayload = {
+      url: "/api/v1/otp/validate",
+      params: payload
+    }
+		try {
+			const result = await store.dispatch('paymentAxiosPost', fullPayload);
+			return result;
+		} catch (error) {
+			return error;
+		}
+	}
+	async getVirtualAccountBalance(payload) {
+		const fullPayload = {
+      params: payload,
+      url: `/api/v3/onepipe/balance`,
+    };
+
+		try {
+			const response = await store.dispatch('paymentAxiosGet', fullPayload);
+			return response;
+		} catch (error) {
+			return error;
+		}
+   
+	}
+	async getVirtualAccountBalancePOD(payload) {
+		const fullPayload = {
+      params: payload,
+      url: '/api/v3/pod/pwt/balance',
+    };
+
+		try {
+			const response = await store.dispatch('paymentAxiosPost', fullPayload);
+			return response;
+		} catch (error) {
+			return error;
+		}
+   
+	}
+	async listVirtualAccounts(payload) {
+		const fullPayload = {
+      url: `/api/v3/onepipe/accounts/`,
+      params: payload,
+    };
+
+		try {
+			const response = await store.dispatch('paymentAxiosGet', fullPayload);
+			return response;
+		} catch (error) {
+			return error;
+		}
+	}
 }
 
 export default PaymentOptionDataSource;
