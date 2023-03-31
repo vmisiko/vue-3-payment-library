@@ -1,4 +1,4 @@
-import PaymentStatus from "../../Models/payment/paymentStatus";
+import PaymentStatus from "../../../Models/payment/paymentStatus";
 
 class PaymentDataSource {
 

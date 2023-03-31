@@ -9,6 +9,8 @@ import PaymentMethod from "../Models/paymentMethod";
 import PaymentOption from "../Models/PaymentOptions";
 
 export function usePayment() {
+  const paymentOptionDataSource = inject('paymentOptionDataSource');
+
   const store = useStore();
   const { t, route, router } = useGlobalProp();
   const { state } = useState();
@@ -29,28 +31,27 @@ export function usePayment() {
       pay_direction: getBupayload.value.pay_direction ? getBupayload.value.pay_direction :'PAY_IN',
     };
         
-    const fullPayload = {
-      url: !getBupayload.value.isPayOnDelivery ? "/payment_methods" : "/pod/pay_methods",
-      params: payload,
-    };
+    // const fullPayload = {
+    //   url: !getBupayload.value.isPayOnDelivery ? "/payment_methods" : "/pod/pay_methods",
+    //   params: payload,
+    // };
 
-    const response =  await store.dispatch("paymentAxiosPost", fullPayload);
+    // const response =  await store.dispatch("paymentAxiosPost", fullPayload);
+    const response = await paymentOptionDataSource.getPaymentOptions(payload, getBupayload.value.isPayOnDelivery);
+    console.log(response, "payment response in payment hooks");
     if (response.status) {
       const paymentMethods = paymentOptions
-        ? response.payment_methods.filter((option) =>
+        ? response.paymentMethods.filter((option) =>
             paymentOptions.includes(option.payment_method_id)
           )
-        : response.payment_methods
+        : response.paymentMethods
       const savedMethods = paymentOptions
-        ? response.saved_payment_methods.filter((option) =>
+        ? response.paymentOptions.filter((option) =>
             paymentOptions.includes(option.pay_method_id)
           )
-        : response.saved_payment_methods;
-
-      const paymentMethodsModel = paymentMethods.map((paymentMethod) => new PaymentMethod(paymentMethod));
-      const paymentOptions = savedMethods.map((paymentOption) => new PaymentOption(paymentOption));
-      store.commit("setPaymentMethods", paymentMethodsModel);
-      store.commit("setSavedPayMethods", paymentOptions);
+        : response.paymentOptions;
+      store.commit("setPaymentMethods", paymentMethods);
+      store.commit("setSavedPayMethods", savedMethods);
     }
   }
 

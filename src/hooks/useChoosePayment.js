@@ -1,4 +1,4 @@
-import { computed } from "vue";
+import { computed, inject } from "vue";
 import { useStore } from "vuex";
 import { useState } from "./useState";
 import { useGlobalProp } from "./globalProperties";
@@ -8,8 +8,8 @@ import { usePayment } from "./payment";
 import NetworkConstants from "../constants";
 import axios  from "axios";
 
-
 export function useChoosePayment() {
+  const paymentOptionDataSource = inject('paymentOptionDataSource');
   const { router, t, sendyOptions } = useGlobalProp();
   const store = useStore();
   const { state } = useState();
@@ -78,6 +78,7 @@ export function useChoosePayment() {
       url: `/set_default`,
       params: payload,
     };
+
     state.loading = true;
     const response = await store.dispatch("paymentAxiosPost", fullPayload);
     state.loading = false;
@@ -154,20 +155,21 @@ export function useChoosePayment() {
       reason: getBupayload.value.isPayOnDelivery ? "POD" : "INCOME",
     }
 
-    const endpoint = "/api/v2/config/psp/safaricom/mpesa/pay_bill_config";
+    // const endpoint = "/api/v2/config/psp/safaricom/mpesa/pay_bill_config";
 
-    const url = sendyOptions.config.VGS_ENVIRONMENT  === "sandbox" ?  NetworkConstants.paymentServiceBaseStagingurl : NetworkConstants.paymentServiceBaseurl;
-    const headers = await store.dispatch("paymentCustomHeaders");
+    // const url = sendyOptions.config.VGS_ENVIRONMENT  === "sandbox" ?  NetworkConstants.paymentServiceBaseStagingurl : NetworkConstants.paymentServiceBaseurl;
+    // const headers = await store.dispatch("paymentCustomHeaders");
+    const data = await paymentOptionDataSource.getPaybill(payload, sendyOptions.config.VGS_ENVIRONMENT  === "sandbox");
 
-    const values = {
-      params: payload,
-      headers: headers.headers,
-    };
+    // const values = {
+    //   params: payload,
+    //   headers: headers.headers,
+    // };
 
-    const {data} = await axios.get(
-      `${url}${endpoint}`,
-      values
-    );
+    // const {data} = await axios.get(
+    //   `${url}${endpoint}`,
+    //   values
+    // );
     return data;    
 
   }
