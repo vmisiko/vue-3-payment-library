@@ -9,6 +9,7 @@ import { i18n } from "./plugins/i18n";
 import mitt from "mitt";
 import { datadogRum } from '@datadog/browser-rum';
 import PaymentOptionDataSource from "./data/datasources/paymentOption";
+import axios from "axios";
 export { useWithdrawals } from "./hooks/useWithdrawals";
 
 
@@ -41,7 +42,7 @@ export default {
 
     app.mixin(paymentLibraryMxn);
 
-    app.provide("paymentOptionDataSource", new PaymentOptionDataSource(app.store));
+    app.provide("paymentOptionDataSource", new PaymentOptionDataSource(app.store, axios));
 
     datadogRum.init({
       applicationId: '88cc1abf-0a01-43bc-abed-90244f9c14e1',

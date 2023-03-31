@@ -1,0 +1,16 @@
+{
+    "currency": [
+      "KES"
+    ],
+    "description": "Used by transport or Fulfilment seller to make payments",
+    "entities": [
+      1,
+      4,
+      5,
+      6
+    ],
+    "name": "399905 - Transport Customer && Fulfillment Seller ",
+    "pay_direction": "PAY_IN",
+    "reason": "INCOME",
+    "short_code": 399905
+}

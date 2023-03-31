@@ -7,8 +7,9 @@ import PaymentOptionReponseModel from "../../Models/paymentOptionResponseModel";
 
 class PaymentOptionDataSource {
 
-  constructor(store) {
+  constructor(store, axios) {
     this.store = store;
+	this.axios = axios;
   }
 
 	async getPaymentOptions(payload, isPayOnDelivery) {
@@ -42,9 +43,9 @@ class PaymentOptionDataSource {
 
 	async setDefaultPaymentOption(payload) {
 		const fullPayload = {
-      url: `/set_default`,
-      params: payload,
-    };
+			url: `/set_default`,
+			params: payload,
+		};
 		try{
 			const response = await this.store.dispatch("paymentAxiosPost", fullPayload);
 			return response;
@@ -66,7 +67,7 @@ class PaymentOptionDataSource {
     };
 
 		try {
-			const {data} = await axios.get(
+			const {data} = await this.axios.get(
 				`${url}${endpoint}`,
 				values
 			);

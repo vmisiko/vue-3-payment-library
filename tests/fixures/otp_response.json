@@ -1,0 +1,9 @@
+{
+    "message": "otp Sent successfully",
+    "status": true,
+    "config": {
+        "provider": "infobip",
+        "pin_length": 4,
+        "request_id": "EA0D140267CFD18F571231720994A527"
+    }
+}

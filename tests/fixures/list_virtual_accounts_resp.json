@@ -1,14 +1,27 @@
 {
-    "user_id": "1",
+    "user_id": "user1234",
     "entity": 6,
     "accounts": [
-        {
-            "bank_name": "bankName",
-            "account_number": "1",
-            "is_primary": true
-        }
+      {
+        "account_number": "4550354876",
+        "bank_name": "Fidelity",
+        "bank_code": "070",
+        "is_primary": true
+      },
+      {
+        "account_number": "5501215771",
+        "bank_name": "SUPPORT MFB",
+        "bank_code": "295",
+        "is_primary": false
+      },
+      {
+        "account_number": "9017978558",
+        "bank_name": "Polaris Bank Limited",
+        "bank_code": "076",
+        "is_primary": false
+      }
     ],
     "status": true,
-    "message": "",
-    "account_status": ""
-}
+    "message": "Success",
+    "account_status": "pwt-active"
+  }

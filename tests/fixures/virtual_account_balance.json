@@ -1,6 +1,6 @@
 {
-    "status": "success",
-    "ledgerBalance": 0,
-    "availableBalance": 0,
-    "message": ""
+    "availableBalance": 79,
+    "ledgerBalance": 79,
+    "message": "Balance Request",
+    "status": "Success"
 }

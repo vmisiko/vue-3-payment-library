@@ -1,0 +1,9 @@
+{
+    "message": "MESSAGE_NOT_SENT",
+    "config": {
+      "provider": "infobip",
+      "pin_length": 4,
+      "request_id": "EA0D140267CFD18F571231720994A527"
+    },
+    "status": false
+  }
