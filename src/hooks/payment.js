@@ -30,13 +30,6 @@ export function usePayment() {
       user_id: getBupayload.value.user_id,
       pay_direction: getBupayload.value.pay_direction ? getBupayload.value.pay_direction :'PAY_IN',
     };
-        
-    // const fullPayload = {
-    //   url: !getBupayload.value.isPayOnDelivery ? "/payment_methods" : "/pod/pay_methods",
-    //   params: payload,
-    // };
-
-    // const response =  await store.dispatch("paymentAxiosPost", fullPayload);
     const response = await paymentOptionDataSource.getPaymentOptions(payload, getBupayload.value.isPayOnDelivery);
     console.log(response, "payment response in payment hooks");
     if (response.status) {

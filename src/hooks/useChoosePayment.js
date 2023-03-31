@@ -154,24 +154,8 @@ export function useChoosePayment() {
       pay_direction: getBupayload.value.isPayOnDelivery ? "PAY_IN" : getBupayload.value.pay_direction,
       reason: getBupayload.value.isPayOnDelivery ? "POD" : "INCOME",
     }
-
-    // const endpoint = "/api/v2/config/psp/safaricom/mpesa/pay_bill_config";
-
-    // const url = sendyOptions.config.VGS_ENVIRONMENT  === "sandbox" ?  NetworkConstants.paymentServiceBaseStagingurl : NetworkConstants.paymentServiceBaseurl;
-    // const headers = await store.dispatch("paymentCustomHeaders");
     const data = await paymentOptionDataSource.getPaybill(payload, sendyOptions.config.VGS_ENVIRONMENT  === "sandbox");
-
-    // const values = {
-    //   params: payload,
-    //   headers: headers.headers,
-    // };
-
-    // const {data} = await axios.get(
-    //   `${url}${endpoint}`,
-    //   values
-    // );
     return data;    
-
   }
 
   return {
