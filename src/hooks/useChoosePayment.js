@@ -5,8 +5,6 @@ import { useGlobalProp } from "./globalProperties";
 import { useSegement } from "./useSegment";
 import moment from "moment-timezone";
 import { usePayment } from "./payment";
-import NetworkConstants from "../constants";
-import axios  from "axios";
 
 export function useChoosePayment() {
   const paymentOptionDataSource = inject('paymentOptionDataSource');
