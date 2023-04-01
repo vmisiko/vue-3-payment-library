@@ -41,7 +41,7 @@ export default {
     app.component("sendy-btn", sendyBtn);
 
     app.mixin(paymentLibraryMxn);
-
+    app.provide('sendyOptions', options);
     app.provide("paymentOptionDataSource", new PaymentOptionDataSource(app.store, axios));
 
     datadogRum.init({
