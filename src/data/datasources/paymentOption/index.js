@@ -186,9 +186,9 @@ class PaymentOptionDataSource {
 	}
 	async getVirtualAccountBalance(payload) {
 		const fullPayload = {
-      params: payload,
-      url: `/api/v3/onepipe/balance`,
-    };
+		params: payload,
+		url: `/api/v3/onepipe/balance`,
+		};
 
 		try {
 			const response = await this.store.dispatch('paymentAxiosGet', fullPayload);

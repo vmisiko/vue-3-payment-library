@@ -56,6 +56,7 @@ export default {
         "https://sendy-web-apps-assets.s3.eu-west-1.amazonaws.com/payment-method-icons",
     };
   },
+  inject: ['paymentOptionDataSource'],
   computed: {
     ...mapGetters(["getBupayload"]),
     disableLogic() {
@@ -80,11 +81,13 @@ export default {
   methods: {
     async getBalance() {
       this.loading = true;
-      const fullPayload = {
-        url: `/api/v3/onepipe/balance/?entityId=${this.getBupayload.entity_id}&userId=${this.getBupayload.user_id}&countryCode=${this.getBupayload.country_code}`,
+      const payload = {
+        entityId:this.getBupayload.entity_id,
+        userId:this.getBupayload.user_id,
+        countryCode: this.getBupayload.country_code,
       };
-
-      const response = await this.$paymentAxiosGet(fullPayload);
+      
+      const response = await this.paymentOptionDataSource.getVirtualAccountBalance(payload);
       this.loading = false;
       this.balance = response.availableBalance;
     },

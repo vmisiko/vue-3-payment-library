@@ -1,0 +1,21 @@
+{
+    "user_id": "JoyceTest",
+    "pay_method_id": 1,
+    "pay_method_details": null,
+    "pay_detail_id": "c35055ee-e69c-4d72-8cac-10568fd11842",
+    "status": 1,
+    "pay_direction": null,
+    "id": 1346,
+    "pay_method_name": "M-PESA",
+    "default": 1,
+    "psp": "SAFARICOM",
+    "category": "Mobile Money",
+    "stk_limit": 10,
+    "daily_limit": 300000,
+    "transaction_limit": 10,
+    "minimum_limit": 5,
+    "withdrawal_limit": 50,
+    "bank_code": null,
+    "bank_name": null,
+    "phonenumber": null
+}

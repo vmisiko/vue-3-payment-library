@@ -1,0 +1,21 @@
+{
+    "user_id": "12345",
+    "entity_id": "3",
+    "currency": "KES",
+    "country_code": "KE",
+    "amount": "5",
+    "phonenumber": "0721649416",
+    "success_callback_url": "",
+    "fail_callback_url": "",
+    "txref": "PRiAAANK2",
+    "bulk": false,
+    "paybill_no": "",
+    "email": "victormisiko.vm@gmail.com",
+    "authToken": "",
+    "firstname": "",
+    "lastname": "",
+    "payment_options": "[1,2]",
+    "company_code": "FFKE",
+    "locale": "en",
+    "resolve_payment_message": "We are unable to process your transaction. Your card has insufficient funds."
+}
