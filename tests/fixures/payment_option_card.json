@@ -1,0 +1,21 @@
+{
+    "user_id": "JoyceTest",
+    "pay_method_id": 2,
+    "pay_method_details": "4407-83XX-XXXX-0259",
+    "pay_detail_id": "06f0ac7c-6e47-4816-9698-f4cde5f180d6",
+    "status": 1,
+    "pay_direction": null,
+    "id": 1497,
+    "pay_method_name": "Card",
+    "default": 0,
+    "psp": "VISA",
+    "category": "Credit or Debit Card",
+    "stk_limit": 0,
+    "daily_limit": 0,
+    "transaction_limit": 1000000,
+    "minimum_limit": 10,
+    "withdrawal_limit": 0,
+    "bank_code": null,
+    "bank_name": null,
+    "phonenumber": null
+  }
