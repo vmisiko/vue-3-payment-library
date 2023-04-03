@@ -1,0 +1,21 @@
+{
+    "user_id": "user1234",
+    "pay_method_id": 20,
+    "pay_method_details": "122",
+    "pay_detail_id": "4550354876",
+    "status": 1,
+    "pay_direction": null,
+    "id": 1374,
+    "pay_method_name": "Virtual Accounts",
+    "default": 0,
+    "psp": null,
+    "category": "Bank",
+    "stk_limit": null,
+    "daily_limit": 50000,
+    "transaction_limit": null,
+    "minimum_limit": null,
+    "withdrawal_limit": null,
+    "bank_code": "070",
+    "bank_name": "Fidelity",
+    "phonenumber": "254721649416"
+  }
