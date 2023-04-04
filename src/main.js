@@ -42,7 +42,7 @@ export default {
 
     app.mixin(paymentLibraryMxn);
     app.provide('sendyOptions', options);
-    app.provide("paymentOptionDataSource", new PaymentOptionDataSource(app.store, axios));
+    app.provide("paymentOptionDataSource", new PaymentOptionDataSource(options.store, axios));
 
     datadogRum.init({
       applicationId: '88cc1abf-0a01-43bc-abed-90244f9c14e1',

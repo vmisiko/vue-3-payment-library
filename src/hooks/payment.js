@@ -1,12 +1,10 @@
-import { computed } from "vue";
+import { computed, inject } from "vue";
 import { useStore } from "vuex";
 import { useState } from "./useState";
 import { useGlobalProp } from "./globalProperties";
 import { useSegement } from "./useSegment";
 import { usePayBybankSetup } from './payBybankSetup';
 import { datadogRum } from "@datadog/browser-rum";
-import PaymentMethod from "../Models/paymentMethod";
-import PaymentOption from "../Models/PaymentOptions";
 
 export function usePayment() {
   const paymentOptionDataSource = inject('paymentOptionDataSource');
@@ -30,6 +28,7 @@ export function usePayment() {
       user_id: getBupayload.value.user_id,
       pay_direction: getBupayload.value.pay_direction ? getBupayload.value.pay_direction :'PAY_IN',
     };
+    const paymentOptions = getBupayload.value.payment_options;
     const response = await paymentOptionDataSource.getPaymentOptions(payload, getBupayload.value.isPayOnDelivery);
     console.log(response, "payment response in payment hooks");
     if (response.status) {
