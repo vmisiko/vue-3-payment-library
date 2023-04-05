@@ -1,5 +1,9 @@
 {
     "transaction_status": "failed",
     "code": 200,
-    "status": true
-}
+    "status": false,
+    "message": "We are unable to send a payment request to your phone. Contact your mobile network operator and request a SIM card update or ensure your phone is online",
+    "receipt_no": null,
+    "transaction_id": "7f1c9f12-61a9-43b2-8cd1-c2c18fcac930",
+    "sendy_error_code": "DS_TIMEOUT"
+  }
