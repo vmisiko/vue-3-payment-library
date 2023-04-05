@@ -15,10 +15,10 @@
       <div class="card" v-else>
         <TopInfo :icon="icon" :title="title" />
 
-        <span v-if="creditCards.length !== 0" class="mgt-2 text-overline">{{
-          $translate("credit_card_payment")
+        <span v-if="creditCards?.length !== 0" class="mgt-2 text-overline">{{
+          t("credit_card_payment")
         }}</span>
-        <div class="" v-if="creditCards.length !== 0">
+        <div class="" v-if="creditCards?.length !== 0">
           <div
             v-for="(card, index) in creditCards"
             :key="index"
@@ -33,10 +33,10 @@
           </div>
         </div>
 
-        <span v-if="savedMobile.length !== 0" class="mgt-8 text-overline">{{
-          $translate("mobile_money")
+        <span v-if="savedMobile?.length !== 0" class="mgt-8 text-overline">{{
+          t("mobile_money")
         }}</span>
-        <div v-if="savedMobile.length !== 0">
+        <div v-if="savedMobile?.length !== 0">
           <div
             v-for="(mobile, index) in savedMobile"
             :key="index"
@@ -51,8 +51,8 @@
           </div>
         </div>
 
-        <div class="mgt-8" v-if="virtualAccounts.length !== 0">
-          <span class="text-overline"> {{ $translate('bank_transfer') }}</span>
+        <div class="mgt-8" v-if="virtualAccounts?.length !== 0">
+          <span class="text-overline"> {{ t('bank_transfer') }}</span>
           <div>
             <div
               v-for="(vaccount, index) in virtualAccounts"
@@ -69,7 +69,7 @@
           </div>
         </div>
 
-        <div class="mgt-11" v-if="defaultPaymentMethod.isCard" >
+        <div class="mgt-11" v-if="defaultPaymentMethod?.isCard" >
           <VgsSecure />
         </div>
         
@@ -78,11 +78,11 @@
         <div class="mgt-4 direction-flex pda-3">
           <div class="">
             <span class="text-caption text-gray70">{{
-              $translate("amount_to_pay")
+              t("amount_to_pay")
             }}</span>
             <div class="payment-text-secondary">
-              {{ getBupayload.currency }}
-              {{ $formatCurrency(getBupayload.amount) }}
+              {{ getBupayload?.currency }}
+              {{ $formatCurrency(getBupayload?.amount) }}
             </div>
           </div>
           <span class="spacer"></span>
@@ -93,7 +93,7 @@
             :loading="getLoading"
             :disabled="!picked"
           >
-            {{ $translate("confirm_and_pay") }}
+            {{ t("confirm_and_pay") }}
           </sendy-btn>
         </div>
       </div>
@@ -124,8 +124,9 @@ import { useChoosePayment } from "../../hooks/useChoosePayment";
 import { usePayment } from "../../hooks/payment";
 import { useState } from "../../hooks/useState";
 import { useSegement } from '../../hooks/useSegment';
-import { useGlobalProp } from '@/hooks/globalProperties';
+import { useGlobalProp } from "../../hooks/globalProperties";
 import VgsSecure from "../../components/vgsSecure.vue";
+
 
 export default {
   name: "ChoosePaymentCheckout",
@@ -141,16 +142,16 @@ export default {
   data() {
     return {
       icon: "back",
-      title: this.$translate("choose_payment_option"),
+      title: this.t("choose_payment_option"),
     };
   },
   setup() {
     const { state } = useState();
-    const { router } = useGlobalProp();
     const { retrievePaymentMethods, getDefaultpayMethod, submit } =
       usePayment();
     const store = useStore();
     const { commonTrackPayload } = useSegement();
+    const { t } = useGlobalProp();
 
     const {
       creditCards,
@@ -198,6 +199,8 @@ export default {
       addPaymentOption,
       handleErrorModalClose,
       submit,
+      getDefaultpayMethod,
+      t,
     };
   },
 };

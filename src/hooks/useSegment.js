@@ -19,8 +19,8 @@ export function useSegement() {
     if (!analytics.initialize)
       if (analytics.invoked)
         window.console &&
-          console.error &&
-          console.error("Segment snippet included twice.");
+          console?.error &&
+          console?.error("Segment snippet included twice.");
       else {
         analytics.invoked = !0;
         analytics.methods = [
@@ -66,7 +66,7 @@ export function useSegement() {
             key +
             "/analytics.min.js";
           var n = document.getElementsByTagName("script")[0];
-          n.parentNode.insertBefore(t, n);
+          n?.parentNode?.insertBefore(t, n);
           analytics._loadOptions = e;
         };
         const segmentKey = sendyOptions.config.VGS_ENVIRONMENT === 'sandbox' ? "rKWx4tQ7ZV5kKMJAODDbtwrpewLjA0DV" : "926xrVY1VJtPAPzFx5E9UjxjRJFGOBor";

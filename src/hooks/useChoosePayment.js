@@ -72,13 +72,8 @@ export function useChoosePayment() {
       entity_id: parseInt(getBupayload.value.entity_id),
     };
 
-    const fullPayload = {
-      url: `/set_default`,
-      params: payload,
-    };
-
     state.loading = true;
-    const response = await store.dispatch("paymentAxiosPost", fullPayload);
+    const response = await paymentOptionDataSource.setDefaultPaymentOption(payload);
     state.loading = false;
     if (response.status) {
       window.analytics.track("Change Payment option", {
@@ -91,7 +86,7 @@ export function useChoosePayment() {
     store.dispatch("paymentNotification", {
       type: response.status ? "" : "error",
       text: response.status
-        ? `${method.pay_method_name} ${t('selected_payment_name')}`
+        ? `${method.pay_method_name} selected for payment`
         : t('request_failed'),
     });
   }

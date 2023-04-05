@@ -26,7 +26,6 @@ describe('PaymentOptionDataSource', () => {
 			const mockResult = new PaymentOptionReponseModel(mockResponse).toDomain();
 
       const result = await dataSource.getPaymentOptions(payload, false);
-			// console.log(result, "result");
       expect(mockStore.dispatch).toHaveBeenCalledWith('paymentAxiosPost', {
         url: '/payment_methods',
         params: payload,

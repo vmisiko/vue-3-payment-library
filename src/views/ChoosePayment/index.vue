@@ -6,7 +6,7 @@
       <TopInfo :icon="icon" :title="title" />
 
       <span v-if="creditCards?.length !== 0" class="mgt-2 text-overline">{{
-        $translate("credit_card_payment")
+        t("credit_card_payment")
       }}</span>
       <div class="" v-if="creditCards?.length !== 0">
         <div
@@ -15,6 +15,7 @@
           class="mgt-4"
         >
           <ChooseOption
+            id="choose-card"
             :paymentOption="card"
             :value="card.pay_detail_id"
             v-model="picked"
@@ -24,9 +25,9 @@
       </div>
 
       <span v-if="savedMobile?.length !== 0" class="mgt-8 text-overline">{{
-        $translate("mobile_money")
+        t("mobile_money")
       }}</span>
-      <div v-if="savedMobile.length !== 0">
+      <div v-if="savedMobile?.length !== 0">
         <div
           v-for="(mobile, index) in savedMobile"
           :key="index"
@@ -42,7 +43,7 @@
       </div>
 
       <div class="mgt-8" v-if="virtualAccounts?.length">
-        <span class="text-overline"> {{ $translate('bank_transfer') }}</span>
+        <span class="text-overline"> {{ t('bank_transfer') }}</span>
         <div>
           <div
             v-for="(vaccount, index) in virtualAccounts"
@@ -61,8 +62,8 @@
 
       <hr class="mgt-5" />
 
-      <span class="link mgt-5" @click="addPaymentOption">
-        + {{ $translate("add_payment_option") }}</span
+      <span id="add-payment" class="link mgt-5" @click="addPaymentOption">
+        + {{ t("add_payment_option") }}</span
       >
 
       <div class="mgt-4 text-right">
@@ -73,7 +74,7 @@
           @click="handleRouting"
           :loading="loading"
         >
-          {{ $translate("continue") }}
+          {{ t("continue") }}
         </sendy-btn>
       </div>
     </div>
@@ -90,6 +91,7 @@ import { useChoosePayment } from "../../hooks/useChoosePayment";
 import { usePayment } from "../../hooks/payment";
 import { useState } from "../../hooks/useState";
 import { useSegement } from '../../hooks/useSegment';
+import { useGlobalProp } from "../../hooks/globalProperties";
 
 export default {
   name: "ChoosePayment",
@@ -101,7 +103,7 @@ export default {
   data() {
     return {
       icon: "back",
-      title: this.$translate("choose_payment_option"),
+      title: this.t("choose_payment_option"),
       loadingText: "Loading..",
     };
   },
@@ -110,7 +112,7 @@ export default {
     const store = useStore();
     const { state } = useState();
     const { commonTrackPayload } = useSegement();
-
+    const { t } = useGlobalProp();
     const {
       creditCards,
       savedMobile,
@@ -157,6 +159,7 @@ export default {
       update,
       handleRouting,
       addPaymentOption,
+      t,
     };
   },
 };

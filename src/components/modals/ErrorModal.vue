@@ -14,7 +14,7 @@
         </div>
       </div>
 
-      <div v-if="$route.name ==='AddCard' && getBupayload.isPayOnDelivery ">
+      <div v-if="$route?.name ==='AddCard' && getBupayload.isPayOnDelivery ">
 
         <sendy-btn
           :block="true"
@@ -46,7 +46,6 @@
     </div>
   </div>
 </template>
-
 <script>
 import { mapGetters } from 'vuex';
 
@@ -70,11 +69,15 @@ export default {
   methods: {
     handleOpen() {
       let el = this.$refs.errorModal;
-      el.style.display = "block";
+      if (el) {
+        el.style.display = "block";
+      }
     },
     handleClose() {
       let el = this.$refs.errorModal;
-      el.style.display = "none";
+      if (el) {
+        el.style.display = "none";
+      }
     },
     handleChange() {
       this.$router.push({ name: 'ChoosePaymentCheckout' });
@@ -105,7 +108,7 @@ export default {
   margin: auto;
   padding: 32px;
   border: 1px solid #888;
-  border-radius: 4px;
+  border-radius:4px;
   width: 300px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   -webkit-animation-name: animatetop;

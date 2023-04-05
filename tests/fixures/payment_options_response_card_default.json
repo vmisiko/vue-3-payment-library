@@ -1,0 +1,61 @@
+{
+    "status": true,
+    "payment_methods": [
+      {
+        "payment_method_id": 2,
+        "name": "Card",
+        "daily_limit": null,
+        "stk_limit": null,
+        "localised_names": "{\n \"en\":\"Card\",\n \"fr\":\"Carte\"\n}",
+        "minimum_limit": 10,
+        "transaction_limit": 1000000,
+        "pay_category_id": 2,
+        "category": "Credit or Debit Card",
+        "withdrawal_limit": 0
+      }
+    ],
+    "saved_payment_methods": [
+      {
+        "user_id": "JoyceTest",
+        "pay_method_id": 1,
+        "pay_method_details": null,
+        "pay_detail_id": "c35055ee-e69c-4d72-8cac-10568fd11842",
+        "status": 1,
+        "pay_direction": null,
+        "id": 1346,
+        "pay_method_name": "M-PESA",
+        "default": 0,
+        "psp": "SAFARICOM",
+        "category": "Mobile Money",
+        "stk_limit": 10,
+        "daily_limit": 300000,
+        "transaction_limit": 10,
+        "minimum_limit": 5,
+        "withdrawal_limit": 50,
+        "bank_code": null,
+        "bank_name": null,
+        "phonenumber": null
+      },
+      {
+        "user_id": "JoyceTest",
+        "pay_method_id": 2,
+        "pay_method_details": "4407-83XX-XXXX-0259",
+        "pay_detail_id": "06f0ac7c-6e47-4816-9698-f4cde5f180d6",
+        "status": 1,
+        "pay_direction": null,
+        "id": 1497,
+        "pay_method_name": "Card",
+        "default": 1,
+        "psp": "VISA",
+        "category": "Credit or Debit Card",
+        "stk_limit": 0,
+        "daily_limit": 0,
+        "transaction_limit": 1000000,
+        "minimum_limit": 10,
+        "withdrawal_limit": 0,
+        "bank_code": null,
+        "bank_name": null,
+        "phonenumber": null
+      }
+    ]
+  }
