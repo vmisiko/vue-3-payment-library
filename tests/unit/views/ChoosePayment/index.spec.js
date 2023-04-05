@@ -85,7 +85,6 @@ describe('ChoosePayment', () => {
 	});
 
 	it('displays Top Info with correct title', async () => {
-		await flushPromises()
 		expect(wrapper.findComponent({name: 'TopInfo'}).isVisible()).toBe(true);
 		expect(wrapper.vm.icon).toContain('back');
 	});
