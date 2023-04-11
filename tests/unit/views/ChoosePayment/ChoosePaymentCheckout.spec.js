@@ -53,11 +53,11 @@ store = createStore({
 });
 config.global.plugins = [i18n, store];
 
-formatCurrency = jest.fn();
+const formatCurrency = jest.fn();
 config.global.mocks = {
   $translate: (key) => i18n.global.t(key),
   t: (key) => i18n.global.t(key),
-  $formatCurrency: jest.fn().mockReturnValue('2,000'),
+  $formatCurrency: formatCurrency.mockReturnValue('2,000'),
 };
 
 

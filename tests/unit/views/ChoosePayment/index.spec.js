@@ -51,14 +51,14 @@ store = createStore({
   state,
 });
 
-formatCurrency = jest.fn();
+const formatCurrency = jest.fn();
 const mockRouter = {
 	push: jest.fn(),
 }
 config.global.mocks = {
   $translate: (key) => i18n.global.t(key),
   t: jest.fn(),
-  $formatCurrency: jest.fn().mockReturnValue('2,000'),
+  $formatCurrency: formatCurrency.mockReturnValue('2,000'),
 	$router: mockRouter,	
 	router: mockRouter,	
 };

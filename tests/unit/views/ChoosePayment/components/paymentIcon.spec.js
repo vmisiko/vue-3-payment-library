@@ -1,5 +1,5 @@
 import { shallowMount } from "@vue/test-utils";
-import PaymentIcon from "../../../../../src/views/ChoosePayment/components/paymentIcon";
+import PaymentIcon from "../../../../../src/views/ChoosePayment/components/PaymentIcon";
 import PaymentOption from '../../../../../src/Models/PaymentOptions';
 import fixtureReader from "../../../../fixures/fixure_reader";
 
