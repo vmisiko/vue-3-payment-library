@@ -1,5 +1,5 @@
 import { shallowMount, config } from '@vue/test-utils';
-import ChooseOption from '@/views/ChoosePayment/components/ChooseOption';
+import ChooseOption from '@/views/ChoosePayment/components/chooseOption';
 import { i18n } from "@/plugins/i18n";
 import { createStore } from "vuex";
 import fixtureReader from '../../../../fixures/fixure_reader';

@@ -95,7 +95,6 @@ describe('ChoosePayment', () => {
 
 	it.skip('Redirect to Add Payment Method page when Add payment method is tapped', async () => {
 		wrapper = shallowMount(ChoosePayment);
-		console.log(wrapper.find('#add-payment'));
 		await wrapper.find('#add-payment').trigger('click');
 		expect(mockRouter.push).toHaveBeenCalledTimes(1);
 		expect(mockRouter.push).toHaveBeenCalledWith('/add-payment');
