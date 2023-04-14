@@ -117,6 +117,7 @@ import TimerModal from "../components/modals/timerModal";
 import paymentGenMxn from "../mixins/paymentGenMxn";
 import { useChoosePayment } from "../hooks/useChoosePayment";
 import CopyWidget from "../components/CopyWIdget";
+import { useGlobalProp } from '../hooks/globalProperties';
 
 export default {
   name: "MpesaC2B",
@@ -130,6 +131,7 @@ export default {
     const shortCode = ref(null);
     const loadingShortCode = ref(false);
     const { getPaybill } = useChoosePayment();
+    const { t } = useGlobalProp();
     
     onMounted(async () => {
       loadingShortCode.value= true;
@@ -142,12 +144,13 @@ export default {
       getPaybill,
       shortCode,
       loadingShortCode,
+      t,
     }
   },
   data() {
     return {
       icon: "back",
-      title: this.$translate("pay_with_mpesa"),
+      title: this.t("pay_with_mpesa"),
       loading: false,
       poll_count: 0,
       poll_limit: 30,
@@ -181,8 +184,8 @@ export default {
             if (poll_count === that.poll_limit - 1) {
               that.loading = false;
               that.showTimer = false;
-              (that.promptInfo = false),
-                that.setErrorText(this.$translate("failed_to_charge_using_mpesa"));
+              that.promptInfo = false;
+              that.setErrorText(that.t("failed_to_charge_using_mpesa"));
               that.$router.push({
                 name: "FailedView",
                 params: { mpesa: "mpesa" },
@@ -217,7 +220,7 @@ export default {
             case "failed":
               this.poll_count = this.poll_limit;
               this.loading = false;
-              this.setErrorText(res.message);
+              this.setErrorText('Your paybill payment has not yet been received, please make the payment and retry.');
               this.showTimer = false;
               (this.promptInfo = false),
                 this.$router.push({
@@ -232,11 +235,11 @@ export default {
           }
           return res;
         }
-
         this.poll_count = this.poll_limit;
         this.loading = false;
         this.showTimer = false;
-        (this.promptInfo = false), this.setErrorText(res.message);
+        this.promptInfo = false;
+        this.setErrorText('Your paybill payment has not yet been received, please make the payment and retry.');
         this.$router.push({ name: "FailedView", params: { mpesa: "mpesa" } });
       });
     },
