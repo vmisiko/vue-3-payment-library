@@ -185,7 +185,7 @@ export default {
               that.loading = false;
               that.showTimer = false;
               that.promptInfo = false;
-              that.setErrorText(that.t("failed_to_charge_using_mpesa"));
+              that.setErrorText('Your paybill payment has not yet been received, please make the payment and retry. In case the error persists, contact our customer support team for assistance.');
               that.$router.push({
                 name: "FailedView",
                 params: { mpesa: "mpesa" },
@@ -220,7 +220,7 @@ export default {
             case "failed":
               this.poll_count = this.poll_limit;
               this.loading = false;
-              this.setErrorText('Your paybill payment has not yet been received, please make the payment and retry.');
+              this.setErrorText('Your paybill payment has not yet been received, please make the payment and retry. In case the error persists, contact our customer support team for assistance.');
               this.showTimer = false;
               (this.promptInfo = false),
                 this.$router.push({
@@ -239,7 +239,7 @@ export default {
         this.loading = false;
         this.showTimer = false;
         this.promptInfo = false;
-        this.setErrorText('Your paybill payment has not yet been received, please make the payment and retry.');
+        that.setErrorText('Your paybill payment has not yet been received, please make the payment and retry. In case the error persists, contact our customer support team for assistance.');
         this.$router.push({ name: "FailedView", params: { mpesa: "mpesa" } });
       });
     },
