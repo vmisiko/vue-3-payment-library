@@ -170,7 +170,7 @@ const mixin = {
     $formatCardno(card) {
       const first = card.substr(0, 4);
       const last = card.substr(-4);
-      return `${first} **** ${last}`;
+      return `${first} **** ${last}`;   
     },
     $handlePaymentRouting() {
       const entryRoute = localStorage.entry_route;

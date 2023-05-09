@@ -65,6 +65,9 @@
     .pda-#{$size} {
       padding: mult($size) !important;
     }
+    .pdy-#{$size} {
+      padding: mult($size) 0 !important;
+    }
   }
 
   .mgy-auto {
@@ -343,8 +346,12 @@
     border: 0.5px solid #E2E7ED;
     box-sizing: border-box;
     border-radius: 4px;
+    cursor: pointer;
   }
 
+  .option-border:hover {
+    background-color: rgb(243 244 246);
+  }
   .disabled {
     pointer-events: none;
     opacity: 0.4;
@@ -369,3 +376,18 @@
 .icon-size {
   width: 10% !important;
 }
+
+$space-y-ratio: 0.25; // adjust this to change the spacing ratio
+
+@mixin space-y($n) {
+  $space-y: calc(#{$space-y-ratio} * #{$n} * 1rem);
+  > :not([hidden]) ~ :not([hidden]) {
+    margin-top: $space-y;
+  }
+}
+
+
+
+
+
+

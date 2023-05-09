@@ -8,24 +8,24 @@
       <span v-if="creditCards.length !== 0" class="mgt-2 text-overline">{{
         $translate("credit_card_payment")
       }}</span>
-      <div class="" v-if="creditCards.length !== 0">
-        <div v-for="(card, index) in creditCards" :key="index">
+      <div class="space-y-8" v-if="creditCards.length !== 0">
+        <div class="mgt-2" v-for="(card, index) in creditCards" :key="index">
           <PaymentOption :payMethod="card" />
         </div>
       </div>
 
-      <span v-if="savedMobile.length !== 0" class="mgt-8 text-overline">{{
+      <span v-if="savedMobile.length !== 0" class="mgt-8 text-overline space-y-2">{{
         $translate("mobile_money")
       }}</span>
-      <div v-if="savedMobile.length !== 0">
-        <div v-for="(mobile, index) in savedMobile" :key="index">
+      <div v-if="savedMobile.length !== 0" class="space-y-8">
+        <div class="mgt-2" v-for="(mobile, index) in savedMobile" :key="index">
           <PaymentOption :payMethod="mobile" />
         </div>
       </div>
 
       <div class="mgt-8" v-if="virtualAccounts.length !== 0">
         <span class="text-overline"> BANK TRANSFER</span>
-        <div>
+        <div class="space-y-2">
           <div v-for="(vaccount, index) in virtualAccounts" :key="index">
             <PaymentOption :payMethod="vaccount" />
           </div>

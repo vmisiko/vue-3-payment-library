@@ -20,7 +20,7 @@
       </div>
 
       <div class="text-body-2 text-gray70" v-if="getSelectedPayOption.isCard">
-        <span >{{ $formatCardno(getSelectedPayOption.pay_method_details) }}</span>
+        <span >{{ getSelectedPayOption.pay_method_details ? $formatCardno(getSelectedPayOption.pay_method_details) : $translate('credit_stroke_debit_card')  }}</span>
         <div>
           <span>{{ $translate("expiry_date") }} {{ card_expiry || "N/A" }}</span>
         </div>

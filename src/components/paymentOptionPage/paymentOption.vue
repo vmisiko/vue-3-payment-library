@@ -1,14 +1,13 @@
 <template>
   <div>
-    <div class="text-caption-1 direction-flex pda-3" @click="handleSelect">
+    <div class="text-caption-1 direction-flex pda-4 option-border" @click="handleSelect">
       <PaymentIcon class="icon-size" :paymentOption="payMethod" />
-      <PaymentOptionTypeText  
+      <PaymentOptionTypeText 
+        class="mgy-auto ml-2"
         :paymentOption="payMethod"
       />
       <span class="spacer"></span>
-      <div class="">
-        <IconView class="mgy-auto" icon="greator" />
-      </div>
+      <IconView class="mgy-auto" icon="greator" />
     </div>
   </div>
 </template>
@@ -48,3 +47,4 @@ export default {
   },
 };
 </script>
+
