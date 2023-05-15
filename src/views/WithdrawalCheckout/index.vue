@@ -74,9 +74,6 @@ import { useSegement } from '../../hooks/useSegment';
 
 const icon = ref('back');
 const confirm = ref(false);
-const accountName = ref('');
-const bankName = ref('');
-const accountNumber = ref('');
 const picked = ref(false);
 const { router } = useGlobalProp();
 

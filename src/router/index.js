@@ -31,7 +31,7 @@ import WithdrawalCheckout from "../views/WithdrawalCheckout";
 import WithdrawalSuccess from "../views/WithdrawalCheckout/WithdrawalSuccess";
 import WithdrawalFailed from "../views/WithdrawalCheckout/WithdrawalFailed";
 import DuplicateAccount from "../views/ManageWithdrawalOptions/DuplicateAccount";
-
+import WithdrawalApproval from "../views/WithdrawalCheckout/WithdrawalApproval";
 
 const routes = [
   {
@@ -207,7 +207,13 @@ const routes = [
         path: "/withdraw-cash-success/:reciept?",
         name: "WithdrawalSuccess",
         component: WithdrawalSuccess,
+      },
+      {
+        path: "/withdrawal-approval",
+        name: "WithdrawalApproval",
+        component: WithdrawalApproval,
       }
+
 
     ],
   },

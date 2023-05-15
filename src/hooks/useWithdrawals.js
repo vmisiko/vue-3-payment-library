@@ -4,6 +4,7 @@ import { useGlobalProp } from "./globalProperties";
 import { useState } from "./useState";
 import { datadogRum } from "@datadog/browser-rum";
 import { useSegement } from "./useSegment";
+import PaymentStatus from "../Models/payment/paymentStatus";
 
 const accountName = ref('');
 const selectedBank = ref(null);
@@ -234,9 +235,15 @@ export function useWithdrawals() {
       withdrawal_option: selectedPaymentOption.value.pay_method_name,
     });
     loadingText.value = "Confirming your payment. This may take a moment.";
-    const response = await store.dispatch('paymentAxiosPost', fullPayload);
+    const result = await store.dispatch('paymentAxiosPost', fullPayload);
+    const response = new PaymentStatus(result);
     transactionId.value = response.transaction_id;
+
     if (response.status) {
+      if (response.isFraudDetected) {
+        router.push({name: 'WithdrawalApproval'});
+        return;
+      }
       switch (response.transaction_status) {
         case "pending": {
           poll();
@@ -312,9 +319,14 @@ export function useWithdrawals() {
       url: `/api/v1/process/status/${transactionId.value}`,
     };
 
-    const res = await store.dispatch("paymentAxiosGet", payload);
+    const response = await store.dispatch("paymentAxiosGet", payload);
 
+    const res = new PaymentStatus(response);
     if (res.status) {
+      if (res.isFraudDetected) {
+        router.push({name: 'WithdrawalApproval'});
+        return;
+      }
       switch (res.transaction_status) {
         case "success": {
           polling_count.value = poll_limit.value;
