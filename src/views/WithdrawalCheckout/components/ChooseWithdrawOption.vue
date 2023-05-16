@@ -55,7 +55,7 @@ import { useSegement } from "../../../hooks/useSegment";
   
   const store = useStore();
   const { getBupayload } = useState();
-  const { router, iconUrl } = useGlobalProp();
+  const { iconUrl } = useGlobalProp();
 
   const { selectedPaymentOption } = useWithdrawals();
 

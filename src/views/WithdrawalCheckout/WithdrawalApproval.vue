@@ -95,7 +95,7 @@
   import { useGlobalProp } from '../../hooks/globalProperties';
   import { useSegement } from '../../hooks/useSegment';
   
-  const icon = ref("warning");
+  const icon = ref("success");
   const title = ref("Your withdrawal request has been received");
   const message = ref("Please wait for approval within the next 3 hours. In case of any challenges please reach out to our customer support team for assistance");
   
