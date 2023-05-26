@@ -165,6 +165,7 @@ const submit = async () => {
     email: getBupayload.value.email,
     firstname: getBupayload.value.firstname,
     lastname: getBupayload.value.lastname,
+    v3cbk: getBupayload.value.v3cbk,
   };
 
   const version = getBupayload.value.version ?? 'v3';
@@ -231,7 +232,7 @@ const submitRetry = async () => {
     entity: getBupayload.value.entity_id,
     pay_detail_id: formattedPhone.value,
     payment_method: state.defaultPaymentMethod.pay_method_id,
-    references:getBupayload.value.references,
+    references: getBupayload.value.references,
   };
 
   const fullPayload = {

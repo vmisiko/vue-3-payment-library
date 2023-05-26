@@ -339,6 +339,7 @@ export default {
         txref: getBupayload.value.isPayOnDelivery ? getBupayload.value.txref : `AC_${new Date().getTime()}`,
         platform: 'web',
         test: getBupayload.value.test ?? false,
+        v3cbk: getBupayload.value.v3cbk,
       };
 
       reponseData = {...reponseData, ...additionalPayload};

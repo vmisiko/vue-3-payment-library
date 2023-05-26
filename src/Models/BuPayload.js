@@ -26,6 +26,7 @@ class BuPayload {
     this.txref = payload.txref;
     this.user_id = payload.user_id,   
     this.version = payload.version;
+    this.v3cbk = payload?.v3cbk ?? null;
   }
 
   get isPayOnDelivery() {

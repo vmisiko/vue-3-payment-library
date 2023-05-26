@@ -235,6 +235,7 @@ export function usePayment() {
       email: getBupayload.value.email,
       firstname: getBupayload.value.firstname,
       lastname: getBupayload.value.lastname,
+      v3cbk: getBupayload.value.v3cbk,
     };
 
     checkout(payload);
@@ -314,6 +315,7 @@ export function usePayment() {
       email: getBupayload.value.email,
       firstname: getBupayload.value.firstname,
       lastname: getBupayload.value.lastname,
+      v3cbk: getBupayload.value.v3cbk,
     };
 
     checkout(payload);
