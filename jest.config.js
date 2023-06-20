@@ -4,9 +4,13 @@ module.exports = {
   moduleFileExtensions: ['js', 'json', 'node', 'vue'],
   collectCoverage: true,
   coverageDirectory: 'coverage',
-  coverageReporters: [ "text", 'cobertura','html'],
+  coverageReporters: [
+  "text",
+  ['cobertura', { file: 'cobertura.xml' }],
+  'html'
+  ],
   reporters: ["default",
-        ["jest-junit", {usePathForSuiteName: true, outputDirectory: 'coverage'}]
-      ],
+    ["jest-junit", { usePathForSuiteName: true, outputDirectory: 'coverage' }]
+  ],
   testResultsProcessor: "jest-junit"
 }

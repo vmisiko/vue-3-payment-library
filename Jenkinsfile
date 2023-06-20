@@ -50,7 +50,14 @@ pipeline {
                     reportFiles          : 'index.html',
                     reportName           : 'Coverage Report - HTML'
                   ]
-                  publishCoverage adapters: [cobertura(path: 'coverage/**.xml', mergeToOneReport: true)]
+                recordCoverage(
+                    tools: [[parser: 'COBERTURA']],
+                    id: 'COBERTURA-VUE-3-PAYMENT-LIB', 
+                    name: 'COBERTURA COVERAGE REPORT'
+                )
+                catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
+                    junit "junit.xml"
+                }
               }
            }
         }       
